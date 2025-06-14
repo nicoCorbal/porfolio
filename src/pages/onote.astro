@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'oNote – Transcriptor de clases universitarias en tiempo real';
+const description = 'oNote es una aplicación móvil que transcribe en tiempo real las clases universitarias, ayudando a los estudiantes a concentrarse y estudiar mejor.';
+const image = '/onote.jpg';
+---
+
+<Layout {title} {description} {image}>
+  <section class="project-page">
+    <div class="container mx-auto max-w-3xl py-16 px-6 text-center">
+      <img src="/onote.jpg" alt="oNote screenshot" class="mx-auto mb-8 rounded-lg shadow-lg max-w-full" />
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">oNote</h1>
+      <p class="mb-6 text-lg md:text-xl">Transcriptor de clases universitarias en tiempo real que convierte la voz en texto para que nunca pierdas detalle de tus apuntes.</p>
+      <a href="https://github.com/ppazosp/oNote" target="_blank" rel="noopener noreferrer" class="inline-block bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-200">
+        Ver en GitHub
+      </a>
+    </div>
+  </section>
+</Layout>

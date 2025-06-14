@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Wearendar – Calendario para WearOS';
+const description = 'Wearendar es una aplicación para dispositivos WearOS que permite visualizar y gestionar tu calendario de forma sencilla y cómoda desde tu muñeca.';
+const image = '/wearendar.jpeg';
+const video = '/wearendar.mp4';
+---
+
+<Layout {title} {description} {image}>
+  <section class="project-page">
+    <div class="container mx-auto max-w-3xl py-16 px-6 text-center">
+      <div class="flex items-center justify-center gap-4 mb-8">
+        <button id="prev-media" aria-label="Anterior" class="bg-black/60 hover:bg-black text-white p-2 rounded-full shadow-lg">
+          ◀
+        </button>
+        <div class="relative">
+          <img id="media-img" src="/wearendar.jpeg" alt="Wearendar screenshot" class="block rounded-lg shadow-lg w-56 sm:w-64 md:w-72" />
+          <video id="media-video" src={video} muted loop playsinline class="hidden rounded-lg shadow-lg w-56 sm:w-64 md:w-72"></video>
+        </div>
+        <button id="next-media" aria-label="Siguiente" class="bg-black/60 hover:bg-black text-white p-2 rounded-full shadow-lg">
+          ▶
+        </button>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">Wearendar</h1>
+      <p class="mb-6 text-lg md:text-xl">Aplicación de calendario optimizada para relojes WearOS, permitiendo consultar eventos y recibir recordatorios de manera rápida.</p>
+      <a href="https://github.com/SrFreiRe/wearendar" target="_blank" rel="noopener noreferrer" class="inline-block bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-200">
+        Ver en GitHub
+      </a>
+    </div>
+  </section>
+
+  <script>
+    const prevBtn = document.getElementById('prev-media');
+    const nextBtn = document.getElementById('next-media');
+    const img = document.getElementById('media-img');
+    const vid = document.getElementById('media-video') as HTMLVideoElement | null;
+
+    function toggle() {
+      if (!img || !vid) return;
+      const showingImg = !img.classList.contains('hidden');
+      if (showingImg) {
+        img.classList.add('hidden');
+        vid.classList.remove('hidden');
+        if (vid) {
+          vid.currentTime = 0;
+          vid.play().catch(() => {});
+        }
+      } else {
+        if (vid) vid.pause();
+        vid.classList.add('hidden');
+        img.classList.remove('hidden');
+      }
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', toggle);
+    if (nextBtn) nextBtn.addEventListener('click', toggle);
+  </script>
+  <script>
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('beforeunload', () => {
+      document.body.style.overflow = prevOverflow;
+    });
+  </script>
+</Layout>
