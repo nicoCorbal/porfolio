@@ -93,15 +93,7 @@ button, input, textarea, select {
   @apply w-20 h-1.5 bg-[#CD1C18] mb-8 rounded-full mx-auto sm:mx-0;
 }
 
-.section {
-  /* No padding */
-}
-
 @media (max-width: 640px) {
-  .section {
-    /* No padding */
-  }
-
   .section-title {
     text-align: center;
     font-size: 1.875rem; /* 30px */
@@ -188,7 +180,6 @@ img, video {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 }
-/* Añadir estos estilos a tu global.css */
 
 /* Deshabilitar comportamiento de scroll por defecto */
 html {
@@ -270,11 +261,6 @@ section {
 
 /* Mejoras para móvil */
 @media (max-width: 768px) {
-
-  section {
-    margin-bottom: 10vh !important;
-  }
-
   section:first-child {
     margin-bottom: 0vh !important;
   }

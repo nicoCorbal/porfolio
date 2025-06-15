@@ -37,7 +37,7 @@ const image = project.images[0];
 
 <Layout {title} {description} {image}>
   {/* HERO */}
-  <section class="py-16 lg:py-12">
+  <section class="py-16 lg:py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div>
@@ -64,7 +64,7 @@ const image = project.images[0];
 
           <div class="flex flex-wrap gap-4">
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-black hover:bg-gray-800 text-white px-5 py-3 rounded-lg text-sm">
-              Ver Proyecto
+              Ver Prasdasoyecto
             </a>
             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center border border-gray-300 hover:bg-gray-100 text-black px-5 py-3 rounded-lg text-sm">
               Código
@@ -82,7 +82,7 @@ const image = project.images[0];
   </section>
 
   {/* DESCRIPCIÓN */}
-  <section class="py-10 bg-gray-50">
+  <section class="py-8 bg-gray-50">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 gap-12">
         <div>
@@ -100,12 +100,12 @@ const image = project.images[0];
   </section>
 
   {/* GALERÍA */}
-  <section class="py-16">
+  <section class="py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold text-black text-center mb-12">Capturas del Proyecto</h2>
+      <h2 class="text-3xl font-bold text-black text-center mb-8">Capturas del Proyecto</h2>
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {project.images.map((img, idx) => (
-          <div key={idx} class="aspect-[3/4] rounded-xl overflow-hidden bg-gray-100">
+          <div class="aspect-[3/4] rounded-xl overflow-hidden bg-gray-100">
             <img src={img} alt={`${project.title} screenshot ${idx + 1}`} class="object-cover w-full h-full" />
           </div>
         ))}
@@ -114,14 +114,14 @@ const image = project.images[0];
   </section>
 
   {/* TECNOLOGÍAS Y FEATURES */}
-  <section class="py-16 bg-gray-50">
+  <section class="py-8 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-12">
         <div>
           <h2 class="text-2xl font-bold text-black flex items-center mb-6">Tecnologías Utilizadas</h2>
           <div class="flex flex-wrap gap-3">
             {project.technologies.map((tech) => (
-              <span class="px-3 py-1 rounded-full border text-sm" key={tech}>{tech}</span>
+              <span class="px-3 py-1 rounded-full border text-sm">{tech}</span>
             ))}
           </div>
         </div>
@@ -130,7 +130,7 @@ const image = project.images[0];
           <h2 class="text-2xl font-bold text-black mb-6">Características Principales</h2>
           <ul class="space-y-3 list-disc list-inside marker:text-black">
             {project.features.map((feature) => (
-              <li key={feature} class="text-gray-600">{feature}</li>
+              <li class="text-gray-600">{feature}</li>
             ))}
           </ul>
         </div>
@@ -139,7 +139,7 @@ const image = project.images[0];
   </section>
 
   {/* CTA */}
-  <section class="py-16">
+  <section class="py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2 class="text-3xl font-bold text-black mb-4">¿Tienes un proyecto en mente?</h2>
       <p class="text-xl text-gray-600 mb-8">Innovación y Desarrollo al alcance de cualquiera</p>
