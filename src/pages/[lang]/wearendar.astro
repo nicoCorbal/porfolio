@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import SimpleFooter from '../../components/SimpleFooter.astro';
+
 
 export async function getStaticPaths() {
   return [
@@ -7,6 +9,8 @@ export async function getStaticPaths() {
     { params: { lang: 'en' } },
   ];
 }
+
+const { lang } = Astro.params;
 
 // Datos del proyecto (podrías moverlos a un JSON común si lo deseas)
 const project = {
@@ -42,9 +46,10 @@ const description = project.subtitle;
 const image = project.images[0];
 ---
 
-<Layout {title} {description} {image}>
+<Layout {title} {description} {image} lang={lang}>
+  
   {/* HERO */}
-  <section class="py-20 lg:py-20">
+  <section class="py-28 lg:py-28">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div>
@@ -161,3 +166,5 @@ const image = project.images[0];
     </div>
   </section>
 </Layout>
+
+<SimpleFooter />

@@ -15,9 +15,11 @@ export async function getStaticPaths() {
   ];
 }
 
+const { lang } = Astro.params;
+
 ---
 
-<Layout>
+<Layout lang={lang} isMainPage={true}>
   <section id="hero"><Hero /></section>
   <section id="services"><Services /></section>
   <section id="values"><ValuesSection /></section>
