@@ -99,13 +99,11 @@ textarea {
 }
 
 .btn-primary {
-  @apply bg-[#CD1C18] text-white hover:bg-[#A51713] transition-all duration-300 font-semibold shadow-lg px-8 py-3 rounded-lg;
-  @apply hover:-translate-y-1 transform;
+  @apply inline-flex items-center bg-black text-white hover:bg-gray-800 transition-all duration-300 font-semibold px-5 py-3 rounded-lg text-sm;
 }
 
 .btn-secondary {
-  @apply border-2 border-[#CD1C18] text-[#CD1C18] hover:bg-[#CD1C18] hover:text-white transition-all duration-300 font-semibold px-8 py-3 rounded-lg;
-  @apply hover:-translate-y-1 transform;
+  @apply inline-flex items-center border border-gray-300 text-black hover:bg-gray-100 transition-all duration-300 font-semibold px-5 py-3 rounded-lg text-sm;
 }
 
 /* ---------- Typography & Layout ---------- */
