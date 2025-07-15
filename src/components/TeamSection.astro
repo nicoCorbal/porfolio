@@ -1,9 +1,18 @@
 ---
+import { Image } from 'astro:assets';
+import mateoImg from '../assets/team/mateo.jpeg';
+import juanImg from '../assets/team/juan.jpeg';
+import gutiImg from '../assets/team/guti.jpg';
+import pazosImg from '../assets/team/pazos.jpeg';
+import nicoImg from '../assets/team/nico.jpeg';
+import nelImg from '../assets/team/nel.jpeg';
+import diegoImg from '../assets/team/diego.jpeg';
+
 const teamMembers = [
   { 
     name: "Mateo", 
     role: "CFO", 
-    image: "/team/mateo.jpeg", 
+    image: mateoImg, 
     linkedin: "https://www.linkedin.com/in/mateo-bodenlle-villarino/", 
     github: "https://github.com/mateobodenlle",
     description: "Managing the company's finances and seeking new business opportunities, ensuring sustainable growth and strategic investments."
@@ -11,7 +20,7 @@ const teamMembers = [
   { 
     name: "Juan", 
     role: "Backend Developer", 
-    image: "/team/juan.jpeg", 
+    image: juanImg, 
     linkedin: "https://www.linkedin.com/in/juan-freire-alvarez/", 
     github: "https://github.com/SrFreiRe",
     description: "Specialist in database architecture and API development, ensuring our applications are powerful and scalable from the inside out."
@@ -19,7 +28,7 @@ const teamMembers = [
   { 
     name: "Guti", 
     role: "Street Developer", 
-    image: "/team/guti.jpg", 
+    image: gutiImg, 
     linkedin: "#", 
     github: "#",
     description: "A pragmatic problem-solver who thrives on real-world challenges. Expert in rapid prototyping and finding unconventional solutions on the fly."
@@ -27,7 +36,7 @@ const teamMembers = [
   { 
     name: "Pazos", 
     role: "CTO", 
-    image: "/team/pazos.jpeg", 
+    image: pazosImg, 
     linkedin: "https://www.linkedin.com/in/pablo-pazos-parada/", 
     github: "https://github.com/ppazosp",
     description: "Leading our technology strategy and architecture, guiding the development team to build robust and future-proof solutions."
@@ -35,7 +44,7 @@ const teamMembers = [
   { 
     name: "Nico", 
     role: "Frontend Developer", 
-    image: "/team/nico.jpeg", 
+    image: nicoImg, 
     linkedin: "https://www.linkedin.com/in/nicol%C3%A1s-corbal-912929318/", 
     github: "https://github.com/nicoCorbal",
     description: "Passionate about creating fluid and dynamic user interfaces. Expert in modern JavaScript frameworks and turning complex designs into reality."
@@ -43,7 +52,7 @@ const teamMembers = [
   { 
     name: "Nel", 
     role: "Cybersecurity Expert", 
-    image: "/team/nel.jpeg", 
+    image: nelImg, 
     linkedin: "https://www.linkedin.com/in/david-manuel-raposeiras-canabal-a95028210/", 
     github: "https://github.com/davrapcan",
     description: "Dedicated to protecting our systems and user data. Specializes in identifying vulnerabilities and implementing robust security protocols."
@@ -51,7 +60,7 @@ const teamMembers = [
   { 
     name: "Diego", 
     role: "Mobile and Full Stack Developer", 
-    image: "/team/diego.jpeg", 
+    image: diegoImg, 
     linkedin: "https://www.linkedin.com/in/diego-cristobal-andaluz-3a5580304/", 
     github: "https://github.com/2cristo7",
     description: "A versatile developer building seamless experiences across both mobile and web platforms, mastering the entire technology stack from end to end."
@@ -66,7 +75,7 @@ const teamMembers = [
     <div class="hidden md:flex w-full h-[75vh] max-h-[700px] mt-16 gap-4 team-expanding-cards-container">
       {teamMembers.map((member) => (
         <div class="team-card flex-1 relative rounded-2xl overflow-hidden cursor-pointer shadow-lg border border-gray-200/50">
-          <img src={member.image} alt={member.name} class="w-full h-full object-cover" />
+          <Image src={member.image} alt={member.name} class="w-full h-full object-cover" loading="lazy" decoding="async" format="webp" />
           <div class="card-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
           <div class="card-content absolute bottom-0 left-0 p-6 text-white w-full">
             <h3 class="text-2xl font-bold translate-y-5 opacity-0">{member.name}</h3>
@@ -92,7 +101,7 @@ const teamMembers = [
       {teamMembers.map((member) => (
         <div class="mobile-team-card bg-gray-50 rounded-lg overflow-hidden border border-gray-200/60">
           <div class="mobile-card-trigger flex items-center p-4 cursor-pointer">
-            <img src={member.image} alt={member.name} class="w-16 h-16 rounded-full object-cover" />
+            <Image src={member.image} alt={member.name} class="w-16 h-16 rounded-full object-cover" loading="lazy" decoding="async" format="webp" width={64} height={64} />
             <div class="ml-4">
               <h3 class="font-bold text-lg">{member.name}</h3>
               <p class="text-gray-600">{member.role}</p>

@@ -4,10 +4,10 @@ import '../styles/global.css';
 
 const Card = ({ project, onSwipe, isTopCard, isMobile, texts, index, totalCards }) => {
   const x = useMotionValue(0);
+
+  // Hooks must be called unconditionally.
   const rotate = useTransform(x, [-300, 300], [-25, 25], { clamp: false });
   const imageParallax = useTransform(x, [-300, 300], [-30, 30]);
-
-  // Animate the card below to prepare it
   const scale = useTransform(x, [-300, 300], [1, 0.95]);
   const y = useTransform(x, [-300, 300], [0, -20]);
 
@@ -16,7 +16,7 @@ const Card = ({ project, onSwipe, isTopCard, isMobile, texts, index, totalCards 
     animate: (i) => ({
       scale: 1 - (i * 0.04),
       y: i * 15,
-      rotate: i > 0 ? (i % 2 === 0 ? 5 : -5) : 0,
+      rotate: i > 0 && !isMobile ? (i % 2 === 0 ? 5 : -5) : 0,
       opacity: 1,
       zIndex: totalCards - i,
       transition: { type: 'spring', stiffness: 150, damping: 25, mass: 0.5 }
@@ -24,12 +24,16 @@ const Card = ({ project, onSwipe, isTopCard, isMobile, texts, index, totalCards 
     exit: {
       x: x.get() > 0 ? 350 : -350,
       opacity: 0,
-      scale: 0.7,
+      scale: isMobile ? 1 : 0.7, // Simpler exit on mobile
       transition: { duration: 0.4, ease: [0.43, 0.13, 0.23, 0.96] }
     }
   };
 
-  const style = isTopCard ? { x, rotate } : { scale, y };
+  // On mobile, background cards are static during drag for performance.
+  // The style prop now conditionally applies transforms.
+  const style = isTopCard 
+    ? { x, rotate: !isMobile ? rotate : undefined } 
+    : (isMobile ? {} : { scale, y });
 
   return (
     <motion.div
@@ -42,7 +46,7 @@ const Card = ({ project, onSwipe, isTopCard, isMobile, texts, index, totalCards 
       custom={index}
       drag={isTopCard ? "x" : false}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-      dragElastic={0.55}
+      dragElastic={isMobile ? 0.5 : 0.55}
       onDragEnd={(event, info) => {
         if (isTopCard) {
           if (info.offset.x > 150) {
@@ -56,21 +60,22 @@ const Card = ({ project, onSwipe, isTopCard, isMobile, texts, index, totalCards 
       className="absolute w-[80vw] md:w-[40vw] lg:w-[35vw] h-[75vh] max-w-[480px] max-h-[650px] cursor-grab active:cursor-grabbing"
     >
       <div className="relative w-full h-full overflow-hidden rounded-2xl bg-gray-100 shadow-2xl pointer-events-none">
-        <motion.div className="absolute inset-0" style={{ x: imageParallax }}>
+        <motion.div className="absolute inset-0" style={!isMobile ? { x: imageParallax } : {}}>
             <img 
               src={project.image} 
               alt={project.title} 
               className="absolute inset-0 w-full h-full object-cover"
+              loading={isTopCard ? "eager" : "lazy"}
             />
         </motion.div>
         {project.video && (
           <video
             src={project.video}
-            autoPlay={isMobile}
+            autoPlay={false}
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             poster={project.image}
             className="absolute inset-0 w-full h-full object-contain bg-black"
           />
@@ -127,6 +132,7 @@ const ProjectsGrid = ({ projects: initialProjects, texts }) => {
         <AnimatePresence>
           {projects.length > 0 && (
             <>
+              {/* Desktop-only hints */}
               <motion.div
                 variants={hintVariants}
                 initial="initial"
@@ -183,6 +189,30 @@ const ProjectsGrid = ({ projects: initialProjects, texts }) => {
               )}
             </AnimatePresence>
         </div>
+
+        {/* Mobile-only Swipe Instructions */}
+        <AnimatePresence>
+          {isMobile && projects.length > 0 && (
+            <div className="absolute -bottom-12 left-0 right-0 flex justify-center pointer-events-none z-50">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
+                exit={{ opacity: 0, y: 20 }}
+                className="w-auto px-4 py-2 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center gap-6 text-sm text-white/80"
+              >
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                  <span className="font-medium">Skip</span>
+                </div>
+                <div className="font-bold text-white">SWIPE</div>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Open</span>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

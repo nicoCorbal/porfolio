@@ -1,7 +1,10 @@
 ---
-// ProjectsSection.astro - Sección de Proyectos
-
+import { getImage } from "astro:assets";
 import ProjectsGrid from './ProjectsSlider.jsx';
+
+import opillsImage from "../assets/projects/opills.jpg";
+import onoteImage from "../assets/projects/onote.jpg";
+import wearendarImage from "../assets/projects/wearendar.jpeg";
 
 const { lang } = Astro.params;
 const translations = await import(`../../public/locales/${lang}.json`);
@@ -16,68 +19,81 @@ const texts = {
 interface Project {
     title: string;
     category: string;
-    image: string;
+    image: ImageMetadata | string;
     video?: string;
     client: string,
     url: string;
   }
   
-  const projects: Project[] = [
+  const projectsData: Project[] = [
   {
     title: "Web oPills",
     category: "Web Design",
-    image: "/opills.jpg",
+    image: opillsImage,
     client: "oPills",
     url: "https://opills.app/"
   },
   {
     title: "oNote",
     category: "Mobile App",
-    image: "/onote.jpg",
-    video: "/onote.mp4",
+    image: onoteImage,
+    video: "/videos/onote.mp4",
     client: "oNote",
     url: "https://github.com/ppazosp/oNote/"
   },
   {
     title: "Wearendar",
     category: "Mobile App",
-    image: "/wearendar.jpeg",
-    video: "/wearendar.mp4",
+    image: wearendarImage,
+    video: "/videos/wearendar.mp4",
     client: "Wearendar",
     url: "https://github.com/SrFreiRe/wearendar/"
   },
   {
     title: "Project Alpha",
     category: "Web App",
-    image: "/opills.jpg",
+    image: opillsImage,
     client: "Client A",
     url: "#"
   },
   {
     title: "Project Beta",
     category: "Mobile Design",
-    image: "/onote.jpg",
-    video: "/onote.mp4",
+    image: onoteImage,
+    video: "/videos/onote.mp4",
     client: "Client B",
     url: "#"
   },
   {
     title: "Project Gamma",
     category: "Desktop App",
-    image: "/wearendar.jpeg",
-    video: "/wearendar.mp4",
+    image: wearendarImage,
+    video: "/videos/wearendar.mp4",
     client: "Client C",
     url: "#"
   },
   {
     title: "Project Delta",
     category: "Data Visualization",
-    image: "/opills.jpg",
+    image: opillsImage,
     client: "Client D",
     url: "#"
   }
-] 
+]
 
+const optimizedProjects = await Promise.all(
+  projectsData.map(async (project) => {
+    const optimizedImage = await getImage({
+      src: project.image as ImageMetadata,
+      width: 800,
+      format: "webp",
+    });
+    return {
+      ...project,
+      image: optimizedImage.src,
+    };
+  })
+);
 ---
 
- <ProjectsGrid projects={projects} texts={texts} client:load />
+ <ProjectsGrid projects={optimizedProjects} texts={texts} client:load />
