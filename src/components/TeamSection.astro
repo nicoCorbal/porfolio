@@ -129,6 +129,22 @@ const teamMembers = [
   </div>
 </section>
 
+<style>
+  .mobile-card-details {
+    transition: height 0.4s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease-in-out;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+  .mobile-team-card.is-open .mobile-card-details {
+    height: auto;
+    opacity: 1;
+  }
+  .mobile-team-card.is-open .arrow-icon {
+    transform: rotate(180deg);
+  }
+</style>
+
 <script>
   import gsap from "gsap";
   import { Flip } from "gsap/Flip";
@@ -216,43 +232,28 @@ const teamMembers = [
     });
   }
 
-  // --- Mobile accordion ---
+  // --- Mobile accordion (CSS-based) ---
   function setupMobileAccordion() {
     if (window.innerWidth >= 768) return; // Don't run on desktop
 
-    const cards = gsap.utils.toArray<HTMLElement>('.mobile-team-card');
+    const cards = document.querySelectorAll<HTMLElement>('.mobile-team-card');
 
     cards.forEach(card => {
       const trigger = card.querySelector('.mobile-card-trigger');
-      const details = card.querySelector<HTMLElement>('.mobile-card-details');
-      const arrow = card.querySelector('.arrow-icon');
-      if (!trigger || !details || !arrow) return;
-
-      gsap.set(details, { height: 0, opacity: 0 });
+      if (!trigger) return;
 
       trigger.addEventListener('click', () => {
-        const isOpen = card.classList.contains('is-open');
+        const wasOpen = card.classList.contains('is-open');
 
         // Close all other cards
         cards.forEach(otherCard => {
-          if (otherCard !== card && otherCard.classList.contains('is-open')) {
-            otherCard.classList.remove('is-open');
-            const otherDetails = otherCard.querySelector<HTMLElement>('.mobile-card-details');
-            const otherArrow = otherCard.querySelector('.arrow-icon');
-            if (otherDetails) gsap.to(otherDetails, { height: 0, opacity: 0, duration: 0.4, ease: 'power3.inOut' });
-            if (otherArrow) gsap.to(otherArrow, { rotate: 0, duration: 0.3 });
-          }
+          otherCard.classList.remove('is-open');
         });
 
         // Toggle the clicked card
-        card.classList.toggle('is-open');
-        gsap.to(details, {
-          height: isOpen ? 0 : 'auto',
-          opacity: isOpen ? 0 : 1,
-          duration: 0.4,
-          ease: 'power3.inOut'
-        });
-        gsap.to(arrow, { rotate: isOpen ? 0 : 180, duration: 0.3 });
+        if (!wasOpen) {
+          card.classList.add('is-open');
+        }
       });
     });
   }

@@ -125,7 +125,7 @@ const ProjectsGrid = ({ projects: initialProjects, texts }) => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 md:px-12 relative">
+    <div className="w-full max-w-7xl mx-auto px-6 md:px-12 relative overflow-x-hidden">
       <h2 className="section-title" dangerouslySetInnerHTML={{ __html: texts.title }} />
       
       <div className="relative w-full h-[80vh] max-h-[700px] flex items-center justify-center mt-8">
