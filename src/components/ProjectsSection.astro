@@ -17,8 +17,8 @@ interface Project {
     title: string;
     category: string;
     image: ImageMetadata | string;
-    video?: string;
-    client: string,
+    description: string;
+    client: string;
     url: string;
 }
   
@@ -27,6 +27,7 @@ const projectsData: Project[] = [
     title: "Web oPills",
     category: "Web Design",
     image: opillsImage,
+    description: "A comprehensive web platform designed to streamline pharmaceutical information for professionals and patients, featuring a clean, intuitive, and accessible interface.",
     client: "oPills",
     url: "https://opills.app/"
   },
@@ -34,7 +35,7 @@ const projectsData: Project[] = [
     title: "oNote",
     category: "Mobile App",
     image: onoteImage,
-    video: "/videos/onote.mp4",
+    description: "A minimalist note-taking app for mobile devices, focused on speed and simplicity. Built with offline-first capabilities and cloud synchronization.",
     client: "oNote",
     url: "https://github.com/ppazosp/oNote/"
   },
@@ -42,18 +43,43 @@ const projectsData: Project[] = [
     title: "Wearendar",
     category: "Mobile App",
     image: wearendarImage,
-    video: "/videos/wearendar.mp4",
+    description: "A collaborative calendar application for teams, designed to simplify event scheduling and task management with a shared, real-time view.",
     client: "Wearendar",
     url: "https://github.com/SrFreiRe/wearendar/"
+  },
+  {
+    title: "Project Alpha",
+    category: "Branding",
+    image: opillsImage,
+    description: "Complete rebranding for a tech startup, including a new visual identity, logo, and brand guidelines to position them as an industry leader.",
+    client: "Alpha Inc.",
+    url: "#"
+  },
+  {
+    title: "Project Beta",
+    category: "UX/UI",
+    image: onoteImage,
+    description: "User experience and interface design for a complex analytics dashboard, transforming raw data into actionable, easy-to-understand visualizations.",
+    client: "Beta Corp.",
+    url: "#"
+  },
+  {
+    title: "Project Gamma",
+    category: "E-commerce",
+    image: wearendarImage,
+    description: "A scalable and secure e-commerce platform built from the ground up, featuring a custom CMS and seamless integration with payment gateways.",
+    client: "Gamma Co.",
+    url: "#"
   }
 ];
 
 const optimizedProjects = await Promise.all(
   projectsData.map(async (project) => {
+    if (typeof project.image === 'string') return project;
     const optimizedImage = await getImage({
-      src: project.image as ImageMetadata,
-      width: 1024,
-      height: 768,
+      src: project.image,
+      width: 800,
+      height: 600,
       format: "webp",
       quality: 80,
     });
@@ -63,26 +89,191 @@ const optimizedProjects = await Promise.all(
     };
   })
 );
+
+const initialProjectCount = 3;
 ---
 
-<div class="w-full max-w-7xl mx-auto px-6 md:px-12 py-20">
-  <h2 class="section-title" set:html={texts.title} />
+<section class="section bg-white text-black py-16 md:py-20 overflow-hidden">
+  <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
+    <h2 class="section-title" set:html={texts.title} />
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-    {optimizedProjects.map(project => (
-      <a href={project.url} target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden shadow-lg group transform hover:-translate-y-1 transition-transform duration-300">
-        <div class="relative">
-          <img src={project.image} alt={project.title} class="w-full h-56 object-cover" />
-          <div class="absolute inset-0 bg-black/20"></div>
-        </div>
-        <div class="p-6 bg-white">
-          <span class="inline-block mb-2 text-xs font-medium text-blue-600 bg-blue-100 px-3 py-1 rounded-full">
-            {project.category}
-          </span>
-          <h3 class="text-xl font-bold text-gray-900 mb-1">{project.title}</h3>
-          <p class="text-gray-600 text-sm">{texts.client}: {project.client}</p>
-        </div>
-      </a>
-    ))}
+    <div class="project-list mt-16 border-t border-gray-300">
+      {optimizedProjects.map((project, index) => (
+        <details
+          class:list={[
+            "project-item group border-b border-gray-300",
+            { "extra-project": index >= initialProjectCount },
+            { "hidden": index >= initialProjectCount }
+          ]}
+        >
+          <summary class="flex justify-between items-center py-6 md:py-8 cursor-pointer list-none">
+            <h3 class="text-3xl sm:text-4xl md:text-7xl font-semibold tracking-tighter text-gray-800">{project.title}</h3>
+            <div class="flex items-center gap-4">
+              <span class="text-lg md:text-xl text-gray-500 hidden md:block">{project.category}</span>
+              <div class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full border border-gray-400 text-gray-400 transition-transform duration-300 group-open:rotate-45">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </div>
+            </div>
+          </summary>
+          <div class="details-content overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 pb-8 md:pb-12 items-center">
+              <div class="w-full h-64 md:h-96">
+                <img src={typeof project.image === 'string' ? project.image : project.image.src} alt={project.title} class="w-full h-full object-cover rounded-md" />
+              </div>
+              <div class="flex flex-col h-full justify-center">
+                <p class="text-base md:text-lg text-gray-700">{project.description}</p>
+                <div class="mt-6 md:mt-8">
+                  <p class="text-sm uppercase tracking-widest text-gray-500 mb-1">{texts.client}</p>
+                  <p class="text-xl md:text-2xl font-semibold text-black">{project.client}</p>
+                </div>
+                <div class="mt-8 pt-8">
+                  <a href={project.url} target="_blank" rel="noopener noreferrer" class="inline-block text-base md:text-lg font-semibold text-gray-800 border-2 border-gray-800 rounded-full px-5 md:px-6 py-2 hover:bg-gray-800 hover:text-white transition-colors duration-300">
+                    Visit Project
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    {optimizedProjects.length > initialProjectCount && (
+      <div class="mt-16 md:mt-20 text-center space-x-4">
+        <button id="show-more-btn" class="text-xl font-semibold text-gray-800 border-2 border-gray-800 rounded-full px-8 py-3 hover:bg-gray-800 hover:text-white transition-colors duration-300">
+          {t('projects.showMore')}
+        </button>
+        <button id="show-less-btn" class="text-xl font-semibold text-gray-800 border-2 border-gray-800 rounded-full px-8 py-3 hover:bg-gray-800 hover:text-white transition-colors duration-300 hidden">
+          {t('projects.showLess')}
+        </button>
+      </div>
+    )}
   </div>
-</div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // --- "Show More/Less" button logic ---
+    const showMoreBtn = document.getElementById('show-more-btn');
+    const showLessBtn = document.getElementById('show-less-btn');
+    const extraProjects = gsap.utils.toArray<HTMLElement>('.extra-project');
+
+    const animateIn = (items: HTMLElement[]) => {
+      gsap.from(items, {
+        opacity: 0, y: 60, duration: 1, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: {
+          trigger: items[0],
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+        },
+      });
+    };
+    
+    const initialItems = gsap.utils.toArray<HTMLElement>('.project-item:not(.hidden)');
+    if (initialItems.length > 0) animateIn(initialItems);
+    
+    if (showMoreBtn && showLessBtn) {
+      showMoreBtn.addEventListener('click', () => {
+        extraProjects.forEach(item => item.classList.remove('hidden'));
+        animateIn(extraProjects);
+        showMoreBtn.classList.add('hidden');
+        showLessBtn.classList.remove('hidden');
+        setTimeout(() => ScrollTrigger.refresh(), 200);
+      });
+
+      showLessBtn.addEventListener('click', () => {
+        showLessBtn.classList.add('hidden');
+        gsap.to(extraProjects, {
+          opacity: 0, y: -30, height: 0, paddingTop: 0, paddingBottom: 0,
+          stagger: 0.1, duration: 0.6, ease: 'power2.in',
+          onComplete: () => {
+            extraProjects.forEach(item => {
+              item.classList.add('hidden');
+              gsap.set(item, { clearProps: 'all' });
+            });
+            showMoreBtn.classList.remove('hidden');
+            setTimeout(() => ScrollTrigger.refresh(), 100);
+          },
+        });
+      });
+    }
+
+    // --- Polished & Robust GSAP Accordion ---
+    const allDetails = gsap.utils.toArray<HTMLDetailsElement>('.project-item');
+
+    const closeDetails = (details: HTMLDetailsElement) => {
+      const content = details.querySelector<HTMLElement>('.details-content');
+      if (!content) return;
+      const innerContent = gsap.utils.toArray<HTMLElement>(content.querySelectorAll('div, p, a'));
+
+      return gsap.timeline({
+        onComplete: () => {
+          details.removeAttribute('open');
+          // THIS IS THE FIX: Reset properties so it can be opened again.
+          gsap.set(innerContent, { clearProps: "opacity,transform" });
+        }
+      })
+      .to(innerContent, {
+        opacity: 0,
+        y: -10,
+        stagger: 0.05,
+        duration: 0.2,
+        ease: 'power1.in'
+      })
+      .to(content, {
+        height: 0,
+        opacity: 0,
+        duration: 0.4,
+        ease: 'expo.inOut'
+      }, '-=0.1');
+    };
+
+    allDetails.forEach(details => {
+      const summary = details.querySelector('summary');
+      const content = details.querySelector<HTMLElement>('.details-content');
+      if (!summary || !content) return;
+
+      gsap.set(content, { height: 0, opacity: 0 }); // Start closed
+
+      summary.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isOpen = details.hasAttribute('open');
+
+        if (isOpen) {
+          closeDetails(details);
+        } else {
+          // First, close any other open accordion
+          allDetails.forEach(otherDetails => {
+            if (otherDetails !== details && otherDetails.hasAttribute('open')) {
+              closeDetails(otherDetails);
+            }
+          });
+
+          // Then, open the clicked one
+          details.setAttribute('open', '');
+          const innerContent = gsap.utils.toArray<HTMLElement>(content.querySelectorAll('div, p, a'));
+          
+          gsap.timeline({ onComplete: () => ScrollTrigger.refresh() })
+            .to(content, {
+              height: 'auto',
+              opacity: 1,
+              duration: 0.6,
+              ease: 'expo.inOut'
+            })
+            .from(innerContent, {
+              opacity: 0,
+              y: 10,
+              stagger: 0.06,
+              duration: 0.4,
+              ease: 'power1.out'
+            }, '-=0.3');
+        }
+      });
+    });
+  });
+</script>

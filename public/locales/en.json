@@ -25,8 +25,10 @@
     "values.4": "Flexibility and Adaptability",
     "values.5": "Client-Centered Solutions",
 
-    "projects.title": "Our <span class=\"font-bold\">Projects</span>",
+    "projects.title": "Our <span class='font-bold'>Projects</span>",
     "projects.client": "Client",
+    "projects.showMore": "Show More",
+    "projects.showLess": "Show Less",
 
     "about.title": "Our <span class=\"font-bold\">Team</span>",
     
