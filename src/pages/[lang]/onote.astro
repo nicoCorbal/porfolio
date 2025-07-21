@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import SimpleFooter from '../../components/SimpleFooter.astro';
+
 
 export async function getStaticPaths() {
   return [
@@ -8,20 +10,221 @@ export async function getStaticPaths() {
   ];
 }
 
-const title = 'oNote – Transcriptor de clases universitarias en tiempo real';
-const description = 'oNote es una aplicación móvil que transcribe en tiempo real las clases universitarias, ayudando a los estudiantes a concentrarse y estudiar mejor.';
-const image = '/onote.jpg';
+const { lang } = Astro.params;
+
+// Datos del proyecto oNote
+const translations = {
+  es: {
+    project: {
+      title: 'oNote',
+      subtitle: 'La forma más simple de tomar y organizar notas.',
+      category: 'App de Productividad',
+      client: 'OSIX Labs',
+      year: '2024',
+      awards: ['Mejor App Minimalista 2024'],
+      challenge:
+        'Diseñar una app de notas multiplataforma que sea extremadamente rápida, con una interfaz limpia y sin distracciones, enfocada puramente en la escritura.',
+      solution:
+        'Se creó una PWA (Progressive Web App) usando SvelteKit y Tailwind CSS, con sincronización en tiempo real a través de PocketBase, ofreciendo una experiencia nativa en cualquier dispositivo.',
+      description: 'oNote es una aplicación de notas minimalista diseñada para la velocidad y la simplicidad. Captura tus ideas al instante, organízalas con etiquetas y accede a ellas desde cualquier lugar.',
+      technologies: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'PocketBase', 'PWA'],
+      features: [
+        'Editor de texto sin distracciones',
+        'Organización por etiquetas y carpetas',
+        'Sincronización en tiempo real',
+        'Soporte completo de Markdown',
+        'Modo oscuro y temas personalizables',
+        'Accesible sin conexión',
+      ],
+      images: ['/onote.jpeg', '/onote.jpeg'], // Placeholder images
+      liveUrl: 'https://onote.app',
+      githubUrl: 'https://github.com/osixtech/onote',
+    },
+    clientLabel: 'Cliente',
+    yearLabel: 'Año',
+    projectDescriptionTitle: 'Descripción del Proyecto',
+    challengeTitle: 'Reto',
+    solutionTitle: 'Solución',
+    technologiesTitle: 'Tecnologías Utilizadas',
+    galleryTitle: 'Galería del Proyecto',
+    featuresTitle: 'Características Principales',
+    ctaTitle: '¿Listo para empezar tu proyecto?',
+    ctaDescription: 'Contáctanos para una consulta gratuita y descubre cómo podemos ayudarte a alcanzar tus objetivos.',
+    contactButton: 'Contactar',
+    viewMoreButton: 'Ver Más Proyectos',
+    viewProjectButton: 'Ver Proyecto',
+    codeButton: 'Código',
+  },
+  en: {
+    project: {
+      title: 'oNote',
+      subtitle: 'The simplest way to take and organize notes.',
+      category: 'Productivity App',
+      client: 'OSIX Labs',
+      year: '2024',
+      awards: ['Best Minimalist App 2024'],
+      challenge:
+        'To design a cross-platform note-taking app that is extremely fast, with a clean, distraction-free interface focused purely on writing.',
+      solution:
+        'A PWA (Progressive Web App) was created using SvelteKit and Tailwind CSS, with real-time synchronization via PocketBase, offering a native experience on any device.',
+      description: 'oNote is a minimalist note-taking app designed for speed and simplicity. Capture your ideas instantly, organize them with tags, and access them from anywhere.',
+      technologies: ['SvelteKit', 'TypeScript', 'Tailwind CSS', 'PocketBase', 'PWA'],
+      features: [
+        'Distraction-free text editor',
+        'Organization by tags and folders',
+        'Real-time synchronization',
+        'Full Markdown support',
+        'Dark mode and customizable themes',
+        'Accessible offline',
+      ],
+      images: ['/onote.jpeg', '/onote.jpeg'], // Placeholder images
+      liveUrl: 'https://onote.app',
+      githubUrl: 'https://github.com/osixtech/onote',
+    },
+    clientLabel: 'Client',
+    yearLabel: 'Year',
+    projectDescriptionTitle: 'Project Description',
+    challengeTitle: 'Challenge',
+    solutionTitle: 'Solution',
+    technologiesTitle: 'Technologies Used',
+    galleryTitle: 'Project Gallery',
+    featuresTitle: 'Main Features',
+    ctaTitle: 'Ready to start your project?',
+    ctaDescription: 'Contact us for a free consultation and find out how we can help you achieve your goals.',
+    contactButton: 'Contact',
+    viewMoreButton: 'View More Projects',
+    viewProjectButton: 'View Project',
+    codeButton: 'Code',
+  },
+};
+
+const content = translations[lang as keyof typeof translations];
+const project = content.project;
+
+const title = `${project.title} – Project`;
+const pageDescription = project.subtitle;
+const image = project.images[0];
+
 ---
 
-<Layout {title} {description} {image}>
-  <section class="project-page">
-    <div class="container mx-auto max-w-3xl py-16 px-6 text-center">
-      <img src="/onote.jpg" alt="oNote screenshot" class="mx-auto mb-8 rounded-lg shadow-lg max-w-full" />
-      <h1 class="text-3xl md:text-4xl font-bold mb-4">oNote</h1>
-      <p class="mb-6 text-lg md:text-xl">Transcriptor de clases universitarias en tiempo real que convierte la voz en texto para que nunca pierdas detalle de tus apuntes.</p>
-      <a href="https://github.com/ppazosp/oNote" target="_blank" rel="noopener noreferrer" class="inline-block bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-200">
-        Ver en GitHub
-      </a>
+<Layout {title} description={pageDescription} {image} lang={lang}>
+  
+  {/* HERO */}
+  <section class="py-28 lg:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="flex items-center flex-wrap gap-4 mb-6">
+            <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-800 text-sm">{content.project.category}</span>
+            {project.awards.map((award) => (
+              <span class="px-3 py-1 rounded-full border border-yellow-400 text-yellow-700 text-sm" set:html={`🏆 ${award}`}></span>
+            ))}
+          </div>
+
+          <h1 class="text-4xl lg:text-6xl font-bold text-black mb-4">{project.title}</h1>
+          <p class="text-xl text-gray-600 mb-8">{project.subtitle}</p>
+
+          <div class="grid grid-cols-2 gap-6 mb-8 text-left">
+            <div>
+              <p class="text-sm text-gray-500 mb-1">{content.clientLabel}</p>
+              <p class="font-medium text-black">{project.client}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500 mb-1">{content.yearLabel}</p>
+              <p class="font-medium text-black">{project.year}</p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-4">
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
+              {content.viewProjectButton}
+            </a>
+            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+              {content.codeButton}
+            </a>
+          </div>
+        </div>
+
+        <div class="flex justify-center lg:justify-end">
+          <div class="w-96 h-80 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+            <img src={project.images[0]} alt={project.title} class="object-cover w-full h-full" />
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
+
+  {/* DESCRIPCIÓN */}
+  <section class="py-16 bg-gray-50 mb-6">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-3xl font-bold text-black mb-4">{content.projectDescriptionTitle}</h2>
+          <p class="text-gray-600 leading-relaxed">{project.description}</p>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold text-black mb-3">{content.challengeTitle}</h3>
+          <p class="text-gray-600 leading-relaxed mb-6">{project.challenge}</p>
+          <h3 class="text-lg font-semibold text-black mb-2">{content.solutionTitle}</h3>
+          <p class="text-gray-600 leading-relaxed">{project.solution}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* GALERÍA */}
+  <section class="py-16 mb-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-black text-center mb-6">{content.galleryTitle}</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {project.images.map((img, idx) => (
+          <div class="aspect-[3/4] rounded-xl overflow-hidden bg-gray-100">
+            <img src={img} alt={`${project.title} screenshot ${idx + 1}`} class="object-cover w-full h-full" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* TECNOLOGÍAS Y FEATURES */}
+  <section class="py-16 bg-gray-50 mb-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-2xl font-bold text-black flex items-center mb-6">{content.technologiesTitle}</h2>
+          <div class="flex flex-wrap gap-3">
+            {project.technologies.map((tech) => (
+              <span class="px-3 py-1 rounded-full border text-sm">{tech}</span>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-3xl font-bold text-black mb-8">{content.featuresTitle}</h2>
+          <ul class="space-y-3 list-disc list-inside marker:text-black">
+            {project.features.map((feature) => (
+              <li class="text-gray-600">{feature}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* CTA */}
+  <section class="py-16 mb-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-black mb-4">{content.ctaTitle}</h2>
+      <p class="text-lg text-gray-300 mb-8">{content.ctaDescription}</p>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href="#contact" class="btn-primary">{content.contactButton}</a>
+        <a href="/projects" class="btn-secondary">{content.viewMoreButton}</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<SimpleFooter lang={lang} />
+      
   </section>
 </Layout>
