@@ -1,0 +1,32 @@
+---
+import ProjectLayout from '../../../layouts/ProjectLayout.astro';
+import { getProject, getProjectIds } from '../../../data/projects';
+
+export async function getStaticPaths() {
+  const projectIds = getProjectIds();
+  const languages = ['es', 'en'];
+  
+  const paths = [];
+  for (const lang of languages) {
+    for (const id of projectIds) {
+      paths.push({
+        params: { lang, id },
+      });
+    }
+  }
+  
+  return paths;
+}
+
+const { id, lang } = Astro.params;
+const project = getProject(id);
+
+if (!project) {
+  return Astro.redirect(`/${lang}/404`);
+}
+
+// TODO: Add language-specific project data
+// For now, we'll use the Spanish data for all languages
+---
+
+<ProjectLayout {project} />

@@ -1,5 +1,9 @@
 ---
-const { lang } = Astro.params;
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'es' } = Astro.props;
 const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
 ---

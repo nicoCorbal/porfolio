@@ -4,7 +4,7 @@ import opillsImage from "../assets/projects/opills.jpg";
 import onoteImage from "../assets/projects/onote.jpg";
 import wearendarImage from "../assets/projects/wearendar.jpeg";
 
-const { lang } = Astro.params;
+const { lang = 'es' } = Astro.props;
 const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
 
@@ -19,13 +19,20 @@ interface Project {
     image: ImageMetadata | string;
     description: string;
     client: string;
+    image: ImageMetadata | string;
+    description: string;
+    client: string;
     url: string;
 }
+}
   
+const projectsData: Project[] = [
 const projectsData: Project[] = [
   {
     title: "Web oPills",
     category: "Web Design",
+    image: opillsImage,
+    description: "A comprehensive web platform designed to streamline pharmaceutical information for professionals and patients, featuring a clean, intuitive, and accessible interface.",
     image: opillsImage,
     description: "A comprehensive web platform designed to streamline pharmaceutical information for professionals and patients, featuring a clean, intuitive, and accessible interface.",
     client: "oPills",
@@ -36,12 +43,16 @@ const projectsData: Project[] = [
     category: "Mobile App",
     image: onoteImage,
     description: "A minimalist note-taking app for mobile devices, focused on speed and simplicity. Built with offline-first capabilities and cloud synchronization.",
+    image: onoteImage,
+    description: "A minimalist note-taking app for mobile devices, focused on speed and simplicity. Built with offline-first capabilities and cloud synchronization.",
     client: "oNote",
-    url: "https://github.com/ppazosp/oNote/"
+    url: `/${lang}/projects/onote`
   },
   {
     title: "Wearendar",
     category: "Mobile App",
+    image: wearendarImage,
+    description: "A collaborative calendar application for teams, designed to simplify event scheduling and task management with a shared, real-time view.",
     image: wearendarImage,
     description: "A collaborative calendar application for teams, designed to simplify event scheduling and task management with a shared, real-time view.",
     client: "Wearendar",

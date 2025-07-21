@@ -3,11 +3,22 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  lang: string;
+  isMainPage?: boolean;
+}
+
 const { 
   title = 'OSIX - Innovation & Development',
   description = 'We create innovative solutions for your business. We specialize in mobile, web, and desktop development with cutting-edge technologies.',
   image = '/favicon.png',
-  canonical = 'https://osix.tech'
+  canonical = 'https://osix.tech',
+  lang,
+  isMainPage = false
 } = Astro.props;	
 ---
 
@@ -25,6 +36,7 @@ const {
     <meta name="description" content={description} />
 
     <!-- Favicon base -->
+
     <link rel="icon" href="/favicon.ico" sizes="any" type="image/x-icon">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -56,7 +68,7 @@ const {
     
   </head>
   <body>
-    <Header />
+    <Header lang={lang} isMainPage={isMainPage} />
     <main>
       <slot />
     </main>
