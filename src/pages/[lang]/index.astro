@@ -20,13 +20,13 @@ const { lang } = Astro.params;
 ---
 
 <Layout lang={lang} isMainPage={true}>
-  <section id="hero"><Hero /></section>
-  <section id="services"><Services /></section>
-  <section id="values"><ValuesSection /></section>
-  <section id="projects"><ProjectsSection /></section>
-  <section id="about"><AboutSection /></section>
-  <section id="awards"><AwardsSection /></section>
-  <section id="contact"><StaticContactSection /></section>
+  <section id="hero"><Hero lang={lang} /></section>
+  <section id="services"><Services lang={lang} /></section>
+  <section id="values"><ValuesSection lang={lang} /></section>
+  <section id="projects"><ProjectsSection lang={lang} /></section>
+  <section id="about"><AboutSection lang={lang} /></section>
+  <section id="awards"><AwardsSection lang={lang} /></section>
+  <section id="contact"><StaticContactSection lang={lang} /></section>
 </Layout>
 
 <style>

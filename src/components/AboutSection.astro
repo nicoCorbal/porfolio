@@ -4,7 +4,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import '../styles/global.css';
 
-const { lang } = Astro.params;
+export interface Props {
+  lang?: string;
+}
+
+const { lang = 'es' } = Astro.props;
 const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
 // Services.astro - Sección de servicios con iconos de animales
