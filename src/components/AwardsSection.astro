@@ -30,7 +30,7 @@ const awards = [
   }
 ];
 ---
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 awards-section-container">
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 awards-section-container overflow-hidden">
   <h2 class="section-title" set:html={t('awards.title')}></h2>
     <!-- Versión para escritorio - Timeline horizontal con hexágonos -->  
     <div class="desktop-awards hidden md:block space-y-0 relative mt-8">
@@ -71,7 +71,7 @@ const awards = [
     
     <!-- Versión para móviles - Tarjetas apiladas -->
     <div class="mobile-awards md:hidden mt-8">
-      <div class="flex flex-col space-y-4">
+      <div class="flex flex-col space-y-8">
         {awards.map((award, index) => (
           <div class="mobile-award-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-100" style={`--index: ${index}`}>
             <div class="bg-black p-3 flex items-center">

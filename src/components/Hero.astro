@@ -13,9 +13,8 @@ const t = (k: string) => translations.default[k] || k;
     <h1 class="text-2xl sm:text-3xl md:text-4xl font-medium whitespace-nowrap">{t('hero.title.line1')}</p>
     <h1 class="text-2xl sm:text-3xl md:text-4xl font-medium mt-1 md:mt-2 whitespace-nowrap">{t('hero.title.line2')}</p>
   </div>
-  <!-- Background image -->
-    <!-- Background video -->
-    <video
+  <!-- Background video -->
+  <video
     autoplay
     muted
     loop
@@ -23,6 +22,9 @@ const t = (k: string) => translations.default[k] || k;
     preload="auto"
     poster="/hero.jpg" 
     class="absolute inset-0 w-full h-full object-cover z-0"
+    x-webkit-airplay="allow"
+    webkit-playsinline="true"
+    playsinline="true"
   >
     <source src="/hero_video_60fps.webm" type="video/webm" />
     <source src="/hero_video_60fps.mp4" type="video/mp4" />
@@ -39,3 +41,15 @@ const t = (k: string) => translations.default[k] || k;
   </div>
   <div class="absolute bottom-0 left-0 w-full pointer-events-none z-10"></div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const video = document.querySelector('video');
+    if (video) {
+      // Force play on iOS
+      video.play().catch(function(error) {
+        console.log("Video autoplay failed:", error);
+      });
+    }
+  });
+</script>

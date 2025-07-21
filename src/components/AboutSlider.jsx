@@ -36,7 +36,7 @@ const AboutSlider = ({ members }) => {
               <img 
                 src={member.image} 
                 alt={member.name} 
-                className={`w-full h-full object-cover brightness-75 transition-all duration-300 ${activeCard === index ? 'brightness-100' : ''}`}
+                className={`w-full h-full object-cover brightness-90 transition-all duration-300 ${activeCard === index ? 'brightness-100' : ''}`}
                 style={{
                   objectPosition: `center ${member.imageFocus || '50%'}`,
                   transform: `scale(${member.imageScale || 1})`
@@ -47,9 +47,9 @@ const AboutSlider = ({ members }) => {
               <h3 className="text-white text-base sm:text-lg md:text-xl font-bold mb-1 sm:mb-2">{member.name}</h3>
               <p className="text-white text-xs sm:text-sm md:text-base font-light">{member.role}</p>
             </div>
-            <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-300 ${activeCard === index ? 'opacity-100' : 'opacity-0'}`} data-member-details>
-              <p className="text-white text-xs sm:text-sm md:text-base text-center font-light mb-4">{member.bio}</p>
-              <div className="flex gap-6">
+            <div className={`absolute inset-0 flex flex-col items-center p-1 justify-end transition-all duration-300  bg-black/40 ${activeCard === index ? 'opacity-100' : 'opacity-0'}`} data-member-details>
+              <p className="text-white text-xs sm:text-sm md:text-base text-center font-light mb-1">{member.bio}</p>
+              <div className="flex gap-6 mb-2">
                 <a 
                   href={member.linkedin} 
                   className="text-white hover:text-blue-400 transition-colors duration-300 p-2 rounded-full hover:bg-white/10" 

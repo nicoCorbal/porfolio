@@ -1,14 +1,8 @@
 ---
+export const prerender = false;
+const supported = ['en', 'es'];
+const userLang = Astro.request.headers.get('accept-language')?.split(',')[0].split('-')[0] || 'en';
+const lang = supported.includes(userLang) ? userLang : 'en';
 
+return Astro.redirect(`/${lang}/`);
 ---
-<html>
-  <head>
-    <script>
-      const supported = ['en', 'es'];
-      const browserLang = (navigator.language || 'en').split('-')[0];
-      const lang = supported.includes(browserLang) ? browserLang : 'en';
-      window.location.replace(`/${lang}/`);
-    </script>
-  </head>
-  <body></body>
-</html>
