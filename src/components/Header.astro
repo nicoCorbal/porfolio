@@ -1,10 +1,5 @@
 ---
-interface Props {
-  lang: string;
-  isMainPage?: boolean;
-}
-
-const { lang, isMainPage = false } = Astro.props;
+const { lang } = Astro.params;
 const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
 // Header.astro - Con funcionalidad de scroll a secciones mejorada
@@ -20,7 +15,7 @@ const navItems = [
 
 ---
 
-<header class="fixed w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-sm" id="main-header" data-is-main-page={isMainPage.toString()}>
+<header class="fixed w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-sm" id="main-header">
   <div class="mx-auto px-3 sm:px-6 md:px-10 py-2 sm:py-3 md:py-5">
     <div class="flex items-center justify-between">
       <a href="/" class="flex items-center z-10 logo-link">
@@ -122,16 +117,6 @@ declare global {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const isMainPage = document.getElementById('main-header')?.dataset.isMainPage === 'true';
-
-    if (!isMainPage) {
-      const header = document.getElementById('main-header');
-      if (header) {
-        header.classList.add('visible');
-      }
-      // Si no es la página principal, no necesitamos el resto de la lógica de scroll
-      return;
-    }
     const header = document.getElementById('main-header');
     const heroSection = document.querySelector('section#home') as HTMLElement | null;
 

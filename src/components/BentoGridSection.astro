@@ -17,17 +17,17 @@ const manifestoItems = [
     type: 'narrative',
     gridArea: 'narrative1',
     data: {
-      title: "Arquitectura de Soluciones",
-      text: "No solo construimos software, diseñamos ecosistemas digitales. Nuestra filosofía se basa en una arquitectura robusta y un diseño limpio para crear productos que perduran y escalan."
+      title: t("bento.narrative.title"),
+      text: t("bento.narrative.text")
     }
   },
   {
     type: 'card',
     gridArea: 'value1',
     data: {
-      svgIcon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>`,
-      title: t("values.1"),
-      back_text: "Exploramos sin cesar las tecnologías emergentes para ofrecer soluciones que no solo son actuales, sino que definen el futuro."
+      svgIcon: `<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>`,
+      title: t("bento.cards.ai_assistant.title"),
+      back_text: t("bento.cards.ai_assistant.back_text")
     }
   },
   {
@@ -35,10 +35,10 @@ const manifestoItems = [
     gridArea: 'metrics',
     data: {
       metrics: [
-        { value: "Agile", label: "Methodology" },
-        { value: "Scalable", label: "Architectures" },
-        { value: "User-First", label: "Approach" },
-        { value: "In-House", label: "Team" },
+        { value: t("bento.metrics.agile.value"), label: t("bento.metrics.agile.label") },
+        { value: t("bento.metrics.scalable.value"), label: t("bento.metrics.scalable.label") },
+        { value: t("bento.metrics.user_first.value"), label: t("bento.metrics.user_first.label") },
+        { value: t("bento.metrics.in_house.value"), label: t("bento.metrics.in_house.label") },
       ]
     }
   },
@@ -48,15 +48,15 @@ const manifestoItems = [
     data: {
       number: 100,
       suffix: '%',
-      label: "Client Satisfaction"
+      label: t("bento.stat.label")
     }
   },
   {
     type: 'quote',
     gridArea: 'quote',
     data: {
-      text: "Design is not just what it looks like and feels like. Design is how it works.",
-      author: "Steve Jobs"
+      text: t("bento.quote.text"),
+      author: t("bento.quote.author")
     }
   },
   {
@@ -64,7 +64,7 @@ const manifestoItems = [
     gridArea: 'main-image',
     data: {
       image: optimizedServiceImage.src,
-      title: t("services.text.2"),
+      title: t("bento.image.title"),
     }
   },
   {
@@ -72,10 +72,10 @@ const manifestoItems = [
     gridArea: 'terminal',
     data: {
       lines: [
-        { command: true, text: "git commit -m \"feat: initial core architecture\"" },
-        { command: false, text: "✓ Files committed." },
-        { command: true, text: "npm run deploy -- --target=production" },
-        { command: false, text: "🚀 Deployment to production successful!" },
+        { command: true, text: t("bento.terminal.line1.command") },
+        { command: false, text: t("bento.terminal.line1.response") },
+        { command: true, text: t("bento.terminal.line2.command") },
+        { command: false, text: t("bento.terminal.line2.response") },
       ]
     }
   },
@@ -83,18 +83,18 @@ const manifestoItems = [
     type: 'card',
     gridArea: 'value2',
     data: {
-      svgIcon: `<path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.539 1.118l-3.975-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />`,
-      title: t("values.2"),
-      back_text: "Nuestro compromiso con la calidad es absoluto, aplicando los más altos estándares en cada línea de código y cada pixel diseñado."
+      svgIcon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>`,
+      title: t("bento.cards.cybersecurity.title"),
+      back_text: t("bento.cards.cybersecurity.back_text")
     }
   },
   {
     type: 'card',
     gridArea: 'value3',
     data: {
-      svgIcon: `<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />`,
-      title: t("values.4"),
-      back_text: "Trabajamos como una extensión de tu equipo, fomentando la comunicación transparente y la co-creación para lograr resultados extraordinarios."
+      svgIcon: `<path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m4.93 19.07 1.41-1.41"/><path d="m17.66 6.34 1.41-1.41"/>`,
+      title: t("bento.cards.automation.title"),
+      back_text: t("bento.cards.automation.back_text")
     }
   }
 ];
@@ -104,7 +104,7 @@ const manifestoItems = [
   <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
     <div class="text-center mb-16 md:mb-24">
       <h2 class="section-title" set:html={t('services.title')} />
-      <p class="text-xl text-gray-600 mt-4 max-w-3xl mx-auto">Fusionamos valores sólidos y servicios de vanguardia para construir la próxima generación de tecnología.</p>
+      <p class="text-xl text-gray-600 mt-4 max-w-3xl mx-auto">{t("bento.subtitle")}</p>
     </div>
     
     <div id="manifesto-container" class="relative">
@@ -115,7 +115,7 @@ const manifestoItems = [
           <div class:list={["grid-item", `item-type-${item.type}`, `item-area-${item.gridArea}`]} data-type={item.type}>
             {item.type === 'narrative' && (
               <div class="narrative-box">
-                <div class="kicker">Nuestra Filosofía</div>
+                <div class="kicker">{t("bento.narrative.kicker")}</div>
                 <h3 class="narrative-title split-text">{item.data.title}</h3>
                 <p class="narrative-text split-text">{item.data.text}</p>
               </div>
@@ -240,6 +240,7 @@ const manifestoItems = [
       "quote quote quote quote quote quote quote quote main-image main-image main-image main-image"
       "stat stat stat stat metrics metrics metrics metrics main-image main-image main-image main-image"
       "terminal terminal terminal terminal terminal terminal terminal terminal main-image main-image main-image main-image"
+      "value2 value2 value2 value2 value2 value2 value3 value3 value3 value3 value3 value3"
       "value2 value2 value2 value2 value2 value2 value3 value3 value3 value3 value3 value3";
   }
 
@@ -320,7 +321,7 @@ const manifestoItems = [
 
   .card-back { 
     align-items: flex-start;
-    background-color: #111827; 
+    background-color: #000000; /* Cambiado a negro puro */
     background-image: radial-gradient(circle at top left, rgba(255,255,255,0.04) 0%, transparent 40%);
     color: white; 
     padding: 2rem; 
@@ -382,7 +383,7 @@ const manifestoItems = [
   .image-title { color: white; font-size: 1.5rem; font-weight: 600; }
 
   .metrics-grid-box {
-    background-color: #f9fafb;
+    background-color: #000000;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -412,18 +413,18 @@ const manifestoItems = [
     font-size: clamp(1.5rem, 4vw, 2.25rem);
     font-weight: 800;
     line-height: 1;
-    color: #111827;
+    color: #ffffff;
   }
 
   .metric-label {
     font-size: 0.8rem;
-    color: #6b7280;
+    color: #a0aec0;
     margin-top: 0.5rem;
     white-space: nowrap;
   }
   
   .stat-box {
-    background-color: #f9fafb;
+    background-color: #ffffff; /* Cambiado a blanco */
     background-image: 
       linear-gradient(rgba(229, 231, 235, 0.5) 1px, transparent 1px), 
       linear-gradient(to right, rgba(229, 231, 235, 0.5) 1px, transparent 1px);
@@ -436,12 +437,12 @@ const manifestoItems = [
     text-align: center;
     height: 100%;
   }
-  .stat-number { font-size: clamp(3.5rem, 8vw, 5rem); font-weight: 800; line-height: 1; }
+  .stat-number { font-size: clamp(3.5rem, 8vw, 5rem); font-weight: 800; line-height: 1; color: #111827; }
   .stat-suffix { font-size: 1.5rem; font-weight: 700; color: #4b5563; margin-left: 0.25rem; }
   .stat-label { font-size: 1rem; color: #6b7280; margin-top: 0.75rem; }
 
   .quote-box {
-    background-color: #111827;
+    background-color: #000000;
     color: white;
     padding: 2.5rem;
     display: flex;
@@ -466,7 +467,7 @@ const manifestoItems = [
   .quote-author { font-size: 1rem; align-self: flex-end; opacity: 0.7; position: relative; z-index: 1; font-style: italic; }
 
   .terminal-box { 
-    background-color: #1a1b26; 
+    background-color: #000000; 
     padding: 1rem; 
     display: flex; 
     flex-direction: column;
@@ -493,6 +494,7 @@ const manifestoItems = [
         "main-image main-image main-image main-image main-image main-image main-image main-image"
         "stat stat stat stat metrics metrics metrics metrics"
         "terminal terminal terminal terminal terminal terminal terminal terminal"
+        "value2 value2 value2 value2 value3 value3 value3 value3"
         "value2 value2 value2 value2 value3 value3 value3 value3";
     }
   }
@@ -506,6 +508,13 @@ const manifestoItems = [
     .grid-item { min-height: 250px; }
     .quote-box {min-height: 300px;}
     .main-image {min-height: 350px;}
+    .item-area-value2, .item-area-value3 {
+      min-height: 300px;
+    }
+
+    .narrative-box { padding: 2rem; }
+    .narrative-title { font-size: 1.5rem; }
+    .narrative-text { font-size: 1rem; }
   }
 </style>
 
