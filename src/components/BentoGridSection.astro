@@ -1,0 +1,531 @@
+---
+import { getImage } from "astro:assets";
+import servicesImage from "../assets/services.png";
+
+const { lang } = Astro.params;
+const translations = await import(`../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+const optimizedServiceImage = await getImage({
+  src: servicesImage,
+  format: "webp",
+  quality: 90,
+});
+
+const manifestoItems = [
+  {
+    type: 'narrative',
+    gridArea: 'narrative1',
+    data: {
+      title: "Arquitectura de Soluciones",
+      text: "No solo construimos software, diseñamos ecosistemas digitales. Nuestra filosofía se basa en una arquitectura robusta y un diseño limpio para crear productos que perduran y escalan."
+    }
+  },
+  {
+    type: 'card',
+    gridArea: 'value1',
+    data: {
+      svgIcon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>`,
+      title: t("values.1"),
+      back_text: "Exploramos sin cesar las tecnologías emergentes para ofrecer soluciones que no solo son actuales, sino que definen el futuro."
+    }
+  },
+  {
+    type: 'metrics-grid',
+    gridArea: 'metrics',
+    data: {
+      metrics: [
+        { value: "Agile", label: "Methodology" },
+        { value: "Scalable", label: "Architectures" },
+        { value: "User-First", label: "Approach" },
+        { value: "In-House", label: "Team" },
+      ]
+    }
+  },
+  {
+    type: 'stat',
+    gridArea: 'stat',
+    data: {
+      number: 100,
+      suffix: '%',
+      label: "Client Satisfaction"
+    }
+  },
+  {
+    type: 'quote',
+    gridArea: 'quote',
+    data: {
+      text: "Design is not just what it looks like and feels like. Design is how it works.",
+      author: "Steve Jobs"
+    }
+  },
+  {
+    type: 'image',
+    gridArea: 'main-image',
+    data: {
+      image: optimizedServiceImage.src,
+      title: t("services.text.2"),
+    }
+  },
+  {
+    type: 'terminal',
+    gridArea: 'terminal',
+    data: {
+      lines: [
+        { command: true, text: "git commit -m \"feat: initial core architecture\"" },
+        { command: false, text: "✓ Files committed." },
+        { command: true, text: "npm run deploy -- --target=production" },
+        { command: false, text: "🚀 Deployment to production successful!" },
+      ]
+    }
+  },
+  {
+    type: 'card',
+    gridArea: 'value2',
+    data: {
+      svgIcon: `<path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.539 1.118l-3.975-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />`,
+      title: t("values.2"),
+      back_text: "Nuestro compromiso con la calidad es absoluto, aplicando los más altos estándares en cada línea de código y cada pixel diseñado."
+    }
+  },
+  {
+    type: 'card',
+    gridArea: 'value3',
+    data: {
+      svgIcon: `<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />`,
+      title: t("values.4"),
+      back_text: "Trabajamos como una extensión de tu equipo, fomentando la comunicación transparente y la co-creación para lograr resultados extraordinarios."
+    }
+  }
+];
+---
+
+<section id="services" class="section bg-white text-black py-24 md:py-32 overflow-hidden">
+  <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
+    <div class="text-center mb-16 md:mb-24">
+      <h2 class="section-title" set:html={t('services.title')} />
+      <p class="text-xl text-gray-600 mt-4 max-w-3xl mx-auto">Fusionamos valores sólidos y servicios de vanguardia para construir la próxima generación de tecnología.</p>
+    </div>
+    
+    <div id="manifesto-container" class="relative">
+      <div class="manifesto-bg"></div>
+      
+      <div class="manifesto-grid">
+        {manifestoItems.map((item) => (
+          <div class:list={["grid-item", `item-type-${item.type}`, `item-area-${item.gridArea}`]} data-type={item.type}>
+            {item.type === 'narrative' && (
+              <div class="narrative-box">
+                <div class="kicker">Nuestra Filosofía</div>
+                <h3 class="narrative-title split-text">{item.data.title}</h3>
+                <p class="narrative-text split-text">{item.data.text}</p>
+              </div>
+            )}
+            {item.type === 'card' && (
+              <div class="bento-card">
+                <div class="card-front">
+                  <div class="flip-hint">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-rotate-2">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h5"></path>
+                      <path d="M18.37 7.16l0 .01"></path>
+                      <path d="M19.94 11l0 .01"></path>
+                      <path d="M19.53 15.1l0 .01"></path>
+                      <path d="M17.67 18.34l0 .01"></path>
+                      <path d="M14.5 19.94l0 .01"></path>
+                    </svg>
+                  </div>
+                  <div class="value-icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" set:html={item.data.svgIcon}></svg>
+                  </div>
+                  <h4 class="value-title" set:html={item.data.title}></h4>
+                </div>
+                <div class="card-back">
+                  <div class="back-content">
+                    <h5 class="back-title" set:html={item.data.title}></h5>
+                    <p class="back-text">{item.data.back_text}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {item.type === 'image' && (
+              <div class="image-box">
+                <img src={item.data.image} alt={item.data.title} class="grid-image" />
+                <div class="image-overlay">
+                  <h3 class="image-title" set:html={item.data.title}></h3>
+                </div>
+              </div>
+            )}
+            {item.type === 'metrics-grid' && item.data.metrics && (
+              <div class="metrics-grid-box">
+                <div class="metrics-container">
+                  {item.data.metrics.map(metric => (
+                    <div class="metric-item">
+                      <p class="metric-value">{metric.value}</p>
+                      <p class="metric-label">{metric.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+             {item.type === 'stat' && (
+              <div class="stat-box">
+                <div>
+                  <span class="stat-number">{item.data.number}</span>
+                  <span class="stat-suffix">{item.data.suffix}</span>
+                </div>
+                <p class="stat-label">{item.data.label}</p>
+              </div>
+            )}
+            {item.type === 'quote' && (
+              <div class="quote-box">
+                <p class="quote-text">"{item.data.text}"</p>
+                <p class="quote-author">— {item.data.author}</p>
+              </div>
+            )}
+            {item.type === 'terminal' && (
+              <div class="terminal-box">
+                <div class="terminal-header">
+                  <span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span>
+                </div>
+                <div class="terminal-body">
+                  {item.data.lines && item.data.lines.map(line => (
+                    <p class:list={["terminal-line", { "is-command": line.command }]}>
+                      {line.command && <span class="terminal-prompt">$ </span>}
+                      <span class="terminal-text-content">{line.text}</span>
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  :root {
+    --grid-gap: 1.5rem;
+  }
+  #manifesto-container {
+    position: relative;
+  }
+  .manifesto-bg {
+    position: absolute;
+    inset: -10rem;
+    background-image:
+      linear-gradient(rgba(229, 231, 235, 0.7) 1px, transparent 1px),
+      linear-gradient(to right, rgba(229, 231, 235, 0.7) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    mask-image: radial-gradient(ellipse at center, white, transparent 70%);
+    animation: pan 60s linear infinite;
+    z-index: 0;
+  }
+  @keyframes pan {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 256px 256px; }
+  }
+
+  .manifesto-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(150px, auto);
+    gap: var(--grid-gap);
+    position: relative;
+    z-index: 1;
+    grid-template-areas:
+      "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 value1 value1 value1 value1 value1 value1"
+      "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 value1 value1 value1 value1 value1 value1"
+      "quote quote quote quote quote quote quote quote main-image main-image main-image main-image"
+      "stat stat stat stat metrics metrics metrics metrics main-image main-image main-image main-image"
+      "terminal terminal terminal terminal terminal terminal terminal terminal main-image main-image main-image main-image"
+      "value2 value2 value2 value2 value2 value2 value3 value3 value3 value3 value3 value3";
+  }
+
+  .grid-item {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    position: relative;
+    border: 1px solid #e5e7eb;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    visibility: hidden; /* Hide items initially for animation */
+  }
+
+  .grid-item:not(.item-type-card):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  }
+  
+  /* Grid Areas */
+  .item-area-narrative1 { grid-area: narrative1; }
+  .item-area-value1 { grid-area: value1; }
+  .item-area-metrics { grid-area: metrics; }
+  .item-area-stat { grid-area: stat; }
+  .item-area-quote { grid-area: quote; }
+  .item-area-main-image { grid-area: main-image; }
+  .item-area-terminal { grid-area: terminal; }
+  .item-area-value2 { grid-area: value2; }
+  .item-area-value3 { grid-area: value3; }
+
+  /* Block Styles */
+  .narrative-box, .quote-box, .terminal-box, .stat-box, .keyword-box, .image-box {
+    height: 100%;
+  }
+  .narrative-box { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; height: 100%;}
+  .kicker {
+    font-family: monospace;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+  }
+  .narrative-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; margin-bottom: 1.5rem; }
+  .narrative-text { font-size: 1.125rem; color: #4b5563; line-height: 1.8; }
+  
+  /* Card Flip Logic -> Sliding Panel Logic */
+  .bento-card {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card-front, .card-back {
+    position: absolute; 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    gap: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid transparent;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .card-front {
+    align-items: center;
+    background: linear-gradient(135deg, white, #f9fafb);
+    box-shadow: inset 0 0 0 1px #e5e7eb;
+    z-index: 2;
+  }
+  .bento-card:hover .card-front {
+    transform: translateX(-100%);
+  }
+
+  .flip-hint { display: none; } /* No longer needed for this design */
+
+  .card-back { 
+    align-items: flex-start;
+    background-color: #111827; 
+    background-image: radial-gradient(circle at top left, rgba(255,255,255,0.04) 0%, transparent 40%);
+    color: white; 
+    padding: 2rem; 
+    text-align: left;
+    z-index: 1;
+  }
+  .back-content {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+  }
+  .bento-card:hover .back-content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .back-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #4b5563;
+    padding-bottom: 1rem;
+    width: 100%;
+  }
+  .back-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    opacity: 0.9;
+  }
+  .value-icon-wrapper { 
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  .bento-card:hover .value-icon-wrapper {
+    transform: scale(1.1);
+  }
+  .value-icon-wrapper svg { width: 2.25rem; height: 2.25rem; color: #111827; }
+  .value-title { font-size: 1.25rem; font-weight: 600; text-align: center; }
+
+  /* Other blocks */
+  .image-box { position: relative; overflow: hidden; }
+  .grid-image { 
+    position: absolute; 
+    inset: 0; 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  .image-box:hover .grid-image {
+    transform: scale(1.05);
+  }
+  .image-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7) 100%); display: flex; align-items: flex-end; padding: 1.5rem; z-index: 3; }
+  .image-title { color: white; font-size: 1.5rem; font-weight: 600; }
+
+  .metrics-grid-box {
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .metrics-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .metric-value {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #111827;
+  }
+
+  .metric-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+    white-space: nowrap;
+  }
+  
+  .stat-box {
+    background-color: #f9fafb;
+    background-image: 
+      linear-gradient(rgba(229, 231, 235, 0.5) 1px, transparent 1px), 
+      linear-gradient(to right, rgba(229, 231, 235, 0.5) 1px, transparent 1px);
+    background-size: 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    height: 100%;
+  }
+  .stat-number { font-size: clamp(3.5rem, 8vw, 5rem); font-weight: 800; line-height: 1; }
+  .stat-suffix { font-size: 1.5rem; font-weight: 700; color: #4b5563; margin-left: 0.25rem; }
+  .stat-label { font-size: 1rem; color: #6b7280; margin-top: 0.75rem; }
+
+  .quote-box {
+    background-color: #111827;
+    color: white;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+  }
+  .quote-box::before {
+    content: '“';
+    position: absolute;
+    top: 0rem;
+    left: 1rem;
+    font-size: clamp(6rem, 20vw, 10rem);
+    font-family: serif;
+    color: rgba(255, 255, 255, 0.05);
+    line-height: 1;
+    z-index: 0;
+  }
+  .quote-text { font-size: 1.75rem; font-weight: 600; line-height: 1.4; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+  .quote-author { font-size: 1rem; align-self: flex-end; opacity: 0.7; position: relative; z-index: 1; font-style: italic; }
+
+  .terminal-box { 
+    background-color: #1a1b26; 
+    padding: 1rem; 
+    display: flex; 
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+  }
+  .terminal-box:hover {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+  }
+  .terminal-header { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .terminal-dot { width: 12px; height: 12px; border-radius: 50%; background-color: #4b5563; }
+  .terminal-body { font-family: monospace; color: #e5e7eb; font-size: 0.9rem; flex-grow: 1; height: 100%;}
+  .terminal-line { margin-bottom: 0.25rem; white-space: pre-wrap; }
+
+  .is-command .terminal-prompt { color: white; }
+
+  /* Responsive */
+  @media(max-width: 1024px) {
+    .manifesto-grid {
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-areas:
+        "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 narrative1"
+        "value1 value1 value1 value1 value1 value1 value1 value1"
+        "quote quote quote quote quote quote quote quote"
+        "main-image main-image main-image main-image main-image main-image main-image main-image"
+        "stat stat stat stat metrics metrics metrics metrics"
+        "terminal terminal terminal terminal terminal terminal terminal terminal"
+        "value2 value2 value2 value2 value3 value3 value3 value3";
+    }
+  }
+  
+  @media(max-width: 768px) {
+    .manifesto-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "narrative1" "value1" "quote" "main-image" "stat" "metrics" "terminal" "value2" "value3";
+    }
+    .grid-item { min-height: 250px; }
+    .quote-box {min-height: 300px;}
+    .main-image {min-height: 350px;}
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    gsap.from('.grid-item', {
+      autoAlpha: 0,
+      y: 30,
+      duration: 0.6,
+      ease: 'power2.out',
+      stagger: 0.1,
+      scrollTrigger: {
+        trigger: '.manifesto-grid',
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      }
+    });
+  });
+</script> 

@@ -1,8 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
-import Services from '../../components/Services.astro';
-import ValuesSection from '../../components/ValuesSection.astro';
+import BentoGridSection from '../../components/BentoGridSection.astro';
 import AboutSection from '../../components/AboutSection.astro';
 import ProjectsSection from '../../components/ProjectsSection.astro';
 import AwardsSection from '../../components/AwardsSection.astro';
@@ -21,10 +20,9 @@ const { lang } = Astro.params;
 
 ---
 
-<Layout lang={lang} isMainPage={true}>
+<Layout lang={lang}>
   <section id="hero"><Hero lang={lang} /></section>
-  <section id="services"><Services lang={lang} /></section>
-  <section id="values"><ValuesSection lang={lang} /></section>
+  <section id="services"><BentoGridSection lang={lang} /></section>
   <section id="projects"><ProjectsSection lang={lang} /></section>
   <section id="about"><AboutSection lang={lang} /></section>
   <section id="awards"><AwardsSection lang={lang} /></section>

@@ -10,8 +10,8 @@ const t = (k: string) => translations.default[k] || k;
 
 <section id="home" class="relative w-full min-h-screen flex flex-col items-center justify-start pt-20 overflow-hidden">
   <div class="absolute top-18 md:top-20 left-1/2 transform -translate-x-1/2 !text-black text-center z-10">
-    <h1 class="text-2xl sm:text-3xl md:text-4xl font-medium whitespace-nowrap">{t('hero.title.line1')}</p>
-    <h1 class="text-2xl sm:text-3xl md:text-4xl font-medium mt-1 md:mt-2 whitespace-nowrap">{t('hero.title.line2')}</p>
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-medium whitespace-nowrap">{t('hero.title.line1')}</h1>
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-medium mt-1 md:mt-2 whitespace-nowrap">{t('hero.title.line2')}</h1>
   </div>
   <!-- Background video -->
   <video
@@ -39,8 +39,29 @@ const t = (k: string) => translations.default[k] || k;
       class="w-36 sm:w-40 md:w-44 lg:w-48 h-auto"
     />
   </div>
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+    <a href="#services" class="scroll-down-link" aria-label="Scroll down">
+      <svg class="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </a>
+  </div>
   <div class="absolute bottom-0 left-0 w-full pointer-events-none z-10"></div>
 </section>
+
+<style>
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  .scroll-down-link {
+    animation: bounce 2s infinite;
+  }
+</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -50,6 +71,49 @@ const t = (k: string) => translations.default[k] || k;
       video.play().catch(function(error) {
         console.log("Video autoplay failed:", error);
       });
+    }
+
+    const scrollLink = document.querySelector<HTMLAnchorElement>('.scroll-down-link');
+    if (scrollLink) {
+      scrollLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (!targetId) return;
+        const targetElement = document.querySelector(targetId) as HTMLElement;
+        if (targetElement) {
+          const header = document.getElementById('main-header');
+          const headerHeight = header ? header.offsetHeight : 0;
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+          smoothScrollTo(targetPosition, 2000); // 2000ms duration for a slower scroll
+        }
+      });
+    }
+
+    function smoothScrollTo(targetPosition: number, duration: number) {
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      let startTime: number | null = null;
+      
+      function animation(currentTime: number) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const ease = easeInOutCubic(progress);
+        
+        window.scrollTo(0, startPosition + distance * ease);
+        
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      }
+      
+      function easeInOutCubic(t: number) {
+        return t < 0.5 
+          ? 4 * t * t * t 
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+      
+      requestAnimationFrame(animation);
     }
   });
 </script>
