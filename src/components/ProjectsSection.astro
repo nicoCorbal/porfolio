@@ -19,20 +19,13 @@ interface Project {
     image: ImageMetadata | string;
     description: string;
     client: string;
-    image: ImageMetadata | string;
-    description: string;
-    client: string;
     url: string;
 }
-}
   
-const projectsData: Project[] = [
 const projectsData: Project[] = [
   {
     title: "Web oPills",
     category: "Web Design",
-    image: opillsImage,
-    description: "A comprehensive web platform designed to streamline pharmaceutical information for professionals and patients, featuring a clean, intuitive, and accessible interface.",
     image: opillsImage,
     description: "A comprehensive web platform designed to streamline pharmaceutical information for professionals and patients, featuring a clean, intuitive, and accessible interface.",
     client: "oPills",
@@ -43,16 +36,12 @@ const projectsData: Project[] = [
     category: "Mobile App",
     image: onoteImage,
     description: "A minimalist note-taking app for mobile devices, focused on speed and simplicity. Built with offline-first capabilities and cloud synchronization.",
-    image: onoteImage,
-    description: "A minimalist note-taking app for mobile devices, focused on speed and simplicity. Built with offline-first capabilities and cloud synchronization.",
     client: "oNote",
     url: `/${lang}/projects/onote`
   },
   {
     title: "Wearendar",
     category: "Mobile App",
-    image: wearendarImage,
-    description: "A collaborative calendar application for teams, designed to simplify event scheduling and task management with a shared, real-time view.",
     image: wearendarImage,
     description: "A collaborative calendar application for teams, designed to simplify event scheduling and task management with a shared, real-time view.",
     client: "Wearendar",
