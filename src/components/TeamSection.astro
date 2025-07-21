@@ -75,7 +75,7 @@ const teamMembers = [
     <div class="hidden md:block overflow-hidden">
       <div class="flex w-full h-[75vh] max-h-[700px] mt-16 gap-4 team-expanding-cards-container">
         {teamMembers.map((member) => (
-          <div class="team-card flex-1 relative rounded-2xl overflow-hidden cursor-pointer shadow-lg border border-gray-200/50">
+          <div class="team-card flex-1 relative rounded-lg overflow-hidden cursor-pointer shadow-lg border border-gray-200/50">
             <Image src={member.image} alt={member.name} class="w-full h-full object-cover" loading="lazy" decoding="async" format="webp" />
             <div class="card-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
             <div class="card-content absolute bottom-0 left-0 p-6 text-white w-full">

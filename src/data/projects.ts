@@ -1,4 +1,24 @@
-import type { ProjectData } from '../layouts/ProjectLayout.astro';
+export interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface ProjectData {
+  id: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  type: string;
+  date: string;
+  awards?: string[]; // can adjust to a more complex type if needed
+  birth: string;
+  usecase: string[];
+  future: string;
+  features: Feature[];
+  images: string[];
+  video?: string;
+}
 
 export const projects: Record<string, ProjectData> = {
   nessie: {

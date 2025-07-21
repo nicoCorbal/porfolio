@@ -8,16 +8,9 @@ import ProjectsSection from '../../components/ProjectsSection.astro';
 import AwardsSection from '../../components/AwardsSection.astro';
 import StaticContactSection from '../../components/StaticContactSection.astro';
 
-export const prerender = true;
+export const prerender = false
 
-export async function getStaticPaths() {
-  return [
-    { params: { lang: 'es' } },
-    { params: { lang: 'en' } },
-  ];
-}
-
-const { lang } = Astro.params;
+const { lang = 'en' } = Astro.params;
 
 ---
 
