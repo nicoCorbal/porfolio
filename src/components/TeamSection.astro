@@ -66,8 +66,14 @@ const teamMembers = [
     description: "Bridges mobile and web development with a unified approach. Diego builds consistent, high-quality user experiences across platforms, using full-stack capabilities to deliver features with speed and precision."
   },
 ];
+
+// Randomize the order of team members using Fisher-Yates shuffle
+for (let i = teamMembers.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [teamMembers[i], teamMembers[j]] = [teamMembers[j], teamMembers[i]];
+}
 ---
-<section class="section bg-white text-black py-20 overflow-x-hidden">
+<section class="section bg-white text-black py-20 overflow-x-hidden team-section">
   <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
     <h2 class="section-title">Our <span class="font-bold">Team</span></h2>
 
@@ -183,6 +189,7 @@ const teamMembers = [
     cards.forEach((card) => {
       card.addEventListener("mouseenter", () => {
         if (card === activeCard) return;
+        
         if (activeCard) {
           animateContent(activeCard, 'out');
         }
