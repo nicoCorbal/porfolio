@@ -222,7 +222,7 @@ const manifestoItems = [
 
 <style>
   :root {
-    --grid-gap: 1.5rem;
+    --grid-gap: 2rem;
   }
   #manifesto-container {
     position: relative;
@@ -241,8 +241,8 @@ const manifestoItems = [
     z-index: 1;
     perspective: 1000px; /* Add for 3D animations */
     grid-template-areas:
-      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  narrative1 narrative1 narrative1 narrative1 narrative1 narrative1"
-      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  narrative1 narrative1 narrative1 narrative1 narrative1 narrative1"
+      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  value1 value1 value1 value1 value1 value1"
+      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  value1 value1 value1 value1 value1 value1"
       "quote      quote      quote      quote quote quote quote quote main-image main-image main-image main-image"
       "metrics    metrics    metrics    metrics metrics stat stat stat main-image main-image main-image main-image"
       "metrics    metrics    metrics    metrics metrics stat stat stat main-image main-image main-image main-image"
@@ -274,7 +274,6 @@ const manifestoItems = [
   .item-area-stat { grid-area: stat; }
   .item-area-quote { grid-area: quote; }
   .item-area-main-image { grid-area: main-image; }
-  /* .item-area-terminal { grid-area: terminal; } */
   .item-area-value2 { grid-area: value2; }
   .item-area-value3 { grid-area: value3; }
 
