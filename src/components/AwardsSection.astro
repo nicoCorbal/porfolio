@@ -51,7 +51,7 @@ const awards = [
           </div>
           <!-- Columna central: hexágono -->
           <div class="flex flex-col items-center">
-            <div class="bg-white p-1 rounded-full">
+            <div class="bg-white p-1">
               <img src="/logo_pre.svg" alt="Logo" class="w-8 h-8 z-10" />
             </div>
           </div>
@@ -73,9 +73,9 @@ const awards = [
     <div class="mobile-awards md:hidden mt-8">
       <div class="flex flex-col space-y-8">
         {awards.map((award, index) => (
-          <div class="mobile-award-card bg-white rounded-lg shadow-md overflow-hidden border border-gray-100" style={`--index: ${index}`}>
+          <div class="mobile-award-card bg-white shadow-md overflow-hidden border border-gray-100" style={`--index: ${index}`}>
             <div class="bg-black p-3 flex items-center">
-              <div class="bg-white p-1 rounded-full mr-3">
+              <div class="bg-white p-1 mr-3">
                 <img src="/logo_pre.svg" alt="Logo" class="w-6 h-6" />
               </div>
               <h3 class="text-white text-lg font-bold">{award.title}</h3>
