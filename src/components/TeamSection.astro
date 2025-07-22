@@ -83,7 +83,7 @@ for (let i = teamMembers.length - 1; i > 0; i--) {
         {teamMembers.map((member) => (
           <div class="team-card flex-1 relative overflow-hidden cursor-pointer shadow-lg border border-gray-200/50">
             <Image src={member.image} alt={member.name} class="w-full h-full object-cover" loading="lazy" decoding="async" format="webp" />
-            <div class="card-overlay absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <div class="card-overlay absolute inset-0 bg-gradient-to-t from-black/80  via-transparent  to-transparent"></div>
             <div class="card-content absolute bottom-0 left-0 p-6 text-white w-full">
               <h3 class="text-2xl font-bold translate-y-5 opacity-0">{member.name}</h3>
               <div class="details w-full mt-4 translate-y-5 opacity-0">
