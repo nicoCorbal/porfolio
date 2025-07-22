@@ -12,6 +12,46 @@ const optimizedServiceImage = await getImage({
   quality: 100,
 });
 
+// Array of quotes to cycle through
+const quotes = [
+  {
+    text: t("bento.quote.text"),
+    author: t("bento.quote.author")
+  },
+  {
+    text: t("bento.quote.text2"),
+    author: t("bento.quote.author2")
+  },
+  {
+    text: t("bento.quote.text3"),
+    author: t("bento.quote.author3")
+  },
+  {
+    text: t("bento.quote.text4"),
+    author: t("bento.quote.author4") 
+  },
+  {
+    text: t("bento.quote.text5"),
+    author: t("bento.quote.author5") 
+  },
+  {
+    text: t("bento.quote.text6"),
+    author: t("bento.quote.author6") 
+  },
+];
+
+// Randomize quotes array using Fisher-Yates shuffle
+const shuffleArray = (array: any[]) => {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+};
+
+const randomizedQuotes = shuffleArray(quotes);
+
 const manifestoItems = [
   {
     type: 'narrative',
@@ -55,8 +95,8 @@ const manifestoItems = [
     type: 'quote',
     gridArea: 'quote',
     data: {
-      text: t("bento.quote.text"),
-      author: "David Gutierrez"
+      quotes: randomizedQuotes,
+      currentIndex: 0
     }
   },
   {
@@ -64,7 +104,8 @@ const manifestoItems = [
     gridArea: 'main-image',
     data: {
       image: optimizedServiceImage.src,
-      title: t("bento.image.title"),
+      title1: t("bento.image.title1"),
+      title2: t("bento.image.title2"),
     }
   },
   {
@@ -135,9 +176,13 @@ const manifestoItems = [
             )}
             {item.type === 'image' && (
               <div class="image-box">
-                <img src={item.data.image} alt={item.data.title} class="grid-image" />
-                <div class="image-overlay">
-                  <h3 class="image-title" set:html={item.data.title}></h3>
+                <div class="relative w-full h-full">
+                  <img src={item.data.image} alt={item.data.title} class="grid-image absolute inset-0 w-full h-full object-cover" />
+                  <div class="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
+                  <div class="absolute inset-0 z-20 flex flex-col items-center justify-end py-8">
+                    <h3 class="image-title" set:html={item.data.title1}></h3>
+                    <h3 class="image-title" set:html={item.data.title2}></h3>
+                  </div>
                 </div>
               </div>
             )}
@@ -162,10 +207,10 @@ const manifestoItems = [
                 <p class="stat-label">{item.data.label}</p>
               </div>
             )}
-            {item.type === 'quote' && (
-              <div class="quote-box">
-                <p class="quote-text">"{item.data.text}"</p>
-                <p class="quote-author">— {item.data.author}</p>
+            {item.type === 'quote' && item.data.quotes && (
+              <div class="quote-box" data-quotes={JSON.stringify(item.data.quotes)}>
+                <p class="quote-text">"{item.data.quotes[0].text}"</p>
+                <p class="quote-author">— {item.data.quotes[0].author}</p>
               </div>
             )}
           </div>
@@ -340,8 +385,7 @@ const manifestoItems = [
   .image-box:hover .grid-image {
     transform: scale(1.2);
   }
-  .image-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7) 100%); display: flex; align-items: flex-end; padding: 1.5rem; z-index: 3; }
-  .image-title { color: white; font-size: 1.5rem; font-weight: 600; }
+.image-title { color: white; font-size: 1.5rem; font-weight: 600; }
 
   .metrics-grid-box {
     background-color: #000000;
@@ -446,32 +490,9 @@ const manifestoItems = [
     transition: all 0.3s ease;
   }
   
-  .quote-box::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.08), transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 1;
-  }
-  
-  .quote-box:hover::after {
-    opacity: 1;
-  }
-  
   .quote-box:hover {
     box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
-  }
-  
-  .quote-box:hover .quote-text {
-    transform: translateX(5px);
-  }
-  
-  .quote-box:hover .quote-author {
-    opacity: 1;
-    transform: translateX(10px);
+    cursor: pointer;
   }
   .quote-box::before {
     content: '“';
@@ -491,7 +512,8 @@ const manifestoItems = [
     margin-bottom: 1.5rem; 
     position: relative; 
     z-index: 2; 
-    transition: transform 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    min-height: 3em;
   }
   .quote-author { 
     font-size: 1rem; 
@@ -501,6 +523,12 @@ const manifestoItems = [
     z-index: 2; 
     font-style: italic; 
     transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .quote-box.changing .quote-text,
+  .quote-box.changing .quote-author {
+    opacity: 0;
+    transform: translateY(-10px);
   }
 
   .terminal-box { 
@@ -646,19 +674,51 @@ const manifestoItems = [
     observer.observe(statNumber);
   });
   
-  // Add mouse tracking for gradient effect on black cards
+  // Add mouse tracking for gradient effect on metrics cards
   document.addEventListener('DOMContentLoaded', () => {
-    const blackCards = document.querySelectorAll('.metrics-grid-box, .quote-box');
+    const metricsCards = document.querySelectorAll('.metrics-grid-box');
     
-    blackCards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
+    metricsCards.forEach(card => {
+      card.addEventListener('mousemove', (e: Event) => {
+        const mouseEvent = e as MouseEvent;
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        const x = ((mouseEvent.clientX - rect.left) / rect.width) * 100;
+        const y = ((mouseEvent.clientY - rect.top) / rect.height) * 100;
         
-        card.style.setProperty('--mouse-x', `${x}%`);
-        card.style.setProperty('--mouse-y', `${y}%`);
+        (card as HTMLElement).style.setProperty('--mouse-x', `${x}%`);
+        (card as HTMLElement).style.setProperty('--mouse-y', `${y}%`);
       });
     });
+    
+    // Quote cycling on hover
+    const quoteBox = document.querySelector('.quote-box') as HTMLElement;
+    if (quoteBox) {
+      const quotesData = JSON.parse(quoteBox.dataset.quotes || '[]');
+      const quoteText = quoteBox.querySelector('.quote-text') as HTMLElement;
+      const quoteAuthor = quoteBox.querySelector('.quote-author') as HTMLElement;
+      let currentIndex = 0;
+      let isChanging = false;
+      
+      quoteBox.addEventListener('mouseenter', () => {
+        if (isChanging || quotesData.length <= 1) return;
+        
+        isChanging = true;
+        quoteBox.classList.add('changing');
+        
+        setTimeout(() => {
+          currentIndex = (currentIndex + 1) % quotesData.length;
+          const newQuote = quotesData[currentIndex];
+          
+          if (quoteText) quoteText.textContent = `"${newQuote.text}"`;
+          if (quoteAuthor) quoteAuthor.textContent = `— ${newQuote.author}`;
+          
+          quoteBox.classList.remove('changing');
+          
+          setTimeout(() => {
+            isChanging = false;
+          }, 300);
+        }, 300);
+      });
+    }
   });
 </script> 
