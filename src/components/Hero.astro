@@ -33,10 +33,10 @@ const t = (k: string) => translations.default[k] || k;
 
   <!-- CTA Buttons -->
   <div id="hero-cta-container" class="absolute bottom-40 md:bottom-36 left-1/2 transform -translate-x-1/2 z-10 flex flex-col sm:flex-row gap-4 items-center hero-cta">
-    <a href="#projects" class="hero-cta-button bg-black text-white border-2 border-white">
+    <a href="#projects" class="hero-cta-button bg-black text-white border-2 border-black hover:bg-white hover:text-black">
       {t('hero.cta.projects')}
     </a>
-    <a href="#contact" class="hero-cta-button bg-white text-black border-2 border-black">
+    <a href="#contact" class="hero-cta-button bg-white text-black border-2 border-black hover:bg-black hover:text-white">
       {t('hero.cta.contact')}
     </a>
   </div>
@@ -101,11 +101,6 @@ const t = (k: string) => translations.default[k] || k;
   .hero-cta-button {
     @apply px-6 py-3 font-semibold text-center transition-all duration-300 w-full sm:w-auto;
     min-width: 160px;
-  }
-
-  .hero-cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   }
 
 </style>

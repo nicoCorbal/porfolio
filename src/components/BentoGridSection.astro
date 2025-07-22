@@ -9,7 +9,7 @@ const t = (k: string) => translations.default[k] || k;
 const optimizedServiceImage = await getImage({
   src: servicesImage,
   format: "webp",
-  quality: 90,
+  quality: 100,
 });
 
 const manifestoItems = [
@@ -322,6 +322,7 @@ const manifestoItems = [
 
   .card-back { 
     align-items: flex-start;
+    justify-content: flex-start;
     background-color: #000000; /* Cambiado a negro puro */
     background-image: radial-gradient(circle at top left, rgba(255,255,255,0.04) 0%, transparent 40%);
     color: white; 

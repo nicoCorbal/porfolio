@@ -40,11 +40,11 @@ const projectsData: Project[] = [
 const initialProjectCount = 3;
 ---
 
-<section class="section bg-white text-black py-16 md:py-20">
+<section class="section bg-white text-black md:py-20">
   <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
     <h2 class="section-title" set:html={texts.title} />
 
-    <div class="project-list flex flex-col gap-4 mt-16 border-t border-gray-300">
+    <div class="project-list flex flex-col gap-4 border-t border-gray-300">
       {projectsData.map((project, index) => (
         <a
           href={project.url}
