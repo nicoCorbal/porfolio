@@ -216,44 +216,49 @@ function setupToggleHeaderVisibility() {
   window.addEventListener('scroll', state.scrollListener);
 }
 
-// Update nav indicator
+// Move the underline indicator under the given nav link, accounting for padding and overall nav offset
+function moveIndicatorTo(linkEl: HTMLElement | null) {
+  if (!state.navIndicator || !linkEl) return;
+  const nav = document.getElementById('main-nav');
+  if (!nav) return;
+
+  const navRect = nav.getBoundingClientRect();
+  const linkRect = linkEl.getBoundingClientRect();
+  const computed = window.getComputedStyle(linkEl);
+  const padLeft = parseFloat(computed.paddingLeft) || 0;
+  const padRight = parseFloat(computed.paddingRight) || 0;
+
+  const width = linkRect.width - padLeft - padRight;
+  const left = linkRect.left - navRect.left + padLeft;
+
+  state.navIndicator.style.width = `${width}px`;
+  state.navIndicator.style.left = `${left}px`;
+  state.navIndicator.style.opacity = '1';
+}
+
 function updateIndicatorBySection(sectionId: string) {
-  const targetNavItem = document.querySelector(`nav .nav-item[href="#${sectionId}"]`) as HTMLElement;
-  
-  if (targetNavItem) {
-    state.activeNavItem = targetNavItem;
-
-    if (state.navIndicator) {
-      const dropdownContainer = targetNavItem.closest('.nav-dropdown');
-      if (dropdownContainer) {
-        const actualLeft = (dropdownContainer as HTMLElement).offsetLeft + targetNavItem.offsetLeft;
-        state.navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
-        state.navIndicator.style.left = `${actualLeft + 12}px`;
-      } else {
-        state.navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
-        state.navIndicator.style.left = `${targetNavItem.offsetLeft + 12}px`;
-      }
-      state.navIndicator.style.opacity = '1';
+  let targetNavItem = document.querySelector(`nav .nav-item[href$="#${sectionId}"]`) as HTMLElement | null;
+  // Fallback for the Projects dropdown (button without href)
+  if (!targetNavItem && sectionId === 'projects') {
+    const projectsBtn = document.querySelector('.nav-dropdown .nav-item') as HTMLElement | null;
+    if (projectsBtn) {
+      targetNavItem = projectsBtn;
     }
-
+  }
+  if (targetNavItem) {
+    // Update .nav-active on scroll-based section change
+    const allNavLinks = document.querySelectorAll('nav .nav-item');
+    allNavLinks.forEach(link => link.classList.remove('nav-active'));
+    targetNavItem.classList.add('nav-active');
+    state.activeNavItem = targetNavItem;
+    moveIndicatorTo(targetNavItem);
     state.header?.classList.add('visible');
   } else if (sectionId === 'contact') {
     state.activeNavItem = null;
-    if (state.navIndicator) {
-      state.navIndicator.style.opacity = '0';
-    }
+    if (state.navIndicator) state.navIndicator.style.opacity = '0';
     state.header?.classList.remove('visible');
-  } else if (state.activeNavItem && state.navIndicator) {
-    const activeDropdownContainer = state.activeNavItem.closest('.nav-dropdown');
-    if (activeDropdownContainer) {
-      const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + state.activeNavItem.offsetLeft;
-      state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
-      state.navIndicator.style.left = `${actualLeft + 12}px`;
-    } else {
-      state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
-      state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 12}px`;
-    }
-    state.navIndicator.style.opacity = '1';
+  } else if (state.activeNavItem) {
+    moveIndicatorTo(state.activeNavItem);
   }
 }
 
@@ -262,7 +267,8 @@ function setActiveNavItem() {
   if (state.disableIndicatorUpdate || !state.header) return;
 
   const sections = document.querySelectorAll('section[id]');
-  let scrollPosition = window.scrollY + state.header.offsetHeight;
+  // Add 1px to avoid falling through exactly at section bottom
+  let scrollPosition = window.scrollY + state.header.offsetHeight + 1;
   let foundActiveSection = false;
   
   const firstSection = document.querySelector('section#home') || document.querySelector('section:first-of-type');
@@ -294,83 +300,58 @@ function setupNavigation() {
   const navItems = document.querySelectorAll('.nav-item');
   const allNavLinks = document.querySelectorAll('nav .nav-item');
   const logoLink = document.querySelector('.logo-link');
-  
+
   // Nav item hover
   navItems.forEach(item => {
     const navLink = item as HTMLElement;
     const isProjectsItem = navLink.closest('.nav-dropdown') !== null;
-    
+
     if (isProjectsItem) {
       const dropdownParent = navLink.closest('.nav-dropdown') as HTMLElement;
       dropdownParent.addEventListener('mouseenter', () => {
-        if (!state.navIndicator || state.disableIndicatorUpdate) return;
-        state.navIndicator.style.width = `${navLink.offsetWidth - 32}px`;
-        state.navIndicator.style.left = `${dropdownParent.offsetLeft + 12}px`;
-        state.navIndicator.style.opacity = '1';
+        if (state.disableIndicatorUpdate) return;
+        moveIndicatorTo(navLink);
       });
-      
+
       dropdownParent.addEventListener('mouseleave', () => {
-        if (!state.navIndicator || !state.activeNavItem || state.disableIndicatorUpdate) return;
-        const activeDropdownContainer = state.activeNavItem.closest('.nav-dropdown');
-        if (activeDropdownContainer) {
-          const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + state.activeNavItem.offsetLeft;
-          state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
-          state.navIndicator.style.left = `${actualLeft + 12}px`;
-        } else {
-          state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
-          state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 12}px`;
-        }
-        state.navIndicator.style.opacity = '1';
+        if (state.disableIndicatorUpdate) return;
+        if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
       });
     } else {
       navLink.addEventListener('mouseenter', () => {
-        if (!state.navIndicator || state.disableIndicatorUpdate) return;
-        state.navIndicator.style.width = `${navLink.offsetWidth - 32}px`;
-        state.navIndicator.style.left = `${navLink.offsetLeft + 12}px`;
-        state.navIndicator.style.opacity = '1';
+        if (state.disableIndicatorUpdate) return;
+        moveIndicatorTo(navLink);
       });
-      
+
       navLink.addEventListener('mouseleave', () => {
-        if (!state.navIndicator || !state.activeNavItem || state.disableIndicatorUpdate) return;
-        const activeDropdownContainer = state.activeNavItem.closest('.nav-dropdown');
-        if (activeDropdownContainer) {
-          const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + state.activeNavItem.offsetLeft;
-          state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
-          state.navIndicator.style.left = `${actualLeft + 12}px`;
-        } else {
-          state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
-          state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 12}px`;
-        }
-        state.navIndicator.style.opacity = '1';
+        if (state.disableIndicatorUpdate) return;
+        if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
       });
     }
   });
-  
+
   // Nav link clicks
   allNavLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       if (!href || !href.startsWith('#')) return;
-      
+
       e.preventDefault();
       state.disableIndicatorUpdate = true;
-      
+
       const targetIdClean = href.substring(1);
       const targetHref = `#${targetIdClean}`;
-      
+
       allNavLinks.forEach(item => {
         item.classList.remove('nav-active');
         if (item.getAttribute('href') === targetHref) {
           item.classList.add('nav-active');
-          if (state.navIndicator) {
-            state.navIndicator.style.width = `${(item as HTMLElement).offsetWidth - 32}px`;
-            state.navIndicator.style.left = `${(item as HTMLElement).offsetLeft + 12}px`;
-            state.navIndicator.style.opacity = '1';
-            state.activeNavItem = item as HTMLElement;
-          }
+          state.activeNavItem = item as HTMLElement;
         }
       });
-      
+
+      if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
+
       if (targetIdClean === 'home') {
         smoothScrollTo(0, 2000);
       } else {
@@ -383,13 +364,13 @@ function setupNavigation() {
           smoothScrollTo(targetPosition, 2000);
         }
       }
-      
+
       setTimeout(() => {
         state.disableIndicatorUpdate = false;
       }, 2000);
     });
   });
-  
+
   // Logo link
   if (logoLink) {
     logoLink.addEventListener('click', (e) => {
@@ -529,28 +510,22 @@ function setupProjectsDropdown() {
 function setupScrollHandlers() {
   // Resize handler
   state.resizeListener = () => {
-    if (state.activeNavItem && state.navIndicator) {
-      state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 40}px`;
-      state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 20}px`;
-    }
+    if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
   };
   window.addEventListener('resize', state.resizeListener);
-  
+
   // Orientation change
   window.addEventListener('orientationchange', () => {
     setTimeout(() => {
-      if (state.activeNavItem && state.navIndicator) {
-        state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 40}px`;
-        state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 20}px`;
-      }
+      if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
     }, 200);
   });
-  
+
   // Touch device detection
   const isTouchDevice = () => {
     return 'ontouchstart' in window || ('maxTouchPoints' in navigator && (navigator as any).maxTouchPoints > 0);
   };
-  
+
   if (isTouchDevice()) {
     document.documentElement.classList.add('touch-device');
   }

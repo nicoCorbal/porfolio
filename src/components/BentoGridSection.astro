@@ -67,20 +67,6 @@ const manifestoItems = [
       title: t("bento.image.title"),
     }
   },
-  /*
-  {
-    type: 'terminal',
-    gridArea: 'terminal',
-    data: {
-      lines: [
-        { command: true, text: t("bento.terminal.line1.command") },
-        { command: false, text: t("bento.terminal.line1.response") },
-        { command: true, text: t("bento.terminal.line2.command") },
-        { command: false, text: t("bento.terminal.line2.response") },
-      ]
-    }
-  },
-  */
   {
     type: 'card',
     gridArea: 'value2',
@@ -109,7 +95,6 @@ const manifestoItems = [
   </div>
     
     <div id="manifesto-container" class="relative">
-      <div class="manifesto-bg"></div>
       
       <div class="manifesto-grid">
         {manifestoItems.map((item) => (
@@ -183,23 +168,6 @@ const manifestoItems = [
                 <p class="quote-author">— {item.data.author}</p>
               </div>
             )}
-            {/*
-            {item.type === 'terminal' && (
-              <div class="terminal-box">
-                <div class="terminal-header">
-                  <span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span>
-                </div>
-                <div class="terminal-body">
-                  {item.data.lines && item.data.lines.map(line => (
-                    <p class:list={["terminal-line", { "is-command": line.command }]}>
-                      {line.command && <span class="terminal-prompt">$ </span>}
-                      <span class="terminal-text-content">{line.text}</span>
-                    </p>
-                  ))}
-                </div>
-              </div>
-            )}
-            */}
           </div>
         ))}
       </div>
@@ -214,16 +182,6 @@ const manifestoItems = [
   #manifesto-container {
     position: relative;
   }
-  .manifesto-bg {
-    position: absolute;
-    inset: -10rem;
-    background-image:
-      linear-gradient(rgba(229, 231, 235, 0.7) 1px, transparent 1px),
-      linear-gradient(to right, rgba(229, 231, 235, 0.7) 1px, transparent 1px);
-    background-size: 4rem 4rem;
-    mask-image: radial-gradient(ellipse at center, white, transparent 70%);
-    z-index: 0;
-  }
   @keyframes pan {
     0% { background-position: 0% 0%; }
     100% { background-position: 256px 256px; }
@@ -237,13 +195,13 @@ const manifestoItems = [
     position: relative;
     z-index: 1;
     grid-template-areas:
-      "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 value1 value1 value1 value1 value1 value1"
-      "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 value1 value1 value1 value1 value1 value1"
-      "quote quote quote quote quote quote quote quote main-image main-image main-image main-image"
-      "metrics metrics metrics metrics metrics stat stat stat main-image main-image main-image main-image"
-      "metrics metrics metrics metrics metrics stat stat stat main-image main-image main-image main-image"
-      "value2 value2 value2 value2 value2 value2 value3 value3 value3 value3 value3 value3"
-      "value2 value2 value2 value2 value2 value2 value3 value3 value3 value3 value3 value3";
+      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  narrative1 narrative1 narrative1 narrative1 narrative1 narrative1"
+      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  narrative1 narrative1 narrative1 narrative1 narrative1 narrative1"
+      "quote      quote      quote      quote quote quote quote quote main-image main-image main-image main-image"
+      "metrics    metrics    metrics    metrics metrics stat stat stat main-image main-image main-image main-image"
+      "metrics    metrics    metrics    metrics metrics stat stat stat main-image main-image main-image main-image"
+      "value2     value2     value2     value2 value2 value2 value3 value3 value3 value3 value3 value3"
+      "value2     value2     value2     value2 value2 value2 value3 value3 value3 value3 value3 value3";
   }
 
   .grid-item {
@@ -253,10 +211,12 @@ const manifestoItems = [
     border: 1px solid #e5e7eb;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
-    visibility: hidden; /* Hide items initially for animation */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease-out forwards;
   }
 
-  .grid-item:not(.item-type-card):hover {
+  .grid-item:not(.item-type-metrics-grid):not(.item-type-quote):hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   }
@@ -281,7 +241,6 @@ const manifestoItems = [
     font-family: monospace;
     text-transform: uppercase;
     color: #6b7280;
-    margin-bottom: 1.5rem;
   }
   .narrative-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; margin-bottom: 1.5rem; }
   .narrative-text { font-size: 1.125rem; color: #4b5563; line-height: 1.8; }
@@ -378,7 +337,7 @@ const manifestoItems = [
     filter: grayscale(100%);
   }
   .image-box:hover .grid-image {
-    transform: scale(1.05);
+    transform: scale(1.2);
   }
   .image-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7) 100%); display: flex; align-items: flex-end; padding: 1.5rem; z-index: 3; }
   .image-title { color: white; font-size: 1.5rem; font-weight: 600; }
@@ -390,6 +349,35 @@ const manifestoItems = [
     flex-direction: column;
     justify-content: center;
     height: 100%;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .metrics-grid-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .metrics-grid-box:hover::before {
+    opacity: 1;
+  }
+  
+  .metrics-grid-box:hover {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+  }
+  
+  .metrics-grid-box:hover .metric-value {
+    transform: scale(1.05);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  
+  .metrics-grid-box:hover .metric-label {
+    color: #ffffff;
   }
 
   .metrics-container {
@@ -411,17 +399,19 @@ const manifestoItems = [
   }
 
   .metric-value {
-    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-size: 24px;
     font-weight: 800;
     line-height: 1;
     color: #ffffff;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
   }
 
   .metric-label {
-    font-size: 0.8rem;
-    color: #a0aec0;
+    font-size: 14px;
+    color: #bebebe;
     margin-top: 0.5rem;
     white-space: nowrap;
+    transition: color 0.3s ease;
   }
   
   .stat-box {
@@ -452,6 +442,35 @@ const manifestoItems = [
     position: relative;
     overflow: hidden;
     height: 100%;
+    transition: all 0.3s ease;
+  }
+  
+  .quote-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.08), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .quote-box:hover::after {
+    opacity: 1;
+  }
+  
+  .quote-box:hover {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+  }
+  
+  .quote-box:hover .quote-text {
+    transform: translateX(5px);
+  }
+  
+  .quote-box:hover .quote-author {
+    opacity: 1;
+    transform: translateX(10px);
   }
   .quote-box::before {
     content: '“';
@@ -464,8 +483,24 @@ const manifestoItems = [
     line-height: 1;
     z-index: 0;
   }
-  .quote-text { font-size: clamp(1.25rem, 5vw, 1.75rem); font-weight: 600; line-height: 1.4; margin-bottom: 1.5rem; position: relative; z-index: 1; }
-  .quote-author { font-size: 1rem; align-self: flex-end; opacity: 0.7; position: relative; z-index: 1; font-style: italic; }
+  .quote-text { 
+    font-size: clamp(1.25rem, 5vw, 1.75rem); 
+    font-weight: 600; 
+    line-height: 1.4; 
+    margin-bottom: 1.5rem; 
+    position: relative; 
+    z-index: 2; 
+    transition: transform 0.3s ease;
+  }
+  .quote-author { 
+    font-size: 1rem; 
+    align-self: flex-end; 
+    opacity: 0.7; 
+    position: relative; 
+    z-index: 2; 
+    font-style: italic; 
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
 
   .terminal-box { 
     background-color: #000000; 
@@ -522,54 +557,107 @@ const manifestoItems = [
     .quote-text { font-size: 1.25rem; }
     .quote-box { padding: 2rem; }
   }
+
+  /* CSS Animation for grid items */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Stagger animation delay */
+  .grid-item:nth-child(1) { animation-delay: 0s; }
+  .grid-item:nth-child(2) { animation-delay: 0.1s; }
+  .grid-item:nth-child(3) { animation-delay: 0.2s; }
+  .grid-item:nth-child(4) { animation-delay: 0.3s; }
+  .grid-item:nth-child(5) { animation-delay: 0.4s; }
+  .grid-item:nth-child(6) { animation-delay: 0.5s; }
+  .grid-item:nth-child(7) { animation-delay: 0.6s; }
+  .grid-item:nth-child(8) { animation-delay: 0.7s; }
+
+  /* CSS Animation for stat counter */
+  @keyframes countUp {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .stat-number {
+    animation: countUp 2s ease-out;
+  }
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
+  // Simple CSS-based counter animation using Intersection Observer
   document.addEventListener('DOMContentLoaded', () => {
-    gsap.from('.grid-item', {
-      autoAlpha: 0,
-      y: 30,
-      duration: 0.6,
-      ease: 'power2.out',
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: '.manifesto-grid',
-        start: 'top 85%',
-        toggleActions: 'play none none none',
-      }
-    });
-  });
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const statNumber = document.querySelector('.stat-number');
+    const statNumber = document.querySelector('.stat-number') as HTMLElement;
     if (!statNumber) return;
 
     const endValue = parseInt(statNumber.textContent || '0', 10);
-    const startValue = 0;
+    const duration = 2000; // 2 seconds
+    let hasAnimated = false;
     
     const animateCount = () => {
-      gsap.fromTo(statNumber, 
-        { innerHTML: startValue },
-        {
-          innerHTML: endValue,
-          duration: 2,
-          ease: 'power1.out',
-          snap: { innerHTML: 1 },
-          scrollTrigger: {
-            trigger: statNumber,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-          }
+      if (hasAnimated) return;
+      hasAnimated = true;
+      
+      const startTime = performance.now();
+      const startValue = 0;
+      
+      const updateCount = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease out cubic
+        const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+        const currentValue = Math.floor(startValue + (endValue - startValue) * easeOutCubic);
+        
+        statNumber.textContent = currentValue.toString();
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCount);
+        } else {
+          statNumber.textContent = endValue.toString();
         }
-      );
+      };
+      
+      requestAnimationFrame(updateCount);
     };
     
-    // GSAP's .fromTo on innerHTML needs a round number to start, so we set it here
-    statNumber.innerHTML = startValue.toString();
-    animateCount();
+    // Use Intersection Observer to trigger animation when in view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCount();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    observer.observe(statNumber);
+  });
+  
+  // Add mouse tracking for gradient effect on black cards
+  document.addEventListener('DOMContentLoaded', () => {
+    const blackCards = document.querySelectorAll('.metrics-grid-box, .quote-box');
+    
+    blackCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        
+        card.style.setProperty('--mouse-x', `${x}%`);
+        card.style.setProperty('--mouse-y', `${y}%`);
+      });
+    });
   });
 </script> 
