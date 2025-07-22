@@ -62,15 +62,6 @@ const manifestoItems = [
     }
   },
   {
-    type: 'card',
-    gridArea: 'value1',
-    data: {
-      svgIcon: `<rect width="18" height="12" x="3" y="10" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v3" /><path d="M8 16v-2" /><path d="M16 16v-2" />`,
-      title: t("bento.cards.ai_assistant.title"),
-      back_text: t("bento.cards.ai_assistant.back_text")
-    }
-  },
-  {
     type: 'metrics-grid',
     gridArea: 'metrics',
     data: {
@@ -86,7 +77,7 @@ const manifestoItems = [
     type: 'stat',
     gridArea: 'stat',
     data: {
-      number: 100,
+      number: 42,
       suffix: '%',
       label: t("bento.stat.label")
     }
@@ -241,8 +232,8 @@ const manifestoItems = [
     z-index: 1;
     perspective: 1000px; /* Add for 3D animations */
     grid-template-areas:
-      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  value1 value1 value1 value1 value1 value1"
-      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  value1 value1 value1 value1 value1 value1"
+      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  narrative1 narrative1 narrative1 narrative1 narrative1 narrative1"
+      "narrative1 narrative1 narrative1 narrative1  narrative1  narrative1  narrative1 narrative1 narrative1 narrative1 narrative1 narrative1"
       "quote      quote      quote      quote quote quote quote quote main-image main-image main-image main-image"
       "metrics    metrics    metrics    metrics metrics stat stat stat main-image main-image main-image main-image"
       "metrics    metrics    metrics    metrics metrics stat stat stat main-image main-image main-image main-image"
@@ -262,7 +253,7 @@ const manifestoItems = [
     animation: fadeInUp 0.6s ease-out forwards;
   }
 
-  .grid-item:not(.item-type-metrics-grid):not(.item-type-quote):hover {
+  .grid-item:not(.item-type-metrics-grid):not(.item-type-quote):not(.item-type-stat):hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   }
@@ -281,13 +272,14 @@ const manifestoItems = [
   .narrative-box, .quote-box, .terminal-box, .stat-box, .metrics-grid-box, .image-box {
     height: 100%;
   }
-  .narrative-box { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; height: 100%;}
+  .narrative-box { padding: 2.5rem; display: flex; flex-direction: column; justify-content: start; height: 100%;}
   .kicker {
     font-family: monospace;
     text-transform: uppercase;
     color: #6b7280;
+    margin-bottom: 1rem;
   }
-  .narrative-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; margin-bottom: 1.5rem; }
+  .narrative-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; margin-bottom: 0.5rem; }
   .narrative-text { font-size: 1.125rem; color: #4b5563; line-height: 1.8; }
   
   /* Card Flip Logic -> Sliding Panel Logic */
@@ -317,8 +309,15 @@ const manifestoItems = [
     box-shadow: inset 0 0 0 1px #e5e7eb;
     z-index: 2;
   }
-  .bento-card:hover .card-front {
+  /* Left side cards slide left */
+  .item-area-value1 .bento-card:hover .card-front,
+  .item-area-value2 .bento-card:hover .card-front {
     transform: translateX(-100%);
+  }
+  
+  /* Right side card slides right */
+  .item-area-value3 .bento-card:hover .card-front {
+    transform: translateX(100%);
   }
 
   .flip-hint { display: none; } /* No longer needed for this design */
@@ -333,14 +332,18 @@ const manifestoItems = [
     text-align: left;
     z-index: 1;
   }
+  
+  /* Left side cards - back card comes from right *
+  
+  
+  /* Right side card - back card comes from left */
+
   .back-content {
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+    transition: opacity 0.4s ease 0.2s;
   }
   .bento-card:hover .back-content {
     opacity: 1;
-    transform: translateY(0);
   }
   .back-title {
     font-size: 1.25rem;
@@ -379,7 +382,7 @@ const manifestoItems = [
     height: 100%; 
     object-fit: cover; 
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    filter: grayscale(100%);
+    /* filter: grayscale(100%);  Removed grayscale effect */
   }
   .image-box:hover .grid-image {
     transform: scale(1.2);
@@ -459,7 +462,7 @@ const manifestoItems = [
   }
   
   .stat-box {
-    background-color: #ffffff; /* Cambiado a blanco */
+    background-color: #ffffff;
     background-image: 
       linear-gradient(rgba(229, 231, 235, 0.5) 1px, transparent 1px), 
       linear-gradient(to right, rgba(229, 231, 235, 0.5) 1px, transparent 1px);
@@ -471,10 +474,60 @@ const manifestoItems = [
     padding: 2rem;
     text-align: center;
     height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
   }
-  .stat-number { font-size: clamp(3.5rem, 8vw, 5rem); font-weight: 800; line-height: 1; color: #111827; }
-  .stat-suffix { font-size: 1.5rem; font-weight: 700; color: #4b5563; margin-left: 0.25rem; }
-  .stat-label { font-size: 1rem; color: #6b7280; margin-top: 0.75rem; }
+  
+  .stat-box::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.05) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 1s ease, height 1s ease;
+    pointer-events: none;
+  }
+  
+  .stat-box:hover::before {
+    width: 200%;
+    height: 200%;
+  }
+  
+  .stat-box:hover {
+    background-size: 3rem 3rem;
+  }
+  
+  .stat-box:hover .stat-number {
+    transform: scale(1.1);
+    color: #000000;
+  }
+  
+  
+
+  .stat-number { 
+    font-size: clamp(3.5rem, 8vw, 5rem); 
+    font-weight: 800; 
+    line-height: 1; 
+    color: #111827; 
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .stat-suffix { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: #4b5563; 
+    margin-left: 0.25rem; 
+    transition: transform 0.3s ease;
+  }
+  .stat-label { 
+    font-size: 1rem; 
+    color: #6b7280; 
+    margin-top: 0.75rem; 
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
 
   .quote-box {
     background-color: #000000;
@@ -553,7 +606,6 @@ const manifestoItems = [
       grid-template-columns: repeat(8, 1fr);
       grid-template-areas:
         "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 narrative1"
-        "value1 value1 value1 value1 value1 value1 value1 value1"
         "quote quote quote quote quote quote quote quote"
         "main-image main-image main-image main-image main-image main-image main-image main-image"
         "stat stat stat stat stat stat stat stat"
@@ -567,7 +619,7 @@ const manifestoItems = [
     .manifesto-grid {
       grid-template-columns: 1fr;
       grid-template-areas:
-        "narrative1" "value1" "quote" "main-image" "stat" "metrics" "value2" "value3";
+        "narrative1" "quote" "main-image" "stat" "metrics" "value2" "value3";
     }
     .grid-item { min-height: 250px; }
     .quote-box {min-height: 300px;}

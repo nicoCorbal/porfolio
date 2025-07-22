@@ -69,7 +69,6 @@ export const projects: Record<string, ProjectData> = {
       }
     ],
     images: ['/projects/nessie.jpg'],
-    video: '/projects/nessie-demo.mp4',
   },
   echoia: {
     id: 'echoia',
