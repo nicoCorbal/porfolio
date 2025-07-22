@@ -29,6 +29,9 @@
     "projects.client": "Client",
     "projects.showMore": "Show More",
     "projects.showLess": "Show Less",
+    "projects.categories.ai_assistant": "AI Assistant",
+    "projects.categories.ai_tool": "AI Tool",
+    "projects.categories.cyber_tool": "Cyber Tool",
 
     "about.title": "Our <span class=\"font-bold\">Team</span>",
     
@@ -112,5 +115,13 @@
     "bento.cards.cybersecurity.title": "Cybersecurity Tools",
     "bento.cards.cybersecurity.back_text": "We build custom cybersecurity tools, such as proxies and monitoring systems, to protect our clients' infrastructure and data.",
     "bento.cards.automation.title": "Intelligent Automation",
-    "bento.cards.automation.back_text": "We analyze workflows and develop software that automates repetitive tasks, extracts key information, and allows teams to focus on what truly matters."
+    "bento.cards.automation.back_text": "We analyze workflows and develop software that automates repetitive tasks, extracts key information, and allows teams to focus on what truly matters.",
+
+    "footer.description": "We create innovative solutions for your business. We specialize in mobile, web, and desktop development with cutting-edge technologies.",
+    "footer.links.title": "Links",
+    "footer.contact.title": "Contact",
+    "footer.nav.about": "About Us",
+    "footer.copyright": "All rights reserved.",
+    "footer.privacy": "Privacy Policy",
+    "footer.terms": "Terms of Use"
 }

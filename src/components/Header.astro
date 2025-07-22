@@ -1,5 +1,5 @@
 ---
-const { lang } = Astro.params;
+const { lang = 'en', isMainPage = false } = Astro.props;
 const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
 // Header.astro - Con funcionalidad de scroll a secciones mejorada
@@ -57,7 +57,7 @@ const navItems = [
       </div>
 
       <!-- Menú móvil -->
-      <button id="mobile-toggle" class="md:hidden flex items-center justify-center w-10 h-10 focus:outline-none z-10" aria-label="Menú" aria-expanded="false">
+      <button id="mobile-toggle" class="md:hidden flex items-center justify-center w-10 h-10 focus:outline-none z-10" aria-label={t('nav.menu.open')} aria-expanded="false">
         <div class="burger-icon">
           <span class="burger-line"></span>
           <span class="burger-line"></span>
@@ -69,7 +69,7 @@ const navItems = [
   <!-- Menú móvil overlay -->
   <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-md flex flex-col items-center justify-start pt-20 opacity-0 pointer-events-none transition-all duration-300 z-40 overflow-hidden" aria-hidden="true">
     <!-- Botón de cierre -->
-    <button id="mobile-close" class="absolute top-4 right-4 p-2 text-gray-600 hover:text-black transition-colors duration-200" aria-label="Cerrar menú">
+    <button id="mobile-close" class="absolute top-4 right-4 p-2 text-gray-600 hover:text-black transition-colors duration-200" aria-label={t('nav.menu.close')}>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
@@ -92,7 +92,7 @@ const navItems = [
       
       <div class="w-full max-w-xs pt-6">
         <a href="#contact" class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium bg-black text-white transition-all duration-300 rounded-full hover:opacity-90 hover:scale-105" data-scroll-adjust="-60">
-          Contact
+          {t('nav.mobile.contact')}
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
@@ -211,12 +211,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Scroll suave a secciones
     allNavLinks.forEach(link => {
       link.addEventListener('click', (e) => {
+        const targetId = link.getAttribute('href');
+        if (!targetId) return;
+        
+        // Only intercept hash links, let regular links navigate normally
+        if (!targetId.startsWith('#')) return;
+        
         e.preventDefault();
         
         if (isMenuOpen) toggleMobileMenu();
-        
-        const targetId = link.getAttribute('href');
-        if (!targetId) return;
         
         const targetIdClean = targetId.substring(1);
         disableIndicatorUpdate = true;

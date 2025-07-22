@@ -1,15 +1,19 @@
 ---
 import ContactSection from './StaticContactSection.astro';
 
+const { lang = 'es' } = Astro.props;
+const translations = await import(`../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
 const currentYear = new Date().getFullYear();
 
 // Navigation links
 const navLinks = [
-  { name: 'Services', url: '#services', scrollAdjust: -30 },
-  { name: 'Values', url: '#values', scrollAdjust: -50 },
-  { name: 'Projects', url: '#projects', scrollAdjust: 30 },
-  { name: 'About Us', url: '#about', scrollAdjust: -60 },
-  { name: 'Awards', url: '#awards', scrollAdjust: -20 },
+  { name: t('nav.services'), url: '#services', scrollAdjust: -30 },
+  { name: t('nav.values'), url: '#values', scrollAdjust: -50 },
+  { name: t('nav.projects'), url: '#projects', scrollAdjust: 30 },
+  { name: t('footer.nav.about'), url: '#about', scrollAdjust: -60 },
+  { name: t('nav.awards'), url: '#awards', scrollAdjust: -20 },
 ];
 
 // Contact info
@@ -19,7 +23,7 @@ const contactInfo = [
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>`,
-    text: 'Santiago de Compostela, Spain'
+    text: t('contact.location.value')
   },
   {
     icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,13 +46,13 @@ const contactInfo = [
           <h3 class="text-2xl text-white">OSIX</h3>
         </div>
         <p class="text-gray-400 font-light leading-relaxed">
-          We create innovative solutions for your business. We specialize in mobile, web, and desktop development with cutting-edge technologies.
+          {t('footer.description')}
         </p>
       </div>
 
       <!-- Columna 2: Enlaces rápidos -->
       <div class="md:col-span-4 space-y-6">
-        <h4 class="text-lg text-white relative inline-block pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-12 after:bg-white">Links</h4>
+        <h4 class="text-lg text-white relative inline-block pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-12 after:bg-white">{t('footer.links.title')}</h4>
         <ul class="space-y-3">
           {navLinks.map(link => (
             <li>
@@ -66,7 +70,7 @@ const contactInfo = [
 
       <!-- Columna 3: Contacto -->
       <div class="md:col-span-4 space-y-6">
-        <h4 class="text-lg text-white relative inline-block pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-12 after:bg-white">Contact</h4>
+        <h4 class="text-lg text-white relative inline-block pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-12 after:bg-white">{t('footer.contact.title')}</h4>
         <ul class="space-y-5 text-gray-400 font-light">
           {contactInfo.map(item => (
             <li class="flex items-start gap-3 group">
@@ -84,17 +88,17 @@ const contactInfo = [
     <div class="mt-16 pt-8 border-t border-gray-800 text-center">
       <div class="flex flex-col md:flex-row justify-center md:justify-between items-center gap-4">
         <p class="text-gray-500 font-light">
-          &copy; {currentYear} OSIX. All rights reserved.
+          &copy; {currentYear} OSIX. {t('footer.copyright')}
         </p>
         <div class="flex gap-6 text-xs text-gray-500">
-          <a href="/privacy" class="hover:text-white transition-colors duration-300">Privacy Policy</a>
-          <a href="/terms" class="hover:text-white transition-colors duration-300">Terms of Use</a>
+          <a href="/privacy" class="hover:text-white transition-colors duration-300">{t('footer.privacy')}</a>
+          <a href="/terms" class="hover:text-white transition-colors duration-300">{t('footer.terms')}</a>
         </div>
       </div>
     </div>
   </div>
   
-  <ContactSection />
+  <ContactSection lang={lang} />
 </footer>
 
 <style>

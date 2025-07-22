@@ -1,8 +1,19 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getProject } from '../../../data/projects';
+import { getProject, getProjectIds } from '../../../data/projects';
 
-export const prerender = false
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const projectIds = getProjectIds();
+  const languages = ['en', 'es'];
+  
+  return languages.flatMap(lang => 
+    projectIds.map(id => ({
+      params: { lang, id }
+    }))
+  );
+}
 
 const { id = '', lang = 'en' } = Astro.params;
 const project = getProject(id);
@@ -16,9 +27,7 @@ if (!project) {
   <section class="relative min-h-[450px] lg:min-h-[550px] flex items-center overflow-hidden pt-20">
     <!-- Background Image -->
     <div class="absolute inset-0 z-0">
-    <a>
-      <img src={project.images[0]} alt={project.title} data-view-transition-name={`proj-${project.title.toLowerCase().replace(/\s+/g, '-')}`} class="object-cover object-top w-full h-full" />
-    </a>  
+      <img src={project.images[0]} alt={project.title} class="object-cover object-top w-full h-full" />
       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
     </div>
 

@@ -18,19 +18,19 @@ interface Project {
 const projectsData: Project[] = [
   {
     title: "Nessie Assistant",
-    category: "AI Assistant",
+    category: t('projects.categories.ai_assistant'),
     image: "/projects/nessie.jpg",
    url: `/${lang}/projects/nessie`
   },
   {
     title: "Echoia Notetaker",
-    category: "AI Tool",
+    category: t('projects.categories.ai_tool'),
     image: "/projects/echoia.jpg",
    url: `/${lang}/projects/echoia`
   },
   {
     title: "Kharon Proxy",
-    category: "Cyber Tool",
+    category: t('projects.categories.cyber_tool'),
     image: "/projects/kharon.jpg",
    url: `/${lang}/projects/kharon`
   },
@@ -57,7 +57,6 @@ const initialProjectCount = 3;
           <img
             src={typeof project.image === 'string' ? project.image : project.image.src}
             alt={project.title}
-            data-view-transition-name={`proj-${project.title.toLowerCase().replace(/\s+/g, '-')}`}
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
     

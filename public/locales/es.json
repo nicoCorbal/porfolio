@@ -29,6 +29,9 @@
     "projects.client": "Cliente",
     "projects.showMore": "Ver Más",
     "projects.showLess": "Ver Menos",
+    "projects.categories.ai_assistant": "Asistente IA",
+    "projects.categories.ai_tool": "Herramienta IA",
+    "projects.categories.cyber_tool": "Herramienta Cyber",
 
     "about.title": "Nuestro <span class=\"font-bold\">Equipo</span>",
     
@@ -111,5 +114,13 @@
     "bento.cards.cybersecurity.title": "Herramientas de Ciberseguridad",
     "bento.cards.cybersecurity.back_text": "Construimos herramientas de ciberseguridad a medida, como proxies y sistemas de monitoreo, para proteger la infraestructura y los datos de nuestros clientes.",
     "bento.cards.automation.title": "Automatización Inteligente",
-    "bento.cards.automation.back_text": "Analizamos flujos de trabajo y desarrollamos software que automatiza tareas repetitivas, extrae información clave y permite a los equipos centrarse en lo que de verdad importa."
+    "bento.cards.automation.back_text": "Analizamos flujos de trabajo y desarrollamos software que automatiza tareas repetitivas, extrae información clave y permite a los equipos centrarse en lo que de verdad importa.",
+
+    "footer.description": "Creamos soluciones innovadoras para tu negocio. Nos especializamos en desarrollo móvil, web y de escritorio con tecnologías de vanguardia.",
+    "footer.links.title": "Enlaces",
+    "footer.contact.title": "Contacto",
+    "footer.nav.about": "Sobre Nosotros",
+    "footer.copyright": "Todos los derechos reservados.",
+    "footer.privacy": "Política de Privacidad",
+    "footer.terms": "Términos de Uso"
 }
