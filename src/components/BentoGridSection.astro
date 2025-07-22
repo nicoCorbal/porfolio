@@ -1,7 +1,6 @@
 ---
 import { getImage } from "astro:assets";
 import servicesImage from "../assets/services.png";
-import { Bot, Fingerprint, Layers } from "lucide-astro";
 
 const { lang } = Astro.params;
 const translations = await import(`../../public/locales/${lang}.json`);
@@ -26,7 +25,7 @@ const manifestoItems = [
     type: 'card',
     gridArea: 'value1',
     data: {
-      iconName: "Bot",
+      svgIcon: `<rect width="18" height="12" x="3" y="10" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v3" /><path d="M8 16v-2" /><path d="M16 16v-2" />`,
       title: t("bento.cards.ai_assistant.title"),
       back_text: t("bento.cards.ai_assistant.back_text")
     }
@@ -86,7 +85,7 @@ const manifestoItems = [
     type: 'card',
     gridArea: 'value2',
     data: {
-      iconName: "Fingerprint",
+      svgIcon: `<path d="M18.9 7a8 8 0 0 1 1.1 5v1a6 6 0 0 0 .8 3" /><path d="M8 11a4 4 0 0 1 8 0v1a10 10 0 0 0 2 6" /><path d="M12 11v2a14 14 0 0 0 2.5 8" /><path d="M8 15a18 18 0 0 0 1.8 6" /><path d="M4.9 19a22 22 0 0 1 -.9 -7v-1a8 8 0 0 1 12 -6.9" />`,
       title: t("bento.cards.cybersecurity.title"),
       back_text: t("bento.cards.cybersecurity.back_text")
     }
@@ -95,7 +94,7 @@ const manifestoItems = [
     type: 'card',
     gridArea: 'value3',
     data: {
-      iconName: "Layers",
+      svgIcon: `<path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>`,
       title: t("bento.cards.automation.title"),
       back_text: t("bento.cards.automation.back_text")
     }
@@ -137,9 +136,7 @@ const manifestoItems = [
                     </svg>
                   </div>
                   <div class="value-icon-wrapper">
-                    {item.data.iconName === 'Bot' && <Bot class="w-9 h-9 text-gray-900" stroke-width="1.5" />}
-                    {item.data.iconName === 'Fingerprint' && <Fingerprint class="w-9 h-9 text-gray-900" stroke-width="1.5" />}
-                    {item.data.iconName === 'Layers' && <Layers class="w-9 h-9 text-gray-900" stroke-width="1.5" />}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-9 h-9 text-gray-900" set:html={item.data.svgIcon}></svg>
                   </div>
                   <h4 class="value-title" set:html={item.data.title}></h4>
                 </div>
