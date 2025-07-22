@@ -171,7 +171,7 @@ const manifestoItems = [
              {item.type === 'stat' && (
               <div class="stat-box">
                 <div>
-                  <span class="stat-number">{item.data.number}</span>
+                  <span class="stat-number" data-end-value={item.data.number}>{item.data.number}</span>
                   <span class="stat-suffix">{item.data.suffix}</span>
                 </div>
                 <p class="stat-label">{item.data.label}</p>
@@ -236,6 +236,7 @@ const manifestoItems = [
     gap: var(--grid-gap);
     position: relative;
     z-index: 1;
+    perspective: 1000px; /* Add for 3D animations */
     grid-template-areas:
       "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 value1 value1 value1 value1 value1 value1"
       "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 value1 value1 value1 value1 value1 value1"
@@ -529,47 +530,57 @@ const manifestoItems = [
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function runAnimations() {
+    // Kill existing ScrollTriggers to prevent them from conflicting.
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+    // Kill all existing GSAP tweens on the elements to ensure a clean slate.
+    gsap.killTweensOf('.grid-item');
+    gsap.killTweensOf('.stat-number');
+
+    // Reset styles manually for a fresh start, as GSAP might not revert them on kill.
+    gsap.set('.grid-item', { clearProps: 'all' });
+    
+    // Simple, elegant fade-in and slide-up animation for all grid items.
     gsap.from('.grid-item', {
       autoAlpha: 0,
-      y: 30,
-      duration: 0.6,
+      y: 20,
+      duration: 0.8,
       ease: 'power2.out',
-      stagger: 0.1,
+      stagger: 0.07,
       scrollTrigger: {
         trigger: '.manifesto-grid',
         start: 'top 85%',
         toggleActions: 'play none none none',
       }
     });
-  });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const statNumber = document.querySelector('.stat-number');
+    const statNumber = document.querySelector<HTMLElement>('.stat-number');
     if (!statNumber) return;
 
-    const endValue = parseInt(statNumber.textContent || '0', 10);
+    // Use a data attribute to store the target number, making it resilient to navigations.
+    const endValue = parseInt(statNumber.dataset.endValue || '0', 10);
     const startValue = 0;
     
-    const animateCount = () => {
-      gsap.fromTo(statNumber, 
-        { innerHTML: startValue },
-        {
-          innerHTML: endValue,
-          duration: 2,
-          ease: 'power1.out',
-          snap: { innerHTML: 1 },
-          scrollTrigger: {
-            trigger: statNumber,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
-    };
-    
-    // GSAP's .fromTo on innerHTML needs a round number to start, so we set it here
+    // Reset the innerHTML to the start value before each animation run.
     statNumber.innerHTML = startValue.toString();
-    animateCount();
-  });
+
+    gsap.fromTo(statNumber, 
+      { innerHTML: startValue },
+      {
+        innerHTML: endValue,
+        duration: 2,
+        ease: 'power1.out',
+        snap: { innerHTML: 1 },
+        scrollTrigger: {
+          trigger: statNumber,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  }
+
+  // Use the 'astro:page-load' event which fires on initial load and after view transitions.
+  document.addEventListener('astro:page-load', runAnimations);
 </script> 
