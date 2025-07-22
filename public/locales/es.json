@@ -12,6 +12,8 @@
 
     "hero.title.line1": "Innovación y Desarrollo",
     "hero.title.line2": "al alcance de cualquiera",
+    "hero.cta.projects": "Ver Proyectos",
+    "hero.cta.contact": "Contactar",
 
     "services.title": "Nuestros <span class=\"font-bold\">Servicios</span>",
     "services.img.alt": "Servicios",

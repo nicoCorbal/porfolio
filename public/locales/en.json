@@ -12,6 +12,8 @@
 
     "hero.title.line1": "Innovation and Development",
     "hero.title.line2": "by a new generation",
+    "hero.cta.projects": "View Projects",
+    "hero.cta.contact": "Contact",
 
     "services.title": "Our <span class=\"font-bold\">Services</span>",
     "services.img.alt": "Services",
