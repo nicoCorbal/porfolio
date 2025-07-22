@@ -1,24 +1,42 @@
 ---
-const { lang = 'en', isMainPage = false } = Astro.props;
+import { getProjectIds, getProject } from '../data/projects';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'en' } = Astro.props as Props;
 const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
-// Header.astro - Con funcionalidad de scroll a secciones mejorada
 
-// (Eliminada la importación de Services)
+// Get current page path to determine if we're on a project page
+const currentPath = Astro.url.pathname;
+const isMainPage = currentPath === `/${lang}/` || currentPath === `/${lang}` || currentPath === '/' || currentPath === '/en' || currentPath === '/es';
+
+// Get all projects for the dropdown
+const projectIds = getProjectIds();
+const projectItems = projectIds.map(id => {
+  const project = getProject(id);
+  return {
+    id,
+    title: project?.title || id,
+    href: `/${lang}/projects/${id}`
+  };
+});
 
 const navItems = [
-  { label: t('nav.services'), href: '#services', scrollAdjust: 0 },
-  { label: t('nav.projects'), href: '#projects', scrollAdjust: 0 },
-  { label: t('nav.team'), href: '#about',    scrollAdjust: 0 },
-  { label: t('nav.awards'), href: '#awards',     scrollAdjust: 0 },
+  { label: t('nav.services'), href: isMainPage ? '#services' : `/${lang}/#services`, scrollAdjust: 0 },
+  { label: t('nav.projects'), href: isMainPage ? '#projects' : `/${lang}/#projects`, scrollAdjust: 0, hasDropdown: true },
+  { label: t('nav.team'), href: isMainPage ? '#about' : `/${lang}/#about`, scrollAdjust: 0 },
+  { label: t('nav.awards'), href: isMainPage ? '#awards' : `/${lang}/#awards`, scrollAdjust: 0 },
 ];
 
 ---
 
-<header class="fixed w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-sm" id="main-header">
-  <div class="mx-auto px-3 sm:px-6 md:px-10 py-2 sm:py-3 md:py-5">
+<header class={`fixed w-full z-50 transition-all duration-300 bg-white group/header ${!isMainPage ? 'project-page' : ''}`} id="main-header">
+  <div class="px-4 sm:px-6 md:px-12 py-2 sm:py-3 md:py-5">
     <div class="flex items-center justify-between">
-      <a href="/" class="flex items-center z-10 logo-link">
+      <a href={`/${lang}/`} class="flex items-center z-10 logo-link">
         <img
           src="/full_logo.png"
           alt="OSIX"
@@ -31,10 +49,24 @@ const navItems = [
       <nav class="hidden md:flex items-center justify-center flex-1">
         <div class="relative flex items-center space-x-1">
           {navItems.map((item, index) => {
-            return (
+            return item.hasDropdown ? (
+              <div class="relative group/dropdown nav-dropdown" data-index={index}>
+                <a
+                  href={item.href}
+                  class="relative px-4 sm:px-5 py-2 sm:py-3 text-base text-black sm:text-lg font-semibold transition-all duration-300 nav-item flex items-center gap-1"
+                  data-index={index}
+                  data-scroll-adjust={item.scrollAdjust}
+                >
+                  {item.label}
+                  <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </a>
+              </div>
+            ) : (
               <a
                 href={item.href}
-                class="relative px-4 sm:px-5 py-2 sm:py-3 text-sm sm:text-base font-medium transition-all duration-300 rounded-full hover:bg-black/5 nav-item"
+                class="relative px-4 sm:px-5 py-2 sm:py-3 text-black text-base sm:text-lg font-semibold transition-all duration-300 nav-item"
                 data-index={index}
                 data-scroll-adjust={item.scrollAdjust}
               >
@@ -48,7 +80,7 @@ const navItems = [
       
       <!-- CTA button -->
       <div class="hidden md:block">
-        <a href="#contact" class="inline-flex items-center justify-center h-9 sm:h-10 px-4 sm:px-5 py-0 text-sm font-medium bg-black text-white transition-all duration-300 hover:shadow-lg hover:shadow-black/20 hover:scale-105" data-scroll-adjust="-60">
+        <a href={isMainPage ? '#contact' : `/${lang}/#contact`} class="inline-flex items-center justify-center h-9 sm:h-10 px-4 sm:px-5 py-0 text-sm font-medium bg-black text-white transition-all duration-300 hover:shadow-lg hover:shadow-black/20 hover:scale-105" data-scroll-adjust="-60">
           <span>{t('nav.contact')}</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2 -mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -66,6 +98,23 @@ const navItems = [
     </div>
   </div>
   
+  <!-- Expandable Projects Section -->
+  <div class="projects-expansion absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-lg overflow-hidden transition-all duration-300">
+    <div class="px-3 sm:px-2 md:px-12 py-2">
+      <div class="flex flex-rown items-center justify-start py-3 gap-24">
+        {projectItems.map(project => (
+          <a
+            href={project.href}
+            class="group !max-w-[140px] flex flex-col items-start justify-center transition-all duration-200"
+          >
+            <h3 class="font-medium text-black group-hover:text-black transition-colors duration-200">{project.title}</h3>
+            <p class="text-sm text-gray-600 mt-1">View project →</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+  
   <!-- Menú móvil overlay -->
   <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-md flex flex-col items-center justify-start pt-20 opacity-0 pointer-events-none transition-all duration-300 z-40 overflow-hidden" aria-hidden="true">
     <!-- Botón de cierre -->
@@ -77,7 +126,29 @@ const navItems = [
 
     <nav class="flex flex-col items-center space-y-6 w-full max-w-md px-4">
       {navItems.map((item, index) => {
-        return (
+        return item.hasDropdown ? (
+          <div class="w-full">
+            <a
+              href={item.href}
+              class="text-2xl font-medium text-gray-800 transition-all duration-300 py-3 mobile-nav-item w-full text-center relative group block"
+              data-scroll-adjust={item.scrollAdjust}
+              style={`--index: ${index}`}
+            >
+              {item.label}
+              <span class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-black transition-all duration-300 transform -translate-x-1/2 group-hover:w-1/2"></span>
+            </a>
+            <div class="mt-2 space-y-1">
+              {projectItems.map(project => (
+                <a
+                  href={project.href}
+                  class="block px-8 py-2 text-lg text-gray-600 hover:text-black transition-colors duration-150"
+                >
+                  {project.title}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
           <a
             href={item.href}
             class="text-2xl font-medium text-gray-800 transition-all duration-300 py-3 mobile-nav-item w-full text-center relative group"
@@ -91,7 +162,7 @@ const navItems = [
       })}
       
       <div class="w-full max-w-xs pt-6">
-        <a href="#contact" class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium bg-black text-white transition-all duration-300 hover:opacity-90 hover:scale-105" data-scroll-adjust="-60">
+        <a href={isMainPage ? '#contact' : `/${lang}/#contact`} class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium bg-black text-white transition-all duration-300 hover:opacity-90 hover:scale-105" data-scroll-adjust="-60">
           {t('nav.mobile.contact')}
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -106,7 +177,7 @@ const navItems = [
 <script>
   // Script para manejar la navegación interactiva
 
-import { px } from "framer-motion";
+// Navigation script
 
   // Prevenir errores de TypeScript
 declare global {
@@ -118,10 +189,21 @@ declare global {
 document.addEventListener('DOMContentLoaded', () => {
     const header = document.getElementById('main-header');
     const heroSection = document.querySelector('section#home') as HTMLElement | null;
+    
+    // Immediately show header on project pages (no hero section)
+    if (!heroSection && header) {
+      header.classList.add('visible');
+    }
 
     // Show header only after the hero section scrolls out of view
     function toggleHeaderVisibility() {
-      if (!header || !heroSection) return;
+      if (!header) return;
+      
+      // If no hero section exists (like on project pages), always show header
+      if (!heroSection) {
+        header.classList.add('visible');
+        return;
+      }
 
       const heroBottom = heroSection.getBoundingClientRect().bottom;
       const logoContainer = document.getElementById('hero-logo-container');
@@ -146,20 +228,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeNavItem: HTMLElement | null = null;
     let disableIndicatorUpdate = false;
     
+    // Projects expansion handling
+    const projectsNavItem = document.querySelector('.nav-dropdown');
+    const projectsExpansion = document.querySelector('.projects-expansion') as HTMLElement;
+    let expansionTimeout: number | null = null;
+    
     // Función para actualizar el indicador de navegación y mostrar/ocultar el header según la sección
     function updateIndicatorBySection(sectionId: string) {
-      navItems.forEach(item => {
-        item.classList.remove('nav-active');
-      });
 
       const targetNavItem = document.querySelector(`nav .nav-item[href="#${sectionId}"]`) as HTMLElement;
       if (targetNavItem) {
-        targetNavItem.classList.add('nav-active');
         activeNavItem = targetNavItem;
 
         if (navIndicator) {
-          navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
-          navIndicator.style.left = `${targetNavItem.offsetLeft + 12}px`;
+          // Check if this is a dropdown item
+          const dropdownContainer = targetNavItem.closest('.nav-dropdown');
+          if (dropdownContainer) {
+            // For dropdown items, calculate position relative to container
+            const actualLeft = (dropdownContainer as HTMLElement).offsetLeft + targetNavItem.offsetLeft;
+            navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
+            navIndicator.style.left = `${actualLeft + 12}px`;
+          } else {
+            navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
+            navIndicator.style.left = `${targetNavItem.offsetLeft + 12}px`;
+          }
           navIndicator.style.opacity = '1';
         }
 
@@ -174,8 +266,15 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         // Si no se detecta sección activa (por scroll intermedio), mantener el último estado
         if (activeNavItem && navIndicator) {
-          navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
-          navIndicator.style.left = `${activeNavItem.offsetLeft + 12}px`;
+          const activeDropdownContainer = activeNavItem.closest('.nav-dropdown');
+          if (activeDropdownContainer) {
+            const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + activeNavItem.offsetLeft;
+            navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
+            navIndicator.style.left = `${actualLeft + 12}px`;
+          } else {
+            navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
+            navIndicator.style.left = `${activeNavItem.offsetLeft + 12}px`;
+          }
           navIndicator.style.opacity = '1';
         }
       }
@@ -183,49 +282,137 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Hover en elementos del menú
     navItems.forEach(item => {
-      item.addEventListener('mouseenter', () => {
-        if (!isMenuOpen && navIndicator) {
-          navIndicator.style.width = `${(item as HTMLElement).offsetWidth - 32}px`;
-          navIndicator.style.left = `${(item as HTMLElement).offsetLeft + 12}px`;
-          navIndicator.style.opacity = '1';
-          item.classList.add('nav-hover');
-        }
-      });
+      const navLink = item as HTMLElement;
+      const isProjectsItem = navLink.closest('.nav-dropdown') !== null;
       
-      item.addEventListener('mouseleave', () => {
-        if (!isMenuOpen && navIndicator) {
-          item.classList.remove('nav-hover');
-          
-          if (activeNavItem) {
-            navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
-            navIndicator.style.left = `${activeNavItem.offsetLeft + 12}px`;
+      // For Projects item with dropdown, we need to handle hover on the parent
+      if (isProjectsItem) {
+        const dropdownContainer = navLink.closest('.nav-dropdown') as HTMLElement;
+        console.log('Projects item detected:', {
+          navLink,
+          dropdownContainer,
+          navLinkText: navLink.textContent?.trim(),
+          navLinkOffsetWidth: navLink.offsetWidth,
+          navLinkOffsetLeft: navLink.offsetLeft,
+          dropdownOffsetWidth: dropdownContainer.offsetWidth,
+          dropdownOffsetLeft: dropdownContainer.offsetLeft
+        });
+        
+        dropdownContainer.addEventListener('mouseenter', () => {
+          if (!isMenuOpen && navIndicator) {
+            // For dropdown items, we need to use the container's offsetLeft since the link is positioned relative to it
+            const actualLeft = dropdownContainer.offsetLeft + navLink.offsetLeft;
+            console.log('Projects hover - positioning:', {
+              calculatedWidth: navLink.offsetWidth - 32,
+              calculatedLeft: actualLeft + 12,
+              navLinkOffsetLeft: navLink.offsetLeft,
+              dropdownOffsetLeft: dropdownContainer.offsetLeft,
+              actualLeft: actualLeft,
+              navLinkBounds: navLink.getBoundingClientRect(),
+              dropdownBounds: dropdownContainer.getBoundingClientRect(),
+              navIndicator
+            });
+            // Use the nav link inside the dropdown for positioning
+            navIndicator.style.width = `${navLink.offsetWidth - 32}px`;
+            navIndicator.style.left = `${actualLeft + 12}px`;
             navIndicator.style.opacity = '1';
-          } else {
-            navIndicator.style.opacity = '0';
+            navLink.classList.add('nav-hover');
           }
-        }
-      });
+        });
+        
+        dropdownContainer.addEventListener('mouseleave', () => {
+          if (!isMenuOpen && navIndicator) {
+            navLink.classList.remove('nav-hover');
+            
+            if (activeNavItem) {
+              const activeDropdownContainer = activeNavItem.closest('.nav-dropdown');
+              if (activeDropdownContainer) {
+                const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + activeNavItem.offsetLeft;
+                navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
+                navIndicator.style.left = `${actualLeft + 12}px`;
+              } else {
+                navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
+                navIndicator.style.left = `${activeNavItem.offsetLeft + 12}px`;
+              }
+              navIndicator.style.opacity = '1';
+            } else {
+              navIndicator.style.opacity = '0';
+            }
+          }
+        });
+      } else {
+        // Regular nav items without dropdown
+        console.log('Regular nav item:', {
+          navLink,
+          navLinkText: navLink.textContent?.trim(),
+          offsetWidth: navLink.offsetWidth,
+          offsetLeft: navLink.offsetLeft
+        });
+        
+        navLink.addEventListener('mouseenter', () => {
+          if (!isMenuOpen && navIndicator) {
+            console.log('Regular item hover - positioning:', {
+              item: navLink.textContent?.trim(),
+              calculatedWidth: navLink.offsetWidth - 32,
+              calculatedLeft: navLink.offsetLeft + 12,
+              bounds: navLink.getBoundingClientRect()
+            });
+            navIndicator.style.width = `${navLink.offsetWidth - 32}px`;
+            navIndicator.style.left = `${navLink.offsetLeft + 12}px`;
+            navIndicator.style.opacity = '1';
+            navLink.classList.add('nav-hover');
+          }
+        });
+        
+        navLink.addEventListener('mouseleave', () => {
+          if (!isMenuOpen && navIndicator) {
+            navLink.classList.remove('nav-hover');
+            
+            if (activeNavItem) {
+              const activeDropdownContainer = activeNavItem.closest('.nav-dropdown');
+              if (activeDropdownContainer) {
+                const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + activeNavItem.offsetLeft;
+                navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
+                navIndicator.style.left = `${actualLeft + 12}px`;
+              } else {
+                navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
+                navIndicator.style.left = `${activeNavItem.offsetLeft + 12}px`;
+              }
+              navIndicator.style.opacity = '1';
+            } else {
+              navIndicator.style.opacity = '0';
+            }
+          }
+        });
+      }
     });
     
     // Scroll suave a secciones
     allNavLinks.forEach(link => {
       link.addEventListener('click', (e) => {
-        const targetId = link.getAttribute('href');
-        if (!targetId) return;
+        const targetHref = link.getAttribute('href');
+        if (!targetHref) return;
         
-        // Only intercept hash links, let regular links navigate normally
-        if (!targetId.startsWith('#')) return;
+        // Check if it's a hash link on the same page
+        const isHashLink = targetHref.startsWith('#');
+        const isHashLinkToOtherPage = targetHref.includes('/#');
+        
+        // Only intercept hash links on the same page
+        if (!isHashLink && !isHashLinkToOtherPage) return;
+        
+        // If it's a hash link to another page, let it navigate normally
+        if (isHashLinkToOtherPage) return;
         
         e.preventDefault();
         
         if (isMenuOpen) toggleMobileMenu();
         
-        const targetIdClean = targetId.substring(1);
+        const targetIdClean = targetHref.substring(1);
         disableIndicatorUpdate = true;
         
         navItems.forEach(item => {
           item.classList.remove('nav-active');
-          if (item.getAttribute('href') === targetId) {
+          if (item.getAttribute('href') === targetHref) {
             item.classList.add('nav-active');
             if (navIndicator) {
               navIndicator.style.width = `${(item as HTMLElement).offsetWidth - 32}px`;
@@ -240,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Use smooth scrolling for a consistent experience
           smoothScrollTo(0, 2000);
         } else {
-          const targetSection = document.querySelector(targetId);
+          const targetSection = document.querySelector(targetHref);
           if (targetSection && header) {
             const adjustAttr = link.getAttribute('data-scroll-adjust');
             const customAdjust = adjustAttr ? parseInt(adjustAttr) : 0;
@@ -461,8 +648,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure correct visibility state on initial load
     toggleHeaderVisibility();
     
-    // Force Home to be active on initial page load
-    updateIndicatorBySection('home');
+    // Force Home to be active on initial page load if on main page
+    if (heroSection) {
+      updateIndicatorBySection('home');
+    }
     
     // Event listeners
     window.addEventListener('scroll', handleScroll);
@@ -487,9 +676,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (logoLink) {
       logoLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        // Use the smooth scroll function for the logo as well
-        smoothScrollTo(0, 2000);
+        const logoHref = logoLink.getAttribute('href');
+        // Only prevent default for same-page navigation
+        if (window.location.pathname === logoHref || logoHref === '/') {
+          e.preventDefault();
+          // Use the smooth scroll function for the logo as well
+          smoothScrollTo(0, 2000);
+        }
+        // Otherwise, let the browser handle the navigation
       });
     }
     
@@ -502,6 +696,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isTouchDevice()) {
       document.documentElement.classList.add('touch-device');
     }
+    
+    // Handle projects expansion
+    if (projectsNavItem && projectsExpansion) {
+      function showExpansion() {
+        if (expansionTimeout) {
+          clearTimeout(expansionTimeout);
+          expansionTimeout = null;
+        }
+        projectsExpansion.classList.add('expanded');
+        projectsNavItem.classList.add('expanded');
+      }
+      
+      function hideExpansion() {
+        expansionTimeout = window.setTimeout(() => {
+          projectsExpansion.classList.remove('expanded');
+          projectsNavItem.classList.remove('expanded');
+        }, 200);
+      }
+      
+      projectsNavItem.addEventListener('mouseenter', showExpansion);
+      projectsNavItem.addEventListener('mouseleave', hideExpansion);
+      projectsExpansion.addEventListener('mouseenter', showExpansion);
+      projectsExpansion.addEventListener('mouseleave', hideExpansion);
+    }
   });
 </script>
 
@@ -511,7 +729,15 @@ document.addEventListener('DOMContentLoaded', () => {
     font-weight: 500;
     transform: translateY(-100%);
     opacity: 0;
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    background-color: #ffffff !important;
+    transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Project pages should show header immediately */
+  #main-header.project-page {
+    transform: translateY(0);
+    opacity: 1;
   }
 
   #main-header.visible {
@@ -520,10 +746,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /* Estilos para la navegación limpia */
-  .scrolled {
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  #main-header.scrolled {
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
   
   /* Estilos para elementos de navegación */
@@ -535,16 +760,6 @@ document.addEventListener('DOMContentLoaded', () => {
     letter-spacing: 0.01em;
     position: relative;
     transition: color 0.3s ease;
-  }
-  
-  .nav-item:hover {
-    color: rgba(0, 0, 0, 0.9);
-  }
-  
-  /* Estilo para item activo */
-  .nav-active {
-    color: #000;
-    font-weight: 500;
   }
   
   /* Mejorar la transición del indicador */
@@ -769,5 +984,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
   #mobile-close:hover {
     transform: rotate(90deg);
+  }
+
+  /* Expandable Projects Section */
+  .projects-expansion {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Show expansion when expanded class is added */
+  .projects-expansion.expanded {
+    max-height: 400px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Ensure smooth transitions */
+  .nav-dropdown {
+    position: relative;
+  }
+  
+  /* Add hover effect to project items */
+  .projects-expansion a {
+    transition: all 0.2s ease;
+  }
+  
+  .projects-expansion a:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Rotate dropdown arrow when expanded */
+  .nav-dropdown.expanded svg {
+    transform: rotate(180deg);
+  }
+
+  /* Mobile dropdown adjustments */
+  @media (max-width: 768px) {
+    .nav-dropdown svg {
+      display: none;
+    }
+    
+    /* Hide expansion on mobile */
+    .projects-expansion {
+      display: none;
+    }
   }
 </style>
