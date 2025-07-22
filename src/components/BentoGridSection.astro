@@ -1,6 +1,7 @@
 ---
 import { getImage } from "astro:assets";
 import servicesImage from "../assets/services.png";
+import { Bot, Fingerprint, Layers } from "lucide-astro";
 
 const { lang } = Astro.params;
 const translations = await import(`../../public/locales/${lang}.json`);
@@ -25,7 +26,7 @@ const manifestoItems = [
     type: 'card',
     gridArea: 'value1',
     data: {
-      svgIcon: `<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>`,
+      iconName: "Bot",
       title: t("bento.cards.ai_assistant.title"),
       back_text: t("bento.cards.ai_assistant.back_text")
     }
@@ -85,7 +86,7 @@ const manifestoItems = [
     type: 'card',
     gridArea: 'value2',
     data: {
-      svgIcon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>`,
+      iconName: "Fingerprint",
       title: t("bento.cards.cybersecurity.title"),
       back_text: t("bento.cards.cybersecurity.back_text")
     }
@@ -94,7 +95,7 @@ const manifestoItems = [
     type: 'card',
     gridArea: 'value3',
     data: {
-      svgIcon: `<path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m4.93 19.07 1.41-1.41"/><path d="m17.66 6.34 1.41-1.41"/>`,
+      iconName: "Layers",
       title: t("bento.cards.automation.title"),
       back_text: t("bento.cards.automation.back_text")
     }
@@ -136,7 +137,9 @@ const manifestoItems = [
                     </svg>
                   </div>
                   <div class="value-icon-wrapper">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" set:html={item.data.svgIcon}></svg>
+                    {item.data.iconName === 'Bot' && <Bot class="w-9 h-9 text-gray-900" stroke-width="1.5" />}
+                    {item.data.iconName === 'Fingerprint' && <Fingerprint class="w-9 h-9 text-gray-900" stroke-width="1.5" />}
+                    {item.data.iconName === 'Layers' && <Layers class="w-9 h-9 text-gray-900" stroke-width="1.5" />}
                   </div>
                   <h4 class="value-title" set:html={item.data.title}></h4>
                 </div>
