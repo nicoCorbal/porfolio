@@ -157,7 +157,8 @@ try {
 <script>
   import { initEmailJS, sendEmail } from '../utils/emailjs.js';
 
-  document.addEventListener('DOMContentLoaded', () => {
+  // Function to initialize contact section
+  function initializeContactSection() {
     // EmailJS Initialization
     initEmailJS();
     
@@ -352,7 +353,13 @@ try {
     }, { threshold: 0.2 });
 
     observer.observe(sectionContainer);
-  });
+  }
+
+  // Initialize on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', initializeContactSection);
+  
+  // Re-initialize on Astro page navigation (View Transitions)
+  document.addEventListener('astro:page-load', initializeContactSection);
 </script>
 
 <!-- Privacy Policy Modal -->

@@ -138,7 +138,8 @@ const awards = [
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  // Function to initialize awards animations
+  function initializeAwardsAnimations() {
     const sectionContainer = document.querySelector('.awards-section-container');
     if (!sectionContainer) return;
 
@@ -208,5 +209,11 @@ const awards = [
     }, { threshold: 0.1 });
 
     observer.observe(sectionContainer);
-  });
+  }
+
+  // Initialize on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', initializeAwardsAnimations);
+  
+  // Re-initialize on Astro page navigation (View Transitions)
+  document.addEventListener('astro:page-load', initializeAwardsAnimations);
 </script>

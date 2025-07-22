@@ -45,6 +45,7 @@ body {
   margin-left: 0 !important;
   width: 100%;
   margin-top: 0 !important;
+  margin-bottom: 5vh;
 }
 
 .section-title::before {

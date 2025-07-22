@@ -1,726 +1,566 @@
 ---
-import { getProjectIds, getProject } from '../data/projects';
-
 interface Props {
-  lang?: string;
+  lang: 'en' | 'es';
 }
 
-const { lang = 'en' } = Astro.props as Props;
-const translations = await import(`../../public/locales/${lang}.json`);
-const t = (k: string) => translations.default[k] || k;
+const { lang } = Astro.props;
 
-// Get current page path to determine if we're on a project page
-const currentPath = Astro.url.pathname;
-const isMainPage = currentPath === `/${lang}/` || currentPath === `/${lang}` || currentPath === '/' || currentPath === '/en' || currentPath === '/es';
+import locales from '../../public/locales/en.json';
+const t = locales;
 
-// Get all projects for the dropdown
-const projectIds = getProjectIds();
-const projectItems = projectIds.map(id => {
-  const project = getProject(id);
-  return {
-    id,
-    title: project?.title || id,
-    href: `/${lang}/projects/${id}`
-  };
-});
-
-const navItems = [
-  { label: t('nav.services'), href: isMainPage ? '#services' : `/${lang}/#services`, scrollAdjust: 0 },
-  { label: t('nav.projects'), href: isMainPage ? '#projects' : `/${lang}/#projects`, scrollAdjust: 0, hasDropdown: true },
-  { label: t('nav.team'), href: isMainPage ? '#about' : `/${lang}/#about`, scrollAdjust: 0 },
-  { label: t('nav.awards'), href: isMainPage ? '#awards' : `/${lang}/#awards`, scrollAdjust: 0 },
-];
-
+import { projects } from '../data/projects';
+import LanguageSelector from './LanguageSelector.astro';
 ---
 
-<header class={`fixed w-full z-50 transition-all duration-300 bg-white group/header ${!isMainPage ? 'project-page' : ''}`} id="main-header">
-  <div class="px-4 sm:px-6 md:px-12 py-2 sm:py-3 md:py-5">
-    <div class="flex items-center justify-between">
-      <a href={`/${lang}/`} class="flex items-center z-10 logo-link">
-        <img
-          src="/full_logo.png"
-          alt="OSIX"
-          class="h-7 sm:h-7 md:h-8 w-auto transition-transform duration-200"
-          id="logo-img"
-        />
-      </a>
-      
-      <!-- Navegación principal - Versión desktop -->
-      <nav class="hidden md:flex items-center justify-center flex-1">
-        <div class="relative flex items-center space-x-1">
-          {navItems.map((item, index) => {
-            return item.hasDropdown ? (
-              <div class="relative group/dropdown nav-dropdown" data-index={index}>
-                <a
-                  href={item.href}
-                  class="relative px-4 sm:px-5 py-2 sm:py-3 text-base text-black sm:text-lg font-semibold transition-all duration-300 nav-item flex items-center gap-1"
-                  data-index={index}
-                  data-scroll-adjust={item.scrollAdjust}
-                >
-                  {item.label}
-                  <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </a>
-              </div>
-            ) : (
-              <a
-                href={item.href}
-                class="relative px-4 sm:px-5 py-2 sm:py-3 text-black text-base sm:text-lg font-semibold transition-all duration-300 nav-item"
-                data-index={index}
-                data-scroll-adjust={item.scrollAdjust}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-          <div id="nav-indicator" class="absolute bottom-0 h-0.5 bg-black rounded-full transition-all duration-300 pointer-events-none opacity-0"></div>
-        </div>
-      </nav>
-      
-      <!-- CTA button -->
-      <div class="hidden md:block">
-        <a href={isMainPage ? '#contact' : `/${lang}/#contact`} class="inline-flex items-center justify-center h-9 sm:h-10 px-4 sm:px-5 py-0 text-sm font-medium bg-black text-white transition-all duration-300 hover:shadow-lg hover:shadow-black/20 hover:scale-105" data-scroll-adjust="-60">
-          <span>{t('nav.contact')}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2 -mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </a>
-      </div>
+<header id="main-header" class="fixed top-0 left-0 w-full bg-white transition-all duration-300 py-6 translate-y-[-100%] shadow-lg opacity-0 z-50 sm:px-12">
+    <nav class="flex flex-row items-center justify-between font-medium text-white" id="main-nav">
+      <!-- Logo and navigation container -->
 
-      <!-- Menú móvil -->
-      <button id="mobile-toggle" class="md:hidden flex items-center justify-center w-10 h-10 focus:outline-none z-10" aria-label={t('nav.menu.open')} aria-expanded="false">
-        <div class="burger-icon">
-          <span class="burger-line"></span>
-          <span class="burger-line"></span>
+      <a href={`/${lang}`} class="logo-link flex items-center font-bold text-2xl lg:text-3xl">
+        <img src="/full_logo.png" width="200">
+      </a>
+
+      <div class="flex items-center gap-8">
+        <!-- Desktop navigation -->
+        <ul class="hidden md:flex items-center text-black text-[18px] font-semibold lg:gap-8 md:gap-6 relative tracking-wider">
+          <li><a href={`/${lang}/#home`} class="nav-item hover:text-gray-300 transition-colors duration-200">Inicio</a></li>
+          <li><a href={`/${lang}/#services`} class="nav-item hover:text-gray-300 transition-colors duration-200">Servicios</a></li>
+          <li class="nav-dropdown relative">
+            <button class="nav-item hover:text-gray-300   text-[18px] font-semibold  transition-colors duration-200 cursor-pointer flex items-center gap-1">
+              Proyectos
+              <svg class="w-3 h-3 mt-0.5 nav-dropdown-arrow transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+          </li>
+          <li><a href={`/${lang}/#about`} class="nav-item hover:text-gray-300 transition-colors duration-200">Nosotros</a></li>
+          <li><a href={`/${lang}/#awards`} class="nav-item hover:text-gray-300 transition-colors duration-200">Premios</a></li>
+          <li><a href={`/${lang}/#contact`} class="nav-item hover:text-gray-300 transition-colors duration-200">Contacto</a></li>
+        </ul>
+        
+        <!-- Navigation indicator line -->
+        <div id="nav-indicator" class="absolute bottom-0 h-[2px] bg-black opacity-0 transition-all duration-300 ease-out"></div>
+      </div>
+      
+      <!-- Right side: Language selector -->
+      <div class="flex items-center gap-4 transition-opacity duration-300">
+        <div id="language-selector-wrapper">
+          <LanguageSelector currentLang={lang} />
         </div>
-      </button>
-    </div>
-  </div>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-toggle" class="md:hidden flex items-center justify-center w-10 h-10 relative" aria-label="Toggle menu">
+          <div class="burger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+      </div>
+    </nav>
   
-  <!-- Expandable Projects Section -->
-  <div class="projects-expansion absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-lg overflow-hidden transition-all duration-300">
-    <div class="px-3 sm:px-2 md:px-12 py-2">
-      <div class="flex flex-rown items-center justify-start py-3 gap-24">
-        {projectItems.map(project => (
-          <a
-            href={project.href}
-            class="group !max-w-[140px] flex flex-col items-start justify-center transition-all duration-200"
-          >
-            <h3 class="font-medium text-black group-hover:text-black transition-colors duration-200">{project.title}</h3>
-            <p class="text-sm text-gray-600 mt-1">View project →</p>
+  <!-- Projects expansion panel -->
+  <div class="projects-expansion absolute left-0 right-0 top-full bg-white shadow-lg overflow-hidden">
+    <div class=" sm:px-8 pt-2 pb-3">
+      <div class="flex flex-row items-center justify-start gap-8 max-w-6xl">
+        {Object.values(projects).map((project) => (
+          <a href={`/${lang}/projects/${project.id}`} class="group block transition-all duration-200 overflow-hidden">
+            <div class="p-4">
+              <h3 class="font-semibold text-black  transition-colors">{project.title}</h3>
+              <p class="text-sm text-gray-600 mt-1">{project.category}</p>
+            </div>
           </a>
         ))}
       </div>
     </div>
   </div>
-  
-  <!-- Menú móvil overlay -->
-  <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-md flex flex-col items-center justify-start pt-20 opacity-0 pointer-events-none transition-all duration-300 z-40 overflow-hidden" aria-hidden="true">
-    <!-- Botón de cierre -->
-    <button id="mobile-close" class="absolute top-4 right-4 p-2 text-gray-600 hover:text-black transition-colors duration-200" aria-label={t('nav.menu.close')}>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-
-    <nav class="flex flex-col items-center space-y-6 w-full max-w-md px-4">
-      {navItems.map((item, index) => {
-        return item.hasDropdown ? (
-          <div class="w-full">
-            <a
-              href={item.href}
-              class="text-2xl font-medium text-gray-800 transition-all duration-300 py-3 mobile-nav-item w-full text-center relative group block"
-              data-scroll-adjust={item.scrollAdjust}
-              style={`--index: ${index}`}
-            >
-              {item.label}
-              <span class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-black transition-all duration-300 transform -translate-x-1/2 group-hover:w-1/2"></span>
-            </a>
-            <div class="mt-2 space-y-1">
-              {projectItems.map(project => (
-                <a
-                  href={project.href}
-                  class="block px-8 py-2 text-lg text-gray-600 hover:text-black transition-colors duration-150"
-                >
-                  {project.title}
-                </a>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <a
-            href={item.href}
-            class="text-2xl font-medium text-gray-800 transition-all duration-300 py-3 mobile-nav-item w-full text-center relative group"
-            data-scroll-adjust={item.scrollAdjust}
-            style={`--index: ${index}`}
-          >
-            {item.label}
-            <span class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-black transition-all duration-300 transform -translate-x-1/2 group-hover:w-1/2"></span>
-          </a>
-        );
-      })}
-      
-      <div class="w-full max-w-xs pt-6">
-        <a href={isMainPage ? '#contact' : `/${lang}/#contact`} class="flex items-center justify-center w-full px-6 py-4 text-lg font-medium bg-black text-white transition-all duration-300 hover:opacity-90 hover:scale-105" data-scroll-adjust="-60">
-          {t('nav.mobile.contact')}
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </a>
-      </div>
-    </nav>
-  </div>
-
 </header>
 
+<!-- Mobile menu -->
+<div id="mobile-menu" class="fixed inset-0 bg-black z-[60] flex items-center justify-center">
+  <button id="mobile-close" class="absolute top-4 right-4 text-white p-2" aria-label="Close menu">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+  
+  <nav class="text-center">
+    <ul class="space-y-6">
+      <li class="mobile-nav-item"><a href={`/${lang}/#home`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Inicio</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#services`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Servicios</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/projects`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Proyectos</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#about`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Nosotros</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#awards`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Premios</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#contact`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Contacto</a></li>
+    </ul>
+  </nav>
+</div>
+
 <script>
-  // Script para manejar la navegación interactiva
+// Type definitions
+interface TouchedWindow extends Window {
+  ontouchstart?: any;
+}
 
-// Navigation script
+// Global state
+interface HeaderState {
+  header: HTMLElement | null;
+  heroSection: HTMLElement | null;
+  navIndicator: HTMLElement | null;
+  activeNavItem: HTMLElement | null;
+  disableIndicatorUpdate: boolean;
+  isMenuOpen: boolean;
+  projectsExpansion: HTMLElement | null;
+  projectsNavItem: Element | null;
+  expansionTimeout: number | null;
+  scrollListener: (() => void) | null;
+  resizeListener: (() => void) | null;
+}
 
-  // Prevenir errores de TypeScript
-declare global {
-  interface Window {
-    ontouchstart?: any;
+const state: HeaderState = {
+  header: null,
+  heroSection: null,
+  navIndicator: null,
+  activeNavItem: null,
+  disableIndicatorUpdate: false,
+  isMenuOpen: false,
+  projectsExpansion: null,
+  projectsNavItem: null,
+  expansionTimeout: null,
+  scrollListener: null,
+  resizeListener: null
+};
+
+// Clean up existing listeners
+function cleanupListeners() {
+  if (state.scrollListener) {
+    window.removeEventListener('scroll', state.scrollListener);
+    state.scrollListener = null;
+  }
+  if (state.resizeListener) {
+    window.removeEventListener('resize', state.resizeListener);
+    state.resizeListener = null;
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const header = document.getElementById('main-header');
-    const heroSection = document.querySelector('section#home') as HTMLElement | null;
-    
-    // Immediately show header on project pages (no hero section)
-    if (!heroSection && header) {
-      header.classList.add('visible');
-    }
-
-    // Show header only after the hero section scrolls out of view
-    function toggleHeaderVisibility() {
-      if (!header) return;
-      
-      // If no hero section exists (like on project pages), always show header
-      if (!heroSection) {
-        header.classList.add('visible');
-        return;
-      }
-
-      const heroBottom = heroSection.getBoundingClientRect().bottom;
-      const logoContainer = document.getElementById('hero-logo-container');
-
-      if (heroBottom <= header.offsetHeight + 200) {
-        header.classList.add('visible');
-        if (logoContainer) logoContainer.style.opacity = '0';
-      } else {
-        header.classList.remove('visible');
-        if (logoContainer) logoContainer.style.opacity = '1';
-      }
-    }
-    const navItems = document.querySelectorAll('.nav-item');
-    const navIndicator = document.getElementById('nav-indicator');
-    const mobileToggle = document.getElementById('mobile-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileClose = document.getElementById('mobile-close');
-    const burgerIcon = document.querySelector('.burger-icon');
-    const allNavLinks = document.querySelectorAll('nav .nav-item');
-    const logoLink = document.querySelector('.logo-link');
-    let isMenuOpen = false;
-    let activeNavItem: HTMLElement | null = null;
-    let disableIndicatorUpdate = false;
-    
-    // Projects expansion handling
-    const projectsNavItem = document.querySelector('.nav-dropdown');
-    const projectsExpansion = document.querySelector('.projects-expansion') as HTMLElement;
-    let expansionTimeout: number | null = null;
-    
-    // Función para actualizar el indicador de navegación y mostrar/ocultar el header según la sección
-    function updateIndicatorBySection(sectionId: string) {
-
-      const targetNavItem = document.querySelector(`nav .nav-item[href="#${sectionId}"]`) as HTMLElement;
-      if (targetNavItem) {
-        activeNavItem = targetNavItem;
-
-        if (navIndicator) {
-          // Check if this is a dropdown item
-          const dropdownContainer = targetNavItem.closest('.nav-dropdown');
-          if (dropdownContainer) {
-            // For dropdown items, calculate position relative to container
-            const actualLeft = (dropdownContainer as HTMLElement).offsetLeft + targetNavItem.offsetLeft;
-            navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
-            navIndicator.style.left = `${actualLeft + 12}px`;
-          } else {
-            navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
-            navIndicator.style.left = `${targetNavItem.offsetLeft + 12}px`;
-          }
-          navIndicator.style.opacity = '1';
-        }
-
-        header?.classList.add('visible');
-      } else if (sectionId === 'contact') {
-        // Ocultar el indicador y el header solo en la sección de contacto
-        activeNavItem = null;
-        if (navIndicator) {
-          navIndicator.style.opacity = '0';
-        }
-        header?.classList.remove('visible');
-      } else {
-        // Si no se detecta sección activa (por scroll intermedio), mantener el último estado
-        if (activeNavItem && navIndicator) {
-          const activeDropdownContainer = activeNavItem.closest('.nav-dropdown');
-          if (activeDropdownContainer) {
-            const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + activeNavItem.offsetLeft;
-            navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
-            navIndicator.style.left = `${actualLeft + 12}px`;
-          } else {
-            navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
-            navIndicator.style.left = `${activeNavItem.offsetLeft + 12}px`;
-          }
-          navIndicator.style.opacity = '1';
-        }
-      }
-    }
-    
-    // Hover en elementos del menú
-    navItems.forEach(item => {
-      const navLink = item as HTMLElement;
-      const isProjectsItem = navLink.closest('.nav-dropdown') !== null;
-      
-      // For Projects item with dropdown, we need to handle hover on the parent
-      if (isProjectsItem) {
-        const dropdownContainer = navLink.closest('.nav-dropdown') as HTMLElement;
-        console.log('Projects item detected:', {
-          navLink,
-          dropdownContainer,
-          navLinkText: navLink.textContent?.trim(),
-          navLinkOffsetWidth: navLink.offsetWidth,
-          navLinkOffsetLeft: navLink.offsetLeft,
-          dropdownOffsetWidth: dropdownContainer.offsetWidth,
-          dropdownOffsetLeft: dropdownContainer.offsetLeft
-        });
-        
-        dropdownContainer.addEventListener('mouseenter', () => {
-          if (!isMenuOpen && navIndicator) {
-            // For dropdown items, we need to use the container's offsetLeft since the link is positioned relative to it
-            const actualLeft = dropdownContainer.offsetLeft + navLink.offsetLeft;
-            console.log('Projects hover - positioning:', {
-              calculatedWidth: navLink.offsetWidth - 32,
-              calculatedLeft: actualLeft + 12,
-              navLinkOffsetLeft: navLink.offsetLeft,
-              dropdownOffsetLeft: dropdownContainer.offsetLeft,
-              actualLeft: actualLeft,
-              navLinkBounds: navLink.getBoundingClientRect(),
-              dropdownBounds: dropdownContainer.getBoundingClientRect(),
-              navIndicator
-            });
-            // Use the nav link inside the dropdown for positioning
-            navIndicator.style.width = `${navLink.offsetWidth - 32}px`;
-            navIndicator.style.left = `${actualLeft + 12}px`;
-            navIndicator.style.opacity = '1';
-            navLink.classList.add('nav-hover');
-          }
-        });
-        
-        dropdownContainer.addEventListener('mouseleave', () => {
-          if (!isMenuOpen && navIndicator) {
-            navLink.classList.remove('nav-hover');
-            
-            if (activeNavItem) {
-              const activeDropdownContainer = activeNavItem.closest('.nav-dropdown');
-              if (activeDropdownContainer) {
-                const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + activeNavItem.offsetLeft;
-                navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
-                navIndicator.style.left = `${actualLeft + 12}px`;
-              } else {
-                navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
-                navIndicator.style.left = `${activeNavItem.offsetLeft + 12}px`;
-              }
-              navIndicator.style.opacity = '1';
-            } else {
-              navIndicator.style.opacity = '0';
-            }
-          }
-        });
-      } else {
-        // Regular nav items without dropdown
-        console.log('Regular nav item:', {
-          navLink,
-          navLinkText: navLink.textContent?.trim(),
-          offsetWidth: navLink.offsetWidth,
-          offsetLeft: navLink.offsetLeft
-        });
-        
-        navLink.addEventListener('mouseenter', () => {
-          if (!isMenuOpen && navIndicator) {
-            console.log('Regular item hover - positioning:', {
-              item: navLink.textContent?.trim(),
-              calculatedWidth: navLink.offsetWidth - 32,
-              calculatedLeft: navLink.offsetLeft + 12,
-              bounds: navLink.getBoundingClientRect()
-            });
-            navIndicator.style.width = `${navLink.offsetWidth - 32}px`;
-            navIndicator.style.left = `${navLink.offsetLeft + 12}px`;
-            navIndicator.style.opacity = '1';
-            navLink.classList.add('nav-hover');
-          }
-        });
-        
-        navLink.addEventListener('mouseleave', () => {
-          if (!isMenuOpen && navIndicator) {
-            navLink.classList.remove('nav-hover');
-            
-            if (activeNavItem) {
-              const activeDropdownContainer = activeNavItem.closest('.nav-dropdown');
-              if (activeDropdownContainer) {
-                const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + activeNavItem.offsetLeft;
-                navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
-                navIndicator.style.left = `${actualLeft + 12}px`;
-              } else {
-                navIndicator.style.width = `${activeNavItem.offsetWidth - 32}px`;
-                navIndicator.style.left = `${activeNavItem.offsetLeft + 12}px`;
-              }
-              navIndicator.style.opacity = '1';
-            } else {
-              navIndicator.style.opacity = '0';
-            }
-          }
-        });
-      }
-    });
-    
-    // Scroll suave a secciones
-    allNavLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        const targetHref = link.getAttribute('href');
-        if (!targetHref) return;
-        
-        // Check if it's a hash link on the same page
-        const isHashLink = targetHref.startsWith('#');
-        const isHashLinkToOtherPage = targetHref.includes('/#');
-        
-        // Only intercept hash links on the same page
-        if (!isHashLink && !isHashLinkToOtherPage) return;
-        
-        // If it's a hash link to another page, let it navigate normally
-        if (isHashLinkToOtherPage) return;
-        
-        e.preventDefault();
-        
-        if (isMenuOpen) toggleMobileMenu();
-        
-        const targetIdClean = targetHref.substring(1);
-        disableIndicatorUpdate = true;
-        
-        navItems.forEach(item => {
-          item.classList.remove('nav-active');
-          if (item.getAttribute('href') === targetHref) {
-            item.classList.add('nav-active');
-            if (navIndicator) {
-              navIndicator.style.width = `${(item as HTMLElement).offsetWidth - 32}px`;
-              navIndicator.style.left = `${(item as HTMLElement).offsetLeft + 12}px`;
-              navIndicator.style.opacity = '1';
-              activeNavItem = item as HTMLElement;
-            }
-          }
-        });
-        
-        if (targetIdClean === 'home') {
-          // Use smooth scrolling for a consistent experience
-          smoothScrollTo(0, 2000);
-        } else {
-          const targetSection = document.querySelector(targetHref);
-          if (targetSection && header) {
-            const adjustAttr = link.getAttribute('data-scroll-adjust');
-            const customAdjust = adjustAttr ? parseInt(adjustAttr) : 0;
-            const headerHeight = header.offsetHeight;
-            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - customAdjust;
-            
-            // Improved smooth scrolling
-            smoothScrollTo(targetPosition, 2000);
-          }
-        }
-        
-        setTimeout(() => {
-          disableIndicatorUpdate = false;
-        }, 2000);
-      });
-    });
-    
-    // Helper function for smoother scrolling
-    function smoothScrollTo(targetPosition: number, duration: number) {
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      let startTime: number | null = null;
-      
-      function animation(currentTime: number) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1);
-        const ease = easeInOutCubic(progress);
-        
-        window.scrollTo(0, startPosition + distance * ease);
-        
-        if (timeElapsed < duration) {
-          requestAnimationFrame(animation);
-        }
-      }
-      
-      // Easing function for smoother acceleration and deceleration
-      function easeInOutCubic(t: number) {
-        return t < 0.5 
-          ? 4 * t * t * t 
-          : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      }
-      
-      requestAnimationFrame(animation);
-    }
-    
-    // Activar enlaces según la sección visible
-    function setActiveNavItem() {
-      if (disableIndicatorUpdate || !header) return;
-
-      // Get all sections that have IDs
-      const sections = document.querySelectorAll('section[id]');
-      // Adjust scroll position to account for header height and provide some buffer
-      let scrollPosition = window.scrollY + header.offsetHeight;
-      let foundActiveSection = false;
-      
-      // First section (home) special handling - make it active for the first viewport height
-      const firstSection = document.querySelector('section#home') || document.querySelector('section:first-of-type');
-      if (firstSection && scrollPosition < (firstSection as HTMLElement).offsetHeight) {
-        updateIndicatorBySection('home');
-        return;
-      }
-      
-      // Check each section
-      sections.forEach(section => {
-        const sectionTop = (section as HTMLElement).offsetTop - header.offsetHeight; // Account for fixed header
-        const sectionHeight = (section as HTMLElement).offsetHeight;
-        const sectionId = section.getAttribute('id');
-        
-        // Check if current scroll position is within this section
-        if (sectionId && 
-            scrollPosition >= sectionTop && 
-            scrollPosition < sectionTop + sectionHeight) {
-          updateIndicatorBySection(sectionId);
-          foundActiveSection = true;
-        }
-      });
-      
-      // Default to home if no section is found active
-      if (!foundActiveSection) {
-        updateIndicatorBySection('home');
-      }
-    }
-    
-    // Efectos de scroll
-    function handleScroll() {
-      if (!header) return;
-      
-      if (window.scrollY > 20) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
-      
-      setActiveNavItem();
-      // Show or hide the header based on hero visibility
-      toggleHeaderVisibility();
-    }
-    
-    // Toggle del menú móvil
-    function toggleMobileMenu() {
-      if (!mobileMenu || !mobileToggle || !burgerIcon) return;
-      
-      isMenuOpen = !isMenuOpen;
-      mobileMenu.setAttribute('aria-hidden', String(!isMenuOpen));
-      mobileToggle.setAttribute('aria-expanded', String(isMenuOpen));
-      
-      if (isMenuOpen) {
-        mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
-        mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
-        document.body.style.overflow = 'hidden';
-        
-        // Reiniciar las animaciones de los elementos del menú
-        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
-        mobileNavItems.forEach((item, index) => {
-          item.classList.remove('animated');
-          void (item as HTMLElement).offsetWidth; // Forzar reflow
-          (item as HTMLElement).style.animationDelay = `${index * 0.1}s`;
-          item.classList.add('animated');
-        });
-      } else {
-        mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
-        mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-        document.body.style.overflow = '';
-      }
-    }
-    
-    if (mobileToggle) {
-      mobileToggle.addEventListener('click', toggleMobileMenu);
-    }
-
-    if (mobileClose) {
-      mobileClose.addEventListener('click', toggleMobileMenu);
-    }
-    
-    // Cerrar menú al hacer clic en un enlace
-    const mobileLinks = mobileMenu?.querySelectorAll('a');
-    mobileLinks?.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        // Guardar referencias antes de cerrar el menú
-        const targetId = link.getAttribute('href');
-        if (!targetId || !header) return;
-        
-        const targetIdClean = targetId.substring(1);
-        const adjustAttr = link.getAttribute('data-scroll-adjust');
-        const customAdjust = adjustAttr ? parseInt(adjustAttr) : 0;
-        
-        // Cerrar el menú con un pequeño retraso para que se vea la animación
-        if (isMenuOpen) {
-          // Añadir clase de animación de salida
-          link.classList.add('clicked');
-          
-          // Retrasar el cierre del menú para permitir que se vea la animación
-          setTimeout(() => {
-            toggleMobileMenu();
-            
-            // Navegar después de cerrar el menú
-            setTimeout(() => {
-              if (targetIdClean === 'home') {
-                // Use smooth scrolling for a consistent experience
-                smoothScrollTo(0, 800);
-              } else {
-                const targetSection = document.querySelector(targetId);
-                if (targetSection) {
-                  const headerHeight = header.offsetHeight;
-                  const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - customAdjust;
-                  
-                  // Use smooth scrolling for direct navigation too
-                  smoothScrollTo(targetPosition, 1000);
-                }
-              }
-            }, 300); // Retraso para la navegación después de cerrar el menú
-          }, 200); // Retraso para cerrar el menú
-        } else {
-          // Si el menú ya está cerrado, navegar directamente
-          if (targetIdClean === 'home') {
-            // Use smooth scrolling for a consistent experience
-            smoothScrollTo(0, 800);
-          } else {
-            const targetSection = document.querySelector(targetId);
-            if (targetSection) {
-              const headerHeight = header.offsetHeight;
-              const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - customAdjust;
-              
-              // Use smooth scrolling for direct navigation too
-              smoothScrollTo(targetPosition, 1000);
-            }
-          }
-        }
-      });
-    });
-    
-    // Add event listener for contact buttons (desktop and mobile)
-    const contactButtons = document.querySelectorAll('a[href="#contact"]');
-    contactButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        if (isMenuOpen) toggleMobileMenu();
-        
-        const contactSection = document.querySelector('#contact');
-        if (contactSection && header) {
-          const adjustAttr = button.getAttribute('data-scroll-adjust');
-          const customAdjust = adjustAttr ? parseInt(adjustAttr) : 0;
-          const headerHeight = header.offsetHeight;
-          const targetPosition = contactSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - customAdjust;
-            
-          // Use the same smooth scrolling function
-          smoothScrollTo(targetPosition, 2000);
-        }
-      });
-    });
-    
-    // Inicialización
-    handleScroll();
-    // Ensure correct visibility state on initial load
+// Initialize header
+function initializeHeader() {
+  cleanupListeners();
+  
+  // Get DOM elements
+  state.header = document.getElementById('main-header');
+  state.heroSection = document.querySelector('section#home') as HTMLElement | null;
+  state.navIndicator = document.getElementById('nav-indicator');
+  state.projectsExpansion = document.querySelector('.projects-expansion') as HTMLElement;
+  state.projectsNavItem = document.querySelector('.nav-dropdown');
+  
+  // Reset state
+  state.activeNavItem = null;
+  state.disableIndicatorUpdate = false;
+  state.expansionTimeout = null;
+  
+  // Show header on project pages
+  if (!state.heroSection && state.header) {
+    state.header.classList.add('visible');
+  }
+  
+  // Reset nav indicator
+  if (state.navIndicator) {
+    state.navIndicator.style.opacity = '0';
+  }
+  
+  // Set up all functionality
+  setupToggleHeaderVisibility();
+  setupNavigation();
+  setupMobileMenu();
+  setupProjectsDropdown();
+  setupScrollHandlers();
+  
+  // Initial check
+  if (state.heroSection) {
     toggleHeaderVisibility();
-    
-    // Force Home to be active on initial page load if on main page
-    if (heroSection) {
-      updateIndicatorBySection('home');
-    }
-    
-    // Event listeners
-    window.addEventListener('scroll', handleScroll);
-    
-    // Manejar el evento de redimensionamiento de ventana para actualizar el indicador
-    window.addEventListener('resize', () => {
-      if (activeNavItem && navIndicator) {
-        navIndicator.style.width = `${activeNavItem.offsetWidth - 40}px`;
-        navIndicator.style.left = `${activeNavItem.offsetLeft + 20}px`;
+  }
+  setActiveNavItem();
+}
+
+// Toggle header visibility based on scroll
+function toggleHeaderVisibility() {
+  if (!state.header) return;
+  
+  if (!state.heroSection) {
+    state.header.classList.add('visible');
+    return;
+  }
+
+  const heroBottom = state.heroSection.getBoundingClientRect().bottom;
+  const logoContainer = document.getElementById('hero-logo-container');
+
+  if (heroBottom <= state.header.offsetHeight + 200) {
+    state.header.classList.add('visible');
+    if (logoContainer) logoContainer.style.opacity = '0';
+  } else {
+    state.header.classList.remove('visible');
+    if (logoContainer) logoContainer.style.opacity = '1';
+  }
+}
+
+// Setup toggle header visibility
+function setupToggleHeaderVisibility() {
+  if (!state.heroSection) return;
+  
+  state.scrollListener = () => {
+    toggleHeaderVisibility();
+    setActiveNavItem();
+  };
+  
+  window.addEventListener('scroll', state.scrollListener);
+}
+
+// Update nav indicator
+function updateIndicatorBySection(sectionId: string) {
+  const targetNavItem = document.querySelector(`nav .nav-item[href="#${sectionId}"]`) as HTMLElement;
+  
+  if (targetNavItem) {
+    state.activeNavItem = targetNavItem;
+
+    if (state.navIndicator) {
+      const dropdownContainer = targetNavItem.closest('.nav-dropdown');
+      if (dropdownContainer) {
+        const actualLeft = (dropdownContainer as HTMLElement).offsetLeft + targetNavItem.offsetLeft;
+        state.navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
+        state.navIndicator.style.left = `${actualLeft + 12}px`;
+      } else {
+        state.navIndicator.style.width = `${targetNavItem.offsetWidth - 32}px`;
+        state.navIndicator.style.left = `${targetNavItem.offsetLeft + 12}px`;
       }
-    });
-    
-    // Manejar el evento de orientación para dispositivos móviles
-    window.addEventListener('orientationchange', () => {
-      setTimeout(() => {
-        if (activeNavItem && navIndicator) {
-          navIndicator.style.width = `${activeNavItem.offsetWidth - 40}px`;
-          navIndicator.style.left = `${activeNavItem.offsetLeft + 20}px`;
-        }
-      }, 200);
-    });
-    
-    if (logoLink) {
-      logoLink.addEventListener('click', (e) => {
-        const logoHref = logoLink.getAttribute('href');
-        // Only prevent default for same-page navigation
-        if (window.location.pathname === logoHref || logoHref === '/') {
-          e.preventDefault();
-          // Use the smooth scroll function for the logo as well
-          smoothScrollTo(0, 2000);
-        }
-        // Otherwise, let the browser handle the navigation
-      });
+      state.navIndicator.style.opacity = '1';
     }
-    
-    // Detectar si es un dispositivo táctil
-    const isTouchDevice = () => {
-      return 'ontouchstart' in window || ('maxTouchPoints' in navigator && (navigator as any).maxTouchPoints > 0);
-    };
-    
-    // Si es un dispositivo táctil, ajustar el comportamiento del menú
-    if (isTouchDevice()) {
-      document.documentElement.classList.add('touch-device');
+
+    state.header?.classList.add('visible');
+  } else if (sectionId === 'contact') {
+    state.activeNavItem = null;
+    if (state.navIndicator) {
+      state.navIndicator.style.opacity = '0';
     }
+    state.header?.classList.remove('visible');
+  } else if (state.activeNavItem && state.navIndicator) {
+    const activeDropdownContainer = state.activeNavItem.closest('.nav-dropdown');
+    if (activeDropdownContainer) {
+      const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + state.activeNavItem.offsetLeft;
+      state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
+      state.navIndicator.style.left = `${actualLeft + 12}px`;
+    } else {
+      state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
+      state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 12}px`;
+    }
+    state.navIndicator.style.opacity = '1';
+  }
+}
+
+// Set active nav item based on scroll
+function setActiveNavItem() {
+  if (state.disableIndicatorUpdate || !state.header) return;
+
+  const sections = document.querySelectorAll('section[id]');
+  let scrollPosition = window.scrollY + state.header.offsetHeight;
+  let foundActiveSection = false;
+  
+  const firstSection = document.querySelector('section#home') || document.querySelector('section:first-of-type');
+  if (firstSection && scrollPosition < (firstSection as HTMLElement).offsetHeight) {
+    updateIndicatorBySection('home');
+    return;
+  }
+  
+  sections.forEach(section => {
+    const sectionTop = (section as HTMLElement).offsetTop - state.header!.offsetHeight;
+    const sectionHeight = (section as HTMLElement).offsetHeight;
+    const sectionId = section.getAttribute('id');
     
-    // Handle projects expansion
-    if (projectsNavItem && projectsExpansion) {
-      function showExpansion() {
-        if (expansionTimeout) {
-          clearTimeout(expansionTimeout);
-          expansionTimeout = null;
-        }
-        projectsExpansion.classList.add('expanded');
-        projectsNavItem.classList.add('expanded');
-      }
-      
-      function hideExpansion() {
-        expansionTimeout = window.setTimeout(() => {
-          projectsExpansion.classList.remove('expanded');
-          projectsNavItem.classList.remove('expanded');
-        }, 200);
-      }
-      
-      projectsNavItem.addEventListener('mouseenter', showExpansion);
-      projectsNavItem.addEventListener('mouseleave', hideExpansion);
-      projectsExpansion.addEventListener('mouseenter', showExpansion);
-      projectsExpansion.addEventListener('mouseleave', hideExpansion);
+    if (sectionId && 
+        scrollPosition >= sectionTop && 
+        scrollPosition < sectionTop + sectionHeight) {
+      updateIndicatorBySection(sectionId);
+      foundActiveSection = true;
     }
   });
+  
+  if (!foundActiveSection) {
+    updateIndicatorBySection('home');
+  }
+}
+
+// Setup navigation
+function setupNavigation() {
+  const navItems = document.querySelectorAll('.nav-item');
+  const allNavLinks = document.querySelectorAll('nav .nav-item');
+  const logoLink = document.querySelector('.logo-link');
+  
+  // Nav item hover
+  navItems.forEach(item => {
+    const navLink = item as HTMLElement;
+    const isProjectsItem = navLink.closest('.nav-dropdown') !== null;
+    
+    if (isProjectsItem) {
+      const dropdownParent = navLink.closest('.nav-dropdown') as HTMLElement;
+      dropdownParent.addEventListener('mouseenter', () => {
+        if (!state.navIndicator || state.disableIndicatorUpdate) return;
+        state.navIndicator.style.width = `${navLink.offsetWidth - 32}px`;
+        state.navIndicator.style.left = `${dropdownParent.offsetLeft + 12}px`;
+        state.navIndicator.style.opacity = '1';
+      });
+      
+      dropdownParent.addEventListener('mouseleave', () => {
+        if (!state.navIndicator || !state.activeNavItem || state.disableIndicatorUpdate) return;
+        const activeDropdownContainer = state.activeNavItem.closest('.nav-dropdown');
+        if (activeDropdownContainer) {
+          const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + state.activeNavItem.offsetLeft;
+          state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
+          state.navIndicator.style.left = `${actualLeft + 12}px`;
+        } else {
+          state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
+          state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 12}px`;
+        }
+        state.navIndicator.style.opacity = '1';
+      });
+    } else {
+      navLink.addEventListener('mouseenter', () => {
+        if (!state.navIndicator || state.disableIndicatorUpdate) return;
+        state.navIndicator.style.width = `${navLink.offsetWidth - 32}px`;
+        state.navIndicator.style.left = `${navLink.offsetLeft + 12}px`;
+        state.navIndicator.style.opacity = '1';
+      });
+      
+      navLink.addEventListener('mouseleave', () => {
+        if (!state.navIndicator || !state.activeNavItem || state.disableIndicatorUpdate) return;
+        const activeDropdownContainer = state.activeNavItem.closest('.nav-dropdown');
+        if (activeDropdownContainer) {
+          const actualLeft = (activeDropdownContainer as HTMLElement).offsetLeft + state.activeNavItem.offsetLeft;
+          state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
+          state.navIndicator.style.left = `${actualLeft + 12}px`;
+        } else {
+          state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 32}px`;
+          state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 12}px`;
+        }
+        state.navIndicator.style.opacity = '1';
+      });
+    }
+  });
+  
+  // Nav link clicks
+  allNavLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || !href.startsWith('#')) return;
+      
+      e.preventDefault();
+      state.disableIndicatorUpdate = true;
+      
+      const targetIdClean = href.substring(1);
+      const targetHref = `#${targetIdClean}`;
+      
+      allNavLinks.forEach(item => {
+        item.classList.remove('nav-active');
+        if (item.getAttribute('href') === targetHref) {
+          item.classList.add('nav-active');
+          if (state.navIndicator) {
+            state.navIndicator.style.width = `${(item as HTMLElement).offsetWidth - 32}px`;
+            state.navIndicator.style.left = `${(item as HTMLElement).offsetLeft + 12}px`;
+            state.navIndicator.style.opacity = '1';
+            state.activeNavItem = item as HTMLElement;
+          }
+        }
+      });
+      
+      if (targetIdClean === 'home') {
+        smoothScrollTo(0, 2000);
+      } else {
+        const targetSection = document.querySelector(targetHref);
+        if (targetSection && state.header) {
+          const adjustAttr = link.getAttribute('data-scroll-adjust');
+          const customAdjust = adjustAttr ? parseInt(adjustAttr) : 0;
+          const headerHeight = state.header.offsetHeight;
+          const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - customAdjust;
+          smoothScrollTo(targetPosition, 2000);
+        }
+      }
+      
+      setTimeout(() => {
+        state.disableIndicatorUpdate = false;
+      }, 2000);
+    });
+  });
+  
+  // Logo link
+  if (logoLink) {
+    logoLink.addEventListener('click', (e) => {
+      const logoHref = logoLink.getAttribute('href');
+      if (window.location.pathname === logoHref || logoHref === '/') {
+        e.preventDefault();
+        smoothScrollTo(0, 2000);
+      }
+    });
+  }
+}
+
+// Smooth scroll helper
+function smoothScrollTo(targetPosition: number, duration: number) {
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  let startTime: number | null = null;
+  
+  function animation(currentTime: number) {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+    const ease = easeInOutCubic(progress);
+    
+    window.scrollTo(0, startPosition + distance * ease);
+    
+    if (timeElapsed < duration) {
+      requestAnimationFrame(animation);
+    }
+  }
+  
+  function easeInOutCubic(t: number) {
+    return t < 0.5 
+      ? 4 * t * t * t 
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+  
+  requestAnimationFrame(animation);
+}
+
+// Setup mobile menu
+function setupMobileMenu() {
+  const mobileToggle = document.getElementById('mobile-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileClose = document.getElementById('mobile-close');
+  const burgerIcon = document.querySelector('.burger-icon');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  
+  if (mobileToggle && mobileMenu && mobileClose && burgerIcon) {
+    mobileToggle.addEventListener('click', () => {
+      state.isMenuOpen = true;
+      mobileMenu.classList.add('active');
+      document.body.classList.add('menu-open');
+      burgerIcon.classList.add('active');
+    });
+    
+    mobileClose.addEventListener('click', () => {
+      state.isMenuOpen = false;
+      mobileMenu.classList.remove('active');
+      document.body.classList.remove('menu-open');
+      burgerIcon.classList.remove('active');
+    });
+    
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        state.isMenuOpen = false;
+        mobileMenu.classList.remove('active');
+        document.body.classList.remove('menu-open');
+        burgerIcon.classList.remove('active');
+      });
+    });
+  }
+}
+
+// Setup projects dropdown
+function setupProjectsDropdown() {
+  if (!state.projectsNavItem || !state.projectsExpansion) return;
+  
+  const triggerEl = state.projectsNavItem as HTMLElement; // the <li.nav-dropdown>
+  const panelEl = state.projectsExpansion as HTMLElement; // the .projects-expansion container
+  
+  let hideTimer: number | null = null;
+  
+  function openPanel() {
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+    panelEl.classList.add('expanded');
+    triggerEl.classList.add('expanded');
+  }
+  
+  function scheduleClose() {
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+    }
+    // Wait a bit so the user can move the pointer from the trigger into the panel without collapse.
+    hideTimer = window.setTimeout(() => {
+      // If either the trigger or the panel is currently hovered or focused, keep it open.
+      const stillHovering = triggerEl.matches(':hover') || panelEl.matches(':hover');
+      const stillFocused = triggerEl.contains(document.activeElement) || panelEl.contains(document.activeElement);
+      if (stillHovering || stillFocused) return;
+      panelEl.classList.remove('expanded');
+      triggerEl.classList.remove('expanded');
+      hideTimer = null;
+    }, 250);
+  }
+  
+  // Pointer interactions
+  triggerEl.addEventListener('pointerenter', openPanel);
+  triggerEl.addEventListener('pointerleave', scheduleClose);
+  panelEl.addEventListener('pointerenter', openPanel);
+  panelEl.addEventListener('pointerleave', scheduleClose);
+  
+  // Keyboard accessibility: open on focus within trigger; close when focus leaves both.
+  triggerEl.addEventListener('focusin', openPanel);
+  panelEl.addEventListener('focusin', openPanel);
+  triggerEl.addEventListener('focusout', scheduleClose);
+  panelEl.addEventListener('focusout', scheduleClose);
+  
+  // Touch devices: tap toggles open/close.
+  triggerEl.addEventListener('click', (e) => {
+    // Prevent default button behavior from immediately navigating.
+    // Instead, toggle panel; second tap on the same control or a tap on a project link will navigate.
+    const isExpanded = triggerEl.classList.contains('expanded');
+    if (!isExpanded) {
+      e.preventDefault();
+      openPanel();
+    } else {
+      // allow normal navigation on second tap
+      scheduleClose();
+    }
+  }, { capture: true });
+}
+
+// Setup scroll handlers
+function setupScrollHandlers() {
+  // Resize handler
+  state.resizeListener = () => {
+    if (state.activeNavItem && state.navIndicator) {
+      state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 40}px`;
+      state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 20}px`;
+    }
+  };
+  window.addEventListener('resize', state.resizeListener);
+  
+  // Orientation change
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      if (state.activeNavItem && state.navIndicator) {
+        state.navIndicator.style.width = `${state.activeNavItem.offsetWidth - 40}px`;
+        state.navIndicator.style.left = `${state.activeNavItem.offsetLeft + 20}px`;
+      }
+    }, 200);
+  });
+  
+  // Touch device detection
+  const isTouchDevice = () => {
+    return 'ontouchstart' in window || ('maxTouchPoints' in navigator && (navigator as any).maxTouchPoints > 0);
+  };
+  
+  if (isTouchDevice()) {
+    document.documentElement.classList.add('touch-device');
+  }
+}
+
+// Initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initializeHeader);
+
+// Re-initialize on Astro page navigation
+document.addEventListener('astro:page-load', initializeHeader);
 </script>
 
 <style>
@@ -729,306 +569,124 @@ document.addEventListener('DOMContentLoaded', () => {
     font-weight: 500;
     transform: translateY(-100%);
     opacity: 0;
-    background-color: #ffffff !important;
-    transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
-  /* Project pages should show header immediately */
-  #main-header.project-page {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
   #main-header.visible {
     transform: translateY(0);
     opacity: 1;
   }
   
-  /* Estilos para la navegación limpia */
-  #main-header.scrolled {
-    background-color: #ffffff !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-  
-  /* Estilos para elementos de navegación */
-  .nav-item {
-    color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: 0.01em;
+  #main-nav {
     position: relative;
-    transition: color 0.3s ease;
   }
   
-  /* Mejorar la transición del indicador */
   #nav-indicator {
-    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-    z-index: 1;
-  }
-  
-  /* Efecto hover en el logo */
-  .logo-link {
-    transition: transform 0.3s ease;
-  }
-  
-  .logo-link:hover {
-    transform: scale(1.05);
-  }
-  
-  /* Estilos para el botón hamburguesa */
-  .burger-icon {
-    position: relative;
-    width: 24px;
-    height: 18px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .burger-line {
-    width: 100%;
-    height: 2px;
-    background-color: black;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: center;
-  }
-  
-  #mobile-toggle[aria-expanded="true"] .burger-line:first-child {
-    transform: translateY(8px) rotate(45deg);
-  }
-  
-  #mobile-toggle[aria-expanded="true"] .burger-line:last-child {
-    transform: translateY(-8px) rotate(-45deg);
-  }
-  
-  #mobile-menu[aria-hidden="false"] {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  
-  /* Animación de entrada para el menú móvil */
-  @keyframes fadeUpIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  #mobile-menu nav a {
-    animation: fadeUpIn 0.5s ease forwards;
-    animation-delay: calc(0.1s * var(--index, 0));
-    opacity: 0;
-  }
-  
-  #mobile-menu.opacity-100 {
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  
-  /* Mejora en animaciones de elementos del menu móvil */
-  .mobile-nav-item {
-    position: relative;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  
-  .mobile-nav-item.animated {
-    animation: fadeInUp 0.5s forwards;
-    animation-delay: var(--delay, 0s);
-  }
-  
-  #mobile-menu.opacity-100 .mobile-nav-item {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  /* Animación al hacer clic en un elemento del menú */
-  .mobile-nav-item.clicked {
-    animation: pulseOut 0.3s forwards;
-  }
-  
-  @keyframes pulseOut {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.05);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(0.95);
-      opacity: 0;
-    }
-  }
-  
-  .mobile-nav-item::after {
-    content: '';
     position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 1px;
-    background-color: #000;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
+    bottom: -4px;
+    height: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
   }
   
-  .mobile-nav-item:hover::after {
-    width: 30px;
+  .nav-dropdown-arrow {
+    transition: transform 0.2s ease;
   }
   
-  /* Mejoras en el menú móvil */
-  #mobile-menu {
-    transform: translateY(-100%);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-    height: 100vh;
-  }
-  
-  #mobile-menu.opacity-100 {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* Animaciones mejoradas para el menú móvil */
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .mobile-nav-item {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-  }
-
-  #mobile-menu.opacity-100 .mobile-nav-item {
-    animation: slideIn 0.5s forwards;
-    animation-delay: calc(0.1s * var(--index, 0));
-  }
-
-  .mobile-nav-item:hover {
-    color: #000;
-    transform: translateY(-2px);
-  }
-
-  /* Mejoras para dispositivos táctiles */
-  @media (max-width: 768px) {
-    .mobile-nav-item {
-      padding: 1rem 0;
-      font-size: 1.5rem;
-      width: 100%;
-      text-align: center;
-      touch-action: manipulation;
-    }
-
-    .burger-icon {
-      width: 24px;
-      height: 18px;
-      position: relative;
-      z-index: 50;
-    }
-
-    .burger-line {
-      background-color: #000;
-      height: 2px;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
-
-    #mobile-toggle[aria-expanded="true"] .burger-line:first-child {
-      transform: translateY(8px) rotate(45deg);
-    }
-
-    #mobile-toggle[aria-expanded="true"] .burger-line:last-child {
-      transform: translateY(-8px) rotate(-45deg);
-    }
-
-    #main-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-    }
-  }
-
-  /* Estilos para el botón de cierre */
-  #mobile-close {
-    transition: transform 0.3s ease;
-  }
-
-  #mobile-close:hover {
-    transform: rotate(90deg);
-  }
-
-  /* Expandable Projects Section */
-  .projects-expansion {
-    max-height: 0;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  /* Show expansion when expanded class is added */
-  .projects-expansion.expanded {
-    max-height: 400px;
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Ensure smooth transitions */
-  .nav-dropdown {
-    position: relative;
-  }
-  
-  /* Add hover effect to project items */
-  .projects-expansion a {
-    transition: all 0.2s ease;
-  }
-  
-  .projects-expansion a:hover {
-    transform: translateY(-4px);
-  }
-
-  /* Rotate dropdown arrow when expanded */
-  .nav-dropdown.expanded svg {
+  .nav-dropdown.expanded .nav-dropdown-arrow {
     transform: rotate(180deg);
   }
-
-  /* Mobile dropdown adjustments */
+  
+  .projects-expansion {
+    max-height: 0;
+    transition: max-height 0.6s ease-out;
+  }
+  
+  .projects-expansion.expanded {
+    max-height: 500px;
+  }
+  
+  #mobile-menu {
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  
+  #mobile-menu.active {
+    transform: translateX(0);
+  }
+  
+  .mobile-nav-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+  }
+  
+  #mobile-menu.active .mobile-nav-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  #mobile-menu.active .mobile-nav-item:nth-child(1) { transition-delay: 0.1s; }
+  #mobile-menu.active .mobile-nav-item:nth-child(2) { transition-delay: 0.2s; }
+  #mobile-menu.active .mobile-nav-item:nth-child(3) { transition-delay: 0.3s; }
+  #mobile-menu.active .mobile-nav-item:nth-child(4) { transition-delay: 0.4s; }
+  #mobile-menu.active .mobile-nav-item:nth-child(5) { transition-delay: 0.5s; }
+  #mobile-menu.active .mobile-nav-item:nth-child(6) { transition-delay: 0.6s; }
+  
+  body.menu-open {
+    overflow: hidden;
+  }
+  
+  .burger-icon {
+    width: 24px;
+    height: 20px;
+    position: relative;
+    transform: rotate(0deg);
+    transition: .5s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .burger-icon span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: white;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+  }
+  
+  .burger-icon span:nth-child(1) {
+    top: 0px;
+  }
+  
+  .burger-icon span:nth-child(2) {
+    top: 9px;
+  }
+  
+  .burger-icon span:nth-child(3) {
+    top: 18px;
+  }
+  
+  .burger-icon.active span:nth-child(1) {
+    top: 9px;
+    transform: rotate(135deg);
+  }
+  
+  .burger-icon.active span:nth-child(2) {
+    opacity: 0;
+    left: -60px;
+  }
+  
+  .burger-icon.active span:nth-child(3) {
+    top: 9px;
+    transform: rotate(-135deg);
+  }
+  
   @media (max-width: 768px) {
-    .nav-dropdown svg {
-      display: none;
-    }
-    
-    /* Hide expansion on mobile */
-    .projects-expansion {
-      display: none;
+    #main-header {
+      padding: 1rem;
     }
   }
 </style>

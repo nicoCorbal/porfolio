@@ -1,0 +1,35 @@
+---
+interface Props {
+  currentLang: 'en' | 'es';
+}
+
+const { currentLang } = Astro.props;
+
+// Get the current URL path
+const currentPath = Astro.url.pathname;
+
+// Function to switch language in the URL
+function getLanguagePath(targetLang: string) {
+  // Remove the language prefix if it exists
+  const pathWithoutLang = currentPath.replace(/^\/(en|es)/, '');
+  // Add the new language prefix
+  return `/${targetLang}${pathWithoutLang || '/'}`;
+}
+
+const otherLang = currentLang === 'en' ? 'es' : 'en';
+const otherLangPath = getLanguagePath(otherLang);
+---
+
+<div class="language-selector text-lg bg-black">
+  <a 
+    href={otherLangPath}
+    class="lang-switch flex border border-black items-center gap-2 px-3 py-1 font-medium text-white hover:bg-white hover:text-black transition-colors duration-200"
+    aria-label={`Switch to ${otherLang === 'en' ? 'English' : 'Español'}`}
+  >
+    <span class="text-[14px] opacity-70 hover:opacity-70">{currentLang.toUpperCase()}</span>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+    </svg>
+    <span class="text-[14px]">{otherLang.toUpperCase()}</span>
+  </a>
+</div>
