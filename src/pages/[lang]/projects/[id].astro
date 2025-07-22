@@ -28,9 +28,9 @@ if (!project) {
     <div class="relative z-10 mx-auto px-4 sm:px-6 lg:px-10 w-full">
       <div class="max-w-2xl">
         <div class="flex items-center flex-wrap gap-4 mb-6">
-          <span class="px-3 py-1 rounded-[4px] bg-white/20 backdrop-blur-sm text-white text-sm border border-white/30">{project.category}</span>
+          <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm border border-white/30">{project.category}</span>
           {project.awards && project.awards.map((award) => (
-            <span class="px-3 py-1 rounded-[4px] bg-yellow-400/20 backdrop-blur-sm border border-yellow-400/50 text-yellow-100 text-sm">🏆 {award}</span>
+            <span class="px-3 py-1 bg-yellow-400/20 backdrop-blur-sm border border-yellow-400/50 text-yellow-100 text-sm">🏆 {award}</span>
           ))}
         </div>
 
@@ -49,7 +49,7 @@ if (!project) {
         </div>
 
         <div class="flex flex-wrap gap-4">
-            <a href=#contact target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-base border-2 border-white hover:bg-white hover:text-black text-white px-6 py-3 rounded-[8px] font-medium transition-all duration-200">
+            <a href=#contact target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-base border-2 border-white hover:bg-white hover:text-black text-white px-6 py-3 font-medium transition-all duration-200">
               Contactar
             </a>
         </div>
@@ -105,11 +105,11 @@ if (!project) {
         'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
       }`}>
         {project.features.map((feature) => (
-          <div class="group relative h-64 w-full overflow-hidden rounded-lg border border-gray-200 shadow-lg">
+          <div class="feature-card group relative h-64 w-full overflow-hidden border border-gray-200 shadow-lg">
             
             {/* CARD BACK (Hidden Content) */}
-            <div class="absolute inset-0 z-10 rounded-lg bg-black bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.04)_0%,transparent_40%)] p-6 text-left text-white">
-              <div class="opacity-0 transition-all duration-[400ms] delay-200 group-hover:opacity-100">
+            <div class="absolute inset-0 z-10 bg-black bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.04)_0%,transparent_40%)] p-6 text-left text-white">
+              <div class="card-back-content opacity-0 transition-all duration-[400ms] delay-200 group-hover:opacity-100">
                 <h5 class="mb-4 w-full border-b border-gray-600 pb-4 text-lg font-semibold">
                   {feature.title}
                 </h5>
@@ -120,10 +120,10 @@ if (!project) {
             </div>
 
             {/* CARD FRONT (Sliding Panel) */}
-            <div class="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 rounded-lg bg-gradient-to-br from-white to-gray-50 p-6 shadow-[inset_0_0_0_1px_#e5e7eb] transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:-translate-x-full">
+            <div class="card-front absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-white to-gray-50 p-6 shadow-[inset_0_0_0_1px_#e5e7eb] transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:-translate-x-full">
               
               {/* Icon Wrapper */}
-              <div class="flex h-20 w-20 items-center justify-center rounded-lg bg-black shadow-md transition-transform duration-300 group-hover:scale-110">
+              <div class="flex h-20 w-20 items-center justify-center bg-black shadow-md transition-transform duration-300 group-hover:scale-110">
                 {feature.icon ? (
                   <div class="w-10 h-10 text-white" set:html={feature.icon}></div>
                 ) : (
@@ -146,7 +146,7 @@ if (!project) {
     <section class="py-16 mb-0">
       <div class="mx-auto px-4 sm:px-6 lg:px-10">
         <h2 class="text-3xl font-bold text-black text-left  mb-12">{project.title} en acción</h2>
-         <div class="relative aspect-[16/9] content-fit overflow-hidden bg-black  rounded-lg shadow-lg">
+         <div class="relative aspect-[16/9] content-fit overflow-hidden bg-black shadow-lg">
           <video
             autoplay
             muted
@@ -172,13 +172,38 @@ if (!project) {
       <h2 class="text-3xl font-bold text-white mb-4">¿Te interesa este proyecto?</h2>
       <p class="text-lg text-gray-50 mb-8">No dudes en contactarnos para obtener más información</p>
       <div class="flex justify-center gap-4 flex-wrap">
-        <a href={`/${lang}/contacto`} class="inline-flex text-black  items-center bg-white hover:bg-gray-100 px-6 py-3 rounded-lg text-base">
+        <a href={`/${lang}/contacto`} class="inline-flex text-black  items-center bg-white hover:bg-gray-100 px-6 py-3 text-base">
           Ver Más Proyectos
         </a>
-        <a href={`/${lang}/proyectos`} class="inline-flex items-center border border-gray-300 hover:bg-gray-800 text-white px-6 py-3 rounded-lg text-base">
+        <a href={`/${lang}/proyectos`} class="inline-flex items-center border border-gray-300 hover:bg-gray-800 text-white px-6 py-3 text-base">
           Contactar
         </a>
       </div>
     </div>
   </section>
 </Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (isTouchDevice) {
+      const featureCards = document.querySelectorAll('.feature-card');
+      featureCards.forEach(card => {
+        card.addEventListener('click', () => {
+          card.classList.toggle('is-flipped');
+        });
+      });
+    }
+  });
+</script>
+
+<style>
+  /* For touch devices, where we toggle the class via JS */
+  .feature-card.is-flipped .card-front {
+    transform: translateX(-100%);
+  }
+  .feature-card.is-flipped .card-back-content {
+    opacity: 1;
+  }
+</style>

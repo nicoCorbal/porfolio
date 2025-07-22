@@ -56,7 +56,7 @@ const manifestoItems = [
     gridArea: 'quote',
     data: {
       text: t("bento.quote.text"),
-      author: t("bento.quote.author")
+      author: "David Gutierrez"
     }
   },
   {
@@ -67,6 +67,7 @@ const manifestoItems = [
       title: t("bento.image.title"),
     }
   },
+  /*
   {
     type: 'terminal',
     gridArea: 'terminal',
@@ -79,6 +80,7 @@ const manifestoItems = [
       ]
     }
   },
+  */
   {
     type: 'card',
     gridArea: 'value2',
@@ -182,6 +184,7 @@ const manifestoItems = [
                 <p class="quote-author">— {item.data.author}</p>
               </div>
             )}
+            {/*
             {item.type === 'terminal' && (
               <div class="terminal-box">
                 <div class="terminal-header">
@@ -197,6 +200,7 @@ const manifestoItems = [
                 </div>
               </div>
             )}
+            */}
           </div>
         ))}
       </div>
@@ -238,8 +242,8 @@ const manifestoItems = [
       "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 value1 value1 value1 value1 value1 value1"
       "narrative1 narrative1 narrative1 narrative1 narrative1 narrative1 value1 value1 value1 value1 value1 value1"
       "quote quote quote quote quote quote quote quote main-image main-image main-image main-image"
-      "stat stat stat stat metrics metrics metrics metrics main-image main-image main-image main-image"
-      "terminal terminal terminal terminal terminal terminal terminal terminal main-image main-image main-image main-image"
+      "metrics metrics metrics metrics metrics stat stat stat main-image main-image main-image main-image"
+      "metrics metrics metrics metrics metrics stat stat stat main-image main-image main-image main-image"
       "value2 value2 value2 value2 value2 value2 value3 value3 value3 value3 value3 value3"
       "value2 value2 value2 value2 value2 value2 value3 value3 value3 value3 value3 value3";
   }
@@ -247,7 +251,6 @@ const manifestoItems = [
   .grid-item {
     width: 100%;
     height: 100%;
-    border-radius: 1rem;
     position: relative;
     border: 1px solid #e5e7eb;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -267,7 +270,7 @@ const manifestoItems = [
   .item-area-stat { grid-area: stat; }
   .item-area-quote { grid-area: quote; }
   .item-area-main-image { grid-area: main-image; }
-  .item-area-terminal { grid-area: terminal; }
+  /* .item-area-terminal { grid-area: terminal; } */
   .item-area-value2 { grid-area: value2; }
   .item-area-value3 { grid-area: value3; }
 
@@ -302,7 +305,6 @@ const manifestoItems = [
     flex-direction: column; 
     justify-content: center; 
     gap: 1.5rem;
-    border-radius: 1rem;
     border: 1px solid transparent;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   }
@@ -353,7 +355,6 @@ const manifestoItems = [
   .value-icon-wrapper { 
     width: 4.5rem;
     height: 4.5rem;
-    border-radius: 50%;
     background-color: #f3f4f6;
     display: flex;
     align-items: center;
@@ -375,6 +376,7 @@ const manifestoItems = [
     height: 100%; 
     object-fit: cover; 
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    filter: grayscale(100%);
   }
   .image-box:hover .grid-image {
     transform: scale(1.05);
@@ -463,7 +465,7 @@ const manifestoItems = [
     line-height: 1;
     z-index: 0;
   }
-  .quote-text { font-size: 1.75rem; font-weight: 600; line-height: 1.4; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+  .quote-text { font-size: clamp(1.25rem, 5vw, 1.75rem); font-weight: 600; line-height: 1.4; margin-bottom: 1.5rem; position: relative; z-index: 1; }
   .quote-author { font-size: 1rem; align-self: flex-end; opacity: 0.7; position: relative; z-index: 1; font-style: italic; }
 
   .terminal-box { 
@@ -492,8 +494,8 @@ const manifestoItems = [
         "value1 value1 value1 value1 value1 value1 value1 value1"
         "quote quote quote quote quote quote quote quote"
         "main-image main-image main-image main-image main-image main-image main-image main-image"
-        "stat stat stat stat metrics metrics metrics metrics"
-        "terminal terminal terminal terminal terminal terminal terminal terminal"
+        "stat stat stat stat stat stat stat stat"
+        "metrics metrics metrics metrics metrics metrics metrics metrics"
         "value2 value2 value2 value2 value3 value3 value3 value3"
         "value2 value2 value2 value2 value3 value3 value3 value3";
     }
@@ -503,7 +505,7 @@ const manifestoItems = [
     .manifesto-grid {
       grid-template-columns: 1fr;
       grid-template-areas:
-        "narrative1" "value1" "quote" "main-image" "stat" "metrics" "terminal" "value2" "value3";
+        "narrative1" "value1" "quote" "main-image" "stat" "metrics" "value2" "value3";
     }
     .grid-item { min-height: 250px; }
     .quote-box {min-height: 300px;}
@@ -512,9 +514,14 @@ const manifestoItems = [
       min-height: 300px;
     }
 
-    .narrative-box { padding: 2rem; }
-    .narrative-title { font-size: 1.5rem; }
+    .narrative-box { padding: 1.5rem; }
+    .narrative-title { font-size: 1.25rem; }
     .narrative-text { font-size: 1rem; }
+    .metric-value { font-size: 1.75rem; }
+    .metric-label { font-size: 0.75rem; }
+    .stat-number { font-size: 4rem; }
+    .quote-text { font-size: 1.25rem; }
+    .quote-box { padding: 2rem; }
   }
 </style>
 
@@ -536,5 +543,34 @@ const manifestoItems = [
         toggleActions: 'play none none none',
       }
     });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const statNumber = document.querySelector('.stat-number');
+    if (!statNumber) return;
+
+    const endValue = parseInt(statNumber.textContent || '0', 10);
+    const startValue = 0;
+    
+    const animateCount = () => {
+      gsap.fromTo(statNumber, 
+        { innerHTML: startValue },
+        {
+          innerHTML: endValue,
+          duration: 2,
+          ease: 'power1.out',
+          snap: { innerHTML: 1 },
+          scrollTrigger: {
+            trigger: statNumber,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    };
+    
+    // GSAP's .fromTo on innerHTML needs a round number to start, so we set it here
+    statNumber.innerHTML = startValue.toString();
+    animateCount();
   });
 </script> 

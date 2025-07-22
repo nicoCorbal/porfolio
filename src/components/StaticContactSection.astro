@@ -28,7 +28,7 @@ try {
         
         <div class="space-y-6 flex-1">
           <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+            <div class="w-10 h-10 bg-black flex items-center justify-center flex-shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -41,7 +41,7 @@ try {
           </div>
           
           <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+            <div class="w-10 h-10 bg-black flex items-center justify-center flex-shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
@@ -59,10 +59,10 @@ try {
           <button
             id="privacy-policy-btn"
             type="button"
-            class="group flex items-center gap-4 py-8 rounded-lg border border-transparent
+            class="group flex items-center gap-4 py-8 border border-transparent
                   hover:border-black focus:outline-none transition"
           >
-            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 border-2 border-black
+            <div class="w-10 h-10 bg-white flex items-center justify-center flex-shrink-0 border-2 border-black
                         transition-transform group-hover:bg-black">
               <svg xmlns="http://www.w3.org/2000/svg"
                   class="w-5 h-5 text-black transition-colors group-hover:text-white"
@@ -80,7 +80,7 @@ try {
       </div>
       
       <!-- Columna derecha: Formulario -->
-      <div class="bg-black rounded-lg p-6 sm:p-8 contact-form-col animate-on-scroll">
+      <div class="bg-black p-6 sm:p-8 contact-form-col animate-on-scroll">
         <form id="static-contact-form" class="space-y-4">
           <div>
             <label for="name" class="block text-white mb-2">{t('contact.form.name')}</label>
@@ -88,7 +88,7 @@ try {
               type="text"
               id="name"
               name="user_name"
-              class="w-full px-3 sm:px-4 py-2 sm:py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
+              class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
               required
               minlength="2"
               pattern="^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$"
@@ -102,7 +102,7 @@ try {
               type="email"
               id="email"
               name="user_email"
-              class="w-full px-3 sm:px-4 py-2 sm:py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
+              class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
               required
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               title={t('contact.form.email.title')}
@@ -115,7 +115,7 @@ try {
               id="message"
               name="message"
               rows="4"
-              class="no-resize w-full px-3 sm:px-4 py-2 sm:py-3 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
+              class="no-resize w-full px-3 sm:px-4 py-2 sm:py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
               required
               minlength="10"
             ></textarea>
@@ -123,7 +123,7 @@ try {
           
           <button
             type="submit"
-            class="w-full bg-white text-black py-4 sm:py-3 px-4 sm:px-6 rounded font-medium hover:bg-gray-100 transition-colors duration-300 text-sm sm:text-base mt-4"
+            class="w-full bg-white text-black py-4 sm:py-3 px-4 sm:px-6 font-medium hover:bg-gray-100 transition-colors duration-300 text-sm sm:text-base mt-4"
           >
           {t('contact.form.button')}
           </button>
@@ -332,7 +332,7 @@ try {
             animationTimeoutId = setTimeout(() => {
               animatedElements.forEach((el, idx) => {
                 el.offsetHeight; // Force reflow
-                el.style.animation = `fadeInUp 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards ${idx * 0.2}s`; 
+                el.style.animation = `fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards ${idx * 0.25}s`; 
               });
             }, 300); // Current timeout value from user
           } else {
@@ -361,7 +361,7 @@ try {
   class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex  items-start justify-center p-4 md:p-8 lg:py-16 z-50"
 >
   
-  <div class="relative bg-white rounded-lg p-8 w-full max-w-4xl max-h-full flex flex-col">
+  <div class="relative bg-white p-8 w-full max-w-4xl max-h-full flex flex-col">
     <!-- Tabs -->
     <div class="flex border-b mb-4">
       <button id="tab-privacy" type="button"
@@ -390,7 +390,7 @@ try {
       id="close-privacy-policy"
       type="button"
       aria-label="Close modal"
-      class="self-end mt-6 bg-black text-white px-4 py-2 rounded
+      class="self-end mt-6 bg-black text-white px-4 py-2 
              hover:bg-gray-900 transition focus:outline-none"
     >
     {t('privacyPolicy.close')}
@@ -403,10 +403,10 @@ try {
         <button
           id="privacy-policy-btn-mobile"
           type="button"
-          class="group flex items-center gap-4 py-8 rounded-lg border border-transparent
+          class="group flex items-center gap-4 py-8 border border-transparent
                  hover:border-black focus:outline-none transition"
         >
-          <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 border-2 border-black
+          <div class="w-10 h-10 bg-white flex items-center justify-center flex-shrink-0 border-2 border-black
                       transition-transform group-hover:bg-black">
             <svg xmlns="http://www.w3.org/2000/svg"
                 class="w-5 h-5 text-black transition-colors group-hover:text-white"
