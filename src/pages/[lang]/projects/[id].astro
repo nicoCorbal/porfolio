@@ -31,11 +31,11 @@ const t = (key: string) => translations.default[key] || key;
 <Layout lang={lang}>
   <LoadingScreen duration={1000} />
   
-  <section class="hero-section relative min-h-[450px] bg-white lg:min-h-[550px] flex items-center overflow-hidden mb-0">
+  <section class="hero-section relative min-h-[450px] bg-black lg:min-h-[550px] flex items-center overflow-hidden mb-0">
     <!-- Background Image with Parallax -->
-    <div class="hero-bg absolute inset-0 z-0">
+    <div class="hero-bg absolute inset-0 z-0 bg-black">
       <img src={project.images[0]} alt={project.title} class="hero-image object-cover w-full h-full" />
-      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+      <div class="hero-gradient absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
     </div>    
     <!-- Content -->
     <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
@@ -204,26 +204,27 @@ const t = (key: string) => translations.default[key] || key;
         });
       }
 
-      // Hero animations on load
+      // Hero animations on load - Changed to slide in from different directions
       const heroTimeline = () => {
-        // Animate hero elements
+        // Animate hero elements with new effects
         document.querySelector('.hero-image')?.classList.add('animate');
+        document.querySelector('.hero-gradient')?.classList.add('animate');
         
         setTimeout(() => {
           document.querySelector('.hero-badges')?.classList.add('animate');
-        }, 300);
+        }, 200);
         
         setTimeout(() => {
           document.querySelector('.hero-title')?.classList.add('animate');
-        }, 500);
+        }, 400);
         
         setTimeout(() => {
           document.querySelector('.hero-subtitle')?.classList.add('animate');
-        }, 700);
+        }, 600);
         
         setTimeout(() => {
           document.querySelector('.hero-meta')?.classList.add('animate');
-        }, 900);
+        }, 800);
       };
 
       // Removed parallax effect to prevent background showing
@@ -281,69 +282,121 @@ const t = (key: string) => translations.default[key] || key;
 <style>
   /* Hero Animations */
   .hero-image {
-    transition: transform 0.3s ease-out;
+    opacity: 0;
+    filter: blur(15px) brightness(1);
+    will-change: filter, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
   }
   
   .hero-image.animate {
-    animation: heroImageReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: heroImageReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
   
   @keyframes heroImageReveal {
-    from {
-      opacity: 0.8;
-      filter: blur(10px);
+    0% {
+      opacity: 0;
+      filter: blur(15px) brightness(1);
     }
-    to {
+    100% {
       opacity: 1;
-      filter: blur(0);
+      filter: blur(0px) brightness(1);
     }
   }
   
-  .hero-badges,
-  .hero-title,
-  .hero-subtitle,
-  .hero-meta {
+  /* Gradient overlay animation */
+  .hero-gradient {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   
-  .hero-badges.animate,
-  .hero-title.animate,
-  .hero-subtitle.animate,
-  .hero-meta.animate {
-    opacity: 1;
-    transform: translateY(0);
+  .hero-gradient.animate {
+    animation: gradientFadeIn 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 0.3s;
   }
   
-  /* Badge stagger animation */
-  .hero-badges.animate .badge {
-    animation: badgePop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
-    animation-delay: calc(var(--badge-index, 0) * 0.1s);
-  }
-  
-  @keyframes badgePop {
+  @keyframes gradientFadeIn {
     from {
       opacity: 0;
-      transform: scale(0.8) translateY(10px);
     }
     to {
       opacity: 1;
-      transform: scale(1) translateY(0);
     }
   }
   
-  /* Fade up animation */
+  .hero-badges {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .hero-badges.animate {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .hero-title {
+    opacity: 0;
+    transform: translateX(-100px) skewX(-5deg);
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  .hero-title.animate {
+    opacity: 1;
+    transform: translateX(0) skewX(0);
+  }
+  
+  .hero-subtitle {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  .hero-subtitle.animate {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .hero-meta {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .hero-meta.animate {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  
+  /* Badge stagger animation - Changed to flip in */
+  .hero-badges.animate .badge {
+    animation: badgeFlip 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    animation-delay: calc(var(--badge-index, 0) * 0.15s);
+  }
+  
+  @keyframes badgeFlip {
+    from {
+      opacity: 0;
+      transform: perspective(400px) rotateY(-90deg);
+    }
+    to {
+      opacity: 1;
+      transform: perspective(400px) rotateY(0);
+    }
+  }
+  
+  /* Fade up animation - Changed to slide and rotate */
   .fade-up {
     opacity: 0;
-    transform: translateY(40px);
-    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(60px) rotateX(-10deg);
+    transform-origin: top center;
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--delay, 0s);
   }
   
   .fade-up.in-view {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotateX(0);
   }
   
   /* Fade scale animation for cards */
@@ -470,17 +523,64 @@ const t = (key: string) => translations.default[key] || key;
     opacity: 1;
   }
   
-  /* Video section fade in */
-  section {
-    animation: sectionFadeIn 0.8s ease-out;
+  /* Section transitions - Different effects for each section */
+  .hero-section {
+    animation: heroSectionReveal 1s cubic-bezier(0.22, 1, 0.36, 1);
   }
   
-  @keyframes sectionFadeIn {
+  @keyframes heroSectionReveal {
     from {
       opacity: 0;
+      transform: scale(0.95);
     }
     to {
       opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .description-section {
+    animation: descriptionSlide 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  @keyframes descriptionSlide {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .features-section {
+    animation: featuresReveal 1s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  @keyframes featuresReveal {
+    from {
+      opacity: 0;
+      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    }
+    to {
+      opacity: 1;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+  
+  section:not(.hero-section):not(.description-section):not(.features-section) {
+    animation: sectionFadeUp 0.8s ease-out;
+  }
+  
+  @keyframes sectionFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
   
