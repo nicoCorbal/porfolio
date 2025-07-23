@@ -10,28 +10,31 @@ const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
 ---
 
-<section id="home" class="w-full !max-h-[100vh] flex flex-col items-center justify-between p-8 md:p-16 overflow-hidden">
+<section id="home" class="w-full !min-h-[100dvh] !max-h-[100dvh] flex flex-col items-center justify-between p-8 md:p-16 overflow-hidden">
     <div class="flex flex-col w-full items-center justify-center !text-black text-center z-10 hero-title">
       <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold">{t('hero.title.line1')}</h1>
       <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold mt-1 md:mt-2">{t('hero.title.line2')}</h1>
     </div>
-    <!-- Background video -->
-    <video
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      poster="/hero.jpg" 
-      class="w-full h-full object-fit z-0 hero-video"
-      x-webkit-airplay="allow"
-      webkit-playsinline="true"
-      playsinline="true"
-    >
-      <source src={videowebm} type="video/webm" />
-      <source src={videomp4} type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+    <!-- Background video container -->
+    <div class="video-container">
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster="/hero.jpg" 
+        class="object-fit z-0 hero-video"
+        x-webkit-airplay="allow"
+        webkit-playsinline="true"
+        disablepictureinpicture
+        controlslist="nodownload nofullscreen noremoteplayback"
+      >
+        <source src={videowebm} type="video/webm" />
+        <source src={videomp4} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
 
     <div class="flex flex-col items-center justify-center gap-8">
       <div id="hero-cta-container" class="transform z-10 flex flex-col sm:flex-row gap-4 items-center hero-cta">
@@ -73,10 +76,23 @@ const t = (k: string) => translations.default[k] || k;
     opacity: 0;
   }
 
+  .video-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+    overflow: hidden;
+  }
   
   .hero-video {
-    transform: scale(0.3);
-    opacity: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fit;
+    /* Chrome optimization */
+    transform: translateZ(0);
   }
 
   /* Animation classes - only applied after loading completes */
@@ -88,7 +104,7 @@ const t = (k: string) => translations.default[k] || k;
     animation: fadeIn 1s ease-out 0.8s forwards;
   }
 
-  body.loading-complete .hero-video {
+  body.loading-complete .video-container {
     animation: expandIn 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 
@@ -123,11 +139,11 @@ const t = (k: string) => translations.default[k] || k;
 
   @keyframes expandIn {
     from { 
-      transform: scale(0.2);
+      transform: translate(-50%, -50%) scale(0.2);
       opacity: 0;
     }
     to { 
-      transform: scale(1.2);
+      transform: translate(-50%, -50%) scale(1);
       opacity: 1;
     }
   }
@@ -149,12 +165,23 @@ const t = (k: string) => translations.default[k] || k;
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     
-    const video = document.querySelector('video');
+    const video = document.querySelector('.hero-video') as HTMLVideoElement;
     if (video) {
-      // Force play on iOS
-      video.play().catch(function(error) {
-        console.log("Video autoplay failed:", error);
-      });
+      // Ensure video plays
+      const attemptPlay = () => {
+        video.play().catch(error => {
+          console.log("Video autoplay failed:", error);
+        });
+      };
+
+      // Try playing immediately
+      attemptPlay();
+
+      // Also try when video metadata is loaded
+      video.addEventListener('loadedmetadata', attemptPlay);
+      
+      // Chrome fallback
+      video.addEventListener('canplay', attemptPlay);
     }
 
     const scrollLink = document.querySelector<HTMLAnchorElement>('.scroll-down-link');
