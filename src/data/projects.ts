@@ -87,22 +87,22 @@ export const projects: Record<string, ProjectData> = {
     features: [
       {
         title: 'Transcripción en Tiempo Real',
-        description: 'Convierte voz a texto de forma instantánea con alta precisión. Perfecto para reuniones, clases y entrevistas.',
+        description: 'Transcribe audio con alta precisión y sin latencia. Echoia convierte conversaciones en texto al momento, lo que permite seguir reuniones, clases o entrevistas sin perder detalle.',
         icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>'
       },
       {
         title: 'Resúmenes Automáticos',
-        description: 'Genera resúmenes estructurados de conversaciones largas. Extrae los puntos clave automáticamente.',
+        description: 'Extrae automáticamente los puntos clave de una conversación, ideal para evitar releer textos largos. Los resúmenes siguen una estructura clara: decisiones, acuerdos, temas tratados y próximos pasos.',
         icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'
       },
       {
         title: 'Extracción de Tareas',
-        description: 'Identifica automáticamente tareas, decisiones y elementos de acción en las conversaciones.',
+        description: 'Identifica automáticamente frases que indican tareas, asignaciones o decisiones. Perfecto para equipos que usan metodologías ágiles o necesitan trazabilidad de las responsabilidades.',
         icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>'
       },
       {
         title: 'Etiquetado Inteligente',
-        description: 'Clasifica y organiza contenido automáticamente por temas. Fácil búsqueda posterior.',
+        description: 'Organiza automáticamente tus notas por tema, persona o tipo de conversación. Echoia permite navegar entre reuniones pasadas con filtros inteligentes sin tener que etiquetar manualmente.',
         icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>'
       }
     ],
@@ -126,22 +126,22 @@ export const projects: Record<string, ProjectData> = {
     features: [
       {
         title: 'Autenticación Segura',
-        description: 'Sistema robusto de autenticación con JWT y API Keys. Incluye manejo de scopes y permisos granulares.',
+        description: 'Gestiona acceso a tus sistemas con tokens JWT y API keys de forma granular. Kharon permite definir qué tipo de usuarios puede acceder a qué recursos, y controla permisos de forma dinámica, incluso en entornos con múltiples capas de autenticación.',
         icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>'
       },
       {
         title: 'Inspección de Tráfico',
-        description: 'Analiza y valida todas las peticiones entrantes. Control total sobre qué datos pasan por tu sistema.',
+        description: 'Examina cada petición entrante para asegurar que cumple con las políticas definidas. Ideal para prevenir ataques, detectar anomalías o implementar reglas personalizadas de validación a nivel de payload o cabeceras.',
         icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
       },
       {
         title: 'Routing Inteligente',
-        description: 'Enrutamiento dinámico basado en el tipo de token y contexto. Direcciona cada petición al backend correcto.',
+        description: 'Enruta cada solicitud al backend correspondiente según su token, cliente, o contexto. Esto permite ofrecer un servicio multicliente desde una misma infraestructura sin comprometer seguridad ni rendimiento.',
         icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>'
       },
       {
         title: 'Dashboard de Métricas',
-        description: 'Panel web completo con estadísticas de uso, logs de acceso y métricas de rendimiento en tiempo real.',
+        description: 'Visualiza en tiempo real cómo se está utilizando el proxy: número de peticiones, errores, uso por backend, o tipos de token. Un panel útil tanto para desarrolladores como para responsables de ciberseguridad.',
         icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>'
       }
     ],

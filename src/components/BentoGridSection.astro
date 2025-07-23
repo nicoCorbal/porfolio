@@ -139,28 +139,30 @@ const manifestoItems = [
               </div>
             )}
             {item.type === 'card' && (
-              <div class="bento-card">
-                <div class="card-front">
-                  <div class="flip-hint">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-rotate-2">
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h5"></path>
-                      <path d="M18.37 7.16l0 .01"></path>
-                      <path d="M19.94 11l0 .01"></path>
-                      <path d="M19.53 15.1l0 .01"></path>
-                      <path d="M17.67 18.34l0 .01"></path>
-                      <path d="M14.5 19.94l0 .01"></path>
-                    </svg>
+              <div class="bento-card-wrapper">
+                <div class="bento-card">
+                  <div class="card-front">
+                    <div class="flip-hint">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-rotate-2">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h5"></path>
+                        <path d="M18.37 7.16l0 .01"></path>
+                        <path d="M19.94 11l0 .01"></path>
+                        <path d="M19.53 15.1l0 .01"></path>
+                        <path d="M17.67 18.34l0 .01"></path>
+                        <path d="M14.5 19.94l0 .01"></path>
+                      </svg>
+                    </div>
+                    <div class="value-icon-wrapper">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-9 h-9 text-gray-900" set:html={item.data.svgIcon}></svg>
+                    </div>
+                    <h4 class="value-title" set:html={item.data.title}></h4>
                   </div>
-                  <div class="value-icon-wrapper">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-9 h-9 text-gray-900" set:html={item.data.svgIcon}></svg>
-                  </div>
-                  <h4 class="value-title" set:html={item.data.title}></h4>
-                </div>
-                <div class="card-back">
-                  <div class="back-content">
-                    <h5 class="back-title" set:html={item.data.title}></h5>
-                    <p class="back-text">{item.data.back_text}</p>
+                  <div class="card-back">
+                    <div class="back-content">
+                      <h5 class="back-title" set:html={item.data.title}></h5>
+                      <p class="back-text">{item.data.back_text}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -226,7 +228,7 @@ const manifestoItems = [
   .manifesto-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-auto-rows: minmax(150px, auto);
+    grid-auto-rows: max-content;
     gap: var(--grid-gap);
     position: relative;
     z-index: 1;
@@ -243,7 +245,7 @@ const manifestoItems = [
 
   .grid-item {
     width: 100%;
-    height: 100%;
+    height: auto;
     position: relative;
     border: 1px solid #e5e7eb;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -283,10 +285,17 @@ const manifestoItems = [
   .narrative-text { font-size: 1.125rem; color: #4b5563; line-height: 1.8; }
   
   /* Card Flip Logic -> Sliding Panel Logic */
+  .bento-card-wrapper {
+    width: 100%;
+    height: auto;
+    min-height: max-content;
+  }
+  
   .bento-card {
     width: 100%;
-    height: 100%;
-    background-color: transparent;
+    height: auto;
+    min-height: 280px;
+    background-color: black;
     position: relative;
     overflow: hidden;
   }
@@ -294,13 +303,18 @@ const manifestoItems = [
   .card-front, .card-back {
     position: absolute; 
     width: 100%; 
-    height: 100%; 
+    height: 100%;
     display: flex; 
     flex-direction: column; 
-    justify-content: center; 
-    gap: 1.5rem;
+    justify-content: flex-start; 
+    gap: 0.75rem;
+    padding: 1.5rem;
     border: 1px solid transparent;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .card-front{
+    justify-content: center;
   }
 
   .card-front {
@@ -323,12 +337,13 @@ const manifestoItems = [
   .flip-hint { display: none; } /* No longer needed for this design */
 
   .card-back { 
+    position: relative;
+    height: 100%;
     align-items: flex-start;
     justify-content: flex-start;
     background-color: #000000; /* Cambiado a negro puro */
     background-image: radial-gradient(circle at top left, rgba(255,255,255,0.04) 0%, transparent 40%);
     color: white; 
-    padding: 2rem; 
     text-align: left;
     z-index: 1;
   }
@@ -346,17 +361,18 @@ const manifestoItems = [
     opacity: 1;
   }
   .back-title {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     border-bottom: 1px solid #4b5563;
-    padding-bottom: 1rem;
+    padding-bottom: 0.75rem;
     width: 100%;
   }
   .back-text {
-    font-size: 1rem;
-    line-height: 1.7;
+    font-size: 0.9rem;
+    line-height: 1.5;
     opacity: 0.9;
+    word-wrap: break-word;
   }
   .value-icon-wrapper { 
     width: 4.5rem;
@@ -371,7 +387,13 @@ const manifestoItems = [
     transform: scale(1.1);
   }
   .value-icon-wrapper svg { width: 2.25rem; height: 2.25rem; color: #111827; }
-  .value-title { font-size: 1.25rem; font-weight: 600; text-align: center; }
+  .value-title { 
+    font-size: clamp(1rem, 2vw, 1.25rem); 
+    font-weight: 600; 
+    text-align: center; 
+    word-wrap: break-word;
+    hyphens: auto;
+  }
 
   /* Other blocks */
   .image-box { position: relative; overflow: hidden; }
@@ -625,7 +647,27 @@ const manifestoItems = [
     .quote-box {min-height: 300px;}
     .main-image {min-height: 350px;}
     .item-area-value2, .item-area-value3 {
-      min-height: 300px;
+      min-height: 250px;
+    }
+    
+    .bento-card-wrapper {
+      min-height: auto;
+    }
+    
+    .bento-card {
+      min-height: 280px;
+    }
+    
+    .card-front, .card-back {
+      padding: 1.25rem;
+    }
+    
+    .back-title {
+      font-size: 1rem;
+    }
+    
+    .back-text {
+      font-size: 0.875rem;
     }
 
     .narrative-box { padding: 1.5rem; }
