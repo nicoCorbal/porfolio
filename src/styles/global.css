@@ -34,6 +34,16 @@ body {
   line-height: 1.6;
 }
 
+.scrollable {
+  overflow: auto;           /* keep scroll behaviour */
+  scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge & IE */
+}
+
+.scrollable::-webkit-scrollbar {  /* Chrome, Safari, Opera */
+  display: none;
+}
+
 /* ---------- Section Titles ---------- */
 .section-title {
   @apply text-3xl md:text-4xl lg:text-5xl font-light;

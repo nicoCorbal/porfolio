@@ -91,22 +91,78 @@ const awards = [
   </div>
 
 <style is:global>
-  .desktop-award-entry, .mobile-award-card {
+  /* Initial states */
+  .desktop-award-entry { 
+    opacity: 0; 
+  }
+  .desktop-award-entry[data-side="left"] { 
+    transform: translateX(-50px); 
+  }
+  .desktop-award-entry[data-side="right"] { 
+    transform: translateX(50px); 
+  }
+  .mobile-award-card { 
     opacity: 0;
+    transform: translateY(30px); 
   }
-  .desktop-award-entry.animate-from-left { transform: translateX(-50px); }
-  .desktop-award-entry.animate-from-right { transform: translateX(50px); }
-  .mobile-award-card.animate-up { transform: translateY(30px); }
 
+  /* Animation keyframes */
   @keyframes slideInFromLeft {
-    to { opacity: 1; transform: translateX(0); }
+    from { 
+      opacity: 0; 
+      transform: translateX(-50px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
   }
+  
   @keyframes slideInFromRight {
-    to { opacity: 1; transform: translateX(0); }
+    from { 
+      opacity: 0; 
+      transform: translateX(50px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
   }
+  
   @keyframes fadeInUp {
-    to { opacity: 1; transform: translateY(0); }
+    from { 
+      opacity: 0; 
+      transform: translateY(30px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
   }
+
+  /* Animation classes */
+  .desktop-award-entry[data-side="left"].animate-in {
+    animation: slideInFromLeft 0.8s ease-out forwards;
+  }
+  
+  .desktop-award-entry[data-side="right"].animate-in {
+    animation: slideInFromRight 0.8s ease-out forwards;
+  }
+  
+  .mobile-award-card.animate-in {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  /* Stagger delays */
+  .desktop-award-entry:nth-child(1) { animation-delay: 0s; }
+  .desktop-award-entry:nth-child(2) { animation-delay: 0.15s; }
+  .desktop-award-entry:nth-child(3) { animation-delay: 0.3s; }
+  .desktop-award-entry:nth-child(4) { animation-delay: 0.45s; }
+  
+  .mobile-award-card:nth-child(1) { animation-delay: 0s; }
+  .mobile-award-card:nth-child(2) { animation-delay: 0.15s; }
+  .mobile-award-card:nth-child(3) { animation-delay: 0.3s; }
+  .mobile-award-card:nth-child(4) { animation-delay: 0.45s; }
 
   /* Estilos para la versión de escritorio */
   #awards .grid {
@@ -138,82 +194,44 @@ const awards = [
 </style>
 
 <script>
-  // Function to initialize awards animations
-  function initializeAwardsAnimations() {
-    const sectionContainer = document.querySelector('.awards-section-container');
-    if (!sectionContainer) return;
+  document.addEventListener('DOMContentLoaded', () => {
+    const initializeAnimations = () => {
+      // Create Intersection Observer for animations
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
 
-    const desktopAwardsContainer = sectionContainer.querySelector('.desktop-awards') as HTMLElement | null;
-    const mobileAwardsContainer = sectionContainer.querySelector('.mobile-awards') as HTMLElement | null;
-
-    let animationTimeoutId: number | null = null;
-
-    const resetElements = (elements: HTMLElement[], initialClass?: string) => {
-      elements.forEach(el => {
-        el.style.animation = 'none';
-        el.style.opacity = '0';
-        el.classList.remove('animate-from-left', 'animate-from-right', 'animate-up');
-        if(initialClass) el.classList.add(initialClass);
-        if (el.dataset.side === 'left') el.style.transform = 'translateX(-50px)';
-        else if (el.dataset.side === 'right') el.style.transform = 'translateX(50px)';
-        else el.style.transform = 'translateY(30px)';
-      });
-    };
-
-    const animateElements = (elements: HTMLElement[], isDesktop: boolean) => {
-      elements.forEach((el, idx) => {
-        el.offsetHeight; // Reflow
-        let animName = 'fadeInUp';
-        if (isDesktop) {
-          animName = el.dataset.side === 'left' ? 'slideInFromLeft' : 'slideInFromRight';
-        }
-        el.style.animation = `${animName} 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards ${idx * 0.15}s`;
-      });
-    };
-    
-    const allDesktopEntries = Array.from(desktopAwardsContainer?.querySelectorAll('.desktop-award-entry') || []) as HTMLElement[];
-    const allMobileCards = Array.from(mobileAwardsContainer?.querySelectorAll('.mobile-award-card') || []) as HTMLElement[];
-    resetElements(allDesktopEntries); // Call with one arg, initialClass will be undefined
-    resetElements(allMobileCards);   // Call with one arg, initialClass will be undefined
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.target === sectionContainer) {
+      // Observer for animated elements
+      const animationObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
-            if (animationTimeoutId !== null) clearTimeout(animationTimeoutId);
-            
-            const currentDesktopEntries = Array.from(desktopAwardsContainer?.querySelectorAll('.desktop-award-entry') || []) as HTMLElement[];
-            const currentMobileCards = Array.from(mobileAwardsContainer?.querySelectorAll('.mobile-award-card') || []) as HTMLElement[];
-            resetElements(currentDesktopEntries);
-            resetElements(currentMobileCards);
-
-            animationTimeoutId = setTimeout(() => {
-              if (desktopAwardsContainer && mobileAwardsContainer) { // Ensure containers exist
-                const isDesktopView = window.getComputedStyle(desktopAwardsContainer).display !== 'none';
-                if (isDesktopView) {
-                  animateElements(currentDesktopEntries, true);
-                } else {
-                  animateElements(currentMobileCards, false);
-                }
-              }
-            }, 200);
+            entry.target.classList.add('animate-in');
           } else {
-            if (animationTimeoutId !== null) clearTimeout(animationTimeoutId);
-            const currentDesktopEntries = Array.from(desktopAwardsContainer?.querySelectorAll('.desktop-award-entry') || []) as HTMLElement[];
-            const currentMobileCards = Array.from(mobileAwardsContainer?.querySelectorAll('.mobile-award-card') || []) as HTMLElement[];
-            resetElements(currentDesktopEntries);
-            resetElements(currentMobileCards);
+            entry.target.classList.remove('animate-in');
           }
-        }
+        });
+      }, observerOptions);
+
+      // Observe desktop awards
+      const desktopAwards = document.querySelectorAll('.desktop-award-entry');
+      desktopAwards.forEach(award => {
+        animationObserver.observe(award);
       });
-    }, { threshold: 0.1 });
 
-    observer.observe(sectionContainer);
-  }
+      // Observe mobile awards
+      const mobileAwards = document.querySelectorAll('.mobile-award-card');
+      mobileAwards.forEach(award => {
+        animationObserver.observe(award);
+      });
+    };
 
-  // Initialize on DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', initializeAwardsAnimations);
-  
-  // Re-initialize on Astro page navigation (View Transitions)
-  document.addEventListener('astro:page-load', initializeAwardsAnimations);
+    // Wait for loading screen to complete
+    if ((window as any).isLoadingComplete) {
+      initializeAnimations();
+    } else {
+      window.addEventListener('loadingComplete', initializeAnimations);
+    }
+  });
 </script>

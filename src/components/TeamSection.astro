@@ -290,10 +290,24 @@ for (let i = teamMembers.length - 1; i > 0; i--) {
   }
 
 
-  document.addEventListener('astro:page-load', runScripts);
-  document.addEventListener('DOMContentLoaded', runScripts);
-  window.addEventListener('resize', debounce(runScripts, 200));
+  // Wait for loading to complete before running scripts
+  const initializeTeamSection = () => {
+    runScripts();
+    setupAccordion();
+  };
 
-  document.addEventListener('DOMContentLoaded', setupAccordion);
-  document.addEventListener('astro:page-load', setupAccordion);
+  document.addEventListener('DOMContentLoaded', () => {
+    if ((window as any).isLoadingComplete) {
+      initializeTeamSection();
+    } else {
+      window.addEventListener('loadingComplete', initializeTeamSection);
+    }
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    runScripts();
+    setupAccordion();
+  });
+  
+  window.addEventListener('resize', debounce(runScripts, 200));
 </script>

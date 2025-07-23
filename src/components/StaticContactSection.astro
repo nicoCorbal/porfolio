@@ -135,12 +135,13 @@ try {
   </div>
 
 <style>
-  .animate-on-scroll {
+  /* Initial states */
+  .contact-info-col, .contact-form-col {
     opacity: 0;
     transform: translateY(30px);
   }
 
-  /* Keyframes for the animation */
+  /* Animation keyframes */
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -150,6 +151,16 @@ try {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  /* Animation classes */
+  .contact-info-col.animate-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  .contact-form-col.animate-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: 0.25s;
   }
 
 </style>
@@ -304,62 +315,38 @@ try {
     }
 
     // Intersection Observer for animations
-    const sectionContainer = document.querySelector('.static-contact-container');
-    if (!sectionContainer) return;
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.2
+    };
 
-    const animatedElements = [
-      sectionContainer.querySelector('.contact-info-col'),
-      sectionContainer.querySelector('.contact-form-col')
-    ].filter(el => el !== null) as HTMLElement[];
-
-    if (animatedElements.length === 0) return;
-
-    let animationTimeoutId: number | null = null;
-
-    // Initially hide elements that will be animated
-    animatedElements.forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(30px)';
-      el.style.animation = 'none'; // Ensure no CSS animation plays on load
-    });
-
-    const observer = new window.IntersectionObserver((entries) => {
+    const animationObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.target === sectionContainer) {
-          if (entry.isIntersecting) {
-            if (animationTimeoutId !== null) {
-              clearTimeout(animationTimeoutId);
-            }
-            animationTimeoutId = setTimeout(() => {
-              animatedElements.forEach((el, idx) => {
-                el.offsetHeight; // Force reflow
-                el.style.animation = `fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards ${idx * 0.25}s`; 
-              });
-            }, 300); // Current timeout value from user
-          } else {
-            if (animationTimeoutId !== null) {
-              clearTimeout(animationTimeoutId);
-              animationTimeoutId = null;
-            }
-            // Reset elements to their pre-animation state when out of view
-            animatedElements.forEach(el => {
-              el.style.animation = 'none';
-              el.style.opacity = '0';
-              el.style.transform = 'translateY(30px)';
-            });
-          }
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        } else {
+          entry.target.classList.remove('animate-in');
         }
       });
-    }, { threshold: 0.2 });
+    }, observerOptions);
 
-    observer.observe(sectionContainer);
+    // Observe contact columns
+    const contactInfoCol = document.querySelector('.contact-info-col');
+    const contactFormCol = document.querySelector('.contact-form-col');
+    
+    if (contactInfoCol) animationObserver.observe(contactInfoCol);
+    if (contactFormCol) animationObserver.observe(contactFormCol);
   }
 
-  // Initialize on DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', initializeContactSection);
-  
-  // Re-initialize on Astro page navigation (View Transitions)
-  document.addEventListener('astro:page-load', initializeContactSection);
+  // Initialize on DOMContentLoaded but wait for loading to complete
+  document.addEventListener('DOMContentLoaded', () => {
+    if ((window as any).isLoadingComplete) {
+      initializeContactSection();
+    } else {
+      window.addEventListener('loadingComplete', initializeContactSection);
+    }
+  });
 </script>
 
 <!-- Privacy Policy Modal -->

@@ -6,6 +6,7 @@ import AboutSection from '../../components/AboutSection.astro';
 import ProjectsSection from '../../components/ProjectsSection.astro';
 import AwardsSection from '../../components/AwardsSection.astro';
 import StaticContactSection from '../../components/StaticContactSection.astro';
+import LoadingScreen from '../../components/LoadingScreen.astro';
 
 export const prerender = true;
 
@@ -21,6 +22,7 @@ const { lang = 'en' } = Astro.params;
 ---
 
 <Layout lang={lang}>
+  <LoadingScreen duration={1000} />
   <section id="hero"><Hero lang={lang} /></section>
   <section id="services"><BentoGridSection lang={lang} /></section>
   <section id="projects"><ProjectsSection lang={lang} /></section>

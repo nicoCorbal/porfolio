@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getProject, getProjectIds } from '../../../data/projects';
+import LoadingScreen from '../../../components/LoadingScreen.astro';
 
 export const prerender = true;
 
@@ -24,7 +25,8 @@ if (!project) {
 ---
 
 <Layout lang={lang}>
-
+  <LoadingScreen duration={1000} />
+  
   <section class="hero-section relative min-h-[450px] bg-white lg:min-h-[550px] flex items-center overflow-hidden">
     <!-- Background Image with Parallax -->
     <div class="hero-bg absolute inset-0 z-0">
