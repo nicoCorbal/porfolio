@@ -25,15 +25,12 @@ if (!project) {
 
 <Layout lang={lang}>
 
-  <section class="relative min-h-[450px] lg:min-h-[550px] flex items-center overflow-hidden">
+  <section class="relative min-h-[450px] bg-white lg:min-h-[550px] flex items-center overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0 z-0">
       <img src={project.images[0]} alt={project.title} class="object-cover object-top w-full h-full" />
       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
-    </div>
-
-
-    
+    </div>    
     <!-- Content -->
     <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
       <div class="max-w-2xl">
@@ -44,8 +41,8 @@ if (!project) {
           ))}
         </div>
 
-        <h1 class="text-4xl lg:text-7xl font-bold text-white mb-6">{project.title}</h1>
-        <p class="text-xl lg:text-2xl text-gray-50 mb-8">{project.subtitle}</p>
+        <h1 class="text-5xl md:text-7xl font-bold text-white mb-3 md:mb-6">{project.title}</h1>
+        <h5 class="text-xl md:text-2xl text-gray-50 mb-8">{project.subtitle}</h5>
 
         <div class="flex flex-row gap-8 mb-8 text-left">
           <div>
@@ -97,7 +94,7 @@ if (!project) {
   </section>
 
   <!-- FEATURES -->
-  <section class="bg-white py-16 mb-0">
+  <section class="bg-white  py-16 mb-0">
     <div class="w-full mx-auto px-4 sm:px-6 lg:px-10">
       <h2 class="text-3xl font-bold text-black text-left  mb-12">Características Principales</h2>
       <div class={`grid gap-8 ${

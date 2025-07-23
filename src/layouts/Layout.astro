@@ -9,7 +9,7 @@ interface Props {
   description?: string;
   image?: string;
   canonical?: string;
-  lang: string;
+  lang: 'en' | 'es';
   isMainPage?: boolean;
 }
 
@@ -67,16 +67,6 @@ const {
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={image} />
     
-    <ClientRouter />
-    
-    <style>
-      /* Custom view transition animations */
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation-duration: 0.3s;
-      }
-      
-    </style>
   </head>
   <body>
     <Header lang={lang} isMainPage={isMainPage} />
