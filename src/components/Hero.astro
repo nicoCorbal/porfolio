@@ -42,7 +42,7 @@ const t = (k: string) => translations.default[k] || k;
   </div>
 
   <!-- Center headline & logo -->
-  <div id="hero-logo-container" class="absolute bottom-20 md:bottom-16 left-1/2 transform -translate-x-1/2 z-10 transition-opacity duration-500 hero-logo">
+  <div id="hero-logo-container" class="absolute bottom-20 md:bottom-16 left-1/2 z-10 hero-logo">
     <img
       src="/full_logo.png"
       alt="OSIX"
@@ -71,9 +71,6 @@ const t = (k: string) => translations.default[k] || k;
     animation: fadeIn 1s ease-out 0.5s forwards;
   }
 
-  .hero-logo {
-    animation-delay: 0.8s;
-  }
 
   .hero-cta {
     animation-delay: 1.1s;

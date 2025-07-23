@@ -194,7 +194,7 @@ const manifestoItems = [
              {item.type === 'stat' && (
               <div class="stat-box">
                 <div>
-                  <span class="stat-number" data-end-value={item.data.number}>{item.data.number}</span>
+                  <span class="stat-number" data-end-value={item.data.number}>0</span>
                   <span class="stat-suffix">{item.data.suffix}</span>
                 </div>
                 <p class="stat-label">{item.data.label}</p>
@@ -250,9 +250,6 @@ const manifestoItems = [
     border: 1px solid #e5e7eb;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.6s ease-out forwards;
   }
 
   .grid-item:not(.item-type-metrics-grid):not(.item-type-quote):not(.item-type-stat):hover {
@@ -510,7 +507,7 @@ const manifestoItems = [
     height: 0;
     background: radial-gradient(circle, rgba(0, 0, 0, 0.05) 0%, transparent 70%);
     transform: translate(-50%, -50%);
-    transition: width 1s ease, height 1s ease;
+    transition: width 0.2s ease, height 0.2s ease;
     pointer-events: none;
   }
   
@@ -680,91 +677,162 @@ const manifestoItems = [
     .quote-box { padding: 2rem; }
   }
 
-  /* CSS Animation for grid items */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Stagger animation delay */
-  .grid-item:nth-child(1) { animation-delay: 0s; }
-  .grid-item:nth-child(2) { animation-delay: 0.1s; }
-  .grid-item:nth-child(3) { animation-delay: 0.2s; }
-  .grid-item:nth-child(4) { animation-delay: 0.3s; }
-  .grid-item:nth-child(5) { animation-delay: 0.4s; }
-  .grid-item:nth-child(6) { animation-delay: 0.5s; }
-  .grid-item:nth-child(7) { animation-delay: 0.6s; }
-  .grid-item:nth-child(8) { animation-delay: 0.7s; }
-
-  /* CSS Animation for stat counter */
-  @keyframes countUp {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  .stat-number {
-    animation: countUp 2s ease-out;
-  }
 </style>
 
 <script>
-  // Simple CSS-based counter animation using Intersection Observer
-  document.addEventListener('DOMContentLoaded', () => {
-    const statNumber = document.querySelector('.stat-number') as HTMLElement;
-    if (!statNumber) return;
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-    const endValue = parseInt(statNumber.textContent || '0', 10);
-    const duration = 2000; // 2 seconds
-    let hasAnimated = false;
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Set initial state for title only
+    gsap.set('#services .section-title', { opacity: 0, y: 30 });
+
+    // Animate section title
+    ScrollTrigger.create({
+      trigger: '#services .section-title',
+      start: 'top 90%',
+      onEnter: () => {
+        gsap.to('#services .section-title', {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'none'
+        });
+      },
+      onLeaveBack: () => {
+        gsap.to('#services .section-title', {
+          opacity: 0,
+          y: 30,
+          duration: 0.4,
+          ease: 'none'
+        });
+      },
+      once: false
+    });
+
+    // Animate grid items based on their position
+    const gridItems = document.querySelectorAll('.grid-item');
     
-    const animateCount = () => {
-      if (hasAnimated) return;
-      hasAnimated = true;
+    gridItems.forEach((item) => {
+      const itemType = item.getAttribute('data-type');
+      const gridArea = item.classList.toString().match(/item-area-(\w+)/)?.[1];
       
-      const startTime = performance.now();
-      const startValue = 0;
+      // Determine animation direction based on grid position
+      let initialState: any = { opacity: 0 };
+      let resetState: any = { opacity: 0 };
       
-      const updateCount = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Ease out cubic
-        const easeOutCubic = 1 - Math.pow(1 - progress, 3);
-        const currentValue = Math.floor(startValue + (endValue - startValue) * easeOutCubic);
-        
-        statNumber.textContent = currentValue.toString();
-        
-        if (progress < 1) {
-          requestAnimationFrame(updateCount);
-        } else {
-          statNumber.textContent = endValue.toString();
-        }
-      };
+      switch(gridArea) {
+        case 'narrative1':
+          // Top - slide from top
+          initialState = { opacity: 0, y: -100 };
+          resetState = { opacity: 0, y: -100 };
+          break;
+        case 'quote':
+          // Left side - slide from left
+          initialState = { opacity: 0, x: -100 };
+          resetState = { opacity: 0, x: -100 };
+          break;
+        case 'metrics':
+          // Left bottom - slide from left
+          initialState = { opacity: 0, x: -100 };
+          resetState = { opacity: 0, x: -100 };
+          break;
+        case 'stat':
+          // Center - just pop/scale
+          initialState = { opacity: 0, scale: 0.5 };
+          resetState = { opacity: 0, scale: 0.5 };
+          break;
+        case 'main-image':
+          // Right side - slide from right
+          initialState = { opacity: 0, x: 100 };
+          resetState = { opacity: 0, x: 100 };
+          break;
+        case 'value2':
+          // Bottom left - slide from bottom
+          initialState = { opacity: 0, y: 100 };
+          resetState = { opacity: 0, y: 100 };
+          break;
+        case 'value3':
+          // Bottom right - slide from bottom
+          initialState = { opacity: 0, y: 100 };
+          resetState = { opacity: 0, y: 100 };
+          break;
+        default:
+          initialState = { opacity: 0, y: 50 };
+          resetState = { opacity: 0, y: 50 };
+      }
       
-      requestAnimationFrame(updateCount);
-    };
-    
-    // Use Intersection Observer to trigger animation when in view
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCount();
-          observer.unobserve(entry.target);
-        }
+      // Set initial state
+      gsap.set(item, initialState);
+      
+      ScrollTrigger.create({
+        trigger: item,
+        start: 'top 90%',
+        onEnter: () => {
+          gsap.to(item, {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            scale: 1,
+            duration: 0.4,
+            ease: 'none',
+            onComplete: () => {
+              if (itemType === 'stat') {
+                animateStatCounter(item as HTMLElement);
+              }
+            }
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to(item, {
+            ...resetState,
+            duration: 1,
+            ease: 'none',
+            onComplete: () => {
+              if (itemType === 'stat') {
+                resetStatCounter(item as HTMLElement);
+              }
+            }
+          });
+        },
+        once: false
       });
-    }, { threshold: 0.5 });
-    
-    observer.observe(statNumber);
+    });
+
+    // Stat counter animation function
+    const animateStatCounter = (statItem: HTMLElement) => {
+      const statNumber = statItem.querySelector('.stat-number') as HTMLElement;
+      if (!statNumber) return;
+
+      const endValue = parseInt(statNumber.getAttribute('data-end-value') || '0', 10);
+      
+      gsap.fromTo(statNumber, 
+        { textContent: 0 },
+        {
+          textContent: endValue,
+          duration: 2,
+          ease: 'power1.out',
+          snap: { textContent: 1 },
+          onUpdate: function() {
+            statNumber.textContent = Math.floor(this.targets()[0].textContent).toString();
+          }
+        }
+      );
+    };
+
+    // Reset stat counter
+    const resetStatCounter = (statItem: HTMLElement) => {
+      const statNumber = statItem.querySelector('.stat-number') as HTMLElement;
+      if (!statNumber) return;
+      statNumber.textContent = '0';
+    };
+
+    // Refresh ScrollTrigger after everything is loaded
+    window.addEventListener('load', () => {
+      ScrollTrigger.refresh();
+    });
   });
   
   // Add mouse tracking for gradient effect on metrics cards
