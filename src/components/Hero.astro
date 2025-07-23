@@ -1,4 +1,6 @@
 ---
+import videomp4 from '../assets/videos/hero_video_60fps.mp4';
+import videowebm from '../assets/videos/hero_video_60fps.webm';
 interface Props {
   lang?: string;
 }
@@ -26,8 +28,8 @@ const t = (k: string) => translations.default[k] || k;
     webkit-playsinline="true"
     playsinline="true"
   >
-    <source src="/hero_video_60fps.webm" type="video/webm" />
-    <source src="/hero_video_60fps.mp4" type="video/mp4" />
+    <source src={videowebm} type="video/webm" />
+    <source src={videomp4} type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 

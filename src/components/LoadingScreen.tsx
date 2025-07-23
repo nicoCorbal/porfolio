@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Rive } from '@rive-app/react-canvas';
 
+
 interface LoadingScreenProps {
   duration?: number;
   onComplete?: () => void;
