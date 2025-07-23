@@ -35,7 +35,7 @@ const t = (key: string) => translations.default[key] || key;
     <!-- Background Image with Parallax -->
     <div class="hero-bg absolute inset-0 z-0 bg-black">
       <img src={project.images[0]} alt={project.title} class="hero-image object-cover w-full h-full" />
-      <div class="hero-gradient absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
     </div>    
     <!-- Content -->
     <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
@@ -306,23 +306,8 @@ const t = (key: string) => translations.default[key] || key;
   }
   
   /* Gradient overlay animation */
-  .hero-gradient {
-    opacity: 0;
-  }
-  
-  .hero-gradient.animate {
-    animation: gradientFadeIn 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    animation-delay: 0.3s;
-  }
-  
-  @keyframes gradientFadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
+
+
   
   .hero-badges {
     opacity: 0;
