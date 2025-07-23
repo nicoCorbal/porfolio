@@ -5,15 +5,16 @@ interface Props {
 
 const { lang } = Astro.props;
 
-import locales from '../../public/locales/en.json';
-const t = locales;
+import enLocales from '../../public/locales/en.json';
+import esLocales from '../../public/locales/es.json';
+const t = lang === 'es' ? esLocales : enLocales;
 
 import { projects } from '../data/projects';
-import LanguageSelector from './LanguageSelector.astro';
 ---
 
-<header id="main-header" class="fixed top-0 left-0 w-full bg-white transition-all duration-300 py-6 translate-y-[-100%] shadow-lg opacity-0 z-50 sm:px-12">
-    <nav class="flex flex-row items-center justify-between font-medium text-white" id="main-nav">
+<header id="main-header" class="fixed top-0 left-0 w-full bg-white transition-all duration-300 translate-y-[-100%] shadow-lg opacity-0 z-50 lg:px-12 lg:py-6 px-6 py-3">
+
+  <nav class="flex flex-row items-center justify-between font-medium text-white" id="main-nav">
       <!-- Logo and navigation container -->
 
       <a href={`/${lang}`} class="logo-link flex items-center font-bold text-2xl lg:text-3xl">
@@ -23,20 +24,19 @@ import LanguageSelector from './LanguageSelector.astro';
       <div class="flex items-center gap-8">
         <!-- Desktop navigation -->
         <ul class="hidden md:flex items-center text-black text-[18px] font-semibold lg:gap-8 md:gap-6 relative tracking-wider">
-          <li><a href={`/${lang}/#home`} class="nav-item hover:text-gray-300 transition-colors duration-200">Inicio</a></li>
-          <li><a href={`/${lang}/#services`} class="nav-item hover:text-gray-300 transition-colors duration-200">Servicios</a></li>
+          <li><a href={`/${lang}/#home`} class="nav-item transition-colors duration-200">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
+          <li><a href={`/${lang}/#services`} class="nav-item  transition-colors duration-200">{t['nav.services']}</a></li>
           <li class="nav-dropdown relative">
-            <button class="nav-item hover:text-gray-300   text-[18px] font-semibold  transition-colors duration-200 cursor-pointer flex items-center gap-1">
-              Proyectos
+            <button class="nav-item    text-[18px] font-semibold  transition-colors duration-200 cursor-pointer flex items-center gap-1">
+              {t['nav.projects']}
               <svg class="w-3 h-3 mt-0.5 nav-dropdown-arrow transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </button>
           </li>
-          <li><a href={`/${lang}/#about`} class="nav-item hover:text-gray-300 transition-colors duration-200">Nosotros</a></li>
-          <li><a href={`/${lang}/#awards`} class="nav-item hover:text-gray-300 transition-colors duration-200">Premios</a></li>
-          <li><a href={`/${lang}/#contact`} class="nav-item hover:text-gray-300 transition-colors duration-200">Contacto</a></li>
-        </ul>
+          <li><a href={`/${lang}/#about`} class="nav-item transition-colors duration-200">{t['nav.team']}</a></li>
+          <li><a href={`/${lang}/#awards`} class="nav-item  transition-colors duration-200">{t['nav.awards']}</a></li>
+       </ul>
         
         <!-- Navigation indicator line -->
         <div id="nav-indicator" class="absolute bottom-0 h-[2px] bg-black opacity-0 transition-all duration-300 ease-out"></div>
@@ -44,8 +44,10 @@ import LanguageSelector from './LanguageSelector.astro';
       
       <!-- Right side: Language selector -->
       <div class="flex items-center gap-4 transition-opacity duration-300">
-        <div id="language-selector-wrapper">
-          <LanguageSelector currentLang={lang} />
+        <div class="hidden md:block">
+            <a href={`/${lang}/#contact`} class=" bg-black text-white hover:text-black hover:bg-white border-2 box-border border-black py-3 px-6 font-medium text-[16px] transition-colors duration-200">
+              {t['nav.contact']}
+            </a>
         </div>
         
         <!-- Mobile menu button -->
@@ -64,10 +66,10 @@ import LanguageSelector from './LanguageSelector.astro';
     <div class=" sm:px-8 pt-2 pb-3">
       <div class="flex flex-row items-center justify-start gap-8 max-w-6xl">
         {Object.values(projects).map((project) => (
-          <a href={`/${lang}/projects/${project.id}`} class="group block transition-all duration-200 overflow-hidden">
-            <div class="p-4">
-              <h3 class="font-semibold text-black  transition-colors">{project.title}</h3>
-              <p class="text-sm text-gray-600 mt-1">{project.category}</p>
+          <a href={`/${lang}/projects/${project.id}`} class="group block transition-all duration-300 overflow-hidden hover:scale-105">
+            <div class="p-4 transition-all duration-300 group-hover:translate-y-[-2px]">
+              <h3 class="font-semibold text-black transition-all duration-300 group-hover:tracking-wide">{project.title}</h3>
+              <p class="text-sm text-gray-600 mt-1 transition-all duration-300">{project.category}</p>
             </div>
           </a>
         ))}
@@ -78,7 +80,7 @@ import LanguageSelector from './LanguageSelector.astro';
 
 <!-- Mobile menu -->
 <div id="mobile-menu" class="fixed inset-0 bg-black z-[60] flex items-center justify-center">
-  <button id="mobile-close" class="absolute top-4 right-4 text-white p-2" aria-label="Close menu">
+  <button id="mobile-close" class="absolute top-4 right-4 bg-black text-white p-2" aria-label="Close menu">
     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
     </svg>
@@ -86,21 +88,18 @@ import LanguageSelector from './LanguageSelector.astro';
   
   <nav class="text-center">
     <ul class="space-y-6">
-      <li class="mobile-nav-item"><a href={`/${lang}/#home`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Inicio</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/#services`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Servicios</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/projects`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Proyectos</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/#about`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Nosotros</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/#awards`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Premios</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/#contact`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">Contacto</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#home`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#services`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.services']}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#projects`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.projects']}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#about`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.team']}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#awards`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.awards']}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#contact`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.contact']}</a></li>
     </ul>
   </nav>
 </div>
 
 <script>
 // Type definitions
-interface TouchedWindow extends Window {
-  ontouchstart?: any;
-}
 
 // Global state
 interface HeaderState {
@@ -159,9 +158,12 @@ function initializeHeader() {
   state.disableIndicatorUpdate = false;
   state.expansionTimeout = null;
   
-  // Show header on project pages
+  // Show header on project pages (not on main page with hero)
   if (!state.heroSection && state.header) {
     state.header.classList.add('visible');
+  } else if (state.header) {
+    // Ensure header is hidden initially on pages with hero section
+    state.header.classList.remove('visible');
   }
   
   // Reset nav indicator
@@ -192,10 +194,12 @@ function toggleHeaderVisibility() {
     return;
   }
 
-  const heroBottom = state.heroSection.getBoundingClientRect().bottom;
+  const scrollPosition = window.scrollY;
+  const heroHeight = state.heroSection.offsetHeight;
   const logoContainer = document.getElementById('hero-logo-container');
 
-  if (heroBottom <= state.header.offsetHeight + 200) {
+  // Show header only after completely scrolling past hero section
+  if (scrollPosition >= heroHeight - 100) {
     state.header.classList.add('visible');
     if (logoContainer) logoContainer.style.opacity = '0';
   } else {
@@ -237,6 +241,12 @@ function moveIndicatorTo(linkEl: HTMLElement | null) {
 }
 
 function updateIndicatorBySection(sectionId: string) {
+  // Hide header when on home section
+  if (sectionId === 'home') {
+    state.header?.classList.remove('visible');
+    return;
+  }
+  
   let targetNavItem = document.querySelector(`nav .nav-item[href$="#${sectionId}"]`) as HTMLElement | null;
   // Fallback for the Projects dropdown (button without href)
   if (!targetNavItem && sectionId === 'projects') {
@@ -253,12 +263,13 @@ function updateIndicatorBySection(sectionId: string) {
     state.activeNavItem = targetNavItem;
     moveIndicatorTo(targetNavItem);
     state.header?.classList.add('visible');
-  } else if (sectionId === 'contact') {
-    state.activeNavItem = null;
-    if (state.navIndicator) state.navIndicator.style.opacity = '0';
-    state.header?.classList.remove('visible');
   } else if (state.activeNavItem) {
     moveIndicatorTo(state.activeNavItem);
+  }
+  
+  // Always show header on contact section
+  if (sectionId === 'contact') {
+    state.header?.classList.add('visible');
   }
 }
 
@@ -273,6 +284,8 @@ function setActiveNavItem() {
   
   const firstSection = document.querySelector('section#home') || document.querySelector('section:first-of-type');
   if (firstSection && scrollPosition < (firstSection as HTMLElement).offsetHeight) {
+    // Hide header on hero section
+    state.header.classList.remove('visible');
     updateIndicatorBySection('home');
     return;
   }
@@ -291,7 +304,8 @@ function setActiveNavItem() {
   });
   
   if (!foundActiveSection) {
-    updateIndicatorBySection('home');
+    // Hide header when not in any section (top of page)
+    state.header.classList.remove('visible');
   }
 }
 
@@ -625,7 +639,7 @@ document.addEventListener('astro:page-load', initializeHeader);
     position: absolute;
     height: 2px;
     width: 100%;
-    background: white;
+    background: black;
     opacity: 1;
     left: 0;
     transform: rotate(0deg);

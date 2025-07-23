@@ -25,7 +25,7 @@ if (!project) {
 
 <Layout lang={lang}>
 
-  <section class="relative min-h-[450px] lg:min-h-[550px] flex items-center overflow-hidden pt-20">
+  <section class="relative min-h-[450px] lg:min-h-[550px] flex items-center overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0 z-0">
       <img src={project.images[0]} alt={project.title} class="object-cover object-top w-full h-full" />
@@ -35,7 +35,7 @@ if (!project) {
 
     
     <!-- Content -->
-    <div class="relative z-10 mx-auto px-4 sm:px-6 lg:px-10 w-full">
+    <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
       <div class="max-w-2xl">
         <div class="flex items-center flex-wrap gap-4 mb-6">
           <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm border border-white/30">{project.category}</span>
@@ -44,7 +44,7 @@ if (!project) {
           ))}
         </div>
 
-        <h1 class="text-5xl lg:text-7xl font-bold text-white mb-6">{project.title}</h1>
+        <h1 class="text-4xl lg:text-7xl font-bold text-white mb-6">{project.title}</h1>
         <p class="text-xl lg:text-2xl text-gray-50 mb-8">{project.subtitle}</p>
 
         <div class="flex flex-row gap-8 mb-8 text-left">
@@ -56,13 +56,6 @@ if (!project) {
             <p class="text-sm text-gray-400 mb-1">Fecha</p>
             <p class="font-medium text-gray-50">{project.date}</p>
           </div>
-        </div>
-
-        <div class="flex flex-wrap gap-4">
-            <a href={`/${lang}/#contact`} class="inline-flex items-center text-base border-2 border-white hover:bg-white hover:text-black text-white px-6 py-3 font-medium transition-all duration-200">
-              Contactar
-            </a>
-        </div>
       </div>
     </div>
   </section>
