@@ -161,15 +161,29 @@ function initializeHeader() {
   
   // Show header on project pages (not on main page with hero)
   if (!state.heroSection && state.header) {
+    // This is a project page or other page without hero section
     state.header.classList.add('visible');
     // Force immediate visibility on non-hero pages
     state.header.style.transform = 'translateY(0)';
     state.header.style.opacity = '1';
+    
+    // Check if this is a project page and set the indicator
+    if (window.location.pathname.includes('/projects/')) {
+      const projectsBtn = document.querySelector('.nav-dropdown .nav-item') as HTMLElement | null;
+      if (projectsBtn) {
+        projectsBtn.classList.add('nav-active');
+        state.activeNavItem = projectsBtn;
+        setTimeout(() => {
+          moveIndicatorTo(projectsBtn);
+        }, 100);
+      }
+    }
   } else if (state.header) {
-    // Ensure header is hidden initially on pages with hero section
+    // This is the main page with hero section
+    // Ensure header is hidden initially
     state.header.classList.remove('visible');
-    state.header.style.transform = '';
-    state.header.style.opacity = '';
+    state.header.style.transform = 'translateY(-100%)';
+    state.header.style.opacity = '0';
   }
   
   // Reset nav indicator
@@ -195,11 +209,15 @@ function initializeHeader() {
 function toggleHeaderVisibility() {
   if (!state.header) return;
   
+  // On pages without hero section, always show header
   if (!state.heroSection) {
     state.header.classList.add('visible');
+    state.header.style.transform = 'translateY(0)';
+    state.header.style.opacity = '1';
     return;
   }
 
+  // On pages with hero section, show/hide based on scroll
   const scrollPosition = window.scrollY;
   const heroHeight = state.heroSection.offsetHeight;
   const logoContainer = document.getElementById('hero-logo-container');
@@ -207,9 +225,13 @@ function toggleHeaderVisibility() {
   // Show header only after completely scrolling past hero section
   if (scrollPosition >= heroHeight - 100) {
     state.header.classList.add('visible');
+    state.header.style.transform = '';
+    state.header.style.opacity = '';
     if (logoContainer) logoContainer.style.opacity = '0';
   } else {
     state.header.classList.remove('visible');
+    state.header.style.transform = '';
+    state.header.style.opacity = '';
     if (logoContainer) logoContainer.style.opacity = '1';
   }
 }
@@ -247,9 +269,25 @@ function moveIndicatorTo(linkEl: HTMLElement | null) {
 }
 
 function updateIndicatorBySection(sectionId: string) {
-  // Hide header when on home section
-  if (sectionId === 'home') {
+  // Don't show header or indicator on home section
+  if (sectionId === 'home' && state.heroSection) {
     state.header?.classList.remove('visible');
+    if (state.navIndicator) {
+      state.navIndicator.style.opacity = '0';
+    }
+    return;
+  }
+  
+  // Special handling for contact section - show header but hide indicator
+  if (sectionId === 'contact') {
+    state.header?.classList.add('visible');
+    if (state.navIndicator) {
+      state.navIndicator.style.opacity = '0';
+    }
+    // Remove active class from all nav items
+    const allNavLinks = document.querySelectorAll('nav .nav-item');
+    allNavLinks.forEach(link => link.classList.remove('nav-active'));
+    state.activeNavItem = null;
     return;
   }
   
@@ -272,11 +310,6 @@ function updateIndicatorBySection(sectionId: string) {
   } else if (state.activeNavItem) {
     moveIndicatorTo(state.activeNavItem);
   }
-  
-  // Always show header on contact section
-  if (sectionId === 'contact') {
-    state.header?.classList.add('visible');
-  }
 }
 
 // Set active nav item based on scroll
@@ -296,6 +329,13 @@ function setActiveNavItem() {
     return;
   }
   
+  // Check if we're in between sections but past the hero
+  let pastHero = false;
+  if (state.heroSection) {
+    const heroHeight = state.heroSection.offsetHeight;
+    pastHero = scrollPosition >= heroHeight - 100;
+  }
+  
   sections.forEach(section => {
     const sectionTop = (section as HTMLElement).offsetTop - state.header!.offsetHeight;
     const sectionHeight = (section as HTMLElement).offsetHeight;
@@ -309,9 +349,23 @@ function setActiveNavItem() {
     }
   });
   
-  if (!foundActiveSection) {
-    // Hide header when not in any section (top of page)
-    state.header.classList.remove('visible');
+  if (!foundActiveSection && state.heroSection) {
+    // If we're past hero but between sections, keep header visible
+    if (pastHero) {
+      state.header.classList.add('visible');
+      // Keep the last active nav item if we're between sections
+      if (state.activeNavItem) {
+        moveIndicatorTo(state.activeNavItem);
+      } else if (state.navIndicator) {
+        state.navIndicator.style.opacity = '0';
+      }
+    } else {
+      // Only hide when we're back in the hero section
+      state.header.classList.remove('visible');
+      if (state.navIndicator) {
+        state.navIndicator.style.opacity = '0';
+      }
+    }
   }
 }
 
@@ -320,6 +374,17 @@ function setupNavigation() {
   const navItems = document.querySelectorAll('.nav-item');
   const allNavLinks = document.querySelectorAll('nav .nav-item');
   const logoLink = document.querySelector('.logo-link');
+  
+  // Helper function to get the correct nav item to return to
+  const getReturnNavItem = () => {
+    // If we're on a project page, always return to projects
+    if (window.location.pathname.includes('/projects/')) {
+      const projectsBtn = document.querySelector('.nav-dropdown .nav-item') as HTMLElement | null;
+      return projectsBtn;
+    }
+    // Otherwise return to the active nav item
+    return state.activeNavItem;
+  };
 
   // Nav item hover
   navItems.forEach(item => {
@@ -335,7 +400,12 @@ function setupNavigation() {
 
       dropdownParent.addEventListener('mouseleave', () => {
         if (state.disableIndicatorUpdate) return;
-        if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
+        const returnItem = getReturnNavItem();
+        if (returnItem) {
+          moveIndicatorTo(returnItem);
+        } else if (state.navIndicator) {
+          state.navIndicator.style.opacity = '0';
+        }
       });
     } else {
       navLink.addEventListener('mouseenter', () => {
@@ -345,7 +415,12 @@ function setupNavigation() {
 
       navLink.addEventListener('mouseleave', () => {
         if (state.disableIndicatorUpdate) return;
-        if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
+        const returnItem = getReturnNavItem();
+        if (returnItem) {
+          moveIndicatorTo(returnItem);
+        } else if (state.navIndicator) {
+          state.navIndicator.style.opacity = '0';
+        }
       });
     }
   });
@@ -354,40 +429,50 @@ function setupNavigation() {
   allNavLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
-      if (!href || !href.startsWith('#')) return;
-
-      e.preventDefault();
-      state.disableIndicatorUpdate = true;
-
-      const targetIdClean = href.substring(1);
-      const targetHref = `#${targetIdClean}`;
-
-      allNavLinks.forEach(item => {
-        item.classList.remove('nav-active');
-        if (item.getAttribute('href') === targetHref) {
-          item.classList.add('nav-active');
-          state.activeNavItem = item as HTMLElement;
-        }
-      });
-
-      if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
-
-      if (targetIdClean === 'home') {
-        smoothScrollTo(0, 2000);
-      } else {
-        const targetSection = document.querySelector(targetHref);
-        if (targetSection && state.header) {
-          const adjustAttr = link.getAttribute('data-scroll-adjust');
-          const customAdjust = adjustAttr ? parseInt(adjustAttr) : 0;
-          const headerHeight = state.header.offsetHeight;
-          const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - customAdjust;
-          smoothScrollTo(targetPosition, 2000);
-        }
+      
+      // Don't prevent default for navigation links that go to different pages
+      if (!href || (!href.startsWith('#') && !href.includes('/#'))) return;
+      
+      // If we're on a project page and clicking a hash link, we need to navigate to main page
+      if (window.location.pathname.includes('/projects/') && href.includes('/#')) {
+        // Let the browser handle the navigation
+        return;
       }
 
-      setTimeout(() => {
-        state.disableIndicatorUpdate = false;
-      }, 2000);
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        state.disableIndicatorUpdate = true;
+
+        const targetIdClean = href.substring(1);
+        const targetHref = `#${targetIdClean}`;
+
+        allNavLinks.forEach(item => {
+          item.classList.remove('nav-active');
+          if (item.getAttribute('href') === targetHref) {
+            item.classList.add('nav-active');
+            state.activeNavItem = item as HTMLElement;
+          }
+        });
+
+        if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
+
+        if (targetIdClean === 'home') {
+          smoothScrollTo(0, 2000);
+        } else {
+          const targetSection = document.querySelector(targetHref);
+          if (targetSection && state.header) {
+            const adjustAttr = link.getAttribute('data-scroll-adjust');
+            const customAdjust = adjustAttr ? parseInt(adjustAttr) : 0;
+            const headerHeight = state.header.offsetHeight;
+            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - customAdjust;
+            smoothScrollTo(targetPosition, 2000);
+          }
+        }
+
+        setTimeout(() => {
+          state.disableIndicatorUpdate = false;
+        }, 2000);
+      }
     });
   });
 
@@ -398,6 +483,20 @@ function setupNavigation() {
       if (window.location.pathname === logoHref || logoHref === '/') {
         e.preventDefault();
         smoothScrollTo(0, 2000);
+      }
+    });
+  }
+  
+  // Add a nav container mouseleave handler as a fallback
+  const mainNav = document.getElementById('main-nav');
+  if (mainNav) {
+    mainNav.addEventListener('mouseleave', () => {
+      if (state.disableIndicatorUpdate) return;
+      const returnItem = getReturnNavItem();
+      if (returnItem) {
+        setTimeout(() => {
+          moveIndicatorTo(returnItem);
+        }, 50);
       }
     });
   }
@@ -567,12 +666,6 @@ document.addEventListener('astro:page-load', initializeHeader);
   }
   
   #main-header.visible {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  
-  /* Show header by default on non-hero pages */
-  body:not(.has-hero) #main-header {
     transform: translateY(0);
     opacity: 1;
   }

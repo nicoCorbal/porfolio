@@ -25,55 +25,56 @@ if (!project) {
 
 <Layout lang={lang}>
 
-  <section class="relative min-h-[450px] bg-white lg:min-h-[550px] flex items-center overflow-hidden">
-    <!-- Background Image -->
-    <div class="absolute inset-0 z-0">
-      <img src={project.images[0]} alt={project.title} class="object-cover object-top w-full h-full" />
+  <section class="hero-section relative min-h-[450px] bg-white lg:min-h-[550px] flex items-center overflow-hidden">
+    <!-- Background Image with Parallax -->
+    <div class="hero-bg absolute inset-0 z-0">
+      <img src={project.images[0]} alt={project.title} class="hero-image object-cover w-full h-full scale-110" />
       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
     </div>    
     <!-- Content -->
     <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
       <div class="max-w-2xl">
-        <div class="flex items-center flex-wrap gap-4 mb-6">
-          <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm border border-white/30">{project.category}</span>
-          {project.awards && project.awards.map((award) => (
-            <span class="px-3 py-1 bg-yellow-400/20 backdrop-blur-sm border border-yellow-400/50 text-yellow-100 text-sm">🏆 {award}</span>
+        <div class="hero-badges flex items-center flex-wrap gap-4 mb-6 opacity-0">
+          <span class="badge px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm border border-white/30">{project.category}</span>
+          {project.awards && project.awards.map((award, index) => (
+            <span class="badge px-3 py-1 bg-yellow-400/20 backdrop-blur-sm border border-yellow-400/50 text-yellow-100 text-sm" style={`--badge-index: ${index + 1}`}>🏆 {award}</span>
           ))}
         </div>
 
-        <h1 class="text-5xl md:text-7xl font-bold text-white mb-3 md:mb-6">{project.title}</h1>
-        <h5 class="text-xl md:text-2xl text-gray-50 mb-8">{project.subtitle}</h5>
+        <h1 class="hero-title text-5xl md:text-7xl font-bold text-white mb-3 md:mb-6 opacity-0">{project.title}</h1>
+        <h5 class="hero-subtitle text-xl md:text-2xl text-gray-50 mb-8 opacity-0">{project.subtitle}</h5>
 
-        <div class="flex flex-row gap-8 mb-8 text-left">
-          <div>
+        <div class="hero-meta flex flex-row gap-8 mb-8 text-left opacity-0">
+          <div class="meta-item">
             <p class="text-sm text-gray-400 mb-1">Tipo</p>
             <p class="font-medium text-gray-50">{project.type}</p>
           </div>
-          <div>
+          <div class="meta-item">
             <p class="text-sm text-gray-400 mb-1">Fecha</p>
             <p class="font-medium text-gray-50">{project.date}</p>
           </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- DESCRIPCIÓN -->
-  <section class="py-16 bg-white mb-0">
+  <section class="description-section py-16 bg-white mb-0">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-3 gap-16">
         
         <!-- CÓMO NACIÓ -->
-        <div>
-          <h2 class="text-3xl font-bold text-black mb-4">Cómo nació {project.title}</h2>
-          <p class="text-gray-900 leading-relaxed text-justify">{project.birth}</p>
+        <div class="info-card fade-up">
+          <h2 class="info-title text-3xl font-bold text-black mb-4">Cómo nació {project.title}</h2>
+          <p class="info-text text-gray-900 leading-relaxed text-justify">{project.birth}</p>
         </div>
     
         <!-- CASOS DE USO -->
-        <div>
-          <h2 class="text-3xl font-bold text-black mb-4">Casos de uso de {project.title}</h2>
+        <div class="info-card fade-up" style="--delay: 0.2s">
+          <h2 class="info-title text-3xl font-bold text-black mb-4">Casos de uso de {project.title}</h2>
           <ul class="space-y-4">
-            {project.usecase.map((item) => (
-              <li class="flex items-start gap-3">
+            {project.usecase.map((item, index) => (
+              <li class="use-case-item flex items-start gap-3" style={`--item-index: ${index}`}>
                 <svg class="w-5 h-5 text-black mt-1 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
@@ -84,9 +85,9 @@ if (!project) {
         </div>
     
         <!-- FUTURO -->
-        <div>
-          <h2 class="text-3xl font-bold text-black mb-4">El Futuro de {project.title}</h2>
-          <p class="text-gray-900 leading-relaxed text-justify">{project.future}</p>
+        <div class="info-card fade-up" style="--delay: 0.4s">
+          <h2 class="info-title text-3xl font-bold text-black mb-4">El Futuro de {project.title}</h2>
+          <p class="info-text text-gray-900 leading-relaxed text-justify">{project.future}</p>
         </div>
     
       </div>
@@ -94,18 +95,18 @@ if (!project) {
   </section>
 
   <!-- FEATURES -->
-  <section class="bg-white  py-16 mb-0">
+  <section class="features-section bg-white  py-16 mb-0">
     <div class="w-full mx-auto px-4 sm:px-6 lg:px-10">
-      <h2 class="text-3xl font-bold text-black text-left  mb-12">Características Principales</h2>
-      <div class={`grid gap-8 ${
+      <h2 class="features-title text-3xl font-bold text-black text-left  mb-12 fade-up">Características Principales</h2>
+      <div class={`features-grid grid gap-8 ${
         project.features.length <= 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' :
         project.features.length <= 4 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2' :
         project.features.length <= 6 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' :
         project.features.length <= 8 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4' :
         'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '
       }`}>
-        {project.features.map((feature) => (
-          <div class="feature-card group relative h-64 w-full overflow-hidden border border-gray-200">
+        {project.features.map((feature, index) => (
+          <div class="feature-card group relative h-64 w-full overflow-hidden border border-gray-200 fade-scale" style={`--card-index: ${index}`}>
             
             {/* CARD BACK (Hidden Content) */}
             <div class="absolute inset-0 z-10 bg-black bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.04)_0%,transparent_40%)] border border-transparent z-1 p-6 text-left text-white">
@@ -185,8 +186,8 @@ if (!project) {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Touch device handling
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
     if (isTouchDevice) {
       const featureCards = document.querySelectorAll('.feature-card');
       featureCards.forEach(card => {
@@ -195,15 +196,266 @@ if (!project) {
         });
       });
     }
+
+    // Hero animations on load
+    const heroTimeline = () => {
+      // Animate hero elements
+      document.querySelector('.hero-image')?.classList.add('animate');
+      
+      setTimeout(() => {
+        document.querySelector('.hero-badges')?.classList.add('animate');
+      }, 300);
+      
+      setTimeout(() => {
+        document.querySelector('.hero-title')?.classList.add('animate');
+      }, 500);
+      
+      setTimeout(() => {
+        document.querySelector('.hero-subtitle')?.classList.add('animate');
+      }, 700);
+      
+      setTimeout(() => {
+        document.querySelector('.hero-meta')?.classList.add('animate');
+      }, 900);
+    };
+
+    // Parallax effect for hero image
+    const heroSection = document.querySelector('.hero-section');
+    const heroImage = document.querySelector('.hero-image') as HTMLElement;
+    
+    const handleParallax = () => {
+      if (!heroSection || !heroImage) return;
+      
+      const scrolled = window.scrollY;
+      const rate = scrolled * -0.5;
+      
+      if (scrolled < (heroSection as HTMLElement).offsetHeight) {
+        heroImage.style.transform = `translateY(${rate}px) scale(1.1)`;
+      }
+    };
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          
+          // Handle staggered animations for list items
+          if (entry.target.classList.contains('info-card')) {
+            const listItems = entry.target.querySelectorAll('.use-case-item');
+            listItems.forEach((item, index) => {
+              setTimeout(() => {
+                item.classList.add('animate');
+              }, index * 100);
+            });
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements
+    document.querySelectorAll('.fade-up, .fade-scale').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Initialize animations
+    heroTimeline();
+    
+    // Add scroll listener for parallax
+    window.addEventListener('scroll', handleParallax, { passive: true });
+    
+    // Clean up on page navigation
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('scroll', handleParallax);
+    });
   });
 </script>
 
 <style>
-  /* For touch devices, where we toggle the class via JS */
+  /* Hero Animations */
+  .hero-image {
+    transition: transform 0.3s ease-out;
+    transform: scale(1.1);
+  }
+  
+  .hero-image.animate {
+    animation: heroImageReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  
+  @keyframes heroImageReveal {
+    from {
+      transform: scale(1.15);
+      filter: blur(10px);
+    }
+    to {
+      transform: scale(1.1);
+      filter: blur(0);
+    }
+  }
+  
+  .hero-badges,
+  .hero-title,
+  .hero-subtitle,
+  .hero-meta {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .hero-badges.animate,
+  .hero-title.animate,
+  .hero-subtitle.animate,
+  .hero-meta.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Badge stagger animation */
+  .hero-badges.animate .badge {
+    animation: badgePop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    animation-delay: calc(var(--badge-index, 0) * 0.1s);
+  }
+  
+  @keyframes badgePop {
+    from {
+      opacity: 0;
+      transform: scale(0.8) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  /* Fade up animation */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-delay: var(--delay, 0s);
+  }
+  
+  .fade-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Fade scale animation for cards */
+  .fade-scale {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-delay: calc(var(--card-index, 0) * 0.1s);
+  }
+  
+  .fade-scale.in-view {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  
+  /* Use case items animation */
+  .use-case-item {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s ease-out;
+  }
+  
+  .use-case-item.animate {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  /* Info card hover effect */
+  .info-card {
+    transition: transform 0.3s ease;
+  }
+  
+  .info-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Features title animation */
+  .features-title {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .features-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: black;
+    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .features-title.in-view::after {
+    width: 100px;
+  }
+  
+  /* Feature card enhancements */
+  .feature-card {
+    transition: all 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Touch device animations */
   .feature-card.is-flipped .card-front {
     transform: translateX(-100%);
   }
+  
   .feature-card.is-flipped .card-back-content {
     opacity: 1;
+  }
+  
+  /* Video section fade in */
+  section {
+    animation: sectionFadeIn 0.8s ease-out;
+  }
+  
+  @keyframes sectionFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* CTA button hover effects */
+  a[href*="projects"],
+  a[href*="contact"] {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  a[href*="projects"]::before,
+  a[href*="contact"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: left 0.3s ease;
+    z-index: -1;
+  }
+  
+  a[href*="projects"]:hover::before,
+  a[href*="contact"]:hover::before {
+    left: 0;
   }
 </style>
