@@ -62,6 +62,36 @@
     "about.bio.backend": "Especialista en APIs y bases de datos.",
     "about.bio.cyber": "Seguridad e infraestructura.",
 
+    "team.title": "Nuestro <span class=\"font-bold\">Equipo</span>",
+    "team.role.cfo": "CFO",
+    "team.role.backend": "Ingeniero Backend",
+    "team.role.security": "Ingeniero Backend de Seguridad e IA",
+    "team.role.cto": "CTO / Arquitecto de Software",
+    "team.role.frontend": "Ingeniero Frontend",
+    "team.role.devops": "Ingeniero DevOps",
+    "team.role.fullstack": "Ingeniero Full Stack Móvil",
+    
+    "team.mateo.name": "Mateo Bodenlle",
+    "team.mateo.description": "Impulsa la visión financiera y la estrategia de crecimiento de OSIX. Con un ojo agudo para las oportunidades y riesgos, Mateo lidera los esfuerzos de recaudación de fondos, planificación financiera y sostenibilidad a largo plazo para garantizar que cada paso que da la empresa sea estratégicamente sólido.",
+    
+    "team.juan.name": "Juan Freire",
+    "team.juan.description": "Diseña e implementa la columna vertebral de nuestros sistemas. Juan es experto en APIs de alto rendimiento, optimización de bases de datos y escalabilidad backend, asegurando que las plataformas de OSIX sean tan sólidas como flexibles.",
+    
+    "team.guti.name": "David Gutiérrez",
+    "team.guti.description": "Fusiona las mejores prácticas de ciberseguridad con integración avanzada de IA. Guti prospera en entornos de alta presión, construyendo sistemas backend seguros y desplegando soluciones impulsadas por IA que manejan la complejidad del mundo real con elegancia.",
+    
+    "team.pazos.name": "Pablo Pazos",
+    "team.pazos.description": "Define la dirección técnica y la arquitectura del sistema detrás de OSIX. Como CTO, Pazos lidera al equipo hacia soluciones limpias, modulares y escalables, equilibrando la estrategia a largo plazo con la toma de decisiones diaria en todos los frentes tecnológicos.",
+    
+    "team.nico.name": "Nicolás Corbal",
+    "team.nico.description": "Crea interfaces de usuario intuitivas y perfectas hasta el último píxel. Nico transforma funcionalidades complejas en experiencias elegantes e interactivas, aprovechando las últimas tecnologías frontend para crear viajes de usuario fluidos y atractivos.",
+    
+    "team.nel.name": "David M. Raposeiras",
+    "team.nel.description": "Automatiza, monitorea y asegura la columna vertebral de la infraestructura de OSIX. Nel garantiza que los despliegues sean rápidos, los entornos sean resilientes y los sistemas permanezcan en línea, siempre con la seguridad y el rendimiento en mente.",
+    
+    "team.diego.name": "Diego Cristóbal",
+    "team.diego.description": "Une el desarrollo móvil y web con un enfoque unificado. Diego construye experiencias de usuario consistentes y de alta calidad en todas las plataformas, utilizando capacidades full-stack para entregar funciones con velocidad y precisión.",
+
     "awards.title": "Nuestros <span class=\"font-bold\">Premios</span>",
     
     "awards.0.date": "Abril 2025",

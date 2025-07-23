@@ -20,7 +20,6 @@
 html {
   font-family: 'Plus Jakarta Sans', sans-serif;  
   font-weight: 800;
-  scroll-behavior: smooth;
   font-size: 100%; /* facilita el uso de rem */
   box-sizing: border-box;
 }

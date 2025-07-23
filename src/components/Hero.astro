@@ -10,7 +10,7 @@ const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
 ---
 
-<section id="home" class="w-full !min-h-[100dvh] !max-h-[100dvh] flex flex-col items-start justify-end p-8 md:p-16 gap-8 overflow-hidden">
+<section id="home" class="w-full !mb-0 !min-h-[100dvh] !max-h-[100dvh] flex flex-col items-center justify-end py-8 md:py-16 gap-8 overflow-hidden">
   <div class="video-container">
     <video
       autoplay
@@ -31,7 +31,7 @@ const t = (k: string) => translations.default[k] || k;
     </video>
   </div>
 
-  <div class="flex w-full flex-row items-end justify-between">
+  <div class="flex w-full flex-row max-w-7xl mx-auto px-6 md:px-12 items-end justify-between">
     <div class="flex flex-col w-full md:items-start items-center justify-end gap-8">
       <div class="flex flex-col w-full items-center md:items-start justify-end !text-black text-center z-10 hero-title"> 
         <h1 class="text-2xl sm:text-3xl md:text-5xl font-semibold">{t('hero.title.line1')}</h1>

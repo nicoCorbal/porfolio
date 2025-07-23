@@ -62,6 +62,36 @@
     "about.bio.backend": "API and database specialist.",
     "about.bio.cyber": "Security and infrastructure.",
 
+    "team.title": "Our <span class=\"font-bold\">Team</span>",
+    "team.role.cfo": "CFO",
+    "team.role.backend": "Backend Engineer",
+    "team.role.security": "Security & AI Backend Engineer",
+    "team.role.cto": "CTO / Software Architect",
+    "team.role.frontend": "Frontend Engineer",
+    "team.role.devops": "DevOps Engineer",
+    "team.role.fullstack": "Full Stack Mobile Engineer",
+    
+    "team.mateo.name": "Mateo Bodenlle",
+    "team.mateo.description": "Drives OSIX's financial vision and growth strategy. With a sharp eye for opportunity and risk, Mateo leads fundraising efforts, financial planning, and long-term sustainability to ensure each step the company takes is strategically sound.",
+    
+    "team.juan.name": "Juan Freire",
+    "team.juan.description": "Designs and implements the backbone of our systems. Juan is an expert in high-performance APIs, database optimization, and backend scalability, ensuring OSIX's platforms are as solid as they are flexible.",
+    
+    "team.guti.name": "David Gutiérrez",
+    "team.guti.description": "Merges cybersecurity best practices with advanced AI integration. Guti thrives in high-pressure environments, building secure backend systems and deploying AI-powered solutions that handle real-world complexity with elegance.",
+    
+    "team.pazos.name": "Pablo Pazos",
+    "team.pazos.description": "Defines the technical direction and system architecture behind OSIX. As CTO, Pazos leads the team toward clean, modular, and scalable solutions, balancing long-term strategy with day-to-day decision-making across all tech fronts.",
+    
+    "team.nico.name": "Nicolás Corbal",
+    "team.nico.description": "Crafts intuitive, pixel-perfect user interfaces. Nico transforms complex functionality into sleek, interactive experiences, leveraging the latest frontend technologies to create smooth and engaging user journeys.",
+    
+    "team.nel.name": "David M. Raposeiras",
+    "team.nel.description": "Automates, monitors, and secures the backbone of OSIX's infrastructure. Nel ensures that deployments are fast, environments are resilient, and systems stay online — always with security and performance in mind.",
+    
+    "team.diego.name": "Diego Cristóbal",
+    "team.diego.description": "Bridges mobile and web development with a unified approach. Diego builds consistent, high-quality user experiences across platforms, using full-stack capabilities to deliver features with speed and precision.",
+
     "awards.title": "Our <span class=\"font-bold\">Awards</span>",
     
     "awards.0.date": "April 2025",

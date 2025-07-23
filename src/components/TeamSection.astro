@@ -8,62 +8,66 @@ import nicoImg from '../assets/team/nico.jpeg';
 import nelImg from '../assets/team/nel.jpeg';
 import diegoImg from '../assets/team/diego.jpeg';
 
+const { lang } = Astro.props;
+const translations = await import(`../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
 const teamMembers = [
   { 
-    name: "Mateo Bodenlle", 
-    role: "CFO", 
+    name: t("team.mateo.name"), 
+    role: t("team.role.cfo"), 
     image: mateoImg, 
     linkedin: "https://www.linkedin.com/in/mateo-bodenlle-villarino/", 
     github: "https://github.com/mateobodenlle",
-    description: "Drives OSIX’s financial vision and growth strategy. With a sharp eye for opportunity and risk, Mateo leads fundraising efforts, financial planning, and long-term sustainability to ensure each step the company takes is strategically sound."
+    description: t("team.mateo.description")
   },
   { 
-    name: "Juan Freire", 
-    role: "Backend Engineer", 
+    name: t("team.juan.name"), 
+    role: t("team.role.backend"), 
     image: juanImg, 
     linkedin: "https://www.linkedin.com/in/juan-freire-alvarez/", 
     github: "https://github.com/SrFreiRe",
-    description: "Designs and implements the backbone of our systems. Juan is an expert in high-performance APIs, database optimization, and backend scalability, ensuring OSIX’s platforms are as solid as they are flexible."
+    description: t("team.juan.description")
   },
   { 
-    name: "David Gutiérrez", 
-    role: "Security & AI Backend Engineer", 
+    name: t("team.guti.name"), 
+    role: t("team.role.security"), 
     image: gutiImg, 
     linkedin: "https://www.linkedin.com/in/david-gutierrez-cs/", 
     github: "https://github.com/dav1dgf",
-    description: "Merges cybersecurity best practices with advanced AI integration. Guti thrives in high-pressure environments, building secure backend systems and deploying AI-powered solutions that handle real-world complexity with elegance."
+    description: t("team.guti.description")
   },
   { 
-    name: "Pablo Pazos", 
-    role: "CTO / Software Architect", 
+    name: t("team.pazos.name"), 
+    role: t("team.role.cto"), 
     image: pazosImg, 
     linkedin: "https://www.linkedin.com/in/pablo-pazos-parada/", 
     github: "https://github.com/ppazosp",
-    description: "Defines the technical direction and system architecture behind OSIX. As CTO, Pazos leads the team toward clean, modular, and scalable solutions, balancing long-term strategy with day-to-day decision-making across all tech fronts."
+    description: t("team.pazos.description")
   },
   { 
-    name: "Nicolás Corbal", 
-    role: "Frontend Engineer", 
+    name: t("team.nico.name"), 
+    role: t("team.role.frontend"), 
     image: nicoImg, 
     linkedin: "https://www.linkedin.com/in/nicol%C3%A1s-corbal-912929318/", 
     github: "https://github.com/nicoCorbal",
-    description: "Crafts intuitive, pixel-perfect user interfaces. Nico transforms complex functionality into sleek, interactive experiences, leveraging the latest frontend technologies to create smooth and engaging user journeys."
+    description: t("team.nico.description")
   },
   { 
-    name: "David M. Raposeiras", 
-    role: "DevOps Engineer", 
+    name: t("team.nel.name"), 
+    role: t("team.role.devops"), 
     image: nelImg, 
     linkedin: "https://www.linkedin.com/in/david-manuel-raposeiras-canabal-a95028210/", 
     github: "https://github.com/davrapcan",
-    description: "Automates, monitors, and secures the backbone of OSIX’s infrastructure. Nel ensures that deployments are fast, environments are resilient, and systems stay online — always with security and performance in mind."
+    description: t("team.nel.description")
   },
   { 
-    name: "Diego Cristóbal", 
-    role: "Full Stack Mobile Engineer", 
+    name: t("team.diego.name"), 
+    role: t("team.role.fullstack"), 
     image: diegoImg, 
     linkedin: "https://www.linkedin.com/in/diego-cristobal-andaluz-3a5580304/", 
     github: "https://github.com/2cristo7",
-    description: "Bridges mobile and web development with a unified approach. Diego builds consistent, high-quality user experiences across platforms, using full-stack capabilities to deliver features with speed and precision."
+    description: t("team.diego.description")
   },
 ];
 
@@ -75,7 +79,7 @@ for (let i = teamMembers.length - 1; i > 0; i--) {
 ---
 <section class="section bg-white text-black overflow-x-hidden team-section">
   <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
-    <h2 class="section-title">Our <span class="font-bold">Team</span></h2>
+    <h2 class="section-title" set:html={t("team.title")}></h2>
 
     <!-- Desktop: Expanding Cards -->
     <div class="hidden md:block overflow-hidden">

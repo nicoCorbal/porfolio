@@ -439,16 +439,19 @@ function setupNavigation() {
         return;
       }
 
-      if (href.startsWith('#')) {
+      // Check if href contains a hash
+      const hashMatch = href.match(/#(.+)$/);
+      if (hashMatch) {
         e.preventDefault();
         state.disableIndicatorUpdate = true;
 
-        const targetIdClean = href.substring(1);
+        const targetIdClean = hashMatch[1];
         const targetHref = `#${targetIdClean}`;
 
         allNavLinks.forEach(item => {
+          const itemHref = item.getAttribute('href');
           item.classList.remove('nav-active');
-          if (item.getAttribute('href') === targetHref) {
+          if (itemHref && itemHref.endsWith(targetHref)) {
             item.classList.add('nav-active');
             state.activeNavItem = item as HTMLElement;
           }
@@ -459,7 +462,7 @@ function setupNavigation() {
         if (targetIdClean === 'home') {
           smoothScrollTo(0, 2000);
         } else {
-          const targetSection = document.querySelector(targetHref);
+          const targetSection = document.getElementById(targetIdClean);
           if (targetSection && state.header) {
             const adjustAttr = link.getAttribute('data-scroll-adjust');
             const customAdjust = adjustAttr ? parseInt(adjustAttr) : 0;
@@ -554,11 +557,34 @@ function setupMobileMenu() {
     });
     
     mobileNavLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        state.isMenuOpen = false;
-        mobileMenu.classList.remove('active');
-        document.body.classList.remove('menu-open');
-        burgerIcon.classList.remove('active');
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        const hashMatch = href?.match(/#(.+)$/);
+        
+        if (hashMatch) {
+          e.preventDefault();
+          const targetIdClean = hashMatch[1];
+          
+          // Close mobile menu
+          state.isMenuOpen = false;
+          mobileMenu.classList.remove('active');
+          document.body.classList.remove('menu-open');
+          burgerIcon.classList.remove('active');
+          
+          // Smooth scroll to target
+          setTimeout(() => {
+            if (targetIdClean === 'home') {
+              smoothScrollTo(0, 2000);
+            } else {
+              const targetSection = document.getElementById(targetIdClean);
+              if (targetSection && state.header) {
+                const headerHeight = state.header.offsetHeight;
+                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                smoothScrollTo(targetPosition, 2000);
+              }
+            }
+          }, 300); // Wait for menu close animation
+        }
       });
     });
   }
