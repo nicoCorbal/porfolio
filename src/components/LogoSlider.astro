@@ -1,0 +1,173 @@
+---
+import androidLogo from '../assets/logos/android.svg';
+import anthropicLogo from '../assets/logos/anthropic.svg';
+import apacheLogo from '../assets/logos/apache.svg';
+import appleLogo from '../assets/logos/apple.svg';
+import discordLogo from '../assets/logos/discord.svg';
+import dockerLogo from '../assets/logos/docker.svg';
+import ethereumLogo from '../assets/logos/ethereum.svg';
+import lastfmLogo from '../assets/logos/lastfm.svg';
+import launchdarklyLogo from '../assets/logos/launchdarkly.svg';
+import linkedinLogo from '../assets/logos/linkedin.svg';
+import mastercardLogo from '../assets/logos/mastercard.svg';
+import metaLogo from '../assets/logos/meta.svg';
+import microsoftWindowsLogo from '../assets/logos/microsoft-windows.svg';
+import microsoftLogo from '../assets/logos/microsoft.svg';
+import milvusLogo from '../assets/logos/milvus.svg';
+import mindsdbLogo from '../assets/logos/mindsdb.svg';
+import mongodbLogo from '../assets/logos/mongodb.svg';
+import mparticleLogo from '../assets/logos/mparticle.svg';
+import netflixLogo from '../assets/logos/netflix.svg';
+import openaiLogo from '../assets/logos/openai.svg';
+import opentelemetryLogo from '../assets/logos/opentelemetry.svg';
+import oracleLogo from '../assets/logos/oracle.svg';
+import perplexityLogo from '../assets/logos/perplexity-icon.svg';
+
+const logos = [
+  { src: androidLogo.src, alt: 'Android' },
+  { src: anthropicLogo.src, alt: 'Anthropic' },
+  { src: apacheLogo.src, alt: 'Apache' },
+  { src: appleLogo.src, alt: 'Apple' },
+  { src: discordLogo.src, alt: 'Discord' },
+  { src: dockerLogo.src, alt: 'Docker' },
+  { src: ethereumLogo.src, alt: 'Ethereum' },
+  { src: lastfmLogo.src, alt: 'Last.fm' },
+  { src: launchdarklyLogo.src, alt: 'LaunchDarkly' },
+  { src: linkedinLogo.src, alt: 'LinkedIn' },
+  { src: mastercardLogo.src, alt: 'Mastercard' },
+  { src: metaLogo.src, alt: 'Meta' },
+  { src: microsoftWindowsLogo.src, alt: 'Microsoft Windows' },
+  { src: microsoftLogo.src, alt: 'Microsoft' },
+  { src: milvusLogo.src, alt: 'Milvus' },
+  { src: mindsdbLogo.src, alt: 'MindsDB' },
+  { src: mongodbLogo.src, alt: 'MongoDB' },
+  { src: mparticleLogo.src, alt: 'mParticle' },
+  { src: netflixLogo.src, alt: 'Netflix' },
+  { src: openaiLogo.src, alt: 'OpenAI' },
+  { src: opentelemetryLogo.src, alt: 'OpenTelemetry' },
+  { src: oracleLogo.src, alt: 'Oracle' },
+  { src: perplexityLogo.src, alt: 'Perplexity' },
+];
+
+// Fisher-Yates shuffle algorithm
+function shuffleArray(array: typeof logos) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+// Randomize logos on each refresh
+const randomizedLogos = shuffleArray(logos);
+
+// Duplicate logos to ensure smooth infinite scroll
+const duplicatedLogos = [...randomizedLogos, ...randomizedLogos];
+---
+
+<div class="logos">
+  <div class="logo_items">
+    {duplicatedLogos.map((logo) => (
+      <div class="logo-wrapper">
+        <img src={logo.src} alt={logo.alt} />
+      </div>
+    ))}
+  </div>
+  <div class="logo_items" aria-hidden="true">
+    {duplicatedLogos.map((logo) => (
+      <div class="logo-wrapper">
+        <img src={logo.src} alt={logo.alt} />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  @keyframes slides {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .logos {
+    overflow: hidden;
+    padding: 32px 0;
+    white-space: nowrap;
+    position: relative;
+    background: #0a0a0a;
+  }
+
+  .logos:before,
+  .logos:after {
+    position: absolute;
+    top: 0;
+    content: '';
+    width: 250px;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .logos:before {
+    left: 0;
+    background: linear-gradient(to left, rgba(10,10,10,0), rgb(10, 10, 10));
+  }
+
+  .logos:after {
+    right: 0;
+    background: linear-gradient(to right, rgba(10,10,10,0), rgb(10, 10, 10));
+  }
+
+  .logo_items {
+    display: inline-flex;
+    animation: 80s slides infinite linear;
+  }
+
+  .logo-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    width: 180px;
+    margin: 0 32px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .logo-wrapper:hover {
+    transform: scale(1.05);
+  }
+
+  .logo_items img {
+    max-height: 60px;
+    max-width: 140px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    opacity: 1;
+    filter: brightness(0) invert(1);
+    transition: all 0.3s ease;
+  }
+
+  .logo-wrapper:hover img {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .logo-wrapper {
+      height: 80px;
+      width: 140px;
+      margin: 0 10px;
+      padding: 15px;
+    }
+    
+    .logo_items img {
+      max-height: 50px;
+      max-width: 110px;
+    }
+  }
+</style>

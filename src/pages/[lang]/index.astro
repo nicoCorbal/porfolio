@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
+import LogoSlider from '../../components/LogoSlider.astro';
 import BentoGridSection from '../../components/BentoGridSection.astro';
 import AboutSection from '../../components/AboutSection.astro';
 import ProjectsSection from '../../components/ProjectsSection.astro';
@@ -24,6 +25,7 @@ const { lang = 'en' } = Astro.params;
 <Layout lang={lang}>
   <LoadingScreen duration={1000} />
   <section id="hero"><Hero lang={lang} /></section>
+  <section id="logos"><LogoSlider lang={lang}/></section>
   <section id="services"><BentoGridSection lang={lang} /></section>
   <section id="projects"><ProjectsSection lang={lang} /></section>
   <section id="about"><AboutSection lang={lang} /></section>
