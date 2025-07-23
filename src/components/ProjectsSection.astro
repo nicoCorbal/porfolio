@@ -1,4 +1,6 @@
 ---
+import { getAllProjects } from '../data/projects-multilingual';
+
 const { lang = 'es' } = Astro.props;
 const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
@@ -8,34 +10,13 @@ const texts = {
   client: t('projects.client'),
 };
 
-interface Project {
-    title: string;
-    category: string;
-    image: ImageMetadata | string;
-    url: string;
-}
-  
-const projectsData: Project[] = [
-  {
-    title: "Nessie Assistant",
-    category: t('projects.categories.ai_assistant'),
-    image: "/projects/nessie.jpg",
-   url: `/${lang}/projects/nessie`
-  },
-  {
-    title: "Echoia Notetaker",
-    category: t('projects.categories.ai_tool'),
-    image: "/projects/echoia.jpg",
-   url: `/${lang}/projects/echoia`
-  },
-  {
-    title: "Kharon Proxy",
-    category: t('projects.categories.cyber_tool'),
-    image: "/projects/kharon.jpg",
-   url: `/${lang}/projects/kharon`
-  },
-  
-];
+const projects = getAllProjects(lang);
+const projectsData = projects.map(project => ({
+  title: project.title,
+  category: project.category,
+  image: project.images[0],
+  url: `/${lang}/projects/${project.id}`
+}));
 
 const initialProjectCount = 3;
 ---
@@ -55,7 +36,7 @@ const initialProjectCount = 3;
         >
           {/* Imagen de fondo */}
           <img
-            src={typeof project.image === 'string' ? project.image : project.image.src}
+            src={project.image}
             alt={project.title}
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />

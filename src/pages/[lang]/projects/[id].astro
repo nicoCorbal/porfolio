@@ -1,6 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getProject, getProjectIds } from '../../../data/projects';
+import { getProject, getProjectIds } from '../../../data/projects-multilingual';
 import LoadingScreen from '../../../components/LoadingScreen.astro';
 
 export const prerender = true;
@@ -17,20 +17,24 @@ export async function getStaticPaths() {
 }
 
 const { id = '', lang = 'en' } = Astro.params;
-const project = getProject(id);
+const project = getProject(id, lang);
 
 if (!project) {
   return Astro.redirect(`/${lang}/404`);
 }
+
+// Load translations
+const translations = await import(`../../../../public/locales/${lang}.json`);
+const t = (key: string) => translations.default[key] || key;
 ---
 
 <Layout lang={lang}>
   <LoadingScreen duration={1000} />
   
-  <section class="hero-section relative min-h-[450px] bg-white lg:min-h-[550px] flex items-center overflow-hidden">
+  <section class="hero-section relative min-h-[450px] bg-white lg:min-h-[550px] flex items-center overflow-hidden mb-0">
     <!-- Background Image with Parallax -->
     <div class="hero-bg absolute inset-0 z-0">
-      <img src={project.images[0]} alt={project.title} class="hero-image object-cover w-full h-full scale-110" />
+      <img src={project.images[0]} alt={project.title} class="hero-image object-cover w-full h-full" />
       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
     </div>    
     <!-- Content -->
@@ -48,11 +52,11 @@ if (!project) {
 
         <div class="hero-meta flex flex-row gap-8 mb-8 text-left opacity-0">
           <div class="meta-item">
-            <p class="text-sm text-gray-400 mb-1">Tipo</p>
+            <p class="text-sm text-gray-400 mb-1">{t('projects.detail.type')}</p>
             <p class="font-medium text-gray-50">{project.type}</p>
           </div>
           <div class="meta-item">
-            <p class="text-sm text-gray-400 mb-1">Fecha</p>
+            <p class="text-sm text-gray-400 mb-1">{t('projects.detail.date')}</p>
             <p class="font-medium text-gray-50">{project.date}</p>
           </div>
         </div>
@@ -66,14 +70,14 @@ if (!project) {
       <div class="grid lg:grid-cols-3 gap-16">
         
         <!-- CÓMO NACIÓ -->
-        <div class="info-card fade-up">
-          <h2 class="info-title text-3xl font-bold text-black mb-4">Cómo nació {project.title}</h2>
+        <div class="info-card fade-up" style="--delay: 0.1s">
+          <h2 class="info-title text-3xl font-bold text-black mb-4">{t('projects.detail.howBorn')} {project.title}</h2>
           <p class="info-text text-gray-900 leading-relaxed text-justify">{project.birth}</p>
         </div>
     
         <!-- CASOS DE USO -->
-        <div class="info-card fade-up" style="--delay: 0.2s">
-          <h2 class="info-title text-3xl font-bold text-black mb-4">Casos de uso de {project.title}</h2>
+        <div class="info-card fade-up" style="--delay: 0.3s">
+          <h2 class="info-title text-3xl font-bold text-black mb-4">{t('projects.detail.useCases')} {project.title}</h2>
           <ul class="space-y-4">
             {project.usecase.map((item, index) => (
               <li class="use-case-item flex items-start gap-3" style={`--item-index: ${index}`}>
@@ -87,8 +91,8 @@ if (!project) {
         </div>
     
         <!-- FUTURO -->
-        <div class="info-card fade-up" style="--delay: 0.4s">
-          <h2 class="info-title text-3xl font-bold text-black mb-4">El Futuro de {project.title}</h2>
+        <div class="info-card fade-up" style="--delay: 0.5s">
+          <h2 class="info-title text-3xl font-bold text-black mb-4">{t('projects.detail.future')} {project.title}</h2>
           <p class="info-text text-gray-900 leading-relaxed text-justify">{project.future}</p>
         </div>
     
@@ -99,7 +103,7 @@ if (!project) {
   <!-- FEATURES -->
   <section class="features-section bg-white  py-16 mb-0">
     <div class="w-full mx-auto px-4 sm:px-6 lg:px-10">
-      <h2 class="features-title text-3xl font-bold text-black text-left  mb-12 fade-up">Características Principales</h2>
+      <h2 class="features-title text-3xl font-bold text-black text-left  mb-12 fade-up" style="--delay: 0.6s">{t('projects.detail.features')}</h2>
       <div class={`features-grid grid gap-8 ${
         project.features.length <= 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' :
         project.features.length <= 4 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2' :
@@ -148,7 +152,7 @@ if (!project) {
   {project.video && (
     <section class="py-16 mb-0">
       <div class="mx-auto px-4 sm:px-6 lg:px-10">
-        <h2 class="text-3xl font-bold text-black text-left  mb-12">{project.title} en acción</h2>
+        <h2 class="text-3xl font-bold text-black text-left  mb-12">{project.title} {t('projects.detail.inAction')}</h2>
          <div class="relative aspect-[16/9] content-fit overflow-hidden bg-black shadow-lg">
           <video
             autoplay
@@ -161,7 +165,7 @@ if (!project) {
             preload="metadata"
           >
             <source src={project.video} type="video/mp4" />
-            Tu navegador no soporta la reproducción de video.
+            {lang === 'es' ? 'Tu navegador no soporta la reproducción de video.' : 'Your browser does not support video playback.'}
           </video>
         </div>
       </div>
@@ -172,14 +176,14 @@ if (!project) {
   <!-- CTA -->
   <section class="py-16 bg-black">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">¿Te interesa este proyecto?</h2>
-      <p class="text-lg text-gray-50 mb-8">No dudes en contactarnos para obtener más información</p>
+      <h2 class="text-3xl font-bold text-white mb-4">{t('projects.detail.interested')}</h2>
+      <p class="text-lg text-gray-50 mb-8">{t('projects.detail.contactInfo')}</p>
       <div class="flex justify-center gap-4 flex-wrap">
         <a href={`/${lang}/#projects`} class="inline-flex text-black  items-center border border-white bg-white hover:bg-black hover:text-white px-6 py-3 text-base font-semibold text-center transition-all duration-300 w-full sm:w-auto">
-          Ver Más Proyectos
+          {t('projects.detail.viewMore')}
         </a>
         <a href={`/${lang}/#contact`} class="inline-flex items-center border border-white hover:bg-white hover:text-black text-white px-6 py-3 font-semibold text-center transition-all duration-300 w-full sm:w-auto">
-          Contactar
+          {t('projects.detail.contact')}
         </a>
       </div>
     </div>
@@ -188,93 +192,89 @@ if (!project) {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Touch device handling
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) {
-      const featureCards = document.querySelectorAll('.feature-card');
-      featureCards.forEach(card => {
-        card.addEventListener('click', () => {
-          card.classList.toggle('is-flipped');
+    const initializeAnimations = () => {
+      // Touch device handling
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      if (isTouchDevice) {
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => {
+          card.addEventListener('click', () => {
+            card.classList.toggle('is-flipped');
+          });
         });
-      });
-    }
-
-    // Hero animations on load
-    const heroTimeline = () => {
-      // Animate hero elements
-      document.querySelector('.hero-image')?.classList.add('animate');
-      
-      setTimeout(() => {
-        document.querySelector('.hero-badges')?.classList.add('animate');
-      }, 300);
-      
-      setTimeout(() => {
-        document.querySelector('.hero-title')?.classList.add('animate');
-      }, 500);
-      
-      setTimeout(() => {
-        document.querySelector('.hero-subtitle')?.classList.add('animate');
-      }, 700);
-      
-      setTimeout(() => {
-        document.querySelector('.hero-meta')?.classList.add('animate');
-      }, 900);
-    };
-
-    // Parallax effect for hero image
-    const heroSection = document.querySelector('.hero-section');
-    const heroImage = document.querySelector('.hero-image') as HTMLElement;
-    
-    const handleParallax = () => {
-      if (!heroSection || !heroImage) return;
-      
-      const scrolled = window.scrollY;
-      const rate = scrolled * -0.5;
-      
-      if (scrolled < (heroSection as HTMLElement).offsetHeight) {
-        heroImage.style.transform = `translateY(${rate}px) scale(1.1)`;
       }
-    };
 
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
+      // Hero animations on load
+      const heroTimeline = () => {
+        // Animate hero elements
+        document.querySelector('.hero-image')?.classList.add('animate');
+        
+        setTimeout(() => {
+          document.querySelector('.hero-badges')?.classList.add('animate');
+        }, 300);
+        
+        setTimeout(() => {
+          document.querySelector('.hero-title')?.classList.add('animate');
+        }, 500);
+        
+        setTimeout(() => {
+          document.querySelector('.hero-subtitle')?.classList.add('animate');
+        }, 700);
+        
+        setTimeout(() => {
+          document.querySelector('.hero-meta')?.classList.add('animate');
+        }, 900);
+      };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          
-          // Handle staggered animations for list items
-          if (entry.target.classList.contains('info-card')) {
-            const listItems = entry.target.querySelectorAll('.use-case-item');
-            listItems.forEach((item, index) => {
-              setTimeout(() => {
-                item.classList.add('animate');
-              }, index * 100);
-            });
+      // Removed parallax effect to prevent background showing
+
+      // Intersection Observer for scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            
+            // Handle staggered animations for list items
+            if (entry.target.classList.contains('info-card')) {
+              const listItems = entry.target.querySelectorAll('.use-case-item');
+              listItems.forEach((item, index) => {
+                setTimeout(() => {
+                  item.classList.add('animate');
+                }, 400 + (index * 150));
+              });
+            }
           }
-        }
+        });
+      }, observerOptions);
+
+      // Initialize hero animations first
+      heroTimeline();
+      
+      // Delay observation of description elements until hero animations complete
+      setTimeout(() => {
+        // Observe only description section elements
+        document.querySelectorAll('.description-section .fade-up').forEach(el => {
+          observer.observe(el);
+        });
+      }, 1200); // Wait for hero animations to complete
+      
+      // Observe features and other elements immediately
+      document.querySelectorAll('.features-section .fade-up, .fade-scale').forEach(el => {
+        observer.observe(el);
       });
-    }, observerOptions);
+    };
 
-    // Observe elements
-    document.querySelectorAll('.fade-up, .fade-scale').forEach(el => {
-      observer.observe(el);
-    });
-
-    // Initialize animations
-    heroTimeline();
-    
-    // Add scroll listener for parallax
-    window.addEventListener('scroll', handleParallax, { passive: true });
-    
-    // Clean up on page navigation
-    document.addEventListener('astro:before-swap', () => {
-      window.removeEventListener('scroll', handleParallax);
-    });
+    // Wait for loading screen to complete
+    if ((window as any).isLoadingComplete) {
+      initializeAnimations();
+    } else {
+      window.addEventListener('loadingComplete', initializeAnimations);
+    }
   });
 </script>
 
@@ -282,7 +282,6 @@ if (!project) {
   /* Hero Animations */
   .hero-image {
     transition: transform 0.3s ease-out;
-    transform: scale(1.1);
   }
   
   .hero-image.animate {
@@ -291,11 +290,11 @@ if (!project) {
   
   @keyframes heroImageReveal {
     from {
-      transform: scale(1.15);
+      opacity: 0.8;
       filter: blur(10px);
     }
     to {
-      transform: scale(1.1);
+      opacity: 1;
       filter: blur(0);
     }
   }
@@ -338,7 +337,7 @@ if (!project) {
   .fade-up {
     opacity: 0;
     transform: translateY(40px);
-    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transition-delay: var(--delay, 0s);
   }
   
@@ -351,8 +350,8 @@ if (!project) {
   .fade-scale {
     opacity: 0;
     transform: scale(0.95) translateY(20px);
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transition-delay: calc(var(--card-index, 0) * 0.1s);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-delay: calc(0.8s + (var(--card-index, 0) * 0.15s));
   }
   
   .fade-scale.in-view {

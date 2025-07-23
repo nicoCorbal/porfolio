@@ -34,6 +34,17 @@
     "projects.categories.ai_assistant": "Asistente IA",
     "projects.categories.ai_tool": "Herramienta IA",
     "projects.categories.cyber_tool": "Herramienta Cyber",
+    "projects.detail.howBorn": "Cómo nació",
+    "projects.detail.useCases": "Casos de uso de",
+    "projects.detail.future": "El Futuro de",
+    "projects.detail.features": "Características Principales",
+    "projects.detail.inAction": "en acción",
+    "projects.detail.interested": "¿Te interesa este proyecto?",
+    "projects.detail.contactInfo": "No dudes en contactarnos para obtener más información",
+    "projects.detail.viewMore": "Ver Más Proyectos",
+    "projects.detail.contact": "Contactar",
+    "projects.detail.type": "Tipo",
+    "projects.detail.date": "Fecha",
 
     "about.title": "Nuestro <span class=\"font-bold\">Equipo</span>",
     
