@@ -10,49 +10,52 @@ const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
 ---
 
-<section id="home" class="w-full !min-h-[100dvh] !max-h-[100dvh] flex flex-col items-center justify-between p-8 md:p-16 overflow-hidden">
-    <div class="flex flex-col w-full items-center justify-center !text-black text-center z-10 hero-title">
-      <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold">{t('hero.title.line1')}</h1>
-      <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold mt-1 md:mt-2">{t('hero.title.line2')}</h1>
-    </div>
-    <!-- Background video container -->
-    <div class="video-container">
-      <video
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        poster="/hero.jpg" 
-        class="object-fit z-0 hero-video"
-        x-webkit-airplay="allow"
-        webkit-playsinline="true"
-        disablepictureinpicture
-        controlslist="nodownload nofullscreen noremoteplayback"
-      >
-        <source src={videowebm} type="video/webm" />
-        <source src={videomp4} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </div>
+<section id="home" class="w-full !min-h-[100dvh] !max-h-[100dvh] flex flex-col items-start justify-end p-8 md:p-16 gap-8 overflow-hidden">
+  <div class="video-container">
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="/hero.jpg" 
+      class="object-fit z-0 hero-video"
+      x-webkit-airplay="allow"
+      webkit-playsinline="true"
+      disablepictureinpicture
+      controlslist="nodownload nofullscreen noremoteplayback"
+    >
+      <source src={videowebm} type="video/webm" />
+      <source src={videomp4} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
-    <div class="flex flex-col items-center justify-center gap-8">
-      <div id="hero-cta-container" class="transform z-10 flex flex-col sm:flex-row gap-4 items-center hero-cta">
-        <a href="#projects" class="hero-cta-button bg-black text-white border-2 border-black hover:bg-white hover:text-black">
-          {t('hero.cta.projects')}
-        </a>
-        <a href="#contact" class="hero-cta-button bg-white text-black border-2 border-black hover:bg-black hover:text-white">
-          {t('hero.cta.contact')}
-        </a>
+  <div class="flex w-full flex-row items-end justify-between">
+    <div class="flex flex-col w-full md:items-start items-center justify-end gap-8">
+      <div class="flex flex-col w-full items-center md:items-start justify-end !text-black text-center z-10 hero-title"> 
+        <h1 class="text-2xl sm:text-3xl md:text-5xl font-semibold">{t('hero.title.line1')}</h1>
+        <h1 class="text-2xl sm:text-3xl md:text-5xl font-semibold mt-1 md:mt-2">{t('hero.title.line2')}</h1>
       </div>
-      <div id="hero-logo-container" class="z-10 hero-logo">
-        <img
-          src="/full_logo.png"
-          alt="OSIX"
-          class="w-28 sm:w-32 md:w-40 lg:w-40 h-auto"
-        />
-      </div>
-    </div> 
+      
+        <div id="hero-cta-container" class="transform z-10 flex flex-col sm:flex-row gap-4 items-center hero-cta">
+          <a href="#projects" class="hero-cta-button bg-black text-white border-2 border-black hover:bg-white hover:text-black">
+            {t('hero.cta.projects')}
+          </a>
+          <a href="#contact" class="hero-cta-button bg-white text-black border-2 border-black hover:bg-black hover:text-white">
+            {t('hero.cta.contact')}
+          </a>
+        </div>
+    </div>  
+
+    <div id="hero-logo-container" class="z-10 hero-logo">
+      <img
+        src="/full_logo.png"
+        alt="OSIX"
+        class="w-28 sm:w-32 md:w-40 lg:w-[320px] h-auto"
+      />
+    </div>
+  </div>
 
 </section>
 
@@ -78,7 +81,7 @@ const t = (k: string) => translations.default[k] || k;
 
   .video-container {
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: 50%;
     width: 100%;
     height: 100%;
