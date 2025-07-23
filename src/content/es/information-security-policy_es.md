@@ -1,4 +1,4 @@
-# Política de Seguridad de la Información - OSIX
+# Política de Seguridad de la Información - OSIX Tech
 
 **Versión 1.0 — Entrada en vigor: 15 de mayo de 2025**
 
@@ -6,13 +6,13 @@
 
 ## 1. Introducción
 
-OSIX reconoce que la información constituye uno de los activos más críticos para el desarrollo de su actividad tecnológica. Esta política tiene como finalidad establecer las directrices, responsabilidades y principios necesarios para asegurar que toda información tratada, independientemente de su formato, esté debidamente protegida. La seguridad de la información es un compromiso transversal asumido por toda la organización.
+OSIX Tech reconoce que la información constituye uno de los activos más críticos para el desarrollo de su actividad tecnológica. Esta política tiene como finalidad establecer las directrices, responsabilidades y principios necesarios para asegurar que toda información tratada, independientemente de su formato, esté debidamente protegida. La seguridad de la información es un compromiso transversal asumido por toda la organización.
 
 ---
 
 ## 2. Misión y Objetivos
 
-Nuestra misión es garantizar la protección integral de la información, asegurando su **confidencialidad**, **integridad**, **disponibilidad** y **trazabilidad**. OSIX persigue como objetivos:
+Nuestra misión es garantizar la protección integral de la información, asegurando su **confidencialidad**, **integridad**, **disponibilidad** y **trazabilidad**. OSIX Tech persigue como objetivos:
 
 - Prevenir incidentes de seguridad.
 - Garantizar la continuidad operativa.
@@ -23,7 +23,7 @@ Nuestra misión es garantizar la protección integral de la información, asegur
 
 ## 3. Marco Normativo
 
-El marco normativo de las actividades de OSIX en el ámbito de esta Política de Seguridad de la Información está integrado por las siguientes normas:
+El marco normativo de las actividades de OSIX Tech en el ámbito de esta Política de Seguridad de la Información está integrado por las siguientes normas:
 
 - **Real Decreto 311/2023**, de 3 de mayo, por el que se regula el Esquema Nacional de Seguridad.
 - **Reglamento (UE) 2016/679** (RGPD) del Parlamento Europeo y del Consejo, de 27 de abril de 2016.
@@ -35,18 +35,18 @@ El marco normativo de las actividades de OSIX en el ámbito de esta Política de
 
 Esta política es de aplicación a:
 
-- Todo el personal de OSIX (empleados, colaboradores y terceros).
+- Todo el personal de OSIX Tech (empleados, colaboradores y terceros).
 - Activos tecnológicos, sistemas de información, infraestructuras, aplicaciones y datos gestionados por la organización.
 
 ---
 
 ## 5. Principios Generales
 
-Los principios que guían la seguridad de la información en OSIX son:
+Los principios que guían la seguridad de la información en OSIX Tech son:
 
 ### 5.1 Compromiso estratégico y dirección
 
-La seguridad debe estar integrada en la estrategia general de OSIX, con el apoyo expreso de la alta dirección y la implicación activa de los responsables de cada área.
+La seguridad debe estar integrada en la estrategia general de OSIX Tech, con el apoyo expreso de la alta dirección y la implicación activa de los responsables de cada área.
 
 ### 5.2 Prevención, detección y respuesta
 
@@ -233,9 +233,9 @@ Niveles de documentación:
 
 ## 12. Aprobación e entrada en vigor
 
-Esta política fue aprobada por la Dirección General de OSIX el **15 de mayo de 2025** y entra en vigor de forma inmediata. Cualquier modificación futura será igualmente aprobada y comunicada.
+Esta política fue aprobada por la Dirección General de OSIX Tech el **15 de mayo de 2025** y entra en vigor de forma inmediata. Cualquier modificación futura será igualmente aprobada y comunicada.
 
 ---
 <div align="center">
-© 2025 OSIX | All rights reserved
+© 2025 OSIX Tech Development SL | All rights reserved
 </div>

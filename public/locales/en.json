@@ -8,10 +8,10 @@
     "nav.menu.open": "Menu",
     "nav.menu.close": "Close menu",
     "nav.mobile.contact": "Contact",
-    "nav.logo.alt": "OSIX - Innovation & Development",
+    "nav.logo.alt": "OSIX Tech - AI-Powered Automation",
 
-    "hero.title.line1": "Innovation and Development",
-    "hero.title.line2": "by a new generation",
+    "hero.title.line1": "AI-powered automation",
+    "hero.title.line2": "for real-world problems",
     "hero.cta.projects": "View Projects",
     "hero.cta.contact": "Contact",
 
@@ -106,7 +106,7 @@
     "bento.subtitle": "We merge intelligent software and automated processes to build the technology of tomorrow.",
     "bento.narrative.kicker": "Our history",
     "bento.narrative.title": "Origin, Vision & Ambition",
-    "bento.narrative.text": "OSIX was founded by a new generation of engineers driven to redefine what technology can achieve. Born from a shared belief that true progress comes from uniting bold vision with technical excellence, our ambition is to build the backbone of tomorrow’s most autonomous businesses. We create intelligent, secure systems that empower organizations to operate smarter, faster, and with greater impact. We don’t just adapt to the future, we shape it with intention, delivering solutions that earn trust and create long-term impact for both clients and investors.",
+    "bento.narrative.text": "OSIX Tech was founded by a new generation of engineers driven to redefine what technology can achieve. Born from a shared belief that true progress comes from uniting bold vision with technical excellence, our ambition is to build the backbone of tomorrow’s most autonomous businesses. We create intelligent, secure systems that empower organizations to operate smarter, faster, and with greater impact. We don’t just adapt to the future, we shape it with intention, delivering solutions that earn trust and create long-term impact for both clients and investors.",
     "bento.cards.ai_assistant.title": "Intelligent Assistants",
     "bento.cards.ai_assistant.back_text": "We develop custom AI assistants that automate tasks, integrate with your systems, and optimize workflows to unlock your team's potential.",
     "bento.metrics.agile.value": "Secure",

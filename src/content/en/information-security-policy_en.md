@@ -1,4 +1,4 @@
-# Information Security Policy – OSIX
+# Information Security Policy – OSIX Tech
 
 **Version 1.0 — Effective date: May 15, 2025**
 
@@ -6,13 +6,13 @@
 
 ## 1. Introduction
 
-OSIX recognizes that information is one of the most critical assets for the development of its technological activity. This policy aims to establish the necessary guidelines, responsibilities, and principles to ensure that all information processed, regardless of its format, is properly protected. Information security is a cross-cutting commitment assumed by the entire organization.
+OSIX Texh recognizes that information is one of the most critical assets for the development of its technological activity. This policy aims to establish the necessary guidelines, responsibilities, and principles to ensure that all information processed, regardless of its format, is properly protected. Information security is a cross-cutting commitment assumed by the entire organization.
 
 ---
 
 ## 2. Mission and Objectives
 
-Our mission is to guarantee the comprehensive protection of information, ensuring its **confidentiality**, **integrity**, **availability**, and **traceability**. OSIX pursues the following objectives:
+Our mission is to guarantee the comprehensive protection of information, ensuring its **confidentiality**, **integrity**, **availability**, and **traceability**. OSIX Tech pursues the following objectives:
 
 - Prevent security incidents.
 - Ensure operational continuity.
@@ -23,7 +23,7 @@ Our mission is to guarantee the comprehensive protection of information, ensurin
 
 ## 3. Regulatory Framework
 
-The regulatory framework for OSIX activities under this Information Security Policy consists of the following standards:
+The regulatory framework for OSIX Tech activities under this Information Security Policy consists of the following standards:
 
 - **Royal Decree 311/2023**, of May 3, which regulates the National Security Framework (ENS) of Spain.
 - **Regulation (EU) 2016/679** (GDPR) of the European Parliament and of the Council, of April 27, 2016.
@@ -35,18 +35,18 @@ The regulatory framework for OSIX activities under this Information Security Pol
 
 This policy applies to:
 
-- All OSIX personnel (employees, collaborators, and third parties).
+- All OSIX Tech personnel (employees, collaborators, and third parties).
 - Technological assets, information systems, infrastructures, applications, and data managed by the organization.
 
 ---
 
 ## 5. General Principles
 
-The principles guiding information security at OSIX are:
+The principles guiding information security at OSIX Texh are:
 
 ### 5.1 Strategic Commitment and Leadership
 
-Security must be integrated into OSIX's overall strategy, with the explicit support of senior management and the active involvement of area managers.
+Security must be integrated into OSIX Tech's overall strategy, with the explicit support of senior management and the active involvement of area managers.
 
 ### 5.2 Prevention, Detection, and Response
 
@@ -233,9 +233,9 @@ Documentation levels:
 
 ## 12. Approval and Entry into Force
 
-This policy was approved by the General Management of OSIX on **May 15, 2025**, and comes into immediate effect. Any future modifications will also be approved and communicated.
+This policy was approved by the General Management of OSIX Tech on **May 15, 2025**, and comes into immediate effect. Any future modifications will also be approved and communicated.
 
 ---
 <div align="center">
-© 2025 OSIX | All rights reserved
+© 2025 OSIX Tech Development SL | All rights reserved
 </div>

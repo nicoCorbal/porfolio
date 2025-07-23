@@ -1,14 +1,14 @@
-# Personal Data Protection - OSIX
+# Personal Data Protection - OSIX Tech
 
-OSIX protects and guarantees the fundamental right to data protection and is especially committed to safeguarding individuals' privacy. Data processing is carried out in accordance with Regulation (EU) 2016/679 (GDPR) and Organic Law 3/2018 on the Protection of Personal Data and Guarantee of Digital Rights. Such processing adheres to the principles of lawfulness, fairness, transparency, purpose limitation, data minimization, accuracy, storage limitation, integrity, confidentiality, and proactive accountability.
+OSIX Tech protects and guarantees the fundamental right to data protection and is especially committed to safeguarding individuals' privacy. Data processing is carried out in accordance with Regulation (EU) 2016/679 (GDPR) and Organic Law 3/2018 on the Protection of Personal Data and Guarantee of Digital Rights. Such processing adheres to the principles of lawfulness, fairness, transparency, purpose limitation, data minimization, accuracy, storage limitation, integrity, confidentiality, and proactive accountability.
 
-OSIX maintains a dynamic understanding of this policy to adapt it to regulatory updates, case law, decisions by supervisory authorities, or sector practices. Any modification will be announced in advance.
+OSIX Tech maintains a dynamic understanding of this policy to adapt it to regulatory updates, case law, decisions by supervisory authorities, or sector practices. Any modification will be announced in advance.
 
 ---
 
 ## 1. Data Controller
 
-The general responsibility for data processing lies with David Manuel Raposeiras Canaval, Data Protection Officer of OSIX.  
+The general responsibility for data processing lies with David Manuel Raposeiras Canaval, Data Protection Officer of OSIX Tech.  
 - **Informal contact**: form at https://osix.tech  
 - **Formal contact**: dpd@osix.tech
 
@@ -35,7 +35,7 @@ All these bases are in line with Article 6.1 of the GDPR.
 
 ## 4. Purposes of Processing
 
-OSIX processes personal data to fulfill its obligations and responsibilities in teaching, study, and research, university administrative management, information requests, and academic and institutional outreach activities. Each specific processing activity details its own purposes.
+OSIX Tech processes personal data to fulfill its obligations and responsibilities in teaching, study, and research, university administrative management, information requests, and academic and institutional outreach activities. Each specific processing activity details its own purposes.
 
 ---
 
@@ -70,7 +70,7 @@ Rights may be exercised through the form at https://osix.tech or by emailing dpd
 
 ## 7. Security Measures
 
-OSIX implements technical and organizational measures pursuant to Article 32 of the GDPR:  
+OSIX Tech implements technical and organizational measures pursuant to Article 32 of the GDPR:  
 - Pseudonymization and data encryption  
 - Ensuring confidentiality, integrity, availability, and resilience of systems  
 - Ability to restore data and access in case of an incident  
@@ -83,9 +83,9 @@ These measures are adapted to the state of the art, costs, nature, context, and 
 ## 8. Security Breaches and Incidents
 
 Security breaches will be reported to the supervisory authority and, where appropriate, to affected individuals as per Article 34 of the GDPR.  
-OSIX provides an incident communication channel via the contact form at https://osix.tech or by emailing dpd@osix.tech.
+OSIX Tech provides an incident communication channel via the contact form at https://osix.tech or by emailing dpd@osix.tech.
 
 ---
 <div align="center">
-© 2025 OSIX | All rights reserved
+© 2025 OSIX Tech Development SL | All rights reserved
 </div>

@@ -1,14 +1,14 @@
-# Protección de Datos de Carácter Personal - OSIX
+# Protección de Datos de Carácter Personal - OSIX Tech
 
-OSIX protege y garantiza el derecho fundamental a la protección de datos y se muestra especialmente sensibilizada por la salvaguarda de la privacidad de las personas. El tratamiento de datos se lleva a cabo de acuerdo con el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales. Este tratamiento responde a los principios de licitud, lealtad, transparencia, limitación de la finalidad, minimización de los datos, exactitud, limitación del plazo de conservación, integridad, confidencialidad y responsabilidad proactiva.
+OSIX Tech protege y garantiza el derecho fundamental a la protección de datos y se muestra especialmente sensibilizada por la salvaguarda de la privacidad de las personas. El tratamiento de datos se lleva a cabo de acuerdo con el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales. Este tratamiento responde a los principios de licitud, lealtad, transparencia, limitación de la finalidad, minimización de los datos, exactitud, limitación del plazo de conservación, integridad, confidencialidad y responsabilidad proactiva.
 
-OSIX mantendrá un entendimiento dinámico de esta política para adaptarla a novedades normativas, jurisprudenciales, decisiones de autoridades de control o prácticas del sector. Cualquier modificación será anunciada con la debida antelación.
+OSIX Tech mantendrá un entendimiento dinámico de esta política para adaptarla a novedades normativas, jurisprudenciales, decisiones de autoridades de control o prácticas del sector. Cualquier modificación será anunciada con la debida antelación.
 
 ---
 
 ## 1. Responsable del Tratamiento
 
-La responsabilidad genérica del tratamiento recae en David Manuel Raposeiras Canaval, Delegado de Protección de Datos de OSIX.  
+La responsabilidad genérica del tratamiento recae en David Manuel Raposeiras Canaval, Delegado de Protección de Datos de v.  
 - **Contacto informal**: formulario en https://osix.tech  
 - **Contacto formal**: dpd@osix.tech
 
@@ -35,7 +35,7 @@ Todas estas bases están en consonancia con el artículo 6.1 del RGPD.
 
 ## 4. Finalidades del Tratamiento
 
-OSIX trata los datos personales para cumplir sus obligaciones y responsabilidades en docencia, estudio e investigación, gestión administrativa universitaria, solicitudes de información y actuaciones de divulgación académica e institucional. Cada tratamiento concreto especifica sus propias finalidades.
+OSIX Tech trata los datos personales para cumplir sus obligaciones y responsabilidades en docencia, estudio e investigación, gestión administrativa universitaria, solicitudes de información y actuaciones de divulgación académica e institucional. Cada tratamiento concreto especifica sus propias finalidades.
 
 ---
 
@@ -70,7 +70,7 @@ El ejercicio se realiza mediante formulario en https://osix.tech o correo a dpd@
 
 ## 7. Medidas de Seguridad
 
-OSIX adopta medidas técnicas y organizativas según el artículo 32 del RGPD:  
+OSIX Tech adopta medidas técnicas y organizativas según el artículo 32 del RGPD:  
 - Seudonimización y cifrado de datos  
 - Confidencialidad, integridad, disponibilidad y resiliencia de sistemas  
 - Capacidad de restaurar datos y acceso en caso de incidente  
@@ -83,9 +83,9 @@ Estas medidas se adaptan al estado de la técnica, costes, naturaleza, contexto 
 ## 8. Violaciones de Seguridad e Incidentes
 
 Las violaciones de seguridad se comunicarán a la autoridad de control y, de ser pertinente, a los afectados según artículo 34 del RGPD.  
-OSIX dispone de un canal de comunicación de incidentes en el formulario de contacto de https://osix.tech o al correo dpd@osix.tech.
+OSIX Tech dispone de un canal de comunicación de incidentes en el formulario de contacto de https://osix.tech o al correo dpd@osix.tech.
 
 ---
 <div align="center">
-© 2025 OSIX | All rights reserved
+© 2025 OSIX Tech Development SL | All rights reserved
 </div>
