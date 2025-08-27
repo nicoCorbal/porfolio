@@ -6,14 +6,6 @@ interface Props {
 const { lang = 'es' } = Astro.props;
 const translations = await import(`../../public/locales/${lang}.json`);
 const t = (k: string) => translations.default[k] || k;
-let PP, ISP;
-try {
-  PP = (await import(`../content/${lang}/privacy-policy_${lang}.md`)).default;
-  ISP = (await import(`../content/${lang}/information-security-policy_${lang}.md`)).default;
-} catch {
-  PP = (await import(`../content/en/privacy-policy_en.md`)).default;
-  ISP = (await import(`../content/en/information-security-policy_en.md`)).default;
-}
 ---
 
   <div id="contact-div" class="w-full max-w-7xl mx-auto px-6 md:px-12 min-h-[90vh] static-contact-container">
@@ -54,13 +46,12 @@ try {
         </div>
 
         <!-- Privacy Policy row – icon + title are clickable; description is plain text -->
-        <div class="hidden md:flex flex items-start gap-4 mt-auto">
+        <div class="hidden md:flex items-start gap-4 mt-auto">
           <!-- Clickable part -->
-          <button
-            id="privacy-policy-btn"
-            type="button"
-            class="group flex items-center gap-4 py-8 border border-transparent
-                  hover:border-black focus:outline-none transition"
+          <a
+            href={`/${lang}/privacy`}
+            class="group flex items-center gap-4 py-8
+                focus:outline-none transition"
           >
             <div class="w-10 h-10 bg-white flex items-center justify-center flex-shrink-0 border-2 border-black
                         transition-transform group-hover:bg-black">
@@ -75,7 +66,7 @@ try {
             after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px]
             after:w-0 after:bg-black after:transition-all after:duration-300 group-hover:after:w-full">
             {t('privacyPolicy.title')}</h4>
-          </button>
+          </a>
         </div>
       </div>
       
@@ -225,94 +216,6 @@ try {
       });
     }
 
-    // Privacy‑Policy modal logic
-    const privacyPolicyBtns = [
-      document.getElementById('privacy-policy-btn'),
-      document.getElementById('privacy-policy-btn-mobile')
-    ].filter(Boolean) as HTMLButtonElement[];
-    const privacyPolicyModal = document.getElementById('privacy-policy-modal') as HTMLDivElement | null;
-    const closePrivacyPolicyBtn = document.getElementById('close-privacy-policy') as HTMLButtonElement | null;
-    const closePrivacyPolicyFloatingBtn = document.getElementById('close-privacy-policy-floating') as HTMLButtonElement | null;
-
-    function openPrivacyModal() {
-      if (privacyPolicyModal) {
-        privacyPolicyModal.classList.remove('hidden');
-      }
-    }
-
-    function closePrivacyModal() {
-      if (privacyPolicyModal) {
-        privacyPolicyModal.classList.add('hidden');
-      }
-    }
-
-    if (privacyPolicyBtns.length && privacyPolicyModal && closePrivacyPolicyBtn) {
-      privacyPolicyBtns.forEach(btn => btn.addEventListener('click', openPrivacyModal));
-      [closePrivacyPolicyBtn, closePrivacyPolicyFloatingBtn].forEach(btn => {
-        if (btn) btn.addEventListener('click', closePrivacyModal);
-      });
-
-      // Close when clicking outside the dialog content
-      privacyPolicyModal.addEventListener('click', (event) => {
-        if (event.target === privacyPolicyModal) {
-          closePrivacyModal();
-        }
-      });
-
-      // Close on Escape key
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && !privacyPolicyModal.classList.contains('hidden')) {
-          closePrivacyModal();
-        }
-      });
-    }
-
-    // Tab logic within modal
-    const tabPrivacyBtn = document.getElementById('tab-privacy') as HTMLButtonElement | null;
-    const tabTermsBtn   = document.getElementById('tab-terms')   as HTMLButtonElement | null;
-    const privacyPanel  = document.getElementById('tab-privacy-content') as HTMLDivElement | null;
-    const termsPanel    = document.getElementById('tab-terms-content')   as HTMLDivElement | null;
-    const textContainer    = document.getElementById('text-container')   as HTMLDivElement | null;
-
-
-    function activateTab(isPrivacy: boolean) {
-      if (!tabPrivacyBtn || !tabTermsBtn || !privacyPanel || !termsPanel) return;
-
-      if (isPrivacy) {
-        // Activate Privacy tab
-        tabPrivacyBtn.classList.add('border-black', 'font-semibold', 'text-black');
-        tabPrivacyBtn.classList.remove('border-transparent', 'text-gray-600');
-
-        tabTermsBtn.classList.add('border-transparent', 'text-gray-600');
-        tabTermsBtn.classList.remove('border-black', 'font-semibold', 'text-black');
-
-        privacyPanel.classList.remove('hidden');
-        termsPanel.classList.add('hidden');
-
-        if (textContainer) {
-          textContainer.scrollTop = 0;
-        }
-      } else {
-        // Activate Terms tab
-        tabTermsBtn.classList.add('border-black', 'font-semibold', 'text-black');
-        tabTermsBtn.classList.remove('border-transparent', 'text-gray-600');
-
-        tabPrivacyBtn.classList.add('border-transparent', 'text-gray-600');
-        tabPrivacyBtn.classList.remove('border-black', 'font-semibold', 'text-black');
-
-        termsPanel.classList.remove('hidden');
-        privacyPanel.classList.add('hidden');
-
-        if (textContainer) {
-          textContainer.scrollTop = 0;
-        }
-      }
-    }
-
-    if (tabPrivacyBtn && tabTermsBtn) {
-      tabPrivacyBtn.addEventListener('click', () => activateTab(true));
-      tabTermsBtn.addEventListener('click', () => activateTab(false));
-    }
 
     // Intersection Observer for animations
     const observerOptions = {
@@ -349,54 +252,11 @@ try {
   });
 </script>
 
-<!-- Privacy Policy Modal -->
-<div
-  id="privacy-policy-modal"
-  class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex  items-start justify-center p-4 md:p-8 lg:py-16 z-50"
->
-  
-  <div class="relative bg-white p-8 w-full max-w-4xl max-h-full flex flex-col">
-    <!-- Tabs -->
-    <div class="flex border-b mb-4">
-      <button id="tab-privacy" type="button"
-        class="tab-btn px-4 pb-2 font-semibold border-b-2 border-black text-black hover:text-black transition-colors"
-      >
-      {t('privacyPolicy.tabs.privacy')}
-      </button>
-      <button id="tab-terms" type="button"
-        class="tab-btn px-4 pb-2 border-b-2 border-transparent text-gray-600 hover:text-black transition-colors"
-      >
-      {t('privacyPolicy.tabs.terms')}
-    </button>
-    </div>
-
-    <div id="text-container" class="overflow-y-auto">
-      <!-- Tab panels -->
-      <div id="tab-terms-content" class="markdown-body text-black hidden">
-        <ISP />
-      </div>
-      <div id="tab-privacy-content" class="markdown-body text-black">
-        <PP />
-      </div>
-    </div>
-    <!-- Close button at bottom‑right of panel -->
-    <button
-      id="close-privacy-policy"
-      type="button"
-      aria-label="Close modal"
-      class="self-end mt-6 bg-black text-white px-4 py-2 
-             hover:bg-gray-900 transition focus:outline-none"
-    >
-    {t('privacyPolicy.close')}
-  </button>
-  </div>
-    </div>
     <!-- Mobile Privacy Policy button, moved outside the black card -->
-    <div class="block md:hidden mb-8 px-6 flex justify-start">
+    <div class="block md:hidden mb-8 px-6">
       <div class="flex items-start gap-4">
-        <button
-          id="privacy-policy-btn-mobile"
-          type="button"
+        <a
+          href={`/${lang}/privacy`}
           class="group flex items-center gap-4 py-8 border border-transparent
                  hover:border-black focus:outline-none transition"
         >
@@ -414,6 +274,6 @@ try {
           after:w-0 after:bg-black after:transition-all after:duration-300 group-hover:after:w-full">
           {t('privacyPolicy.title')}
           </h4>
-        </button>
+        </a>
       </div>
     </div>

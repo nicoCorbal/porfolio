@@ -1,0 +1,293 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LoadingScreen from '../../components/LoadingScreen.astro';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'es' } }
+  ];
+}
+
+const { lang = 'en' } = Astro.params;
+
+let PP;
+try {
+  PP = (await import(`../../content/${lang}/privacy-policy_${lang}.md`)).default;
+} catch {
+  PP = (await import(`../../content/en/privacy-policy_en.md`)).default;
+}
+
+// Load translations
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (key: string) => translations.default[key] || key;
+---
+
+<Layout lang={lang as 'en' | 'es'}>
+  <LoadingScreen duration={1000} />
+  
+  <!-- Hero Section -->
+  <section class="hero-section relative min-h-[400px] bg-black flex items-center overflow-hidden mb-0">
+    <!-- Background gradient -->
+    <div class="hero-bg absolute inset-0 z-0 bg-gradient-to-br from-black via-gray-900 to-black"></div>    
+    
+    <!-- Content -->
+    <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
+      <div class="max-w-4xl mx-auto text-center">
+
+        <h1 class="hero-title text-4xl md:text-6xl font-bold text-white mb-4 opacity-0">
+          {lang === 'es' ? 'Política de Privacidad' : 'Privacy Policy'}
+        </h1>
+        <p class="hero-subtitle text-xl md:text-2xl text-gray-300 mb-8 opacity-0 max-w-3xl mx-auto">
+          {lang === 'es' 
+            ? 'Información sobre cómo OSIX Tech recopila, usa y protege tus datos personales'
+            : 'Information about how OSIX Tech collects, uses and protects your personal data'
+          }
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="content-section py-16 bg-white mb-0">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="content-card bg-white rounded-lg p-8 md:p-12 fade-up" style="--delay: 0.2s">
+        <div class="markdown-body">
+          <PP />
+        </div>
+      </div>
+
+      <!-- Back to home button -->
+      <div class="text-center mt-12 fade-up" style="--delay: 0.4s">
+        <a 
+          href={`/${lang}/`}
+          class="inline-flex items-center gap-2 bg-black text-white px-8 py-4 hover:bg-gray-900 transition-all duration-300 group"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          {lang === 'es' ? 'Volver al inicio' : 'Back to home'}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Fix navigation links to properly redirect to main page sections
+    setTimeout(() => {
+      const navLinks = document.querySelectorAll('.nav-item[href*="#"]');
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.includes('#')) {
+          link.removeEventListener('click', () => {});
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = href;
+          });
+        }
+      });
+      
+      // Fix contact button
+      const contactBtn = document.querySelector('.contact-btn');
+      if (contactBtn) {
+        const href = contactBtn.getAttribute('href');
+        if (href) {
+          contactBtn.removeEventListener('click', () => {});
+          contactBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = href;
+          });
+        }
+      }
+    }, 500);
+    
+    const initializeAnimations = () => {
+      // Hero animations on load
+      const heroTimeline = () => {
+        setTimeout(() => {
+          document.querySelector('.hero-badges')?.classList.add('animate');
+        }, 200);
+        
+        setTimeout(() => {
+          document.querySelector('.hero-title')?.classList.add('animate');
+        }, 400);
+        
+        setTimeout(() => {
+          document.querySelector('.hero-subtitle')?.classList.add('animate');
+        }, 600);
+      };
+
+      // Intersection Observer for scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+          }
+        });
+      }, observerOptions);
+
+      // Initialize hero animations first
+      heroTimeline();
+      
+      // Delay observation of content elements until hero animations complete
+      setTimeout(() => {
+        document.querySelectorAll('.fade-up').forEach(el => {
+          observer.observe(el);
+        });
+      }, 1000);
+    };
+
+    // Wait for loading screen to complete
+    if ((window as any).isLoadingComplete) {
+      initializeAnimations();
+    } else {
+      window.addEventListener('loadingComplete', initializeAnimations);
+    }
+  });
+</script>
+
+<style>
+  /* Hero Animations */
+  .hero-bg {
+    opacity: 0;
+    animation: heroBackgroundReveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  
+  @keyframes heroBackgroundReveal {
+    0% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .hero-badges {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .hero-badges.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .hero-title {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  .hero-title.animate {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  
+  .hero-subtitle {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  .hero-subtitle.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Badge animations */
+  .hero-badges.animate .badge {
+    animation: badgeSlide 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    animation-delay: calc(var(--badge-index, 0) * 0.1s);
+  }
+  
+  @keyframes badgeSlide {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Fade up animation */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--delay, 0s);
+  }
+  
+  .fade-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Section transitions */
+  .hero-section {
+    animation: heroSectionReveal 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  @keyframes heroSectionReveal {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .content-section {
+    animation: contentSlide 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  @keyframes contentSlide {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  
+  /* Button hover effects */
+  a[href*="/"] {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  a[href*="/"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: left 0.3s ease;
+    z-index: -1;
+  }
+  
+  a[href*="/"]:hover::before {
+    left: 0;
+  }
+</style>
