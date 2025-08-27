@@ -1,0 +1,18 @@
+---
+export const prerender = true;
+---
+
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    const supported = ['en', 'es'];
+    const userLang = navigator.language.split('-')[0] || 'en';
+    const lang = supported.includes(userLang) ? userLang : 'en';
+    window.location.replace(`/${lang}/privacy`);
+  </script>
+</head>
+<body>
+  Redirecting...
+</body>
+</html>
