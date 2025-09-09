@@ -23,9 +23,61 @@ try {
 // Load translations
 const translations = await import(`../../../public/locales/${lang}.json`);
 const t = (key: string) => translations.default[key] || key;
+
+// SEO Data
+const seoTitle = lang === 'es' 
+  ? 'Política de Privacidad - OSIX Tech'
+  : 'Privacy Policy - OSIX Tech';
+
+const seoDescription = lang === 'es'
+  ? 'Política de privacidad de OSIX Tech. Información sobre cómo recopilamos, usamos y protegemos tus datos personales.'
+  : 'OSIX Tech Privacy Policy. Information about how we collect, use and protect your personal data.';
+
+// Structured Data
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": `https://osix.tech/${lang}/`
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": lang === 'es' ? 'Política de Privacidad' : 'Privacy Policy',
+      "item": `https://osix.tech/${lang}/privacy`
+    }
+  ]
+};
+
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": seoTitle,
+  "description": seoDescription,
+  "url": `https://osix.tech/${lang}/privacy`,
+  "inLanguage": lang,
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "OSIX Tech",
+    "url": "https://osix.tech"
+  },
+  "breadcrumb": breadcrumbSchema
+};
+
+const jsonLd = [webPageSchema];
+
 ---
 
-<Layout lang={lang as 'en' | 'es'}>
+<Layout 
+  lang={lang as 'en' | 'es'}
+  title={seoTitle}
+  description={seoDescription}
+  pageType="article"
+  jsonLd={jsonLd}>
   <LoadingScreen duration={1000} />
   
   <!-- Hero Section -->

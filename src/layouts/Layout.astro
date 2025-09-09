@@ -11,16 +11,54 @@ interface Props {
   canonical?: string;
   lang: 'en' | 'es';
   isMainPage?: boolean;
+  keywords?: string;
+  pageType?: 'website' | 'article' | 'product';
+  noindex?: boolean;
+  jsonLd?: any;
 }
 
 const { 
-  title = 'OSIX Tech - AI-Powered Automation',
-  description = 'We build automation-driven software using AI and modern technologies. OSIX Tech delivers custom digital solutions for real-world business needs.',
+  title = lang === 'es' 
+    ? 'OSIX Tech - Automatización Impulsada por IA | Desarrollo de Software'
+    : 'OSIX Tech - AI-Powered Automation | Software Development',
+  description = lang === 'es'
+    ? 'Construimos software de automatización con IA y tecnologías modernas. OSIX Tech ofrece soluciones digitales personalizadas para necesidades empresariales reales.'
+    : 'We build automation-driven software using AI and modern technologies. OSIX Tech delivers custom digital solutions for real-world business needs.',
   image = '/favicon.png',
-  canonical = 'https://osix.tech',
+  canonical,
   lang,
-  isMainPage = false
-} = Astro.props;	
+  isMainPage = false,
+  keywords = lang === 'es'
+    ? 'desarrollo software, desarrollo web, desarrollo móvil, inteligencia artificial, automatización, transformación digital, OSIX Tech, tecnología, innovación'
+    : 'software development, web development, mobile development, artificial intelligence, automation, digital transformation, OSIX Tech, technology, innovation',
+  pageType = 'website',
+  noindex = false,
+  jsonLd
+} = Astro.props;
+
+// Generate proper canonical URL
+const baseUrl = 'https://osix.tech';
+let currentPath = Astro.url.pathname;
+
+// For root page, point to the appropriate language version
+if (currentPath === '/') {
+  currentPath = `/${lang}/`;
+}
+
+// Ensure trailing slash for consistency
+if (!currentPath.endsWith('/') && !currentPath.includes('.')) {
+  currentPath = `${currentPath}/`;
+}
+
+const currentCanonical = canonical || `${baseUrl}${currentPath}`;
+
+// Generate alternate language URL
+const alternateLang = lang === 'en' ? 'es' : 'en';
+const alternatePath = currentPath.replace(`/${lang}/`, `/${alternateLang}/`);
+const alternateUrl = `${baseUrl}${alternatePath}`;
+
+// Full image URL for Open Graph
+const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;	
 ---
 
 <!DOCTYPE html>
@@ -35,6 +73,11 @@ const {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    
+    <!-- Language and alternates -->
+    <link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
+    <link rel="alternate" hreflang="x-default" href="https://osix.tech/en/" />
+    <link rel="alternate" hreflang={lang} href={currentCanonical} />
 
     <!-- Favicon base -->
 
@@ -46,26 +89,50 @@ const {
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
     <!-- SEO Meta Tags -->
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
     <meta name="author" content="OSIX Tech" />
-    <meta name="keywords" content="software development, web development, mobile development, desktop development, innovation, technology" />
+    <meta name="keywords" content={keywords} />
+    <meta name="generator" content="Astro" />
+    <meta name="copyright" content="OSIX Tech" />
+    <meta name="language" content={lang} />
+    <meta name="rating" content="general" />
+    <meta name="distribution" content="global" />
 
     <!-- Canonical URL -->
-    <link rel="canonical" href={canonical} />
+    <link rel="canonical" href={currentCanonical} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={pageType} />
+    <meta property="og:url" content={currentCanonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={fullImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="OSIX Tech Logo" />
+    <meta property="og:site_name" content="OSIX Tech" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+    <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_ES'} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonical} />
+    <meta property="twitter:url" content={currentCanonical} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={image} />
+    <meta property="twitter:image" content={fullImageUrl} />
+    <meta property="twitter:site" content="@osixtech" />
+    <meta property="twitter:creator" content="@osixtech" />
+    
+    <!-- Additional SEO Tags -->
+    <meta name="apple-mobile-web-app-title" content="OSIX Tech" />
+    <meta name="application-name" content="OSIX Tech" />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Structured Data -->
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
     
   </head>
   <body>

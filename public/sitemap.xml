@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  
   <!-- Root redirect page -->
   <url>
     <loc>https://osix.tech/</loc>
-    <lastmod>2025-01-23T00:00:00+00:00</lastmod>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -15,8 +17,8 @@
   <!-- English homepage -->
   <url>
     <loc>https://osix.tech/en/</loc>
-    <lastmod>2025-01-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/"/>
@@ -26,11 +28,115 @@
   <!-- Spanish homepage -->
   <url>
     <loc>https://osix.tech/es/</loc>
-    <lastmod>2025-01-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://osix.tech/en/"/>
+  </url>
+  
+  <!-- English Privacy Policy -->
+  <url>
+    <loc>https://osix.tech/en/privacy</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/privacy"/>
+  </url>
+  
+  <!-- Spanish Privacy Policy -->
+  <url>
+    <loc>https://osix.tech/es/privacy</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/privacy"/>
+  </url>
+  
+  <!-- Project: Nessie (English) -->
+  <url>
+    <loc>https://osix.tech/en/projects/nessie</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/nessie"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/nessie"/>
+    <image:image>
+      <image:loc>https://osix.tech/projects/nessie.jpg</image:loc>
+      <image:title>Nessie Assistant - AI Document Assistant</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Project: Nessie (Spanish) -->
+  <url>
+    <loc>https://osix.tech/es/projects/nessie</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/nessie"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/nessie"/>
+    <image:image>
+      <image:loc>https://osix.tech/projects/nessie.jpg</image:loc>
+      <image:title>Nessie Assistant - Asistente IA de Documentos</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Project: Echoia (English) -->
+  <url>
+    <loc>https://osix.tech/en/projects/echoia</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/echoia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/echoia"/>
+    <image:image>
+      <image:loc>https://osix.tech/projects/echoia.jpg</image:loc>
+      <image:title>Echoia Notetaker - AI Meeting Transcription</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Project: Echoia (Spanish) -->
+  <url>
+    <loc>https://osix.tech/es/projects/echoia</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/echoia"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/echoia"/>
+    <image:image>
+      <image:loc>https://osix.tech/projects/echoia.jpg</image:loc>
+      <image:title>Echoia Notetaker - Transcripción IA de Reuniones</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Project: Kharon (English) -->
+  <url>
+    <loc>https://osix.tech/en/projects/kharon</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/kharon"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/kharon"/>
+    <image:image>
+      <image:loc>https://osix.tech/projects/kharon.jpg</image:loc>
+      <image:title>Kharon AI System - Multi-Agent Platform</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Project: Kharon (Spanish) -->
+  <url>
+    <loc>https://osix.tech/es/projects/kharon</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/kharon"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/kharon"/>
+    <image:image>
+      <image:loc>https://osix.tech/projects/kharon.jpg</image:loc>
+      <image:title>Kharon AI System - Plataforma Multi-Agente</image:title>
+    </image:image>
   </url>
 </urlset>

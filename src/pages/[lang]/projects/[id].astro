@@ -26,9 +26,87 @@ if (!project) {
 // Load translations
 const translations = await import(`../../../../public/locales/${lang}.json`);
 const t = (key: string) => translations.default[key] || key;
+
+// SEO Data
+const seoTitle = `${project.title} - OSIX Tech ${lang === 'es' ? 'Proyecto' : 'Project'}`;
+const seoDescription = project.subtitle || project.title;
+
+// Structured Data
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": `https://osix.tech/${lang}/`
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": lang === 'es' ? 'Proyectos' : 'Projects',
+      "item": `https://osix.tech/${lang}/#projects`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": project.title,
+      "item": `https://osix.tech/${lang}/projects/${id}`
+    }
+  ]
+};
+
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": project.title,
+  "description": project.subtitle || project.title,
+  "image": project.images.map(img => `https://osix.tech${img}`),
+  "brand": {
+    "@type": "Organization",
+    "name": "OSIX Tech"
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "0",
+    "availability": "https://schema.org/InStock"
+  },
+  "aggregateRating": project.awards ? {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "bestRating": "5",
+    "ratingCount": project.awards.length
+  } : undefined
+};
+
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": seoTitle,
+  "description": seoDescription,
+  "url": `https://osix.tech/${lang}/projects/${id}`,
+  "inLanguage": lang,
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "OSIX Tech",
+    "url": "https://osix.tech"
+  },
+  "breadcrumb": breadcrumbSchema
+};
+
+const jsonLd = [productSchema, webPageSchema].filter(Boolean);
+
 ---
 
-<Layout lang={lang}>
+<Layout 
+  lang={lang}
+  title={seoTitle}
+  description={seoDescription}
+  image={project.images[0]}
+  pageType="product"
+  jsonLd={jsonLd}>
   <LoadingScreen duration={1000} />
   
   <section class="hero-section relative min-h-[450px] bg-black lg:min-h-[550px] flex items-center overflow-hidden mb-0">

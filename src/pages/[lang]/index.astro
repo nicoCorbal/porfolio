@@ -19,9 +19,73 @@ export async function getStaticPaths() {
 
 const { lang = 'en' } = Astro.params;
 
+// SEO Data
+const seoTitle = lang === 'es' 
+  ? 'OSIX Tech - Desarrollo de Software & Automatización con IA'
+  : 'OSIX Tech - AI-Powered Software Development & Automation';
+
+const seoDescription = lang === 'es'
+  ? 'OSIX Tech: Líderes en desarrollo de software personalizado, automatización con IA, y transformación digital. Creamos soluciones innovadoras para empresas modernas.'
+  : 'OSIX Tech: Leaders in custom software development, AI automation, and digital transformation. We create innovative solutions for modern businesses.';
+
+// Structured Data
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "OSIX Tech",
+  "url": "https://osix.tech",
+  "logo": "https://osix.tech/logo_w.png",
+  "description": seoDescription,
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "US"
+  },
+  "sameAs": [
+    "https://github.com/osixtech",
+    "https://linkedin.com/company/osixtech"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "email": "contact@osix.tech",
+    "availableLanguage": ["English", "Spanish"]
+  }
+};
+
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": seoTitle,
+  "description": seoDescription,
+  "url": `https://osix.tech/${lang}/`,
+  "inLanguage": lang,
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "OSIX Tech",
+    "url": "https://osix.tech"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": `https://osix.tech/${lang}/`
+    }]
+  }
+};
+
+const jsonLd = [organizationSchema, webPageSchema];
+
 ---
 
-<Layout lang={lang}>
+<Layout 
+  lang={lang}
+  title={seoTitle}
+  description={seoDescription}
+  pageType="website"
+  jsonLd={jsonLd}
+  isMainPage={true}>
   <LoadingScreen duration={1000} />
   <section id="hero"><Hero lang={lang} /></section>
   <section id="services"><BentoGridSection lang={lang} /></section>
