@@ -65,7 +65,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/nessie"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/nessie"/>
     <image:image>
-      <image:loc>https://osix.tech/projects/nessie.jpg</image:loc>
+      <image:loc>https://osix.tech/projects/nessie.png</image:loc>
       <image:title>Nessie Assistant - AI Document Assistant</image:title>
     </image:image>
   </url>
@@ -79,7 +79,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/nessie"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/nessie"/>
     <image:image>
-      <image:loc>https://osix.tech/projects/nessie.jpg</image:loc>
+      <image:loc>https://osix.tech/projects/nessie.png</image:loc>
       <image:title>Nessie Assistant - Asistente IA de Documentos</image:title>
     </image:image>
   </url>

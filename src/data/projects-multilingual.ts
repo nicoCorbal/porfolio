@@ -18,18 +18,80 @@ export interface ProjectData {
   features: Feature[];
   images: string[];
   video?: string;
+  actionImages?: string[];
+  textColor?: 'light' | 'dark';
 }
 
 export const projectsData: Record<string, Record<string, ProjectData>> = {
   es: {
+    take: {
+      id: 'take',
+      title: 'TAKE',
+      subtitle: 'Fidelización rápida con Wallet, QR y NFC para cafeterías',
+      category: 'Plataforma de Fidelización',
+      type: 'SaaS',
+      date: 'Q2 2024',
+      awards: [],
+      textColor: 'dark',
+      birth: 'TAKE nació como un piloto real para cafeterías locales con el objetivo de digitalizar la fidelización sin fricción. El usuario añade su pase a Apple Wallet o Google Wallet y acumula sellos o puntos con un tap o un QR. El comercio gestiona promociones y canjes desde un panel web sencillo.',
+      usecase: [
+        'Cafeterías y panaderías: sellos digitales por consumición y recompensas configurables.',
+        'Cadenas locales: campañas por tienda, control de canjes y métricas por ubicación.',
+        'Eventos pop-up: pases temporales con expiración y límites por usuario.',
+        'Programas de puntos para retail ligero: descuentos y niveles de cliente sin necesidad de POS complejo.'
+      ],
+      future: 'Evolucionar hacia una plataforma omnicanal con reglas avanzadas de promociones, integración directa con TPVs y webhooks, y métricas en tiempo real. Roadmap: referidos, segmentación por cohortes, A/B de recompensas y API pública para integraciones.',
+      features: [
+        {
+          title: 'Pases Apple y Google Wallet',
+          description: 'Alta en un tap. Sin apps obligatorias. Actualización dinámica del saldo, sello o nivel del cliente.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10h10M7 14h6"/></svg>'
+        },
+        {
+          title: 'Validación QR y NFC',
+          description: 'Registro de sellos y canjes mediante QR o NFC con control de doble gasto y límites diarios.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M3 5h6v6H3V5zm12 0h6v6h-6V5zM3 13h6v6H3v-6zm12 0h6v6h-6v-6z"/></svg>'
+        },
+        {
+          title: 'Motor de Recompensas Flexible',
+          description: 'Sellos, puntos o niveles. Reglas por producto, franja horaria, tienda y mínimo de ticket.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m-7 9h8a2 2 0 002-2V7a2 2 0 00-2-2H9l-4 4v8a2 2 0 002 2z"/></svg>'
+        },
+        {
+          title: 'Dashboard para Comercios',
+          description: 'Panel con canjes, tasas de retorno, LTV estimado y ranking por tienda. Exportación CSV.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19V6m-4 13v-7m8 7V8m4 11V4"/></svg>'
+        },
+        {
+          title: 'Integración Backend',
+          description: 'Backend en Node con Firebase o Supabase según despliegue. Webhooks para TPV y ERP.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6m0 0v6m0-6l-8 8-4-4-6 6"/></svg>'
+        },
+        {
+          title: 'Operativa Offline-first',
+          description: 'Validación resiliente en entornos con conectividad irregular y sincronización diferida.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a9 9 0 1018 0 9 9 0 00-18 0zm7 5v-4h4"/></svg>'
+        }
+      ],
+      images: ['/projects/take/take.png'],
+      actionImages: [
+        '/projects/take/front.png',
+        '/projects/take/home.png',
+        '/projects/take/menu.png',
+        '/projects/take/game.png',
+        '/projects/take/events.png',
+        '/projects/take/rewards.png'
+      ],
+    },
     nessie: {
       id: 'nessie',
-      title: 'Nessie Assistant',
+      title: 'Nessie',
       subtitle: 'Habla con tus documentos. Encuentra respuestas, no archivos.',
       category: 'Asistente IA',
       type: 'Producto',
       date: 'Q4 2025',
       awards: [],
+      textColor: 'light',
       birth: 'Nessie nació con una clara vocación de producto: desde el inicio fue concebido como una solución para consultar, entender y estructurar el conocimiento interno de organizaciones intensivas en documentación.',
       usecase: [
         'Consultorías y auditorías: búsqueda rápida de cláusulas, normativas o contenido clave en miles de documentos.',
@@ -69,94 +131,81 @@ export const projectsData: Record<string, Record<string, ProjectData>> = {
           icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>'
         }
       ],
-      images: ['/projects/nessie.jpg'],
-    },
-    echoia: {
-      id: 'echoia',
-      title: 'Echoia Notetaker',
-      subtitle: 'Convierte conversaciones en conocimiento',
-      category: 'Herramienta IA',
-      type: 'Producto',
-      date: 'Q2 2025',
-      birth: 'Echoia nació como una herramienta interna para transcribir y organizar automáticamente nuestras reuniones de equipo, facilitando el seguimiento de tareas, decisiones y conocimiento generado en el día a día.',
-      usecase: [
-        'Reuniones de equipo: transcripción automática, resumen y extracción de tareas sin esfuerzo manual.',
-        'Entornos educativos: estudiantes graban clases y reciben transcripciones organizadas por asignatura.',
-        'Captura de voz para otros sistemas: integración con herramientas como Nessie para archivar conocimiento hablado.'
-      ],
-      future: 'El siguiente paso para Echoia es convertirse en un producto de mercado completo: optimizado, más inteligente, y conectado a herramientas como Nessie para crear un ecosistema integrado de captura y organización del conocimiento hablado.',
-      features: [
-        {
-          title: 'Transcripción en Tiempo Real',
-          description: 'Transcribe audio con alta precisión y sin latencia. Echoia convierte conversaciones en texto al momento, lo que permite seguir reuniones, clases o entrevistas sin perder detalle.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>'
-        },
-        {
-          title: 'Resúmenes Automáticos',
-          description: 'Extrae automáticamente los puntos clave de una conversación, ideal para evitar releer textos largos. Los resúmenes siguen una estructura clara: decisiones, acuerdos, temas tratados y próximos pasos.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'
-        },
-        {
-          title: 'Extracción de Tareas',
-          description: 'Identifica automáticamente frases que indican tareas, asignaciones o decisiones. Perfecto para equipos que usan metodologías ágiles o necesitan trazabilidad de las responsabilidades.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>'
-        },
-        {
-          title: 'Etiquetado Inteligente',
-          description: 'Organiza automáticamente tus notas por tema, persona o tipo de conversación. Echoia permite navegar entre reuniones pasadas con filtros inteligentes sin tener que etiquetar manualmente.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>'
-        }
-      ],
-      images: ['/projects/echoia.jpg'],
-    },
-    kharon: {
-      id: 'kharon',
-      title: 'Kharon Proxy',
-      subtitle: 'Tu guardián entre los mundos digitales',
-      category: 'Herramienta Ciberseguridad',
-      type: 'Herramienta Interna',
-      date: 'Q3 2025',
-      birth: 'Kharon nació como una herramienta interna para gestionar el acceso, la autenticación y el tráfico entre los distintos backends de nuestros proyectos, especialmente en entornos con múltiples capas y clientes diferenciados.',
-      usecase: [
-        'API Gateway seguro: controla el acceso a APIs internas según roles y tipo de token.',
-        'Firewall lógico entre microservicios: inspección de tráfico y trazabilidad en arquitecturas distribuidas.',
-        'Entornos multi-cliente: enruta peticiones de forma dinámica entre distintos backends según el token recibido.'
-      ],
-      future: 'Nuestro objetivo con Kharon es seguir perfeccionándolo para ofrecer un gateway de alto rendimiento, flexible y seguro, que responda a las exigencias reales de nuestros clientes en cuanto a trazabilidad, protección y control de flujos API.',
-      features: [
-        {
-          title: 'Autenticación Segura',
-          description: 'Gestiona acceso a tus sistemas con tokens JWT y API keys de forma granular. Kharon permite definir qué tipo de usuarios puede acceder a qué recursos, y controla permisos de forma dinámica, incluso en entornos con múltiples capas de autenticación.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>'
-        },
-        {
-          title: 'Inspección de Tráfico',
-          description: 'Examina cada petición entrante para asegurar que cumple con las políticas definidas. Ideal para prevenir ataques, detectar anomalías o implementar reglas personalizadas de validación a nivel de payload o cabeceras.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
-        },
-        {
-          title: 'Routing Inteligente',
-          description: 'Enruta cada solicitud al backend correspondiente según su token, cliente, o contexto. Esto permite ofrecer un servicio multicliente desde una misma infraestructura sin comprometer seguridad ni rendimiento.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>'
-        },
-        {
-          title: 'Dashboard de Métricas',
-          description: 'Visualiza en tiempo real cómo se está utilizando el proxy: número de peticiones, errores, uso por backend, o tipos de token. Un panel útil tanto para desarrolladores como para responsables de ciberseguridad.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>'
-        }
-      ],
-      images: ['/projects/kharon.jpg'],
-    },
+      images: ['/projects/nessie/nessie.png'],
+      video: '/projects/nessie/nessie-demo.mov'
+    }
   },
   en: {
+      take: {
+      id: 'take',
+      title: 'TAKE',
+      subtitle: 'Frictionless loyalty with Wallet, QR, and NFC for coffee shops',
+      category: 'Fidelity Platform',
+      type: 'SaaS',
+      date: 'Q3 2025',
+      awards: [],
+      textColor: 'dark',
+      birth: 'TAKE was born as a real-world pilot for local coffee shops with the goal of digitizing customer loyalty in a frictionless way. Users add their pass to Apple Wallet or Google Wallet and collect stamps or points with a tap or a QR scan. Merchants manage promotions and redemptions from a simple web dashboard.',
+      usecase: [
+        'Coffee shops and bakeries: digital stamp cards per purchase, with configurable rewards.',
+        'Local chains: store-specific campaigns, redemption control, and analytics per location.',
+        'Pop-up events: temporary passes with expiration and per-user limits.',
+        'Light retail loyalty: point-based discounts and customer tiers without complex POS systems.'
+      ],
+      future: 'The next step for TAKE is to evolve into an omnichannel loyalty platform with advanced promotion rules, direct POS integrations, webhooks, and real-time analytics. The roadmap includes referral systems, cohort segmentation, A/B reward testing, and a public API for third-party integrations.',
+      features: [
+        {
+          title: 'Apple & Google Wallet Passes',
+          description: 'Join in one tap. No mandatory apps. Dynamic updates for balance, stamps, or customer level.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10h10M7 14h6"/></svg>'
+        },
+        {
+          title: 'QR and NFC Validation',
+          description: 'Stamp and reward validation via QR or NFC, with double-spend protection and daily limits.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M3 5h6v6H3V5zm12 0h6v6h-6V5zM3 13h6v6H3v-6zm12 0h6v6h-6v-6z"/></svg>'
+        },
+        {
+          title: 'Flexible Reward Engine',
+          description: 'Support for stamps, points, or tiers. Rules per product, time slot, store, or order value.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m-7 9h8a2 2 0 002-2V7a2 2 0 00-2-2H9l-4 4v8a2 2 0 002 2z"/></svg>'
+        },
+        {
+          title: 'Merchant Dashboard',
+          description: 'Web panel with redemptions, return rates, estimated LTV, and per-store rankings. CSV export available.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19V6m-4 13v-7m8 7V8m4 11V4"/></svg>'
+        },
+        {
+          title: 'Backend Integration',
+          description: 'Node backend using Firebase or Supabase, depending on deployment. Webhooks available for POS or ERP systems.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6m0 0v6m0-6l-8 8-4-4-6 6"/></svg>'
+        },
+        {
+          title: 'Offline-first Operation',
+          description: 'Resilient validation in low-connectivity environments, with deferred synchronization once online.',
+          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a9 9 0 1018 0 9 9 0 00-18 0zm7 5v-4h4"/></svg>'
+        }
+      ],
+      images: [
+        '/projects/take/take.png',
+      ],
+      actionImages: [
+        '/projects/take/front.png',
+        '/projects/take/home.png',
+        '/projects/take/menu.png',
+        '/projects/take/game.png',
+        '/projects/take/events.png',
+        '/projects/take/rewards.png'
+      ],
+    },
     nessie: {
       id: 'nessie',
-      title: 'Nessie Assistant',
+      title: 'Nessie',
       subtitle: 'Talk to your documents. Find answers, not files.',
       category: 'AI Assistant',
       type: 'Product',
       date: 'Q4 2025',
       awards: [],
+      textColor: 'light',
       birth: 'Nessie was born with a clear product vocation: from the beginning it was conceived as a solution to query, understand and structure internal knowledge of documentation-intensive organizations.',
       usecase: [
         'Consulting and auditing: quick search for clauses, regulations or key content in thousands of documents.',
@@ -196,84 +245,9 @@ export const projectsData: Record<string, Record<string, ProjectData>> = {
           icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>'
         }
       ],
-      images: ['/projects/nessie.jpg'],
-    },
-    echoia: {
-      id: 'echoia',
-      title: 'Echoia Notetaker',
-      subtitle: 'Turn conversations into knowledge',
-      category: 'AI Tool',
-      type: 'Product',
-      date: 'Q2 2025',
-      birth: 'Echoia was born as an internal tool to automatically transcribe and organize our team meetings, facilitating the tracking of tasks, decisions and knowledge generated on a daily basis.',
-      usecase: [
-        'Team meetings: automatic transcription, summary and task extraction without manual effort.',
-        'Educational environments: students record classes and receive transcripts organized by subject.',
-        'Voice capture for other systems: integration with tools like Nessie to archive spoken knowledge.'
-      ],
-      future: 'The next step for Echoia is to become a complete market product: optimized, smarter, and connected to tools like Nessie to create an integrated ecosystem for capturing and organizing spoken knowledge.',
-      features: [
-        {
-          title: 'Real-Time Transcription',
-          description: 'Transcribe audio with high accuracy and no latency. Echoia converts conversations to text on the fly, allowing you to follow meetings, classes or interviews without missing a detail.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>'
-        },
-        {
-          title: 'Automatic Summaries',
-          description: 'Automatically extracts key points from a conversation, ideal for avoiding rereading long texts. Summaries follow a clear structure: decisions, agreements, topics covered and next steps.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'
-        },
-        {
-          title: 'Task Extraction',
-          description: 'Automatically identifies phrases that indicate tasks, assignments or decisions. Perfect for teams using agile methodologies or needing traceability of responsibilities.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>'
-        },
-        {
-          title: 'Smart Tagging',
-          description: 'Automatically organizes your notes by topic, person or conversation type. Echoia allows you to navigate between past meetings with smart filters without having to manually tag.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>'
-        }
-      ],
-      images: ['/projects/echoia.jpg'],
-    },
-    kharon: {
-      id: 'kharon',
-      title: 'Kharon Proxy',
-      subtitle: 'Your guardian between digital worlds',
-      category: 'Cybersecurity Tool',
-      type: 'Internal Tool',
-      date: 'Q3 2025',
-      birth: 'Kharon was born as an internal tool to manage access, authentication and traffic between the different backends of our projects, especially in environments with multiple layers and differentiated clients.',
-      usecase: [
-        'Secure API Gateway: controls access to internal APIs according to roles and token type.',
-        'Logical firewall between microservices: traffic inspection and traceability in distributed architectures.',
-        'Multi-client environments: dynamically routes requests between different backends based on the received token.'
-      ],
-      future: 'Our goal with Kharon is to continue perfecting it to offer a high-performance, flexible and secure gateway that responds to the real demands of our clients in terms of traceability, protection and API flow control.',
-      features: [
-        {
-          title: 'Secure Authentication',
-          description: 'Manage access to your systems with JWT tokens and API keys in a granular way. Kharon allows you to define what type of users can access what resources, and controls permissions dynamically, even in environments with multiple authentication layers.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>'
-        },
-        {
-          title: 'Traffic Inspection',
-          description: 'Examines each incoming request to ensure it complies with defined policies. Ideal for preventing attacks, detecting anomalies or implementing custom validation rules at payload or header level.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
-        },
-        {
-          title: 'Smart Routing',
-          description: 'Routes each request to the corresponding backend based on its token, client, or context. This allows offering a multi-client service from the same infrastructure without compromising security or performance.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>'
-        },
-        {
-          title: 'Metrics Dashboard',
-          description: 'View in real time how the proxy is being used: number of requests, errors, usage by backend, or token types. A useful panel for both developers and cybersecurity managers.',
-          icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>'
-        }
-      ],
-      images: ['/projects/kharon.jpg'],
-    },
+      images: ['/projects/nessie/nessie.png'],
+      video: '/projects/nessie/nessie-demo.mov'
+    }
   }
 };
 

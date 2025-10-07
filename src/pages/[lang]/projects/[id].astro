@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import { getProject, getProjectIds } from '../../../data/projects-multilingual';
 import LoadingScreen from '../../../components/LoadingScreen.astro';
+import { ProjectCarousel } from '../../../components/ProjectCarousel';
 
 export const prerender = true;
 
@@ -226,26 +227,35 @@ const jsonLd = [productSchema, webPageSchema].filter(Boolean);
     </div>
   </section>
 
-  <!-- VIDEO DEMO -->
-  {project.video && (
+  <!-- IN ACTION - CAROUSEL OR VIDEO -->
+  {(project.actionImages || project.video) && (
     <section class="py-16 mb-0">
       <div class="mx-auto px-4 sm:px-6 lg:px-10">
-        <h2 class="text-3xl font-bold text-black text-left  mb-12">{project.title} {t('projects.detail.inAction')}</h2>
-         <div class="relative aspect-[16/9] content-fit overflow-hidden bg-black shadow-lg">
-          <video
-            autoplay
-            muted
-            loop
-            playsinline
-            controls
-            class="w-full h-full object-cover"
-            poster={project.images[1] || project.images[0]}
-            preload="metadata"
-          >
-            <source src={project.video} type="video/mp4" />
-            {lang === 'es' ? 'Tu navegador no soporta la reproducción de video.' : 'Your browser does not support video playback.'}
-          </video>
-        </div>
+        <h2 class="text-3xl font-bold text-black text-left mb-12">{project.title} {t('projects.detail.inAction')}</h2>
+
+        {project.actionImages ? (
+          <ProjectCarousel
+            images={project.actionImages}
+            projectTitle={project.title}
+            client:load
+          />
+        ) : project.video && (
+          <div class="relative aspect-[16/9] content-fit overflow-hidden bg-black shadow-lg">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              controls
+              class="w-full h-full object-cover"
+              poster={project.images[1] || project.images[0]}
+              preload="metadata"
+            >
+              <source src={project.video} type="video/mp4" />
+              {lang === 'es' ? 'Tu navegador no soporta la reproducción de video.' : 'Your browser does not support video playback.'}
+            </video>
+          </div>
+        )}
       </div>
     </section>
   )}
