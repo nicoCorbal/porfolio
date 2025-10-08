@@ -47,11 +47,6 @@ export const projectsData: Record<string, Record<string, ProjectData>> = {
           icon: 'Menu'
         },
         {
-          title: 'Inicio de Sesión con Google o Apple',
-          description: 'Accede fácilmente con tus cuentas favoritas y guarda tu progreso de forma segura en la nube.',
-          icon: 'LogIn'
-        },
-        {
           title: 'Juego Integrado con Leaderboard',
           description: 'Un minijuego exclusivo con clasificación online donde los fans de la cafetería pueden competir y ganar premios.',
           icon: 'Trophy'
@@ -161,11 +156,6 @@ export const projectsData: Record<string, Record<string, ProjectData>> = {
             title: 'Digital Menu',
             description: 'Explore all products, categories, and prices through a clean and visually appealing interface.',
             icon: 'Menu'
-          },
-          {
-            title: 'Google & Apple Sign-In',
-            description: 'Log in easily using your preferred account and securely save your progress in the cloud.',
-            icon: 'LogIn'
           },
           {
             title: 'Integrated Game with Leaderboard',
