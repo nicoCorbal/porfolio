@@ -145,16 +145,16 @@ const jsonLd = [productSchema, webPageSchema].filter(Boolean);
   </section>
 
   <!-- DESCRIPCIÓN -->
-  <section class="description-section py-16 bg-white mb-0">
+  <section class="description-section bg-white mb-0" class:list={[id === 'nessie' ? 'py-16 pb-0' : 'py-16']}>
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-3 gap-16">
-        
+
         <!-- CÓMO NACIÓ -->
         <div class="info-card fade-up" style="--delay: 0.1s">
           <h2 class="info-title text-3xl font-bold text-black mb-4">{t('projects.detail.howBorn')} {project.title}</h2>
           <p class="info-text text-gray-900 leading-relaxed text-justify">{project.birth}</p>
         </div>
-    
+
         <!-- CASOS DE USO -->
         <div class="info-card fade-up" style="--delay: 0.3s">
           <h2 class="info-title text-3xl font-bold text-black mb-4">{t('projects.detail.useCases')} {project.title}</h2>
@@ -169,19 +169,36 @@ const jsonLd = [productSchema, webPageSchema].filter(Boolean);
             ))}
           </ul>
         </div>
-    
+
         <!-- FUTURO -->
         <div class="info-card fade-up" style="--delay: 0.5s">
           <h2 class="info-title text-3xl font-bold text-black mb-4">{t('projects.detail.future')} {project.title}</h2>
           <p class="info-text text-gray-900 leading-relaxed text-justify">{project.future}</p>
         </div>
-    
+
       </div>
+
+      {/* Call to Action - Visitar Nessie */}
+      {id === 'nessie' && (
+        <div class="mt-10 mb-0 text-center fade-up" style="--delay: 0.7s">
+          <a
+            href="https://nessie.osix.tech"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 bg-black text-white px-8 py-4 text-lg font-semibold hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+            {lang === 'es' ? 'Visitar la página de Nessie para más información' : 'Visit Nessie page for more information'}
+          </a>
+        </div>
+      )}
     </div>
   </section>
 
   <!-- FEATURES -->
-  <section class="features-section bg-white  py-16 mb-0">
+  <section class="features-section bg-white mb-0" class:list={[id === 'nessie' ? 'pt-10 pb-16' : 'py-16']}>
     <div class="w-full mx-auto px-4 sm:px-6 lg:px-10">
       <h2 class="features-title text-3xl font-bold text-black text-left  mb-12 fade-up" style="--delay: 0.6s">{t('projects.detail.features')}</h2>
       <div class={`features-grid grid gap-8 ${

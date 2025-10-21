@@ -26,6 +26,9 @@ importers:
       '@rive-app/canvas':
         specifier: ^2.30.0
         version: 2.31.6
+      '@rive-app/react-canvas':
+        specifier: ^4.23.4
+        version: 4.23.4(react@19.2.0)
       '@types/fullpage.js':
         specifier: ^2.9.6
         version: 2.9.6
@@ -738,6 +741,11 @@ packages:
 
   '@rive-app/canvas@2.31.6':
     resolution: {integrity: sha512-YVhBnqZnPEwMANqDzExpoFSPYjkuSm/ZWL6WQetC5S54clSkahmUYIV/eOYRKo3rTeEb0S98CL2tTEZqK3RC4A==}
+
+  '@rive-app/react-canvas@4.23.4':
+    resolution: {integrity: sha512-kIYpvyLxhbpyzUzYaBKgUCNzfKgqMQ2uuGRRpo/iPbY8TIGInTGcwiAOSHr0UKGYD1LaTiBm3gMktjsc673Xfw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0
 
   '@rolldown/pluginutils@1.0.0-beta.27':
     resolution: {integrity: sha512-+d0F4MKMCbeVUJwG96uQ4SgAznZNSq93I3V+9NHA4OpvqG8mRCpGdKmK8l/dl02h2CCDHwW2FqilnTyDcAnqjA==}
@@ -3241,6 +3249,11 @@ snapshots:
       - immer
 
   '@rive-app/canvas@2.31.6': {}
+
+  '@rive-app/react-canvas@4.23.4(react@19.2.0)':
+    dependencies:
+      '@rive-app/canvas': 2.31.6
+      react: 19.2.0
 
   '@rolldown/pluginutils@1.0.0-beta.27': {}
 

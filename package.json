@@ -15,6 +15,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@react-three/fiber": "^9.2.0",
     "@rive-app/canvas": "^2.30.0",
+    "@rive-app/react-canvas": "^4.23.4",
     "@types/fullpage.js": "^2.9.6",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
