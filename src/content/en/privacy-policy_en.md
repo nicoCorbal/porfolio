@@ -9,8 +9,8 @@ OSIX Tech maintains a dynamic understanding of this policy to adapt it to regula
 ## 1. Data Controller
 
 **OSIX Tech Development SL**  
-- **Address**: C/ Rosalía de Castro, 44, 15706 Santiago de Compostela, A Coruña, Spain
-- **Data Protection Officer**: David Manuel Raposeiras Canaval  
+- **Address**: Calle Santiago del Estero 2-4, 15701 Santiago de Compostela, A Coruña, Spain
+- **Data Protection Officer**: David Manuel Raposeiras Canabal  
 - **Informal contact**: contact form at https://osix.tech  
 - **Formal contact**: dpd@osix.tech
 

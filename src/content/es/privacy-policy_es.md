@@ -9,8 +9,8 @@ OSIX Tech mantendrá un entendimiento dinámico de esta política para adaptarla
 ## 1. Responsable del Tratamiento
 
 **OSIX Tech Development SL**  
-- **Dirección**: C/ Rosalía de Castro, 44, 15706 Santiago de Compostela, A Coruña, España
-- **Delegado de Protección de Datos**: David Manuel Raposeiras Canaval  
+- **Dirección**: Calle Santiago del Estero 2-4, 15701 Santiago de Compostela, A Coruña, España
+- **Delegado de Protección de Datos**: David Manuel Raposeiras Canabal  
 - **Contacto informal**: formulario en https://osix.tech  
 - **Contacto formal**: dpd@osix.tech
 
