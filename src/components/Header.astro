@@ -37,6 +37,7 @@ const projects = getAllProjects(lang);
             </button>
           </li>
           <li><a href={`/${lang}/#about`} class="nav-item transition-colors duration-200">{t['nav.team']}</a></li>
+          <li><a href={`/${lang}/kted/c`} class="nav-item transition-colors duration-200">{t['nav.kted']}</a></li>
           <!--<li><a href={`/${lang}/#awards`} class="nav-item  transition-colors duration-200">{t['nav.awards']}</a></li>-->
        </ul>
         
@@ -75,6 +76,12 @@ const projects = getAllProjects(lang);
             </div>
           </a>
         ))}
+        <a href={`/${lang}/kted/c`} class="group block transition-all duration-300 overflow-hidden hover:scale-105">
+          <div class="p-4 transition-all duration-300 group-hover:translate-y-[-2px]">
+            <h3 class="font-semibold text-black transition-all duration-300 group-hover:tracking-wide">KTED</h3>
+            <p class="text-sm text-gray-600 mt-1 transition-all duration-300">{lang === 'es' ? 'Espacios de Datos' : 'Data Spaces'}</p>
+          </div>
+        </a>
       </div>
     </div>
   </div>
@@ -94,6 +101,7 @@ const projects = getAllProjects(lang);
       <li class="mobile-nav-item"><a href={`/${lang}/#services`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.services']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#projects`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.projects']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#about`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.team']}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/kted/c`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.kted']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#contact`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.contact']}</a></li>
     </ul>
   </nav>
