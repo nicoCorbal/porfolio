@@ -1,0 +1,258 @@
+---
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'es' } = Astro.props;
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+const sectors = [
+  { value: 'salud', label: t('kted.sectors.health') },
+  { value: 'agroalimentario', label: t('kted.sectors.agrifood') },
+  { value: 'logistica', label: t('kted.sectors.logistics') },
+  { value: 'turismo', label: t('kted.sectors.tourism') },
+  { value: 'energia', label: t('kted.sectors.energy') },
+  { value: 'industria', label: t('kted.sectors.industry') },
+  { value: 'construccion', label: t('kted.sectors.construction') },
+  { value: 'otro', label: t('kted.contact.form.sector.other') }
+];
+---
+
+<section id="contact" class="py-16 md:py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="grid lg:grid-cols-2 gap-16">
+      <!-- Left: Info -->
+      <div>
+        <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">
+          {lang === 'es' ? 'Contacto' : 'Contact'}
+        </p>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6">
+          {t('kted.contact.title')}
+        </h2>
+        <p class="text-gray-500 text-lg leading-relaxed mb-10">
+          {t('kted.contact.subtitle')}
+        </p>
+
+        <!-- Contact info -->
+        <div class="space-y-6">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-black flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-gray-400">{lang === 'es' ? 'Email' : 'Email'}</p>
+              <p class="font-semibold text-black">contact@osix.tech</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-black flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm text-gray-400">{lang === 'es' ? 'Respuesta' : 'Response'}</p>
+              <p class="font-semibold text-black">{lang === 'es' ? 'En menos de 24 horas' : 'Within 24 hours'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="bg-black p-8 md:p-10">
+        <form id="kted-contact-form" class="space-y-5">
+          <!-- Name & Company -->
+          <div class="grid md:grid-cols-2 gap-5">
+            <div>
+              <label for="kted-name" class="block text-white/60 mb-2 text-sm">
+                {t('kted.contact.form.name')} *
+              </label>
+              <input
+                type="text"
+                id="kted-name"
+                name="user_name"
+                class="w-full px-4 py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white/50"
+                required
+                minlength="2"
+              />
+            </div>
+            <div>
+              <label for="kted-company" class="block text-white/60 mb-2 text-sm">
+                {t('kted.contact.form.company')} *
+              </label>
+              <input
+                type="text"
+                id="kted-company"
+                name="user_company"
+                class="w-full px-4 py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white/50"
+                required
+                minlength="2"
+              />
+            </div>
+          </div>
+
+          <!-- Email & Phone -->
+          <div class="grid md:grid-cols-2 gap-5">
+            <div>
+              <label for="kted-email" class="block text-white/60 mb-2 text-sm">
+                {t('kted.contact.form.email')} *
+              </label>
+              <input
+                type="email"
+                id="kted-email"
+                name="user_email"
+                class="w-full px-4 py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white/50"
+                required
+              />
+            </div>
+            <div>
+              <label for="kted-phone" class="block text-white/60 mb-2 text-sm">
+                {t('kted.contact.form.phone')}
+              </label>
+              <input
+                type="tel"
+                id="kted-phone"
+                name="user_phone"
+                class="w-full px-4 py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white/50"
+              />
+            </div>
+          </div>
+
+          <!-- Sector -->
+          <div>
+            <label for="kted-sector" class="block text-white/60 mb-2 text-sm">
+              {t('kted.contact.form.sector')}
+            </label>
+            <select
+              id="kted-sector"
+              name="user_sector"
+              class="w-full px-4 py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white/50"
+            >
+              <option value="">{t('kted.contact.form.sector.placeholder')}</option>
+              {sectors.map(sector => (
+                <option value={sector.value}>{sector.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label for="kted-message" class="block text-white/60 mb-2 text-sm">
+              {t('kted.contact.form.message')}
+            </label>
+            <textarea
+              id="kted-message"
+              name="message"
+              rows="4"
+              class="w-full px-4 py-3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white/50 resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="w-full bg-white text-black py-4 px-6 font-semibold hover:bg-gray-100 transition-colors"
+          >
+            {t('kted.contact.form.submit')}
+          </button>
+        </form>
+
+        <div id="kted-form-status" class="hidden mt-4 text-center text-white/70"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initEmailJS, sendEmail } from '../../utils/emailjs.js';
+
+  function initializeKTEDContact() {
+    initEmailJS();
+
+    const form = document.getElementById('kted-contact-form') as HTMLFormElement | null;
+    const statusEl = document.getElementById('kted-form-status');
+
+    if (form) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+        if (!submitButton) return;
+
+        const originalButtonText = submitButton.textContent || 'Submit';
+        submitButton.textContent = 'Enviando...';
+        submitButton.disabled = true;
+
+        const formData = new FormData(form);
+
+        const company = formData.get('user_company') || '';
+        const phone = formData.get('user_phone') || '';
+        const sector = formData.get('user_sector') || '';
+        const userMessage = formData.get('message') || '';
+
+        const fullMessage = `
+[SOLICITUD KTED - Kit Espacios de Datos]
+
+Empresa: ${company}
+Teléfono: ${phone}
+Sector: ${sector}
+
+Mensaje:
+${userMessage || 'Sin mensaje adicional'}
+        `.trim();
+
+        const date = new Date().toLocaleString('es-ES', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        });
+
+        const templateParams = {
+          user_name: formData.get('user_name'),
+          user_email: formData.get('user_email'),
+          message: fullMessage,
+          date,
+        };
+
+        try {
+          await sendEmail(templateParams);
+          submitButton.textContent = '¡Solicitud enviada!';
+          form.reset();
+
+          if (statusEl) {
+            statusEl.textContent = 'Te contactaremos en menos de 24 horas.';
+            statusEl.classList.remove('hidden');
+          }
+
+          setTimeout(() => {
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+            if (statusEl) statusEl.classList.add('hidden');
+          }, 5000);
+        } catch (error) {
+          console.error('Error:', error);
+          submitButton.textContent = 'Error al enviar';
+          setTimeout(() => {
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+          }, 3000);
+        }
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if ((window as any).isLoadingComplete) {
+      initializeKTEDContact();
+    } else {
+      window.addEventListener('loadingComplete', initializeKTEDContact);
+    }
+  });
+</script>

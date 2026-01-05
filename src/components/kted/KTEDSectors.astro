@@ -1,0 +1,120 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'a' } = Astro.props;
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+// Variant-specific headers
+const variantHeaders = {
+  a: {
+    label: lang === 'es' ? 'Sectores' : 'Sectors',
+    title: t('kted.sectors.title'),
+    subtitle: t('kted.sectors.subtitle')
+  },
+  b: {
+    label: lang === 'es' ? 'Sectores elegibles' : 'Eligible sectors',
+    title: lang === 'es' ? '¿Tu sector está incluido?' : 'Is your sector included?',
+    subtitle: lang === 'es' ? 'Verifica si tu empresa puede acceder a la subvención' : 'Check if your company can access the grant'
+  },
+  c: {
+    label: lang === 'es' ? 'Encuentra tu sector' : 'Find your sector',
+    title: lang === 'es' ? '¿Dónde encaja tu empresa?' : 'Where does your company fit?',
+    subtitle: lang === 'es' ? 'Cada sector tiene necesidades únicas de datos' : 'Each sector has unique data needs'
+  }
+};
+
+const header = variantHeaders[variant as 'a' | 'b' | 'c'] || variantHeaders.a;
+
+const sectors = [
+  { key: 'health', icon: 'heart', label: t('kted.sectors.health') },
+  { key: 'agrifood', icon: 'leaf', label: t('kted.sectors.agrifood') },
+  { key: 'logistics', icon: 'truck', label: t('kted.sectors.logistics') },
+  { key: 'tourism', icon: 'plane', label: t('kted.sectors.tourism') },
+  { key: 'energy', icon: 'zap', label: t('kted.sectors.energy') },
+  { key: 'industry', icon: 'cog', label: t('kted.sectors.industry') },
+  { key: 'construction', icon: 'building', label: t('kted.sectors.construction') }
+];
+---
+
+<section class="py-16 md:py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">
+        {header.label}
+      </p>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4">
+        {header.title}
+      </h2>
+      <p class="text-gray-500 max-w-xl mx-auto">
+        {header.subtitle}
+      </p>
+    </div>
+
+    <!-- Sectors grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      {sectors.map((sector) => (
+        <div class="group bg-white border border-gray-200 p-6 text-center hover:bg-black hover:border-black transition-all duration-300">
+          <!-- Icon -->
+          <div class="w-14 h-14 mx-auto bg-black group-hover:bg-white flex items-center justify-center mb-4 transition-colors duration-300">
+            {sector.icon === 'heart' && (
+              <svg class="w-7 h-7 text-white group-hover:text-black transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            )}
+            {sector.icon === 'leaf' && (
+              <svg class="w-7 h-7 text-white group-hover:text-black transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+            )}
+            {sector.icon === 'truck' && (
+              <svg class="w-7 h-7 text-white group-hover:text-black transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            )}
+            {sector.icon === 'plane' && (
+              <svg class="w-7 h-7 text-white group-hover:text-black transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            )}
+            {sector.icon === 'zap' && (
+              <svg class="w-7 h-7 text-white group-hover:text-black transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            )}
+            {sector.icon === 'cog' && (
+              <svg class="w-7 h-7 text-white group-hover:text-black transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            )}
+            {sector.icon === 'building' && (
+              <svg class="w-7 h-7 text-white group-hover:text-black transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            )}
+          </div>
+
+          <!-- Label -->
+          <span class="font-semibold text-black group-hover:text-white transition-colors duration-300">
+            {sector.label}
+          </span>
+        </div>
+      ))}
+
+      <!-- More sectors placeholder -->
+      <div class="bg-black p-6 text-center flex flex-col items-center justify-center">
+        <span class="text-white/60 text-sm">{lang === 'es' ? '+ más sectores' : '+ more sectors'}</span>
+      </div>
+    </div>
+
+    <!-- Note -->
+    <p class="text-center text-gray-400 mt-10 text-sm">
+      {t('kted.sectors.note')}
+    </p>
+  </div>
+</section>

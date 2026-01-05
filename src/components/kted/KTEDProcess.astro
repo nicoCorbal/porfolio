@@ -1,0 +1,75 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'a' } = Astro.props;
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+const steps = [
+  { num: '01', title: t('kted.process.step1.title'), desc: t('kted.process.step1.desc') },
+  { num: '02', title: t('kted.process.step2.title'), desc: t('kted.process.step2.desc') },
+  { num: '03', title: t('kted.process.step3.title'), desc: t('kted.process.step3.desc') },
+  { num: '04', title: t('kted.process.step4.title'), desc: t('kted.process.step4.desc') },
+  { num: '05', title: t('kted.process.step5.title'), desc: t('kted.process.step5.desc') },
+];
+
+// Variant-specific CTA text
+const ctaText = {
+  a: lang === 'es' ? 'Comenzar ahora' : 'Start now',
+  b: lang === 'es' ? 'Reservar mi plaza' : 'Reserve my spot',
+  c: lang === 'es' ? '¿Listo para empezar?' : 'Ready to start?'
+};
+---
+
+<section class="py-16 md:py-20 bg-black text-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <p class="text-xs tracking-[0.2em] uppercase text-white/40 mb-4">
+        {lang === 'es' ? 'Proceso' : 'Process'}
+      </p>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+        {t('kted.process.title')}
+      </h2>
+      <p class="text-white/50 max-w-xl mx-auto">
+        {t('kted.process.subtitle')}
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="max-w-3xl mx-auto">
+      {steps.map((step, i) => (
+        <div class="relative flex gap-8 pb-12 last:pb-0">
+          <!-- Line -->
+          {i < steps.length - 1 && (
+            <div class="absolute left-[23px] top-12 w-px h-[calc(100%-48px)] bg-white/10"></div>
+          )}
+
+          <!-- Number -->
+          <div class="flex-shrink-0 w-12 h-12 bg-white text-black flex items-center justify-center font-bold text-sm" style="font-family: 'Orbitron', sans-serif;">
+            {step.num}
+          </div>
+
+          <!-- Content -->
+          <div class="pt-2">
+            <h3 class="text-xl font-semibold mb-2">{step.title}</h3>
+            <p class="text-white/50 leading-relaxed">{step.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-10 text-center">
+      <a href="#contact" class="kted-cta inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors" data-cta-location="process" data-variant={variant}>
+        <span class="font-medium">{ctaText[variant as 'a' | 'b' | 'c'] || ctaText.a}</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,112 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import LoadingScreen from '../../../components/LoadingScreen.astro';
+import KTEDHeader from '../../../components/kted/KTEDHeader.astro';
+
+// Hero variants
+import HeroA from '../../../components/kted/variants/HeroA.astro';
+import HeroB from '../../../components/kted/variants/HeroB.astro';
+import HeroC from '../../../components/kted/variants/HeroC.astro';
+
+// Shared components
+import KTEDWhatIs from '../../../components/kted/KTEDWhatIs.astro';
+import KTEDAmounts from '../../../components/kted/KTEDAmounts.astro';
+import KTEDProcess from '../../../components/kted/KTEDProcess.astro';
+import KTEDWhyOsix from '../../../components/kted/KTEDWhyOsix.astro';
+import KTEDSectors from '../../../components/kted/KTEDSectors.astro';
+import KTEDFAQ from '../../../components/kted/KTEDFAQ.astro';
+import KTEDFooterLogos from '../../../components/kted/KTEDFooterLogos.astro';
+
+// Contact variants
+import ContactA from '../../../components/kted/variants/ContactA.astro';
+import ContactB from '../../../components/kted/variants/ContactB.astro';
+import ContactC from '../../../components/kted/variants/ContactC.astro';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const variants = ['a', 'b', 'c'];
+  const langs = ['en', 'es'];
+
+  return langs.flatMap(lang =>
+    variants.map(variant => ({
+      params: { lang, variant }
+    }))
+  );
+}
+
+const { lang = 'es', variant = 'a' } = Astro.params;
+
+// SEO Data
+const seoData = {
+  es: {
+    title: 'Kit Espacios de Datos | Hasta 30.000€ de subvención - OSIX Tech',
+    description: 'Accede a hasta 30.000€ para integrar tu empresa en Espacios de Datos europeos. Programa Red.es financiado por NextGenerationEU. Gestión integral sin riesgo.',
+    keywords: 'kit espacios de datos, subvención espacios datos, red.es nextgenerationeu, ayudas digitalización empresas, KTED'
+  },
+  en: {
+    title: 'Data Spaces Kit | Up to €30,000 grant - OSIX Tech',
+    description: 'Access up to €30,000 to integrate your company into European Data Spaces. Red.es program funded by NextGenerationEU. Full management with no risk.',
+    keywords: 'data spaces kit, data spaces grant spain, red.es nextgenerationeu, business digitization grants, KTED'
+  }
+};
+
+const currentSeo = seoData[lang as 'es' | 'en'] || seoData.es;
+
+// Structured Data
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": currentSeo.title,
+  "description": currentSeo.description,
+  "url": `https://osix.tech/${lang}/kted/${variant}`,
+  "inLanguage": lang
+};
+
+const heroComponents = { a: HeroA, b: HeroB, c: HeroC };
+const contactComponents = { a: ContactA, b: ContactB, c: ContactC };
+
+const HeroComponent = heroComponents[variant as 'a' | 'b' | 'c'] || HeroA;
+const ContactComponent = contactComponents[variant as 'a' | 'b' | 'c'] || ContactA;
+---
+
+<Layout
+  lang={lang}
+  title={currentSeo.title}
+  description={currentSeo.description}
+  keywords={currentSeo.keywords}
+  pageType="website"
+  jsonLd={[webPageSchema]}
+  hideHeader={true}>
+
+  <KTEDHeader lang={lang} variant={variant} />
+  <LoadingScreen duration={800} />
+
+  <main data-variant={variant}>
+    <HeroComponent lang={lang} variant={variant} />
+
+    <KTEDWhatIs lang={lang} variant={variant} />
+
+    <KTEDAmounts lang={lang} variant={variant} />
+
+    <section id="how-it-works">
+      <KTEDProcess lang={lang} variant={variant} />
+    </section>
+
+    <KTEDWhyOsix lang={lang} variant={variant} />
+
+    <KTEDSectors lang={lang} variant={variant} />
+
+    <KTEDFAQ lang={lang} variant={variant} />
+
+    <ContactComponent lang={lang} variant={variant} />
+
+    <KTEDFooterLogos lang={lang} />
+  </main>
+</Layout>
+
+<style>
+  main {
+    overflow-x: hidden;
+  }
+</style>

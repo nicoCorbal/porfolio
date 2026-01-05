@@ -1,0 +1,258 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'c' } = Astro.props;
+const translations = await import(`../../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+const sectors = [
+  { value: 'salud', label: t('kted.sectors.health'), icon: '🏥' },
+  { value: 'agroalimentario', label: t('kted.sectors.agrifood'), icon: '🌾' },
+  { value: 'logistica', label: t('kted.sectors.logistics'), icon: '🚛' },
+  { value: 'turismo', label: t('kted.sectors.tourism'), icon: '✈️' },
+  { value: 'energia', label: t('kted.sectors.energy'), icon: '⚡' },
+  { value: 'industria', label: t('kted.sectors.industry'), icon: '🏭' },
+];
+---
+
+<section id="contact" class="relative py-20 md:py-28 bg-white overflow-hidden" data-variant={variant}>
+  <!-- Subtle grid background -->
+  <div class="absolute inset-0 opacity-50" style="background-image: linear-gradient(rgba(229, 231, 235, 0.5) 1px, transparent 1px), linear-gradient(to right, rgba(229, 231, 235, 0.5) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+    <div class="grid lg:grid-cols-3 gap-12 items-start">
+      <!-- Left: Info panel (black) -->
+      <div class="lg:col-span-1 bg-black p-8 md:p-10">
+        <div class="mb-8">
+          <div class="w-12 h-px bg-white/30 mb-6"></div>
+          <h2 class="text-3xl md:text-4xl font-semibold text-white leading-tight mb-4">
+            {lang === 'es' ? '¿Listo para empezar?' : 'Ready to start?'}
+          </h2>
+          <p class="text-white/60 leading-relaxed">
+            {lang === 'es'
+              ? 'Solo necesitamos unos datos para evaluar si tu empresa puede beneficiarse del programa KTED.'
+              : 'We just need some information to evaluate if your company can benefit from the KTED program.'}
+          </p>
+        </div>
+
+        <div class="space-y-6 pt-8 border-t border-white/10">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 border border-white/20 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-white font-medium mb-1">{lang === 'es' ? 'Sin compromiso' : 'No commitment'}</p>
+              <p class="text-white/40 text-sm">{lang === 'es' ? 'Evaluación 100% gratuita' : '100% free evaluation'}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 border border-white/20 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-white font-medium mb-1">{lang === 'es' ? 'Respuesta rápida' : 'Quick response'}</p>
+              <p class="text-white/40 text-sm">{lang === 'es' ? 'En menos de 24 horas' : 'Within 24 hours'}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 border border-white/20 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-white font-medium mb-1">{lang === 'es' ? 'Hasta 30.000€' : 'Up to €30,000'}</p>
+              <p class="text-white/40 text-sm">{lang === 'es' ? 'Subvención a fondo perdido' : 'Non-refundable grant'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Simplified Form -->
+      <div class="lg:col-span-2 border border-gray-200 bg-white p-8 md:p-12">
+        <form id="kted-contact-form" class="space-y-8" data-variant={variant}>
+          <!-- Email - Most important -->
+          <div>
+            <label for="kted-email" class="block text-black text-lg font-medium mb-3">
+              {lang === 'es' ? '¿Cuál es tu email de trabajo?' : "What's your work email?"}
+            </label>
+            <input
+              type="email"
+              id="kted-email"
+              name="user_email"
+              class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent text-black text-lg focus:outline-none focus:border-black transition-colors placeholder:text-gray-400"
+              required
+              placeholder={lang === 'es' ? 'tu@empresa.com' : 'your@company.com'}
+            />
+          </div>
+
+          <!-- Company -->
+          <div>
+            <label for="kted-company" class="block text-black text-lg font-medium mb-3">
+              {lang === 'es' ? '¿Cómo se llama tu empresa?' : "What's your company name?"}
+            </label>
+            <input
+              type="text"
+              id="kted-company"
+              name="user_company"
+              class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent text-black text-lg focus:outline-none focus:border-black transition-colors placeholder:text-gray-400"
+              required
+              minlength="2"
+              placeholder={lang === 'es' ? 'Nombre de la empresa' : 'Company name'}
+            />
+          </div>
+
+          <!-- Sector - Visual selection -->
+          <div>
+            <label class="block text-black text-lg font-medium mb-4">
+              {lang === 'es' ? '¿En qué sector trabajas?' : 'What sector do you work in?'}
+            </label>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {sectors.map((sector) => (
+                <label class="sector-option group relative cursor-pointer">
+                  <input type="radio" name="user_sector" value={sector.value} class="sr-only peer" />
+                  <div class="p-4 bg-gray-50 border-2 border-transparent peer-checked:border-black peer-checked:bg-white hover:border-gray-300 transition-all text-center">
+                    <span class="block text-2xl mb-2">{sector.icon}</span>
+                    <span class="block text-black text-sm font-medium">{sector.label}</span>
+                  </div>
+                </label>
+              ))}
+            </div>
+            <label class="sector-option group relative cursor-pointer mt-3 block">
+              <input type="radio" name="user_sector" value="otro" class="sr-only peer" />
+              <div class="p-4 bg-gray-50 border-2 border-transparent peer-checked:border-black peer-checked:bg-white hover:border-gray-300 transition-all text-center">
+                <span class="text-gray-500 text-sm">{lang === 'es' ? 'Otro sector' : 'Other sector'}</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Hidden fields -->
+          <input type="hidden" name="user_name" value="(Desde formulario simplificado)" />
+          <input type="hidden" name="user_phone" value="" />
+          <input type="hidden" name="message" value="" />
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="group w-full bg-black text-white border-2 border-black py-5 px-8 text-lg font-semibold transition-all duration-300 hover:bg-white hover:text-black flex items-center justify-center gap-3"
+          >
+            <span>{lang === 'es' ? 'Comprobar elegibilidad' : 'Check eligibility'}</span>
+            <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </button>
+        </form>
+
+        <div id="kted-form-status" class="hidden mt-6 text-center text-black font-medium"></div>
+
+        <p class="mt-6 text-center text-gray-400 text-sm">
+          {lang === 'es'
+            ? 'Te contactaremos para completar la información si es necesario.'
+            : "We'll contact you to complete the information if needed."}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initEmailJS, sendEmail } from '../../../utils/emailjs.js';
+  import { trackFormStart, trackFormSubmit } from '../../../utils/analytics';
+
+  function initializeKTEDContact() {
+    initEmailJS();
+
+    const form = document.getElementById('kted-contact-form') as HTMLFormElement | null;
+    const statusEl = document.getElementById('kted-form-status');
+    const variant = form?.dataset.variant || 'c';
+    let formStarted = false;
+
+    if (form) {
+      form.addEventListener('focusin', () => {
+        if (!formStarted) {
+          formStarted = true;
+          trackFormStart(variant);
+        }
+      }, { once: true });
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+        if (!submitButton) return;
+
+        const originalHTML = submitButton.innerHTML;
+        submitButton.innerHTML = '<span>Comprobando...</span>';
+        submitButton.disabled = true;
+
+        const formData = new FormData(form);
+
+        const company = formData.get('user_company') || '';
+        const sector = formData.get('user_sector') || 'No especificado';
+
+        const fullMessage = `
+[SOLICITUD KTED - Variante ${variant.toUpperCase()} - Formulario simplificado]
+
+Empresa: ${company}
+Sector: ${sector}
+        `.trim();
+
+        const date = new Date().toLocaleString('es-ES', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        });
+
+        const templateParams = {
+          user_name: company,
+          user_email: formData.get('user_email'),
+          message: fullMessage,
+          date,
+        };
+
+        try {
+          await sendEmail(templateParams);
+          trackFormSubmit(variant);
+          submitButton.innerHTML = '<span>✓ Recibido</span>';
+          form.reset();
+
+          if (statusEl) {
+            statusEl.textContent = 'Te contactaremos en menos de 24 horas para verificar tu elegibilidad.';
+            statusEl.classList.remove('hidden');
+          }
+
+          setTimeout(() => {
+            submitButton.innerHTML = originalHTML;
+            submitButton.disabled = false;
+            if (statusEl) statusEl.classList.add('hidden');
+          }, 5000);
+        } catch (error) {
+          console.error('Error:', error);
+          submitButton.innerHTML = '<span>Error</span>';
+          setTimeout(() => {
+            submitButton.innerHTML = originalHTML;
+            submitButton.disabled = false;
+          }, 3000);
+        }
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if ((window as any).isLoadingComplete) {
+      initializeKTEDContact();
+    } else {
+      window.addEventListener('loadingComplete', initializeKTEDContact);
+    }
+  });
+</script>

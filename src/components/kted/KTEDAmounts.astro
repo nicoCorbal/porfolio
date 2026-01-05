@@ -1,0 +1,126 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'a' } = Astro.props;
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+// Variant-specific headers
+const variantHeaders = {
+  a: {
+    label: lang === 'es' ? 'Subvenciones' : 'Grants',
+    title: t('kted.amounts.title'),
+    subtitle: t('kted.amounts.subtitle')
+  },
+  b: {
+    label: lang === 'es' ? 'Financiación disponible' : 'Available funding',
+    title: lang === 'es' ? 'Aprovecha antes de que se agoten' : 'Take advantage before they run out',
+    subtitle: lang === 'es' ? 'Fondos europeos con plazas limitadas - actúa ahora' : 'European funds with limited spots - act now'
+  },
+  c: {
+    label: lang === 'es' ? 'Tu inversión' : 'Your investment',
+    title: lang === 'es' ? '¿Cuánto puedes conseguir?' : 'How much can you get?',
+    subtitle: lang === 'es' ? 'Calcula el retorno para tu empresa' : 'Calculate the return for your company'
+  }
+};
+
+const header = variantHeaders[variant as 'a' | 'b' | 'c'] || variantHeaders.a;
+---
+
+<section class="py-16 md:py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">
+        {header.label}
+      </p>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4">
+        {header.title}
+      </h2>
+      <p class="text-gray-500 max-w-xl mx-auto">
+        {header.subtitle}
+      </p>
+    </div>
+
+    <!-- Cards grid - bento style -->
+    <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <!-- Empresas card -->
+      <div class="bg-white border border-gray-200 hover:border-gray-300 transition-colors">
+        <div class="p-6 border-b border-gray-100">
+          <span class="text-xs font-semibold tracking-[0.15em] uppercase text-gray-400">
+            {t('kted.amounts.empresas.title')}
+          </span>
+        </div>
+        <div class="p-6 space-y-6">
+          <!-- Participante -->
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-semibold text-black">{t('kted.amounts.empresas.participante.label')}</p>
+              <p class="text-sm text-gray-400">{lang === 'es' ? 'Comparte datos en el ecosistema' : 'Share data in the ecosystem'}</p>
+            </div>
+            <p class="text-2xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;">
+              €15.000
+            </p>
+          </div>
+          <div class="h-px bg-gray-100"></div>
+          <!-- Proveedor -->
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-semibold text-black">{t('kted.amounts.empresas.proveedor.label')}</p>
+              <p class="text-sm text-gray-400">{lang === 'es' ? 'Aporta servicios técnicos' : 'Provides technical services'}</p>
+            </div>
+            <p class="text-3xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;">
+              €30.000
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AAPP card -->
+      <div class="bg-black text-white">
+        <div class="p-6 border-b border-white/10">
+          <span class="text-xs font-semibold tracking-[0.15em] uppercase text-white/50">
+            {t('kted.amounts.aapp.title')}
+          </span>
+        </div>
+        <div class="p-6 space-y-6">
+          <!-- Participante -->
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-semibold text-white">{t('kted.amounts.aapp.participante.label')}</p>
+              <p class="text-sm text-white/40">{lang === 'es' ? 'Integración institucional' : 'Institutional integration'}</p>
+            </div>
+            <p class="text-2xl font-bold text-white" style="font-family: 'Orbitron', sans-serif;">
+              €25.000
+            </p>
+          </div>
+          <div class="h-px bg-white/10"></div>
+          <!-- Proveedor -->
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-semibold text-white">{t('kted.amounts.aapp.proveedor.label')}</p>
+              <p class="text-sm text-white/40">{lang === 'es' ? 'Infraestructura de datos' : 'Data infrastructure'}</p>
+            </div>
+            <p class="text-3xl font-bold text-white" style="font-family: 'Orbitron', sans-serif;">
+              €50.000
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Note -->
+    <div class="mt-12 flex justify-center">
+      <div class="inline-flex items-center gap-3 px-6 py-4 bg-black text-white">
+        <svg class="w-5 h-5 text-green-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <span class="font-medium text-sm">{t('kted.amounts.note')}</span>
+      </div>
+    </div>
+  </div>
+</section>

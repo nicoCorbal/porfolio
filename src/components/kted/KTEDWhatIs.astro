@@ -1,0 +1,150 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'a' } = Astro.props;
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+// Variant-specific headers
+const variantHeaders = {
+  a: {
+    label: lang === 'es' ? 'El programa' : 'The program',
+    title: t('kted.whatIs.title'),
+    text: t('kted.whatIs.text')
+  },
+  b: {
+    label: lang === 'es' ? 'Oportunidad única' : 'Unique opportunity',
+    title: lang === 'es' ? 'Kit Digital para Espacios de Datos' : 'Digital Kit for Data Spaces',
+    text: lang === 'es' ? 'El programa KTED de Red.es financia tu integración en la economía del dato. Subvención directa sin devolución para empresas y sector público.' : 'The KTED program from Red.es finances your integration into the data economy. Direct non-repayable grant for companies and public sector.'
+  },
+  c: {
+    label: lang === 'es' ? 'La oportunidad' : 'The opportunity',
+    title: lang === 'es' ? 'Monetiza el valor de tus datos' : 'Monetize the value of your data',
+    text: lang === 'es' ? 'Los Espacios de Datos te permiten compartir y acceder a datos de forma segura, creando nuevas oportunidades de negocio. El KTED financia tu entrada a este ecosistema.' : 'Data Spaces allow you to share and access data securely, creating new business opportunities. KTED funds your entry into this ecosystem.'
+  }
+};
+
+const header = variantHeaders[variant as 'a' | 'b' | 'c'] || variantHeaders.a;
+---
+
+<section class="py-16 md:py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left: Visual - Simple data flow diagram -->
+      <div class="order-2 lg:order-1">
+        <div class="relative max-w-md mx-auto lg:mx-0">
+          <!-- Flow diagram -->
+          <div class="flex items-center gap-6">
+            <!-- Left nodes (data providers) -->
+            <div class="flex flex-col gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-14 h-14 bg-black flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                </div>
+                <span class="text-sm font-medium text-black">{lang === 'es' ? 'Empresas' : 'Companies'}</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-14 h-14 bg-black flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/>
+                  </svg>
+                </div>
+                <span class="text-sm font-medium text-black">{lang === 'es' ? 'Sector Público' : 'Public Sector'}</span>
+              </div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="flex-shrink-0">
+              <svg class="w-12 h-8 text-gray-300" viewBox="0 0 48 32" fill="none">
+                <path d="M0 16h40M32 8l8 8-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <!-- Center node (Data Space) -->
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-24 h-24 bg-black flex items-center justify-center">
+                <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                </svg>
+              </div>
+              <span class="text-xs font-semibold tracking-wide uppercase text-black text-center">{lang === 'es' ? 'Espacio de Datos' : 'Data Space'}</span>
+            </div>
+          </div>
+
+          <!-- Benefits below -->
+          <div class="flex gap-6 mt-8 pt-6 border-t border-gray-200">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 bg-black flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <span class="text-xs font-medium text-gray-600">{lang === 'es' ? 'Seguro' : 'Secure'}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 bg-black flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M4 4h16v16H4zM4 12h16M12 4v16"/>
+                </svg>
+              </div>
+              <span class="text-xs font-medium text-gray-600">{lang === 'es' ? 'Interoperable' : 'Interoperable'}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 bg-black flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M2 12h20"/>
+                </svg>
+              </div>
+              <span class="text-xs font-medium text-gray-600">{lang === 'es' ? 'Soberano' : 'Sovereign'}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Content -->
+      <div class="order-1 lg:order-2">
+        <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">
+          {header.label}
+        </p>
+
+        <h2 class="text-3xl md:text-4xl font-bold text-black leading-tight mb-6">
+          {header.title}
+        </h2>
+
+        <p class="text-gray-600 leading-relaxed mb-8">
+          {header.text}
+        </p>
+
+        <!-- Feature tags -->
+        <div class="flex flex-wrap gap-2">
+          <div class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-black hover:text-white transition-colors text-sm">
+            <svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span class="font-medium">{t('kted.whatIs.tag1')}</span>
+          </div>
+          <div class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-black hover:text-white transition-colors text-sm">
+            <svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span class="font-medium">{t('kted.whatIs.tag2')}</span>
+          </div>
+          <div class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-black hover:text-white transition-colors text-sm">
+            <svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span class="font-medium">{t('kted.whatIs.tag3')}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

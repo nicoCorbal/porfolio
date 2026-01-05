@@ -1,0 +1,118 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'a' } = Astro.props;
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+// Variant-specific headers
+const variantHeaders = {
+  a: {
+    label: 'OSIX Tech',
+    title: t('kted.whyOsix.title'),
+    subtitle: t('kted.whyOsix.subtitle')
+  },
+  b: {
+    label: lang === 'es' ? 'Tu partner ideal' : 'Your ideal partner',
+    title: lang === 'es' ? '¿Por qué elegir OSIX?' : 'Why choose OSIX?',
+    subtitle: lang === 'es' ? 'Más de 10 años ayudando a empresas a transformarse digitalmente' : 'Over 10 years helping companies transform digitally'
+  },
+  c: {
+    label: lang === 'es' ? 'La solución' : 'The solution',
+    title: lang === 'es' ? 'Expertos que entienden tu negocio' : 'Experts who understand your business',
+    subtitle: lang === 'es' ? 'No solo tecnología, estrategia adaptada a tu sector' : 'Not just technology, strategy adapted to your sector'
+  }
+};
+
+const header = variantHeaders[variant as 'a' | 'b' | 'c'] || variantHeaders.a;
+
+const advantages = [
+  {
+    icon: 'shield',
+    title: t('kted.whyOsix.card1.title'),
+    desc: t('kted.whyOsix.card1.desc')
+  },
+  {
+    icon: 'check',
+    title: t('kted.whyOsix.card2.title'),
+    desc: t('kted.whyOsix.card2.desc')
+  },
+  {
+    icon: 'cpu',
+    title: t('kted.whyOsix.card3.title'),
+    desc: t('kted.whyOsix.card3.desc')
+  },
+  {
+    icon: 'pin',
+    title: t('kted.whyOsix.card4.title'),
+    desc: t('kted.whyOsix.card4.desc')
+  }
+];
+---
+
+<section class="py-16 md:py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-10">
+      <div class="max-w-xl">
+        <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">
+          {header.label}
+        </p>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight">
+          {header.title}
+        </h2>
+      </div>
+      <p class="text-gray-500 max-w-md lg:text-right">
+        {header.subtitle}
+      </p>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="grid md:grid-cols-2 gap-6">
+      {advantages.map((item) => (
+        <div class="group p-8 border border-gray-200 hover:bg-black hover:border-black transition-all duration-300">
+          <!-- Icon -->
+          <div class="w-12 h-12 bg-black group-hover:bg-white flex items-center justify-center mb-6 transition-colors duration-300">
+            {item.icon === 'shield' && (
+              <svg class="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+            )}
+            {item.icon === 'check' && (
+              <svg class="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                <rect x="9" y="3" width="6" height="4" rx="1"/>
+                <path d="M9 14l2 2 4-4"/>
+              </svg>
+            )}
+            {item.icon === 'cpu' && (
+              <svg class="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="4" y="4" width="16" height="16" rx="2"/>
+                <rect x="9" y="9" width="6" height="6"/>
+                <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>
+              </svg>
+            )}
+            {item.icon === 'pin' && (
+              <svg class="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            )}
+          </div>
+
+          <!-- Content -->
+          <h3 class="text-xl font-semibold text-black group-hover:text-white mb-3 transition-colors duration-300">
+            {item.title}
+          </h3>
+          <p class="text-gray-500 group-hover:text-white/60 leading-relaxed transition-colors duration-300">
+            {item.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

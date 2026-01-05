@@ -1,0 +1,77 @@
+---
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'es' } = Astro.props;
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+---
+
+<section class="kted-hero relative min-h-[calc(100vh-80px)] bg-black flex items-center justify-center overflow-hidden">
+  <!-- Subtle grid background -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 py-16 md:py-24">
+    <div class="text-center">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 border border-white/20 mb-8">
+        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+        <span class="text-white/80 text-sm font-medium">{t('kted.hero.badge')}</span>
+      </div>
+
+      <!-- Eyebrow -->
+      <p class="text-white/40 text-xs md:text-sm tracking-[0.2em] uppercase mb-6">
+        Kit Espacios de Datos
+      </p>
+
+      <!-- Main headline -->
+      <h1 class="mb-6">
+        <span class="block text-white text-3xl md:text-4xl lg:text-5xl font-semibold mb-2">
+          {lang === 'es' ? 'Hasta' : 'Up to'}
+        </span>
+        <span class="block text-6xl md:text-8xl lg:text-9xl font-bold text-white" style="font-family: 'Orbitron', sans-serif;">
+          30.000€
+        </span>
+        <span class="block text-white text-2xl md:text-3xl lg:text-4xl font-semibold mt-4">
+          {lang === 'es' ? 'para integrar tu empresa' : 'to integrate your company'}
+        </span>
+        <span class="block text-white/50 text-lg md:text-xl mt-2">
+          {lang === 'es' ? 'en Espacios de Datos' : 'into Data Spaces'}
+        </span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-white/50 text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+        {t('kted.hero.subtitle')}
+      </p>
+
+      <!-- CTA -->
+      <a href="#contact" class="inline-flex items-center gap-3 bg-white text-black px-8 py-4 font-semibold hover:bg-gray-100 transition-colors">
+        <span>{t('kted.hero.cta')}</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+
+      <!-- Trust indicators -->
+      <div class="mt-16 flex flex-wrap justify-center gap-8 md:gap-16">
+        <div class="text-center">
+          <p class="text-white text-2xl font-bold" style="font-family: 'Orbitron', sans-serif;">100%</p>
+          <p class="text-white/40 text-xs uppercase tracking-wider mt-1">{lang === 'es' ? 'Subvencionado' : 'Subsidized'}</p>
+        </div>
+        <div class="hidden md:block w-px h-12 bg-white/20"></div>
+        <div class="text-center">
+          <p class="text-white text-2xl font-bold" style="font-family: 'Orbitron', sans-serif;">{lang === 'es' ? 'Solo IVA' : 'VAT Only'}</p>
+          <p class="text-white/40 text-xs uppercase tracking-wider mt-1">{lang === 'es' ? 'Tú pagas' : 'You pay'}</p>
+        </div>
+        <div class="hidden md:block w-px h-12 bg-white/20"></div>
+        <div class="text-center">
+          <p class="text-white text-2xl font-bold" style="font-family: 'Orbitron', sans-serif;">24h</p>
+          <p class="text-white/40 text-xs uppercase tracking-wider mt-1">{lang === 'es' ? 'Respuesta' : 'Response'}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

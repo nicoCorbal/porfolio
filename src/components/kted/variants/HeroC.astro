@@ -1,0 +1,315 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'c' } = Astro.props;
+const translations = await import(`../../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+const sectors = lang === 'es'
+  ? ['Salud', 'Agroalimentario', 'Logística', 'Turismo', 'Energía', 'Industria']
+  : ['Health', 'Agrifood', 'Logistics', 'Tourism', 'Energy', 'Industry'];
+---
+
+<section id="home" class="relative min-h-[calc(100vh-80px)] bg-white flex items-center overflow-hidden" data-variant={variant}>
+  <!-- Dotted background pattern -->
+  <div class="absolute inset-0" style="background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <!-- Vertical accent line -->
+  <div class="hero-c-line absolute left-6 md:left-12 top-0 w-px bg-black h-0" style="height: 0;"></div>
+
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-16">
+
+    <!-- Top badge -->
+    <div class="hero-c-element mb-8 md:mb-12">
+      <div class="flex items-center gap-6">
+        <span class="text-[10px] font-black tracking-[0.4em] uppercase text-black">
+          {lang === 'es' ? 'PROGRAMA KTED' : 'KTED PROGRAM'}
+        </span>
+        <div class="flex-1 h-px bg-gray-200"></div>
+        <span class="text-[10px] tracking-[0.2em] text-gray-400 uppercase">Red.es × NextGenerationEU</span>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+
+      <!-- Left: The Question (8 columns) -->
+      <div class="lg:col-span-8">
+        <!-- The provocative question -->
+        <div class="hero-c-element relative mb-8">
+          <!-- Giant decorative quote mark -->
+          <span class="hero-quote absolute -top-8 -left-4 md:-left-8 text-[120px] md:text-[180px] font-serif text-gray-100 leading-none select-none pointer-events-none">"</span>
+
+          <h1 class="relative z-10 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black leading-[1.1] tracking-tight">
+            {lang === 'es'
+              ? '¿Cuánto valen los datos de tu empresa?'
+              : "What's your company's data worth?"}
+          </h1>
+        </div>
+
+        <!-- Answer/Context with animated border -->
+        <div class="hero-c-element relative pl-6 md:pl-8 mb-10">
+          <div class="hero-border-grow absolute left-0 top-0 w-1 bg-black h-0"></div>
+          <p class="text-gray-600 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-2xl">
+            {lang === 'es'
+              ? 'El programa KTED te da '
+              : 'The KTED program gives you '}
+            <span class="text-black font-bold"><span style="font-family: 'Orbitron', sans-serif;">30.000</span>€</span>
+            {lang === 'es'
+              ? ' para integrar tu empresa en los Espacios de Datos europeos. A fondo perdido. Solo pagas el IVA.'
+              : ' to integrate your company into European Data Spaces. Non-refundable. You only pay VAT.'}
+          </p>
+        </div>
+
+        <!-- Key benefits - horizontal -->
+        <div class="hero-c-element grid grid-cols-3 gap-4 md:gap-6 mb-10">
+          <div class="group">
+            <div class="text-3xl md:text-4xl lg:text-5xl font-black text-black mb-1 transition-transform duration-300 group-hover:translate-x-1" style="font-family: 'Orbitron', sans-serif;">
+              0€
+            </div>
+            <div class="text-gray-500 text-xs md:text-sm uppercase tracking-wide">
+              {lang === 'es' ? 'Adelanto' : 'Upfront'}
+            </div>
+          </div>
+          <div class="group">
+            <div class="text-3xl md:text-4xl lg:text-5xl font-black text-black mb-1 transition-transform duration-300 group-hover:translate-x-1" style="font-family: 'Orbitron', sans-serif;">
+              100%
+            </div>
+            <div class="text-gray-500 text-xs md:text-sm uppercase tracking-wide">
+              {lang === 'es' ? 'Subvencionado' : 'Subsidized'}
+            </div>
+          </div>
+          <div class="group">
+            <div class="text-3xl md:text-4xl lg:text-5xl font-black text-black mb-1 transition-transform duration-300 group-hover:translate-x-1" style="font-family: 'Orbitron', sans-serif;">
+              24h
+            </div>
+            <div class="text-gray-500 text-xs md:text-sm uppercase tracking-wide">
+              {lang === 'es' ? 'Respuesta' : 'Response'}
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="hero-c-element flex flex-col sm:flex-row gap-4">
+          <a
+            href="#contact"
+            class="kted-cta group relative inline-flex items-center justify-center gap-3 bg-black text-white px-8 py-5 font-semibold text-lg overflow-hidden"
+            data-cta-location="hero"
+            data-variant={variant}
+          >
+            <span class="relative z-10 transition-transform duration-300 group-hover:-translate-y-full">
+              {lang === 'es' ? 'Descubre si aplicas' : 'Check if you qualify'}
+            </span>
+            <span class="absolute inset-0 flex items-center justify-center gap-3 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
+              {lang === 'es' ? 'Descubre si aplicas' : 'Check if you qualify'}
+            </span>
+            <svg class="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+          <a
+            href="#how-it-works"
+            class="group inline-flex items-center justify-center gap-2 text-black font-semibold text-lg px-6 py-5 transition-all duration-300 hover:gap-4"
+          >
+            <span>{lang === 'es' ? 'Ver cómo funciona' : 'See how it works'}</span>
+            <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Black info card (4 columns) -->
+      <div class="lg:col-span-4 hero-c-card">
+        <div class="bg-black text-white p-6 md:p-8 relative">
+          <!-- Top corner accent -->
+          <div class="absolute top-0 left-0 w-8 h-8 border-t border-l border-white/20"></div>
+          <div class="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-white/20"></div>
+
+          <!-- Header -->
+          <div class="mb-8">
+            <p class="text-white/40 text-[10px] uppercase tracking-[0.3em] mb-3">
+              {lang === 'es' ? 'Sectores elegibles' : 'Eligible sectors'}
+            </p>
+            <div class="w-8 h-px bg-white/20"></div>
+          </div>
+
+          <!-- Sectors as interactive tags -->
+          <div class="space-y-2 mb-8">
+            {sectors.map((sector, i) => (
+              <div class="sector-tag group flex items-center gap-3 py-2 border-b border-white/10 cursor-default transition-all duration-300 hover:border-white/30 hover:pl-2" style={`animation-delay: ${0.6 + i * 0.1}s`}>
+                <span class="w-1.5 h-1.5 bg-white/30 group-hover:bg-white transition-colors duration-300"></span>
+                <span class="text-white/70 group-hover:text-white transition-colors duration-300">{sector}</span>
+              </div>
+            ))}
+          </div>
+
+          <!-- CTA inside card -->
+          <div class="pt-6 border-t border-white/10">
+            <p class="text-white/40 text-xs mb-3">
+              {lang === 'es' ? '¿Tu sector no está en la lista?' : "Don't see your sector?"}
+            </p>
+            <a href="#contact" class="inline-flex items-center gap-2 text-white text-sm font-medium group">
+              <span>{lang === 'es' ? 'Consúltanos' : 'Ask us'}</span>
+              <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Trust badge -->
+          <div class="mt-8 pt-6 border-t border-white/10 flex items-center gap-3">
+            <img src="/logo_w.png" alt="OSIX Tech" class="h-8 w-auto" />
+            <div>
+              <p class="text-white/40 text-xs">{lang === 'es' ? 'Partner certificado' : 'Certified partner'}</p>
+            </div>
+          </div>
+        </div>
+
+        </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Initial states */
+  .hero-c-element {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .hero-c-card {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  .hero-c-line {
+    height: 0;
+  }
+
+  .hero-border-grow {
+    height: 0;
+  }
+
+  .hero-quote {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  .sector-tag {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  /* Animations on load complete */
+  body.loading-complete .hero-c-line {
+    animation: lineGrowVertical 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  }
+
+  body.loading-complete .hero-c-element:nth-child(1) {
+    animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  }
+
+  body.loading-complete .hero-c-element:nth-child(2) {
+    animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  }
+
+  body.loading-complete .hero-c-element:nth-child(3) {
+    animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+
+  body.loading-complete .hero-c-element:nth-child(4) {
+    animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  }
+
+  body.loading-complete .hero-c-element:nth-child(5) {
+    animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  }
+
+  body.loading-complete .hero-c-card {
+    animation: fadeSlideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+
+  body.loading-complete .hero-quote {
+    animation: quoteReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  }
+
+  body.loading-complete .hero-border-grow {
+    animation: borderGrow 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  }
+
+  body.loading-complete .sector-tag {
+    animation: tagReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  body.loading-complete .sector-tag:nth-child(1) { animation-delay: 0.6s; }
+  body.loading-complete .sector-tag:nth-child(2) { animation-delay: 0.65s; }
+  body.loading-complete .sector-tag:nth-child(3) { animation-delay: 0.7s; }
+  body.loading-complete .sector-tag:nth-child(4) { animation-delay: 0.75s; }
+  body.loading-complete .sector-tag:nth-child(5) { animation-delay: 0.8s; }
+  body.loading-complete .sector-tag:nth-child(6) { animation-delay: 0.85s; }
+
+  @keyframes fadeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeSlideLeft {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes lineGrowVertical {
+    from {
+      height: 0;
+    }
+    to {
+      height: 60%;
+    }
+  }
+
+  @keyframes borderGrow {
+    from {
+      height: 0;
+    }
+    to {
+      height: 100%;
+    }
+  }
+
+  @keyframes quoteReveal {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes tagReveal {
+    from {
+      opacity: 0;
+      transform: translateX(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>

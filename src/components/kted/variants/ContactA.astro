@@ -1,0 +1,322 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'a' } = Astro.props;
+const translations = await import(`../../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+const sectors = [
+  { value: 'salud', label: t('kted.sectors.health') },
+  { value: 'agroalimentario', label: t('kted.sectors.agrifood') },
+  { value: 'logistica', label: t('kted.sectors.logistics') },
+  { value: 'turismo', label: t('kted.sectors.tourism') },
+  { value: 'energia', label: t('kted.sectors.energy') },
+  { value: 'industria', label: t('kted.sectors.industry') },
+  { value: 'construccion', label: t('kted.sectors.construction') },
+  { value: 'otro', label: t('kted.contact.form.sector.other') }
+];
+---
+
+<section id="contact" class="relative py-20 md:py-28 bg-white overflow-hidden" data-variant={variant}>
+  <!-- Subtle grid background -->
+  <div class="absolute inset-0 opacity-50" style="background-image: linear-gradient(rgba(229, 231, 235, 0.5) 1px, transparent 1px), linear-gradient(to right, rgba(229, 231, 235, 0.5) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 bg-white mb-6">
+        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/>
+        </svg>
+        <span class="text-gray-600 text-sm font-medium">{lang === 'es' ? 'Respuesta en 24h' : 'Response in 24h'}</span>
+      </div>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4">
+        {t('kted.contact.title')}
+      </h2>
+      <p class="text-gray-500 text-lg max-w-xl mx-auto">
+        {t('kted.contact.subtitle')}
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-12 lg:gap-16">
+      <!-- Left: Info cards -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Card 1 -->
+        <div class="p-6 border border-gray-200 bg-white hover:border-black transition-colors duration-300">
+          <div class="w-12 h-12 bg-black flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+            </svg>
+          </div>
+          <h3 class="text-black font-semibold text-lg mb-2">{lang === 'es' ? 'Sin compromiso' : 'No commitment'}</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">{lang === 'es' ? 'Evaluamos tu caso gratuitamente. Si no encajas, te lo decimos.' : 'We evaluate your case for free. If you don\'t fit, we\'ll tell you.'}</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="p-6 border border-gray-200 bg-white hover:border-black transition-colors duration-300">
+          <div class="w-12 h-12 bg-black flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-black font-semibold text-lg mb-2">{lang === 'es' ? 'Cero adelanto' : 'Zero upfront'}</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">{lang === 'es' ? 'Tú solo pagas el IVA. Red.es nos paga a nosotros directamente.' : 'You only pay VAT. Red.es pays us directly.'}</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="p-6 border border-gray-200 bg-white hover:border-black transition-colors duration-300">
+          <div class="w-12 h-12 bg-black flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+            </svg>
+          </div>
+          <h3 class="text-black font-semibold text-lg mb-2">{lang === 'es' ? 'Respuesta rápida' : 'Fast response'}</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">{lang === 'es' ? 'Te contactamos en menos de 24 horas con una evaluación inicial.' : 'We contact you within 24 hours with an initial evaluation.'}</p>
+        </div>
+
+        <!-- Email -->
+        <div class="pt-6 border-t border-gray-200">
+          <p class="text-gray-400 text-xs uppercase tracking-wider mb-4">{lang === 'es' ? 'Contacto directo' : 'Direct contact'}</p>
+          <a href="mailto:contact@osix.tech" class="flex items-center gap-3 text-gray-600 hover:text-black transition-colors">
+            <div class="w-10 h-10 border border-gray-200 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+              </svg>
+            </div>
+            <span class="font-medium">contact@osix.tech</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="lg:col-span-3">
+        <div class="border border-gray-200 bg-white p-8 lg:p-10">
+          <form id="kted-contact-form" class="space-y-6" data-variant={variant}>
+            <!-- Name & Email -->
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label for="kted-name" class="block text-gray-700 text-sm font-medium mb-2">
+                  {t('kted.contact.form.name')} <span class="text-black">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="kted-name"
+                  name="user_name"
+                  class="w-full px-4 py-3.5 bg-white border border-gray-200 text-black placeholder:text-gray-400 focus:outline-none focus:border-black transition-colors"
+                  required
+                  minlength="2"
+                  placeholder={lang === 'es' ? 'Tu nombre' : 'Your name'}
+                />
+              </div>
+              <div>
+                <label for="kted-email" class="block text-gray-700 text-sm font-medium mb-2">
+                  {t('kted.contact.form.email')} <span class="text-black">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="kted-email"
+                  name="user_email"
+                  class="w-full px-4 py-3.5 bg-white border border-gray-200 text-black placeholder:text-gray-400 focus:outline-none focus:border-black transition-colors"
+                  required
+                  placeholder={lang === 'es' ? 'tu@empresa.com' : 'your@company.com'}
+                />
+              </div>
+            </div>
+
+            <!-- Company & Phone -->
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label for="kted-company" class="block text-gray-700 text-sm font-medium mb-2">
+                  {t('kted.contact.form.company')} <span class="text-black">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="kted-company"
+                  name="user_company"
+                  class="w-full px-4 py-3.5 bg-white border border-gray-200 text-black placeholder:text-gray-400 focus:outline-none focus:border-black transition-colors"
+                  required
+                  minlength="2"
+                  placeholder={lang === 'es' ? 'Nombre de empresa' : 'Company name'}
+                />
+              </div>
+              <div>
+                <label for="kted-phone" class="block text-gray-700 text-sm font-medium mb-2">
+                  {t('kted.contact.form.phone')}
+                </label>
+                <input
+                  type="tel"
+                  id="kted-phone"
+                  name="user_phone"
+                  class="w-full px-4 py-3.5 bg-white border border-gray-200 text-black placeholder:text-gray-400 focus:outline-none focus:border-black transition-colors"
+                  placeholder="+34 600 000 000"
+                />
+              </div>
+            </div>
+
+            <!-- Sector -->
+            <div>
+              <label for="kted-sector" class="block text-gray-700 text-sm font-medium mb-2">
+                {t('kted.contact.form.sector')}
+              </label>
+              <div class="relative">
+                <select
+                  id="kted-sector"
+                  name="user_sector"
+                  class="w-full px-4 py-3.5 bg-white border border-gray-200 text-black focus:outline-none focus:border-black transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="">{t('kted.contact.form.sector.placeholder')}</option>
+                  {sectors.map(sector => (
+                    <option value={sector.value}>{sector.label}</option>
+                  ))}
+                </select>
+                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Message -->
+            <div>
+              <label for="kted-message" class="block text-gray-700 text-sm font-medium mb-2">
+                {t('kted.contact.form.message')}
+              </label>
+              <textarea
+                id="kted-message"
+                name="message"
+                rows="4"
+                class="w-full px-4 py-3.5 bg-white border border-gray-200 text-black placeholder:text-gray-400 focus:outline-none focus:border-black transition-colors resize-none"
+                placeholder={lang === 'es' ? 'Cuéntanos brevemente sobre tu empresa y proyecto...' : 'Tell us briefly about your company and project...'}
+              ></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button
+              type="submit"
+              class="group w-full bg-black text-white border-2 border-black py-4 px-8 font-semibold text-lg transition-all duration-300 hover:bg-white hover:text-black flex items-center justify-center gap-3"
+            >
+              <span>{t('kted.contact.form.submit')}</span>
+              <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </button>
+
+            <!-- Privacy -->
+            <p class="text-gray-400 text-xs text-center">
+              {lang === 'es'
+                ? 'Al enviar, aceptas nuestra política de privacidad. No compartimos tus datos.'
+                : 'By submitting, you accept our privacy policy. We don\'t share your data.'}
+            </p>
+          </form>
+
+          <div id="kted-form-status" class="hidden mt-6 text-center text-black font-medium"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initEmailJS, sendEmail } from '../../../utils/emailjs.js';
+  import { trackFormStart, trackFormSubmit } from '../../../utils/analytics';
+
+  function initializeKTEDContact() {
+    initEmailJS();
+
+    const form = document.getElementById('kted-contact-form') as HTMLFormElement | null;
+    const statusEl = document.getElementById('kted-form-status');
+    const variant = form?.dataset.variant || 'a';
+    let formStarted = false;
+
+    if (form) {
+      form.addEventListener('focusin', () => {
+        if (!formStarted) {
+          formStarted = true;
+          trackFormStart(variant);
+        }
+      }, { once: true });
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+        if (!submitButton) return;
+
+        const originalHTML = submitButton.innerHTML;
+        submitButton.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Enviando...</span>';
+        submitButton.disabled = true;
+
+        const formData = new FormData(form);
+
+        const company = formData.get('user_company') || '';
+        const phone = formData.get('user_phone') || '';
+        const sector = formData.get('user_sector') || '';
+        const userMessage = formData.get('message') || '';
+
+        const fullMessage = `
+[SOLICITUD KTED - Variante ${variant.toUpperCase()}]
+
+Empresa: ${company}
+Teléfono: ${phone}
+Sector: ${sector}
+
+Mensaje:
+${userMessage || 'Sin mensaje adicional'}
+        `.trim();
+
+        const date = new Date().toLocaleString('es-ES', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        });
+
+        const templateParams = {
+          user_name: formData.get('user_name'),
+          user_email: formData.get('user_email'),
+          message: fullMessage,
+          date,
+        };
+
+        try {
+          await sendEmail(templateParams);
+          trackFormSubmit(variant);
+          submitButton.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>Enviado correctamente</span>';
+          form.reset();
+
+          if (statusEl) {
+            statusEl.textContent = 'Te contactaremos en menos de 24 horas.';
+            statusEl.classList.remove('hidden');
+          }
+
+          setTimeout(() => {
+            submitButton.innerHTML = originalHTML;
+            submitButton.disabled = false;
+            if (statusEl) statusEl.classList.add('hidden');
+          }, 5000);
+        } catch (error) {
+          console.error('Error:', error);
+          submitButton.innerHTML = '<span>Error al enviar</span>';
+          setTimeout(() => {
+            submitButton.innerHTML = originalHTML;
+            submitButton.disabled = false;
+          }, 3000);
+        }
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if ((window as any).isLoadingComplete) {
+      initializeKTEDContact();
+    } else {
+      window.addEventListener('loadingComplete', initializeKTEDContact);
+    }
+  });
+</script>

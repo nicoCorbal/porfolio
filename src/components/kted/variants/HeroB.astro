@@ -1,0 +1,181 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'b' } = Astro.props;
+
+const deadline = new Date('2026-03-31T23:59:59');
+const now = new Date();
+const diffTime = deadline.getTime() - now.getTime();
+const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+---
+
+<section id="home" class="relative min-h-[calc(100vh-80px)] bg-white flex flex-col overflow-hidden" data-variant={variant}>
+  <!-- Grid pattern -->
+  <div class="absolute inset-0 opacity-50" style="background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+  <!-- Main content container -->
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 flex-1 flex flex-col justify-center">
+
+    <div class="text-center">
+
+      <!-- Urgency badge -->
+      <div class="hero-b-el inline-flex items-center gap-3 bg-black text-white px-5 py-2.5 mb-8">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+        </span>
+        <span class="text-[11px] font-bold tracking-[0.2em] uppercase">
+          {lang === 'es' ? 'Plazas limitadas' : 'Limited spots'}
+        </span>
+      </div>
+
+      <!-- Main number -->
+      <h1 class="hero-b-el mb-4">
+        <span class="block text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] font-black text-black leading-none tracking-tighter">
+          <span style="font-family: 'Orbitron', sans-serif;">30.000</span><span class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-black ml-2">€</span>
+        </span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="hero-b-el text-gray-500 text-lg md:text-xl max-w-lg mx-auto mb-10">
+        {lang === 'es'
+          ? 'Subvención a fondo perdido para Espacios de Datos'
+          : 'Non-refundable grant for Data Spaces'}
+      </p>
+
+      <!-- Countdown -->
+      <div class="hero-b-el mb-10">
+        <p class="text-gray-400 text-xs tracking-[0.3em] uppercase mb-6 font-medium">
+          {lang === 'es' ? 'Plazo hasta' : 'Deadline'}
+        </p>
+
+        <div class="inline-flex items-center border border-gray-200">
+          <!-- Days -->
+          <div class="group px-5 sm:px-8 py-4 border-r border-gray-200 hover:bg-gray-50 transition-colors">
+            <span class="block text-3xl sm:text-4xl md:text-5xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;" id="countdown-days">{diffDays}</span>
+            <span class="text-gray-400 text-[10px] uppercase tracking-widest mt-1 block">{lang === 'es' ? 'días' : 'days'}</span>
+          </div>
+
+          <!-- Hours -->
+          <div class="group px-5 sm:px-8 py-4 border-r border-gray-200 hover:bg-gray-50 transition-colors">
+            <span class="block text-3xl sm:text-4xl md:text-5xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;" id="countdown-hours">00</span>
+            <span class="text-gray-400 text-[10px] uppercase tracking-widest mt-1 block">{lang === 'es' ? 'hrs' : 'hrs'}</span>
+          </div>
+
+          <!-- Minutes -->
+          <div class="group px-5 sm:px-8 py-4 border-r border-gray-200 sm:border-r-0 hover:bg-gray-50 transition-colors">
+            <span class="block text-3xl sm:text-4xl md:text-5xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;" id="countdown-mins">00</span>
+            <span class="text-gray-400 text-[10px] uppercase tracking-widest mt-1 block">min</span>
+          </div>
+
+          <!-- Seconds -->
+          <div class="group px-5 sm:px-8 py-4 hover:bg-gray-50 transition-colors hidden sm:block border-l border-gray-200">
+            <span class="block text-3xl sm:text-4xl md:text-5xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;" id="countdown-secs">00</span>
+            <span class="text-gray-400 text-[10px] uppercase tracking-widest mt-1 block">sec</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="hero-b-el">
+        <a
+          href="#contact"
+          class="kted-cta group inline-flex items-center gap-3 bg-black text-white px-10 py-5 font-bold text-lg transition-all duration-300 hover:bg-white hover:text-black border-2 border-black"
+          data-cta-location="hero"
+          data-variant={variant}
+        >
+          <span>{lang === 'es' ? 'Reservar plaza' : 'Reserve spot'}</span>
+          <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+        <p class="mt-4 text-gray-400 text-sm">
+          {lang === 'es' ? 'Sin compromiso · Solo pagas el IVA' : 'No commitment · You only pay VAT'}
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bottom stats -->
+  <div class="hero-b-stats relative z-20 pb-8 border-t border-gray-100 pt-6 mx-6 md:mx-12">
+    <div class="flex justify-center items-center gap-8 md:gap-16">
+      <div class="group text-center">
+        <span class="block text-2xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;">+50</span>
+        <span class="text-gray-400 text-[10px] uppercase tracking-widest">{lang === 'es' ? 'proyectos' : 'projects'}</span>
+      </div>
+      <div class="w-px h-10 bg-gray-200"></div>
+      <div class="group text-center">
+        <span class="block text-2xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;">100%</span>
+        <span class="text-gray-400 text-[10px] uppercase tracking-widest">{lang === 'es' ? 'éxito' : 'success'}</span>
+      </div>
+      <div class="w-px h-10 bg-gray-200"></div>
+      <div class="group text-center">
+        <span class="block text-2xl font-bold text-black" style="font-family: 'Orbitron', sans-serif;">24h</span>
+        <span class="text-gray-400 text-[10px] uppercase tracking-widest">{lang === 'es' ? 'respuesta' : 'response'}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-b-el {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-b-stats {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  body.loading-complete .hero-b-el:nth-child(1) { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; }
+  body.loading-complete .hero-b-el:nth-child(2) { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; }
+  body.loading-complete .hero-b-el:nth-child(3) { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; }
+  body.loading-complete .hero-b-el:nth-child(4) { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards; }
+  body.loading-complete .hero-b-el:nth-child(5) { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards; }
+
+  body.loading-complete .hero-b-stats {
+    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const deadline = new Date('2026-03-31T23:59:59').getTime();
+
+    const update = () => {
+      const now = Date.now();
+      const diff = deadline - now;
+
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+
+      const dEl = document.getElementById('countdown-days');
+      const hEl = document.getElementById('countdown-hours');
+      const mEl = document.getElementById('countdown-mins');
+      const sEl = document.getElementById('countdown-secs');
+
+      if (dEl) dEl.textContent = d.toString();
+      if (hEl) hEl.textContent = h.toString().padStart(2, '0');
+      if (mEl) mEl.textContent = m.toString().padStart(2, '0');
+      if (sEl) sEl.textContent = s.toString().padStart(2, '0');
+    };
+
+    update();
+    setInterval(update, 1000);
+  });
+</script>

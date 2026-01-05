@@ -16,6 +16,7 @@ interface Props {
   pageType?: 'website' | 'article' | 'product';
   noindex?: boolean;
   jsonLd?: any;
+  hideHeader?: boolean;
 }
 
 const { 
@@ -34,7 +35,8 @@ const {
     : 'software development, web development, mobile development, artificial intelligence, automation, digital transformation, OSIX Tech, technology, innovation',
   pageType = 'website',
   noindex = false,
-  jsonLd
+  jsonLd,
+  hideHeader = false
 } = Astro.props;
 
 // Generate proper canonical URL
@@ -134,10 +136,19 @@ const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
     {jsonLd && (
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     )}
-    
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RMEFVS4V09"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RMEFVS4V09');
+    </script>
+
   </head>
   <body>
-    <Header lang={lang} isMainPage={isMainPage} />
+    {!hideHeader && <Header lang={lang} isMainPage={isMainPage} />}
     <main>
       <slot />
     </main>

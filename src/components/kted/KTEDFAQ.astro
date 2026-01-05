@@ -1,0 +1,178 @@
+---
+interface Props {
+  lang?: string;
+  variant?: string;
+}
+
+const { lang = 'es', variant = 'a' } = Astro.props;
+const translations = await import(`../../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+// Variant-specific headers
+const variantHeaders = {
+  a: {
+    label: 'FAQ',
+    title: t('kted.faq.title')
+  },
+  b: {
+    label: lang === 'es' ? 'Resuelve tus dudas' : 'Clear your doubts',
+    title: lang === 'es' ? '¿Tienes preguntas?' : 'Have questions?'
+  },
+  c: {
+    label: lang === 'es' ? 'Lo que necesitas saber' : 'What you need to know',
+    title: lang === 'es' ? 'Antes de decidir' : 'Before deciding'
+  }
+};
+
+const header = variantHeaders[variant as 'a' | 'b' | 'c'] || variantHeaders.a;
+
+const faqs = [
+  { question: t('kted.faq.q1'), answer: t('kted.faq.a1') },
+  { question: t('kted.faq.q2'), answer: t('kted.faq.a2') },
+  { question: t('kted.faq.q3'), answer: t('kted.faq.a3') },
+  { question: t('kted.faq.q4'), answer: t('kted.faq.a4') },
+  { question: t('kted.faq.q5'), answer: t('kted.faq.a5') }
+];
+---
+
+<section class="kted-faq py-16 md:py-20 bg-white">
+  <div class="max-w-4xl mx-auto px-6 md:px-12">
+    <div class="grid lg:grid-cols-[1fr,2fr] gap-12">
+      <!-- Left: Header -->
+      <div class="lg:sticky lg:top-24 lg:self-start">
+        <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">
+          {header.label}
+        </p>
+        <h2 class="text-3xl md:text-4xl font-bold text-black leading-tight">
+          {header.title}
+        </h2>
+      </div>
+
+      <!-- Right: Accordion -->
+      <div class="border-t border-gray-200">
+        {faqs.map((faq, index) => (
+          <div class="faq-item border-b border-gray-200" data-index={index}>
+            <button
+              class="faq-trigger w-full flex items-start justify-between py-5 text-left group"
+              type="button"
+            >
+              <span class="faq-question font-medium text-black pr-8 transition-all duration-300">
+                {faq.question}
+              </span>
+              <span class="faq-icon-wrapper flex-shrink-0 w-6 h-6 bg-black flex items-center justify-center mt-0.5">
+                <span class="faq-icon-line faq-icon-h"></span>
+                <span class="faq-icon-line faq-icon-v"></span>
+              </span>
+            </button>
+            <div class="faq-content">
+              <div class="faq-answer pb-5 pr-12 text-gray-500 leading-relaxed">
+                {faq.answer}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-item {
+    --duration: 0.4s;
+    --easing: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-trigger:hover .faq-question {
+    color: #666;
+  }
+
+  /* Icon lines */
+  .faq-icon-wrapper {
+    position: relative;
+  }
+
+  .faq-icon-line {
+    position: absolute;
+    background: white;
+    transition: transform var(--duration) var(--easing), opacity var(--duration) var(--easing);
+  }
+
+  .faq-icon-h {
+    width: 10px;
+    height: 2px;
+  }
+
+  .faq-icon-v {
+    width: 2px;
+    height: 10px;
+  }
+
+  .faq-item.open .faq-icon-v {
+    transform: rotate(90deg);
+    opacity: 0;
+  }
+
+  /* Content animation */
+  .faq-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--duration) var(--easing);
+  }
+
+  .faq-content > div {
+    overflow: hidden;
+  }
+
+  .faq-item.open .faq-content {
+    grid-template-rows: 1fr;
+  }
+
+  /* Answer fade in */
+  .faq-answer {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+  }
+
+  .faq-item.open .faq-answer {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function initializeFAQ() {
+    const faqItems = document.querySelectorAll('.kted-faq .faq-item');
+
+    // Open first item by default
+    if (faqItems.length > 0) {
+      faqItems[0].classList.add('open');
+    }
+
+    faqItems.forEach(item => {
+      const trigger = item.querySelector('.faq-trigger');
+
+      if (trigger) {
+        trigger.addEventListener('click', () => {
+          const isOpen = item.classList.contains('open');
+
+          // Close all items
+          faqItems.forEach(otherItem => {
+            otherItem.classList.remove('open');
+          });
+
+          // If clicked item was closed, open it
+          if (!isOpen) {
+            item.classList.add('open');
+          }
+        });
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeFAQ);
+  } else {
+    initializeFAQ();
+  }
+</script>
