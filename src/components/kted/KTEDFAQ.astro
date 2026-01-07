@@ -35,15 +35,15 @@ const faqs = [
 ];
 ---
 
-<section class="kted-faq py-16 md:py-20 bg-white">
-  <div class="max-w-4xl mx-auto px-6 md:px-12">
-    <div class="grid lg:grid-cols-[1fr,2fr] gap-12">
+<section class="kted-faq py-20 md:py-28 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="grid lg:grid-cols-[1fr,2fr] gap-16">
       <!-- Left: Header -->
       <div class="lg:sticky lg:top-24 lg:self-start">
-        <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">
+        <p class="text-sm tracking-[0.2em] uppercase text-gray-400 mb-5">
           {header.label}
         </p>
-        <h2 class="text-3xl md:text-4xl font-bold text-black leading-tight">
+        <h2 class="text-4xl md:text-5xl font-bold text-black leading-tight">
           {header.title}
         </h2>
       </div>
@@ -53,19 +53,19 @@ const faqs = [
         {faqs.map((faq, index) => (
           <div class="faq-item border-b border-gray-200" data-index={index}>
             <button
-              class="faq-trigger w-full flex items-start justify-between py-5 text-left group"
+              class="faq-trigger w-full flex items-start justify-between py-6 text-left group"
               type="button"
             >
-              <span class="faq-question font-medium text-black pr-8 transition-all duration-300">
+              <span class="faq-question font-medium text-lg text-black pr-8 transition-all duration-300">
                 {faq.question}
               </span>
-              <span class="faq-icon-wrapper flex-shrink-0 w-6 h-6 bg-black flex items-center justify-center mt-0.5">
+              <span class="faq-icon-wrapper flex-shrink-0 w-8 h-8 bg-black flex items-center justify-center mt-0.5">
                 <span class="faq-icon-line faq-icon-h"></span>
                 <span class="faq-icon-line faq-icon-v"></span>
               </span>
             </button>
             <div class="faq-content">
-              <div class="faq-answer pb-5 pr-12 text-gray-500 leading-relaxed">
+              <div class="faq-answer pb-6 pr-12 text-lg text-gray-500 leading-relaxed">
                 {faq.answer}
               </div>
             </div>
@@ -98,13 +98,13 @@ const faqs = [
   }
 
   .faq-icon-h {
-    width: 10px;
+    width: 12px;
     height: 2px;
   }
 
   .faq-icon-v {
     width: 2px;
-    height: 10px;
+    height: 12px;
   }
 
   .faq-item.open .faq-icon-v {

@@ -53,51 +53,51 @@ const advantages = [
 ];
 ---
 
-<section class="py-16 md:py-20 bg-white">
-  <div class="max-w-6xl mx-auto px-6 md:px-12">
+<section class="py-20 md:py-28 bg-white">
+  <div class="max-w-7xl mx-auto px-6 md:px-12">
     <!-- Header -->
-    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-10">
-      <div class="max-w-xl">
-        <p class="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-14">
+      <div class="max-w-2xl">
+        <p class="text-sm tracking-[0.2em] uppercase text-gray-400 mb-5">
           {header.label}
         </p>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-tight">
           {header.title}
         </h2>
       </div>
-      <p class="text-gray-500 max-w-md lg:text-right">
+      <p class="text-lg md:text-xl text-gray-500 max-w-lg lg:text-right">
         {header.subtitle}
       </p>
     </div>
 
     <!-- Cards grid -->
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-8">
       {advantages.map((item) => (
-        <div class="group p-8 border border-gray-200 hover:bg-black hover:border-black transition-all duration-300">
+        <div class="group p-10 border border-gray-200 hover:bg-black hover:border-black transition-all duration-300">
           <!-- Icon -->
-          <div class="w-12 h-12 bg-black group-hover:bg-white flex items-center justify-center mb-6 transition-colors duration-300">
+          <div class="w-16 h-16 bg-black group-hover:bg-white flex items-center justify-center mb-8 transition-colors duration-300">
             {item.icon === 'shield' && (
-              <svg class="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <svg class="w-8 h-8 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 <path d="M9 12l2 2 4-4"/>
               </svg>
             )}
             {item.icon === 'check' && (
-              <svg class="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <svg class="w-8 h-8 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
                 <rect x="9" y="3" width="6" height="4" rx="1"/>
                 <path d="M9 14l2 2 4-4"/>
               </svg>
             )}
             {item.icon === 'cpu' && (
-              <svg class="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <svg class="w-8 h-8 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <rect x="4" y="4" width="16" height="16" rx="2"/>
                 <rect x="9" y="9" width="6" height="6"/>
                 <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>
               </svg>
             )}
             {item.icon === 'pin' && (
-              <svg class="w-6 h-6 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <svg class="w-8 h-8 text-white group-hover:text-black transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
@@ -105,10 +105,10 @@ const advantages = [
           </div>
 
           <!-- Content -->
-          <h3 class="text-xl font-semibold text-black group-hover:text-white mb-3 transition-colors duration-300">
+          <h3 class="text-2xl font-semibold text-black group-hover:text-white mb-4 transition-colors duration-300">
             {item.title}
           </h3>
-          <p class="text-gray-500 group-hover:text-white/60 leading-relaxed transition-colors duration-300">
+          <p class="text-lg text-gray-500 group-hover:text-white/60 leading-relaxed transition-colors duration-300">
             {item.desc}
           </p>
         </div>

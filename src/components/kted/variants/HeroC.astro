@@ -95,17 +95,12 @@ const sectors = lang === 'es'
         <div class="hero-c-element flex flex-col sm:flex-row gap-4">
           <a
             href="#contact"
-            class="kted-cta group relative inline-flex items-center justify-center gap-3 bg-black text-white px-8 py-5 font-semibold text-lg overflow-hidden"
+            class="kted-cta group inline-flex items-center justify-center gap-3 bg-black text-white px-8 py-5 font-semibold text-lg border-2 border-black hover:bg-white hover:text-black transition-colors duration-300"
             data-cta-location="hero"
             data-variant={variant}
           >
-            <span class="relative z-10 transition-transform duration-300 group-hover:-translate-y-full">
-              {lang === 'es' ? 'Descubre si aplicas' : 'Check if you qualify'}
-            </span>
-            <span class="absolute inset-0 flex items-center justify-center gap-3 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
-              {lang === 'es' ? 'Descubre si aplicas' : 'Check if you qualify'}
-            </span>
-            <svg class="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <span>{lang === 'es' ? 'Descubre si aplicas' : 'Check if you qualify'}</span>
+            <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
           </a>
