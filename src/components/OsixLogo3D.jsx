@@ -46,9 +46,9 @@ export default function OsixLogo3D() {
     renderer.toneMappingExposure = 1.2;
     containerRef.current.appendChild(renderer.domElement);
 
-    // Create chrome/metallic material
+    // Create pitch black metallic material
     const material = new THREE.MeshStandardMaterial({
-      color: 0x888888,
+      color: 0x000000,
       metalness: 0.95,
       roughness: 0.1,
       envMapIntensity: 1.5,
