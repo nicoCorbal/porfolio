@@ -1,6 +1,5 @@
 ---
-import videomp4 from '../assets/videos/hero_video_60fps.mp4';
-import videowebm from '../assets/videos/hero_video_60fps.webm';
+import OsixLogo3D from './OsixLogo3D.jsx';
 interface Props {
   lang?: string;
 }
@@ -11,24 +10,8 @@ const t = (k: string) => translations.default[k] || k;
 ---
 
 <section id="home" class="w-full !mb-0 !min-h-[100dvh] !max-h-[100dvh] flex flex-col items-center justify-end py-8 md:py-16 gap-8 overflow-hidden">
-  <div class="video-container">
-    <video
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-      poster="/hero.jpg" 
-      class="object-fit z-0 hero-video"
-      x-webkit-airplay="allow"
-      webkit-playsinline="true"
-      disablepictureinpicture
-      controlslist="nodownload nofullscreen noremoteplayback"
-    >
-      <source src={videowebm} type="video/webm" />
-      <source src={videomp4} type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+  <div class="logo-3d-container">
+    <OsixLogo3D client:load />
   </div>
 
   <div class="flex w-full flex-row max-w-7xl mx-auto px-6 md:px-12 items-end justify-between">
@@ -79,7 +62,7 @@ const t = (k: string) => translations.default[k] || k;
     opacity: 1;
   }
 
-  .video-container {
+  .logo-3d-container {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -88,14 +71,6 @@ const t = (k: string) => translations.default[k] || k;
     transform: translate(-50%, -50%) scale(0.3);
     opacity: 0;
     overflow: hidden;
-  }
-  
-  .hero-video {
-    width: 100%;
-    height: 100%;
-    object-fit: fit;
-    /* Chrome optimization */
-    transform: translateZ(0);
   }
 
   /* Animation classes - only applied after loading completes */
@@ -107,7 +82,7 @@ const t = (k: string) => translations.default[k] || k;
     animation: fadeIn 1s ease-out 0.8s forwards;
   }
 
-  body.loading-complete .video-container {
+  body.loading-complete .logo-3d-container {
     animation: expandIn 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 
@@ -167,26 +142,6 @@ const t = (k: string) => translations.default[k] || k;
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    
-    const video = document.querySelector('.hero-video') as HTMLVideoElement;
-    if (video) {
-      // Ensure video plays
-      const attemptPlay = () => {
-        video.play().catch(error => {
-          console.log("Video autoplay failed:", error);
-        });
-      };
-
-      // Try playing immediately
-      attemptPlay();
-
-      // Also try when video metadata is loaded
-      video.addEventListener('loadedmetadata', attemptPlay);
-      
-      // Chrome fallback
-      video.addEventListener('canplay', attemptPlay);
-    }
-
     const scrollLink = document.querySelector<HTMLAnchorElement>('.scroll-down-link');
     if (scrollLink) {
       scrollLink.addEventListener('click', function(e) {
@@ -198,7 +153,7 @@ const t = (k: string) => translations.default[k] || k;
           const header = document.getElementById('main-header');
           const headerHeight = header ? header.offsetHeight : 0;
           const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-          smoothScrollTo(targetPosition, 2000); // 2000ms duration for a slower scroll
+          smoothScrollTo(targetPosition, 2000);
         }
       });
     }
@@ -207,26 +162,26 @@ const t = (k: string) => translations.default[k] || k;
       const startPosition = window.pageYOffset;
       const distance = targetPosition - startPosition;
       let startTime: number | null = null;
-      
+
       function animation(currentTime: number) {
         if (startTime === null) startTime = currentTime;
         const timeElapsed = currentTime - startTime;
         const progress = Math.min(timeElapsed / duration, 1);
         const ease = easeInOutCubic(progress);
-        
+
         window.scrollTo(0, startPosition + distance * ease);
-        
+
         if (timeElapsed < duration) {
           requestAnimationFrame(animation);
         }
       }
-      
+
       function easeInOutCubic(t: number) {
-        return t < 0.5 
-          ? 4 * t * t * t 
+        return t < 0.5
+          ? 4 * t * t * t
           : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
-      
+
       requestAnimationFrame(animation);
     }
   });
