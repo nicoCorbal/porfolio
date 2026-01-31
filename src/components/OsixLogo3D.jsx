@@ -13,14 +13,26 @@ export default function OsixLogo3D() {
     // Scene setup
     const scene = new THREE.Scene();
 
-    // Camera
+    // Camera - adjust for screen size
     const camera = new THREE.PerspectiveCamera(
       50,
       containerRef.current.clientWidth / containerRef.current.clientHeight,
       0.1,
       1000
     );
-    camera.position.set(0, 0, 6);
+
+    // Responsive camera distance
+    const updateCameraForScreenSize = () => {
+      const width = containerRef.current?.clientWidth || window.innerWidth;
+      if (width < 640) {
+        camera.position.set(0, 0, 9); // Further back on mobile
+      } else if (width < 1024) {
+        camera.position.set(0, 0, 7.5); // Tablet
+      } else {
+        camera.position.set(0, 0, 6); // Desktop
+      }
+    };
+    updateCameraForScreenSize();
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -176,6 +188,8 @@ export default function OsixLogo3D() {
     rightMesh.position.set(0.7, -0.25, 0);
     logoGroup.add(rightMesh);
 
+    // Scale down the logo
+    logoGroup.scale.setScalar(0.7);
     scene.add(logoGroup);
 
     // Lighting
@@ -208,6 +222,31 @@ export default function OsixLogo3D() {
     const floatSpeed = 1.5;
     const floatAmplitude = 0.12;
     let isDragging = false;
+    let dragStartTime = 0;
+
+    // Explosion effect variables
+    let isExploded = false;
+    let explosionProgress = 0; // 0 = together, 1 = fully exploded
+    const animationSpeed = 0.4; // Same speed for both directions
+
+    // Base positions
+    const leftBasePos = new THREE.Vector3(-0.7, 0.25, 0);
+    const rightBasePos = new THREE.Vector3(0.7, -0.25, 0);
+
+    // Exploded positions (separated but same orientation - like the logo but apart)
+    // Responsive explosion distance
+    const getExplosionDistance = () => {
+      const width = containerRef.current?.clientWidth || window.innerWidth;
+      if (width < 640) return 1.2; // Smaller on mobile
+      if (width < 1024) return 1.6; // Tablet
+      return 2.0; // Desktop
+    };
+    let explosionDistance = getExplosionDistance();
+    const leftExplodeDir = new THREE.Vector3(-1, 0.6, 0).normalize();
+    const rightExplodeDir = new THREE.Vector3(1, -0.6, 0).normalize();
+
+    // Full spins (1 vuelta = 2π) - end at same orientation (multiple of 2π)
+    const fullSpins = Math.PI * 2;
 
     const clock = new THREE.Clock();
 
@@ -217,6 +256,38 @@ export default function OsixLogo3D() {
 
       const delta = clock.getDelta();
       floatTime += delta * floatSpeed;
+
+      // Animate explosion/reunite
+      if (isExploded) {
+        explosionProgress = Math.min(explosionProgress + delta * animationSpeed, 1);
+      } else {
+        explosionProgress = Math.max(explosionProgress - delta * animationSpeed, 0);
+      }
+
+      // Separation: starts fast (ease-out) so they don't collide
+      const easedSeparation = 1 - Math.pow(1 - explosionProgress, 2);
+
+      // Rotation: smooth ease in-out, both happen together
+      const easedSpin = explosionProgress < 0.5
+        ? 2 * explosionProgress * explosionProgress
+        : 1 - Math.pow(-2 * explosionProgress + 2, 2) / 2;
+
+      // Apply separation to positions
+      leftMesh.position.lerpVectors(
+        leftBasePos,
+        leftBasePos.clone().addScaledVector(leftExplodeDir, explosionDistance),
+        easedSeparation
+      );
+      rightMesh.position.lerpVectors(
+        rightBasePos,
+        rightBasePos.clone().addScaledVector(rightExplodeDir, explosionDistance),
+        easedSeparation
+      );
+
+      // Apply rotation (2 full spins, ending at 0 so same orientation)
+      const spinAmount = easedSpin * fullSpins;
+      leftMesh.rotation.set(0, spinAmount, 0);
+      rightMesh.rotation.set(0, -spinAmount, 0);
 
       // Floating/bobbing animation
       logoGroup.position.y = Math.sin(floatTime) * floatAmplitude;
@@ -230,12 +301,30 @@ export default function OsixLogo3D() {
       renderer.render(scene, camera);
     }
 
-    // Track dragging state
-    const onPointerDown = () => { isDragging = true; };
-    const onPointerUp = () => { isDragging = false; };
+    // Track dragging vs clicking
+    const onPointerDown = (e) => {
+      isDragging = false;
+      dragStartTime = Date.now();
+    };
+
+    const onPointerUp = (e) => {
+      const dragDuration = Date.now() - dragStartTime;
+      // If it was a quick click (not a drag), toggle explosion
+      if (dragDuration < 200) {
+        isExploded = !isExploded;
+      }
+      isDragging = false;
+    };
+
+    const onPointerMove = () => {
+      if (dragStartTime > 0 && Date.now() - dragStartTime > 100) {
+        isDragging = true;
+      }
+    };
 
     renderer.domElement.addEventListener('pointerdown', onPointerDown);
     renderer.domElement.addEventListener('pointerup', onPointerUp);
+    renderer.domElement.addEventListener('pointermove', onPointerMove);
 
     animate();
 
@@ -246,6 +335,8 @@ export default function OsixLogo3D() {
       const height = containerRef.current.clientHeight;
 
       camera.aspect = width / height;
+      updateCameraForScreenSize();
+      explosionDistance = getExplosionDistance();
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
@@ -257,6 +348,7 @@ export default function OsixLogo3D() {
       window.removeEventListener('resize', handleResize);
       renderer.domElement.removeEventListener('pointerdown', onPointerDown);
       renderer.domElement.removeEventListener('pointerup', onPointerUp);
+      renderer.domElement.removeEventListener('pointermove', onPointerMove);
 
       if (containerRef.current && renderer.domElement.parentNode === containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);
