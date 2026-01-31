@@ -1,0 +1,134 @@
+---
+import avteLogo from '../assets/logos/avte.png';
+import icigaLogo from '../assets/logos/iciga.svg';
+import igapeLogo from '../assets/logos/igape.png';
+import irLogo from '../assets/logos/IR.png';
+import shearnLogo from '../assets/logos/shearn.png';
+import takeLogo from '../assets/logos/take.png';
+
+const logos = [
+  { src: avteLogo.src, alt: 'AVTE' },
+  { src: icigaLogo.src, alt: 'ICIGA' },
+  { src: igapeLogo.src, alt: 'IGAPE' },
+  { src: irLogo.src, alt: 'IR' },
+  { src: shearnLogo.src, alt: 'Shearn' },
+  { src: takeLogo.src, alt: 'TAKE' },
+];
+
+// Duplicate logos multiple times for smooth infinite scroll with few items
+const repeatedLogos = [...logos, ...logos, ...logos, ...logos];
+---
+
+<div class="logos">
+  <div class="logo_items">
+    {repeatedLogos.map((logo) => (
+      <div class="logo-wrapper">
+        <img src={logo.src} alt={logo.alt} />
+      </div>
+    ))}
+  </div>
+  <div class="logo_items" aria-hidden="true">
+    {repeatedLogos.map((logo) => (
+      <div class="logo-wrapper">
+        <img src={logo.src} alt={logo.alt} />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  @keyframes slides {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .logos {
+    overflow: hidden;
+    padding: 40px 0;
+    white-space: nowrap;
+    position: relative;
+    background: #0a0a0a;
+  }
+
+  .logos:before,
+  .logos:after {
+    position: absolute;
+    top: 0;
+    content: '';
+    width: 200px;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .logos:before {
+    left: 0;
+    background: linear-gradient(to left, rgba(10,10,10,0), rgb(10, 10, 10));
+  }
+
+  .logos:after {
+    right: 0;
+    background: linear-gradient(to right, rgba(10,10,10,0), rgb(10, 10, 10));
+  }
+
+  .logo_items {
+    display: inline-flex;
+    animation: 40s slides infinite linear;
+  }
+
+  .logo-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    width: 200px;
+    margin: 0 40px;
+    padding: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .logo-wrapper:hover {
+    transform: scale(1.08);
+  }
+
+  .logo_items img {
+    max-height: 60px;
+    max-width: 160px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+
+  .logo-wrapper:hover img {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .logos {
+      padding: 32px 0;
+    }
+
+    .logos:before,
+    .logos:after {
+      width: 80px;
+    }
+
+    .logo-wrapper {
+      height: 60px;
+      width: 140px;
+      margin: 0 24px;
+      padding: 12px;
+    }
+
+    .logo_items img {
+      max-height: 45px;
+      max-width: 120px;
+    }
+  }
+</style>

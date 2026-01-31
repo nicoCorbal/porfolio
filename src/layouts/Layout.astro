@@ -152,6 +152,9 @@ const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
     <main>
       <slot />
     </main>
+    <footer class="mini-footer">
+      <p>Proxecto apoiado por: IGAPE TICKET INNOVA 2026</p>
+    </footer>
   </body>
 </html>
 
@@ -349,5 +352,17 @@ const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
   section:last-child {
     margin-bottom: 0;
   }
-  
+
+  .mini-footer {
+    background: #0a0a0a;
+    padding: 16px 24px;
+    text-align: center;
+  }
+
+  .mini-footer p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
 </style>
