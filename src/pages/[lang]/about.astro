@@ -1,0 +1,68 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AboutSection from '../../components/AboutSection.astro';
+import AwardsSection from '../../components/AwardsSection.astro';
+import StaticContactSection from '../../components/StaticContactSection.astro';
+import WhatsappButton from '../../components/WhatsappButton.astro';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'es' } }
+  ];
+}
+
+const { lang = 'en' } = Astro.params;
+
+// SEO Data
+const seoTitle = lang === 'es'
+  ? 'Sobre OSIX Tech - Nuestro Equipo'
+  : 'About OSIX Tech - Our Team';
+
+const seoDescription = lang === 'es'
+  ? 'Conoce el equipo de OSIX Tech. Ingenieros apasionados por la tecnología con sede en Santiago de Compostela.'
+  : 'Meet the OSIX Tech team. Engineers passionate about technology based in Santiago de Compostela.';
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "OSIX Tech",
+  "url": "https://osix.tech",
+  "logo": "https://osix.tech/logo_w.png",
+  "description": seoDescription,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Santiago de Compostela",
+    "addressLocality": "Santiago de Compostela",
+    "addressRegion": "Galicia",
+    "postalCode": "15702",
+    "addressCountry": "ES"
+  },
+  "areaServed": ["ES", "Galicia"]
+};
+
+const jsonLd = [organizationSchema];
+---
+
+<Layout
+  lang={lang}
+  title={seoTitle}
+  description={seoDescription}
+  jsonLd={jsonLd}>
+
+  <section id="about" class="pt-32 md:pt-40">
+    <AboutSection lang={lang} />
+  </section>
+
+  <section id="awards">
+    <AwardsSection lang={lang} />
+  </section>
+
+  <section id="contact">
+    <StaticContactSection lang={lang} />
+  </section>
+
+  <WhatsappButton lang={lang} />
+</Layout>

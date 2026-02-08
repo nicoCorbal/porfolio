@@ -1,0 +1,127 @@
+---
+interface Props {
+  lang: 'en' | 'es';
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="w-full bg-white py-16 md:py-24 border-b-2 border-black">
+  <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-black mb-12 md:mb-16">
+      {lang === 'es' ? 'Por qué renovar tu web' : 'Why renew your website'}
+    </h2>
+
+    <!-- Before/After comparison -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-12 md:mb-16">
+      <!-- Before -->
+      <div class="border-4 border-red-500 p-8 md:p-10 bg-red-50">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">✕</div>
+          <h3 class="text-2xl font-bold text-red-700">
+            {lang === 'es' ? 'Sin web o web antigua' : 'No website or old website'}
+          </h3>
+        </div>
+
+        <ul class="space-y-3">
+          {[
+            {
+              esEs: 'Diseño anticuado o inexistente',
+              esEn: 'Outdated or no design',
+            },
+            {
+              esEs: 'No es mobile-friendly',
+              esEn: 'Not mobile-friendly',
+            },
+            {
+              esEs: 'Lenta, mala experiencia de usuario',
+              esEn: 'Slow, poor user experience',
+            },
+            {
+              esEs: 'No aparece en Google',
+              esEn: 'Doesn\'t appear on Google',
+            },
+            {
+              esEs: 'Sin herramientas de conversión',
+              esEn: 'No conversion tools',
+            },
+            {
+              esEs: 'Pierdes clientes potenciales',
+              esEn: 'You lose potential customers',
+            },
+          ].map((item) => (
+            <li class="flex gap-3 text-gray-700">
+              <span class="flex-shrink-0">•</span>
+              <span>{lang === 'es' ? item.esEs : item.esEn}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- After -->
+      <div class="border-4 border-green-500 p-8 md:p-10 bg-green-50">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">✓</div>
+          <h3 class="text-2xl font-bold text-green-700">
+            {lang === 'es' ? 'Web moderna renovada' : 'Modern renewed website'}
+          </h3>
+        </div>
+
+        <ul class="space-y-3">
+          {[
+            {
+              esEs: 'Diseño profesional y moderno',
+              esEn: 'Professional, modern design',
+            },
+            {
+              esEs: 'Totalmente responsive (todos los dispositivos)',
+              esEn: 'Fully responsive (all devices)',
+            },
+            {
+              esEs: 'Rápida y optimizada',
+              esEn: 'Fast and optimized',
+            },
+            {
+              esEs: 'Optimizada para SEO',
+              esEn: 'SEO optimized',
+            },
+            {
+              esEs: 'Formularios, CTA, integración email',
+              esEn: 'Forms, CTAs, email integration',
+            },
+            {
+              esEs: 'Atrae clientes desde Google',
+              esEn: 'Attracts customers from Google',
+            },
+          ].map((item) => (
+            <li class="flex gap-3 text-gray-700">
+              <span class="flex-shrink-0">✓</span>
+              <span>{lang === 'es' ? item.esEs : item.esEn}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tech stack -->
+    <div class="bg-gray-900 text-white p-8 md:p-10">
+      <h3 class="text-2xl font-bold mb-6">
+        {lang === 'es' ? 'Tecnología moderna' : 'Modern technology'}
+      </h3>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {['Astro', 'React', 'TypeScript', 'Tailwind CSS', 'Vercel', 'CDN Global', 'SSL/HTTPS', 'Analytics'].map((tech) => (
+          <div class="bg-gray-800 border border-gray-700 p-4 text-center rounded">
+            <p class="font-semibold text-sm md:text-base">{tech}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

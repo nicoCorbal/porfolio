@@ -1,0 +1,72 @@
+---
+
+interface Props {
+  lang: 'en' | 'es';
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="w-full max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 border-t-2 border-black border-b-2">
+  <!-- Manifesto title -->
+  <h2 class="text-3xl md:text-4xl font-bold text-black mb-8 md:mb-10">
+    {lang === 'es' ? 'Por qué confiar en OSIX' : 'Why trust OSIX'}
+  </h2>
+
+  <!-- Main text -->
+  <div class="max-w-3xl mb-12 md:mb-16">
+    <p class="text-lg md:text-xl text-gray-700 leading-relaxed">
+      {lang === 'es'
+        ? 'OSIX es una empresa joven nacida de la pasión por la tecnología y la excelencia. Somos gallegos, ubicados en Santiago de Compostela, y entendemos las necesidades del tejido empresarial local. No somos una agencia genérica: somos ingenieros que resolvemos problemas reales con soluciones que funcionan. Cada proyecto es una oportunidad para demostrar que la calidad y la velocidad no son incompatibles.'
+        : 'OSIX is a young company born from a passion for technology and excellence. We are Galicians based in Santiago de Compostela, and we understand the needs of the local business community. We are not a generic agency: we are engineers who solve real problems with solutions that work. Every project is an opportunity to prove that quality and speed are not incompatible.'}
+    </p>
+  </div>
+
+  <!-- Metrics grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+    <!-- Metric 1 -->
+    <div class="bg-white border-2 border-black p-8 md:p-10 text-center">
+      <div class="text-5xl md:text-6xl font-bold text-black mb-3">+50</div>
+      <h3 class="text-lg font-semibold text-black mb-2">
+        {lang === 'es' ? 'Proyectos completados' : 'Projects completed'}
+      </h3>
+      <p class="text-gray-600 text-sm">
+        {lang === 'es'
+          ? 'Desde startups hasta medianas empresas'
+          : 'From startups to mid-size companies'}
+      </p>
+    </div>
+
+    <!-- Metric 2 -->
+    <div class="bg-white border-2 border-black p-8 md:p-10 text-center">
+      <div class="text-5xl md:text-6xl font-bold text-black mb-3">24h</div>
+      <h3 class="text-lg font-semibold text-black mb-2">
+        {lang === 'es' ? 'Respuesta garantizada' : 'Guaranteed response'}
+      </h3>
+      <p class="text-gray-600 text-sm">
+        {lang === 'es'
+          ? 'Te contestamos en menos de un día'
+          : 'We reply in less than a day'}
+      </p>
+    </div>
+
+    <!-- Metric 3 -->
+    <div class="bg-white border-2 border-black p-8 md:p-10 text-center">
+      <div class="text-5xl md:text-6xl font-bold text-black mb-3">🇬🇦</div>
+      <h3 class="text-lg font-semibold text-black mb-2">
+        {lang === 'es' ? 'Empresa gallega' : 'Galician company'}
+      </h3>
+      <p class="text-gray-600 text-sm">
+        {lang === 'es'
+          ? 'Impulsamos el tejido tech de Galicia'
+          : 'We drive Galician tech ecosystem'}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

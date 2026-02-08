@@ -1,0 +1,96 @@
+---
+interface CaseStudy {
+  client: string;
+  sector: string;
+  problem: string;
+  solution: string;
+  results: string[];
+}
+
+interface Props {
+  caseStudy: CaseStudy;
+  lang: 'en' | 'es';
+}
+
+const { caseStudy, lang } = Astro.props;
+
+
+---
+
+<section class="w-full bg-gray-50 py-16 md:py-24 border-b-2 border-black">
+  <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <!-- Section title -->
+    <h2 class="text-3xl md:text-4xl font-bold text-black mb-12 md:mb-16">
+      {lang === 'es' ? 'Caso real' : 'Real case study'}
+    </h2>
+
+    {caseStudy && (
+      <div class="bg-white border-2 border-black p-8 md:p-12 space-y-8">
+        <!-- Client info -->
+        <div class="pb-6 border-b-2 border-gray-200">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h3 class="text-2xl font-bold text-black">{caseStudy.client}</h3>
+              <p class="text-gray-600 text-lg">{caseStudy.sector}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem, Solution, Results grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Problem -->
+          <div>
+            <h4 class="text-black font-semibold text-lg mb-3">
+              {lang === 'es' ? 'Problema' : 'Problem'}
+            </h4>
+            <p class="text-gray-700 text-base leading-relaxed">
+              {caseStudy.problem}
+            </p>
+          </div>
+
+          <!-- Solution -->
+          <div>
+            <h4 class="text-black font-semibold text-lg mb-3">
+              {lang === 'es' ? 'Solución' : 'Solution'}
+            </h4>
+            <p class="text-gray-700 text-base leading-relaxed">
+              {caseStudy.solution}
+            </p>
+          </div>
+
+          <!-- Results -->
+          <div>
+            <h4 class="text-black font-semibold text-lg mb-3">
+              {lang === 'es' ? 'Resultados' : 'Results'}
+            </h4>
+            <ul class="space-y-2">
+              {caseStudy.results.map((result) => (
+                <li class="flex gap-2">
+                  <span class="text-black font-bold">✓</span>
+                  <span class="text-gray-700 text-sm">{result}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- CTA link to cases page -->
+    <div class="pt-12 text-center">
+      <a
+        href={`/${lang}/cases`}
+        class="inline-flex items-center text-black font-semibold hover:underline transition text-lg group"
+      >
+        {lang === 'es' ? 'Ver más casos de éxito' : 'See more case studies'}
+        <span class="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

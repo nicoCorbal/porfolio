@@ -1,0 +1,118 @@
+---
+interface Props {
+  lang: 'en' | 'es';
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="w-full max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
+  <!-- Section title -->
+  <div class="mb-12 md:mb-16">
+    <h2 class="text-4xl md:text-5xl font-bold text-black mb-4">
+      {lang === 'es' ? 'Encuentra tu solución' : 'Find your solution'}
+    </h2>
+    <p class="text-lg md:text-xl text-gray-700 max-w-2xl">
+      {lang === 'es'
+        ? 'Cada empresa es diferente. Selecciona la área que más te interesa.'
+        : 'Every business is different. Select the area that interests you most.'}
+    </p>
+  </div>
+
+  <!-- Entry points grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+    <!-- Block 1: Nessie -->
+    <a
+      href={`/${lang}/services/nessie-oficina`}
+      class="group border-2 border-black p-8 md:p-10 bg-white hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col justify-between h-full"
+    >
+      <div>
+        <div class="text-4xl md:text-5xl mb-4">📄</div>
+        <h3 class="text-2xl md:text-3xl font-bold text-black mb-3 group-hover:underline">
+          {lang === 'es' ? 'Organiza tus documentos' : 'Organize your documents'}
+        </h3>
+        <p class="text-gray-700 text-lg mb-4">
+          {lang === 'es'
+            ? '¿Tus documentos son un caos? Encuentra cualquier información al instante con IA.'
+            : 'Are your documents a mess? Find any information instantly with AI.'}
+        </p>
+      </div>
+      <div class="flex items-center gap-2 text-black font-semibold group-hover:translate-x-2 transition-transform">
+        <span>{lang === 'es' ? 'Nessie Oficina' : 'Nessie Office'}</span>
+        <span>→</span>
+      </div>
+    </a>
+
+    <!-- Block 2: Desarrollo -->
+    <a
+      href={`/${lang}/services/desarrollo-medida`}
+      class="group border-2 border-black p-8 md:p-10 bg-white hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col justify-between h-full"
+    >
+      <div>
+        <div class="text-4xl md:text-5xl mb-4">⚙️</div>
+        <h3 class="text-2xl md:text-3xl font-bold text-black mb-3 group-hover:underline">
+          {lang === 'es' ? 'Software a tu medida' : 'Custom software'}
+        </h3>
+        <p class="text-gray-700 text-lg mb-4">
+          {lang === 'es'
+            ? '¿El software genérico no encaja? Desarrollamos exactamente lo que necesitas.'
+            : 'Generic software doesn\'t fit? We develop exactly what you need.'}
+        </p>
+      </div>
+      <div class="flex items-center gap-2 text-black font-semibold group-hover:translate-x-2 transition-transform">
+        <span>{lang === 'es' ? 'Desarrollo a Medida' : 'Custom Development'}</span>
+        <span>→</span>
+      </div>
+    </a>
+
+    <!-- Block 3: KTED -->
+    <a
+      href={`/${lang}/kted/c`}
+      class="group border-2 border-black p-8 md:p-10 bg-white hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col justify-between h-full"
+    >
+      <div>
+        <div class="text-4xl md:text-5xl mb-4">💰</div>
+        <h3 class="text-2xl md:text-3xl font-bold text-black mb-3 group-hover:underline">
+          {lang === 'es' ? 'Subvención de 30.000€' : '€30,000 subsidy'}
+        </h3>
+        <p class="text-gray-700 text-lg mb-4">
+          {lang === 'es'
+            ? 'Accede a fondos europeos para digitalizar tu empresa. Sin riesgo financiero.'
+            : 'Access European funds to digitalize your company. No financial risk.'}
+        </p>
+      </div>
+      <div class="flex items-center gap-2 text-black font-semibold group-hover:translate-x-2 transition-transform">
+        <span>{lang === 'es' ? 'KTED' : 'KTED'}</span>
+        <span>→</span>
+      </div>
+    </a>
+
+    <!-- Block 4: Fidelización -->
+    <a
+      href={`/${lang}/services/fidelizacion`}
+      class="group border-2 border-black p-8 md:p-10 bg-white hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer flex flex-col justify-between h-full"
+    >
+      <div>
+        <div class="text-4xl md:text-5xl mb-4">📱</div>
+        <h3 class="text-2xl md:text-3xl font-bold text-black mb-3 group-hover:underline">
+          {lang === 'es' ? 'App de fidelización' : 'Loyalty app'}
+        </h3>
+        <p class="text-gray-700 text-lg mb-4">
+          {lang === 'es'
+            ? '¿Tus clientes vienen una sola vez? Tu propia app para fidelizar y competir.'
+            : 'Your customers only come once? Your own app to retain and compete.'}
+        </p>
+      </div>
+      <div class="flex items-center gap-2 text-black font-semibold group-hover:translate-x-2 transition-transform">
+        <span>{lang === 'es' ? 'TAKE/Fidelización' : 'TAKE/Loyalty'}</span>
+        <span>→</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<style>
+  section {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

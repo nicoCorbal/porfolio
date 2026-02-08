@@ -1,0 +1,119 @@
+---
+interface Props {
+  lang: 'en' | 'es';
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="w-full bg-white py-16 md:py-24 border-b-2 border-black">
+  <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-black mb-12 md:mb-16">
+      {lang === 'es' ? 'Características principales' : 'Key features'}
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">1</div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Acceso mobile en planta' : 'Mobile access on floor'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'QR codes en máquinas. Operarios acceden a procedimientos en segundos.'
+                : 'QR codes on machines. Operators access procedures in seconds.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">2</div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Bajo conectividad' : 'Works offline'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Funciona sin WiFi. Ideal para plantas con mala conectividad.'
+                : 'Works without WiFi. Perfect for plants with poor connectivity.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">3</div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Historiales de acceso' : 'Access logs'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Auditoría de quién consultó qué y cuándo. Cumplimiento normativo.'
+                : 'Audit who consulted what and when. Regulatory compliance.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">4</div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Integración con sistemas' : 'System integration'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Conecta con sistemas SCADA, ERP, bases de datos existentes.'
+                : 'Connects with SCADA systems, ERP, existing databases.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">5</div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Alertas inteligentes' : 'Smart alerts'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Notificaciones cuando hay problemas. Prevención proactiva.'
+                : 'Notifications when issues arise. Proactive prevention.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">6</div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Traducción multiidioma' : 'Multi-language support'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Procedimientos en español, gallego, inglés. Para equipos internacionales.'
+                : 'Procedures in multiple languages. For international teams.'}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

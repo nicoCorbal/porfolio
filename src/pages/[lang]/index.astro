@@ -2,8 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import LogoSlider from '../../components/LogoSlider.astro';
-import BentoGridSection from '../../components/BentoGridSection.astro';
-import AboutSection from '../../components/AboutSection.astro';
+import EntryPointsSection from '../../components/EntryPointsSection.astro';
+import ManifestoSection from '../../components/ManifestoSection.astro';
 import ProjectsSection from '../../components/ProjectsSection.astro';
 import AwardsSection from '../../components/AwardsSection.astro';
 import StaticContactSection from '../../components/StaticContactSection.astro';
@@ -97,9 +97,9 @@ const jsonLd = [organizationSchema, webPageSchema];
   <LoadingScreen duration={300} />
   <section id="hero"><Hero lang={lang} /></section>
   <section id="partners"><LogoSlider lang={lang} /></section>
-  <section id="services"><BentoGridSection lang={lang} /></section>
+  <section id="services"><EntryPointsSection lang={lang} /></section>
+  <section id="manifesto"><ManifestoSection lang={lang} /></section>
   <section id="projects"><ProjectsSection lang={lang} /></section>
-  <section id="about"><AboutSection lang={lang} /></section>
   <!--<section id="awards"><AwardsSection lang={lang} /></section>-->
   <section id="contact"><StaticContactSection lang={lang} /></section>
   <WhatsappButton lang={lang} />

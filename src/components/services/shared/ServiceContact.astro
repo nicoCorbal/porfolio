@@ -1,0 +1,228 @@
+---
+interface Props {
+  service: string;  // Service name identifier
+  lang: 'en' | 'es';
+}
+
+const { service, lang } = Astro.props;
+
+// Import locale files
+const locales = {
+  en: (await import('/public/locales/en.json')).default,
+  es: (await import('/public/locales/es.json')).default,
+};
+
+const t = locales[lang];
+
+// Helper to get nested translation keys
+const getTranslation = (key: string): string => {
+  const keys = key.split('.');
+  let value: any = t;
+  for (const k of keys) {
+    value = value?.[k];
+  }
+  return value || key;
+};
+---
+
+<section id="contact" class="w-full bg-black py-16 md:py-24 border-b-2 border-gray-800">
+  <div class="max-w-4xl mx-auto px-6 md:px-12">
+    <!-- Section title -->
+    <div class="text-center mb-12 md:mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+        {lang === 'es' ? '¿Quieres ver cómo funciona en tu caso?' : 'Want to see how it works in your case?'}
+      </h2>
+      <p class="text-gray-400 text-lg">
+        {lang === 'es'
+          ? 'Te contactamos en 24h para una demostración personalizada'
+          : 'We\'ll contact you within 24 hours for a personalized demo'}
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-gray-900 border-2 border-gray-700 p-8 md:p-12 max-w-2xl mx-auto">
+      <form id="service-contact-form" class="space-y-6" data-service={service}>
+        <!-- Name -->
+        <div>
+          <label for="name" class="block text-white font-semibold mb-2 text-sm">
+            {getTranslation('contact.form.name')}
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="user_name"
+            class="w-full px-4 py-3 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white text-base"
+            required
+            minlength="2"
+          />
+        </div>
+
+        <!-- Company -->
+        <div>
+          <label for="company" class="block text-white font-semibold mb-2 text-sm">
+            {lang === 'es' ? 'Empresa' : 'Company'}
+          </label>
+          <input
+            type="text"
+            id="company"
+            name="user_company"
+            class="w-full px-4 py-3 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white text-base"
+          />
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-white font-semibold mb-2 text-sm">
+            {getTranslation('contact.form.email')}
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="user_email"
+            class="w-full px-4 py-3 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white text-base"
+            required
+          />
+        </div>
+
+        <!-- Message -->
+        <div>
+          <label for="message" class="block text-white font-semibold mb-2 text-sm">
+            {lang === 'es' ? 'Cuéntanos tu caso (opcional)' : 'Tell us your case (optional)'}
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            class="w-full px-4 py-3 bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white text-base resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          class="w-full bg-white text-black font-semibold py-4 px-6 text-base hover:bg-gray-100 transition-colors duration-200 mt-6"
+        >
+          {lang === 'es' ? 'Cuéntanos tu caso' : 'Tell us your case'}
+        </button>
+
+        <!-- Success message (hidden) -->
+        <div
+          id="form-success-message"
+          class="hidden bg-green-900 text-green-100 p-4 text-center rounded"
+        >
+          {lang === 'es'
+            ? 'Gracias. Te contactaremos en 24 horas.'
+            : 'Thank you. We\'ll contact you within 24 hours.'}
+        </div>
+
+        <!-- Error message (hidden) -->
+        <div id="form-error-message" class="hidden bg-red-900 text-red-100 p-4 text-center rounded">
+          {lang === 'es'
+            ? 'Error al enviar. Por favor, intenta de nuevo.'
+            : 'Error sending. Please try again.'}
+        </div>
+      </form>
+
+      <!-- WhatsApp alternative -->
+      <div class="mt-8 pt-8 border-t border-gray-700 text-center">
+        <p class="text-gray-400 text-sm mb-4">
+          {lang === 'es'
+            ? 'O envía un mensaje por WhatsApp'
+            : 'Or send us a WhatsApp message'}
+        </p>
+        <a
+          href={`https://wa.me/34881823123?text=${encodeURIComponent(
+            lang === 'es'
+              ? 'Hola, me interesa saber más sobre vuestros servicios'
+              : 'Hi, I\'m interested in learning more about your services'
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 font-semibold rounded hover:bg-green-700 transition"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371 0-.57 0-.198 0-.52.149-.792.298-.272.15-.704.489-.704 1.186 0 .696.704 1.376.804 1.472.1.098 1.413 2.162 3.428 3.038.48.21.857.334 1.15.428.48.151.917.1 1.282-.061.39-.169.612-.547.612-.926 0-.504-.305-.926-.704-1.084z"
+            ></path>
+            <path
+              d="M19.5 4H4.5C3.12 4 2 5.12 2 6.5v11C2 18.88 3.12 20 4.5 20h15c1.38 0 2.5-1.12 2.5-2.5v-11C22 5.12 20.88 4 19.5 4z"
+              fill="none"
+              stroke="currentColor"
+            ></path>
+          </svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initEmailJS, sendEmail } from '../../../utils/emailjs.js';
+
+  function initServiceContact() {
+    initEmailJS();
+
+    const form = document.getElementById('service-contact-form') as HTMLFormElement | null;
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const successMessage = document.getElementById('form-success-message');
+      const errorMessage = document.getElementById('form-error-message');
+
+      if (!submitButton || !successMessage || !errorMessage) return;
+
+      const originalText = submitButton.textContent;
+      submitButton.textContent = 'Enviando...';
+      submitButton.disabled = true;
+
+      const formData = new FormData(form);
+      const service = form.getAttribute('data-service') || 'service-landing';
+
+      const date = new Date().toLocaleString('en-US', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+
+      const templateParams = {
+        user_name: formData.get('user_name'),
+        user_email: formData.get('user_email'),
+        user_company: formData.get('user_company') || 'Not provided',
+        service_name: service,
+        message: formData.get('message') || 'No additional message',
+        date,
+      };
+
+      try {
+        await sendEmail(templateParams);
+        successMessage.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
+        form.reset();
+        setTimeout(() => {
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        }, 3000);
+      } catch (error) {
+        errorMessage.classList.remove('hidden');
+        successMessage.classList.add('hidden');
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initServiceContact);
+</script>
+
+<style>
+  section {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

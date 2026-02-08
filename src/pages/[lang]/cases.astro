@@ -1,0 +1,156 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCases } from '../../data/cases-multilingual';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'es' } }
+  ];
+}
+
+const { lang = 'en' } = Astro.params;
+const cases = getCases();
+
+// SEO Data
+const seoTitle = lang === 'es'
+  ? 'Casos de Éxito - OSIX Tech'
+  : 'Case Studies - OSIX Tech';
+
+const seoDescription = lang === 'es'
+  ? 'Proyectos reales de IA y desarrollo a medida para empresas gallegas. Descubre cómo hemos transformado negocios.'
+  : 'Real AI and custom development projects for Galician companies. See how we\'ve transformed businesses.';
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "OSIX Tech",
+  "url": "https://osix.tech",
+  "image": "https://osix.tech/logo_w.png"
+};
+
+const jsonLd = [organizationSchema];
+---
+
+<Layout
+  lang={lang}
+  title={seoTitle}
+  description={seoDescription}
+  jsonLd={jsonLd}>
+
+  <main class="w-full pt-32 md:pt-40 pb-16 md:pb-24">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <!-- Section header -->
+      <div class="mb-12 md:mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-black mb-4">
+          {lang === 'es' ? 'Casos de Éxito' : 'Case Studies'}
+        </h1>
+        <p class="text-lg md:text-xl text-gray-700 max-w-3xl">
+          {lang === 'es'
+            ? 'Proyectos reales que hemos desarrollado para empresas gallegas. Desde sistemas personalizados hasta implementaciones de IA, descubre cómo transformamos negocios.'
+            : 'Real projects we\'ve developed for Galician companies. From custom systems to AI implementations, see how we transform businesses.'}
+        </p>
+      </div>
+
+      <!-- Cases grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        {cases.map((caseStudy) => (
+          <article class="bg-white border-2 border-black p-6 md:p-8 hover:shadow-xl hover:scale-[1.02] transition-all duration-200 flex flex-col h-full">
+            <!-- Featured badge -->
+            {caseStudy.featured && (
+              <div class="mb-4">
+                <span class="inline-block bg-black text-white px-3 py-1 text-xs font-semibold uppercase">
+                  {lang === 'es' ? 'Destacado' : 'Featured'}
+                </span>
+              </div>
+            )}
+
+            <!-- Title -->
+            <h2 class="text-2xl font-bold text-black mb-2">
+              {lang === 'es' ? caseStudy.title.es : caseStudy.title.en}
+            </h2>
+
+            <!-- Client info -->
+            <div class="text-sm text-gray-600 mb-4 pb-4 border-b border-gray-200">
+              <p class="font-semibold text-black">{caseStudy.client.name}</p>
+              <p>
+                {caseStudy.client.sector}
+                {caseStudy.client.size && ` • ${caseStudy.client.size}`}
+              </p>
+            </div>
+
+            <!-- Problem -->
+            <div class="mb-4">
+              <h3 class="font-semibold text-black mb-2 text-sm uppercase tracking-wide">
+                {lang === 'es' ? 'Problema' : 'Problem'}
+              </h3>
+              <p class="text-gray-700 text-sm leading-relaxed">
+                {lang === 'es' ? caseStudy.problem.es : caseStudy.problem.en}
+              </p>
+            </div>
+
+            <!-- Solution -->
+            <div class="mb-4">
+              <h3 class="font-semibold text-black mb-2 text-sm uppercase tracking-wide">
+                {lang === 'es' ? 'Solución' : 'Solution'}
+              </h3>
+              <p class="text-gray-700 text-sm leading-relaxed">
+                {lang === 'es' ? caseStudy.solution.es : caseStudy.solution.en}
+              </p>
+            </div>
+
+            <!-- Results -->
+            <div class="mb-6 flex-1">
+              <h3 class="font-semibold text-black mb-2 text-sm uppercase tracking-wide">
+                {lang === 'es' ? 'Resultados' : 'Results'}
+              </h3>
+              <ul class="space-y-2">
+                {(lang === 'es' ? caseStudy.results.es : caseStudy.results.en).map((result) => (
+                  <li class="flex gap-2 text-sm text-gray-700">
+                    <span class="text-black font-bold flex-shrink-0">✓</span>
+                    <span>{result}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Services/Technologies -->
+            <div class="flex flex-wrap gap-2">
+              {caseStudy.services.map((service) => (
+                <span class="bg-gray-100 text-gray-700 px-2.5 py-1 text-xs font-medium border border-gray-300">
+                  {service}
+                </span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- CTA Section -->
+      <div class="mt-16 md:mt-20 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-black mb-4">
+          {lang === 'es' ? '¿Tu empresa necesita una transformación?' : 'Does your company need a transformation?'}
+        </h2>
+        <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
+          {lang === 'es'
+            ? 'Contáctanos para conversar sobre tu proyecto.'
+            : 'Contact us to discuss your project.'}
+        </p>
+        <a
+          href={`/${lang}/#contact`}
+          class="inline-block bg-black text-white px-8 md:px-10 py-4 font-semibold text-base md:text-lg hover:bg-gray-800 transition duration-200">
+          {lang === 'es' ? 'Solicitar consulta' : 'Request consultation'}
+          <span class="ml-2">→</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

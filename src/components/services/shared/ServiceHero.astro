@@ -1,0 +1,75 @@
+---
+interface Props {
+  lang: 'en' | 'es';
+  headlineKey: string;      // i18n key for headline
+  subheadlineKey: string;   // i18n key for subheadline
+  trustMetrics?: string[];  // List of trust metrics
+}
+
+const { lang, headlineKey, subheadlineKey, trustMetrics = [] } = Astro.props;
+
+// Import locale files
+const locales = {
+  en: (await import('/public/locales/en.json')).default,
+  es: (await import('/public/locales/es.json')).default,
+};
+
+const t = locales[lang];
+
+// Helper to get nested translation keys
+const getTranslation = (key: string): string => {
+  const keys = key.split('.');
+  let value: any = t;
+  for (const k of keys) {
+    value = value?.[k];
+  }
+  return value || key;
+};
+---
+
+<section class="w-full bg-white pt-32 md:pt-40 pb-16 md:pb-24 border-b-2 border-black">
+  <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <!-- Main content -->
+    <div class="space-y-6 md:space-y-8">
+      <!-- Headline -->
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-tight">
+        {getTranslation(headlineKey)}
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-lg md:text-xl text-gray-700 max-w-2xl">
+        {getTranslation(subheadlineKey)}
+      </p>
+
+      <!-- CTA Button -->
+      <div class="pt-4">
+        <a
+          href="#contact"
+          class="inline-block bg-black text-white px-8 md:px-10 py-4 font-semibold text-base md:text-lg hover:bg-gray-800 transition duration-200"
+        >
+          {lang === 'es' ? 'Cuéntanos tu caso' : 'Tell us your case'}
+          <span class="ml-2">→</span>
+        </a>
+      </div>
+
+      <!-- Trust metrics (if provided) -->
+      {trustMetrics.length > 0 && (
+        <div class="pt-8 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 border-t-2 border-gray-200 mt-8 pt-8">
+          {trustMetrics.map((metric) => (
+            <div class="text-center md:text-left">
+              <p class="text-xs md:text-sm text-gray-600 uppercase tracking-wider">
+                {metric}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

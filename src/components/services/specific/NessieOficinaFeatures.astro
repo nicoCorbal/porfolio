@@ -1,0 +1,139 @@
+---
+interface Props {
+  lang: 'en' | 'es';
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="w-full bg-white py-16 md:py-24 border-b-2 border-black">
+  <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <!-- Section title -->
+    <h2 class="text-3xl md:text-4xl font-bold text-black mb-12 md:mb-16">
+      {lang === 'es' ? 'Características principales' : 'Key features'}
+    </h2>
+
+    <!-- Features grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      <!-- Feature 1: Multi-source -->
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">
+            1
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Conecta todo' : 'Connect everything'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Google Drive, SharePoint, Microsoft Teams, Email, Almacenamiento local. Todo centralizado.'
+                : 'Google Drive, SharePoint, Microsoft Teams, Email, Local storage. Everything centralized.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2: Intelligent search -->
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">
+            2
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Búsqueda inteligente' : 'Intelligent search'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Pregunta en lenguaje natural, no necesitas saber la ruta o el nombre exacto del archivo.'
+                : 'Ask in natural language, no need to know the path or exact file name.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Context aware -->
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">
+            3
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Entiende el contexto' : 'Understands context'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Nessie comprende relaciones entre documentos y te da respuestas más precisas.'
+                : 'Nessie understands relationships between documents and gives you more accurate answers.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 4: Secure by default -->
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">
+            4
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Seguridad incluida' : 'Security included'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Encriptación end-to-end, cumplimiento RGPD, sin datos en servidores terceros.'
+                : 'End-to-end encryption, GDPR compliant, no data on third-party servers.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 5: Real time updates -->
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">
+            5
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Actualización automática' : 'Auto updates'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Los documentos nuevos se indexan automáticamente. Siempre tienes información fresca.'
+                : 'New documents are indexed automatically. You always have fresh information.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 6: Team management -->
+      <div class="space-y-4">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-12 h-12 bg-black text-white flex items-center justify-center rounded-full font-bold text-xl">
+            6
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold text-black mb-2">
+              {lang === 'es' ? 'Gestión por equipo' : 'Team management'}
+            </h3>
+            <p class="text-gray-700">
+              {lang === 'es'
+                ? 'Controla quién accede a qué información. Permisos granulares por usuario.'
+                : 'Control who accesses what information. Granular permissions per user.'}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>

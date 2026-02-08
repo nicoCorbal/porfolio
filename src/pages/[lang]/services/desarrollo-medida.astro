@@ -1,0 +1,78 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import ServiceHeader from '../../../components/services/shared/ServiceHeader.astro';
+import ServiceHero from '../../../components/services/shared/ServiceHero.astro';
+import PainPoints from '../../../components/services/shared/PainPoints.astro';
+import SolutionExplainer from '../../../components/services/shared/SolutionExplainer.astro';
+import SocialProof from '../../../components/services/shared/SocialProof.astro';
+import ServiceContact from '../../../components/services/shared/ServiceContact.astro';
+import ServiceFooter from '../../../components/services/shared/ServiceFooter.astro';
+import DesarrolloProcess from '../../../components/services/specific/DesarrolloProcess.astro';
+
+import { getService, type ServiceKey } from '../../../data/services-content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'es' } }
+  ];
+}
+
+const { lang } = Astro.params as { lang: 'en' | 'es' };
+const serviceId: ServiceKey = 'desarrollo-medida';
+const service = getService(serviceId);
+
+if (!service) {
+  return new Response('Not found', { status: 404 });
+}
+
+const painPointsData = service.painPoints.map(point => ({
+  iconName: point.iconName,
+  titleKey: lang === 'es' ? point.titleKeyEs : point.titleKeyEn,
+  descKey: lang === 'es' ? point.descKeyEs : point.descKeyEn,
+}));
+
+const solutionData = {
+  titleKey: lang === 'es' ? service.solution.titleKeyEs : service.solution.titleKeyEn,
+  stepsKeys: lang === 'es' ? service.solution.stepsKeysEs : service.solution.stepsKeysEn,
+  benefitsKeys: lang === 'es' ? service.solution.benefitsKeysEs : service.solution.benefitsKeysEn,
+};
+
+const caseStudyData = {
+  client: lang === 'es' ? service.caseStudy.clientEs : service.caseStudy.clientEn,
+  sector: lang === 'es' ? service.caseStudy.sectorEs : service.caseStudy.sectorEn,
+  problem: lang === 'es' ? service.caseStudy.problemKeyEs : service.caseStudy.problemKeyEn,
+  solution: lang === 'es' ? service.caseStudy.solutionKeyEs : service.caseStudy.solutionKeyEn,
+  results: lang === 'es' ? service.caseStudy.resultsKeysEs : service.caseStudy.resultsKeysEn,
+};
+
+const seoTitle = lang === 'es' ? service.seo.titleEs : service.seo.titleEn;
+const seoDescription = lang === 'es' ? service.seo.descriptionEs : service.seo.descriptionEn;
+---
+
+<Layout title={seoTitle} description={seoDescription} lang={lang}>
+  <ServiceHeader lang={lang} />
+
+  <div style="padding-top: 80px;">
+    <ServiceHero
+      lang={lang}
+      headlineKey={lang === 'es' ? service.hero.headlineKeyEs : service.hero.headlineKeyEn}
+      subheadlineKey={lang === 'es' ? service.hero.subheadlineKeyEs : service.hero.subheadlineKeyEn}
+      trustMetrics={service.hero.trustMetrics}
+    />
+
+    <PainPoints lang={lang} painPoints={painPointsData} />
+
+    <SolutionExplainer lang={lang} solution={solutionData} />
+
+    <DesarrolloProcess lang={lang} />
+
+    <SocialProof lang={lang} caseStudy={caseStudyData} />
+
+    <ServiceContact lang={lang} service={service.contact.serviceName} />
+  </div>
+
+  <ServiceFooter lang={lang} />
+</Layout>
