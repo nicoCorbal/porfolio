@@ -84,59 +84,91 @@
     </image:image>
   </url>
   
-  <!-- Project: Echoia (English) -->
+  <!-- Project: TAKE (English) -->
   <url>
-    <loc>https://osix.tech/en/projects/echoia</loc>
+    <loc>https://osix.tech/en/projects/take</loc>
     <lastmod>2025-01-09T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/echoia"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/echoia"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/take"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/take"/>
     <image:image>
-      <image:loc>https://osix.tech/projects/echoia.jpg</image:loc>
-      <image:title>Echoia Notetaker - AI Meeting Transcription</image:title>
+      <image:loc>https://osix.tech/projects/take.png</image:loc>
+      <image:title>TAKE App - Mobile Application for Cafeterias</image:title>
     </image:image>
   </url>
-  
-  <!-- Project: Echoia (Spanish) -->
+
+  <!-- Project: TAKE (Spanish) -->
   <url>
-    <loc>https://osix.tech/es/projects/echoia</loc>
+    <loc>https://osix.tech/es/projects/take</loc>
     <lastmod>2025-01-09T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/echoia"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/echoia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/take"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/take"/>
     <image:image>
-      <image:loc>https://osix.tech/projects/echoia.jpg</image:loc>
-      <image:title>Echoia Notetaker - Transcripción IA de Reuniones</image:title>
+      <image:loc>https://osix.tech/projects/take.png</image:loc>
+      <image:title>TAKE App - Aplicación Móvil para Cafeterías</image:title>
     </image:image>
   </url>
-  
-  <!-- Project: Kharon (English) -->
+
+  <!-- KTED Variant A (English) -->
   <url>
-    <loc>https://osix.tech/en/projects/kharon</loc>
+    <loc>https://osix.tech/en/kted/a</loc>
     <lastmod>2025-01-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/kharon"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/kharon"/>
-    <image:image>
-      <image:loc>https://osix.tech/projects/kharon.jpg</image:loc>
-      <image:title>Kharon AI System - Multi-Agent Platform</image:title>
-    </image:image>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/kted/a"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/kted/a"/>
   </url>
-  
-  <!-- Project: Kharon (Spanish) -->
+
+  <!-- KTED Variant A (Spanish) -->
   <url>
-    <loc>https://osix.tech/es/projects/kharon</loc>
+    <loc>https://osix.tech/es/kted/a</loc>
     <lastmod>2025-01-09T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/projects/kharon"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/projects/kharon"/>
-    <image:image>
-      <image:loc>https://osix.tech/projects/kharon.jpg</image:loc>
-      <image:title>Kharon AI System - Plataforma Multi-Agente</image:title>
-    </image:image>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/kted/a"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/kted/a"/>
+  </url>
+
+  <!-- KTED Variant B (English) -->
+  <url>
+    <loc>https://osix.tech/en/kted/b</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/kted/b"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/kted/b"/>
+  </url>
+
+  <!-- KTED Variant B (Spanish) -->
+  <url>
+    <loc>https://osix.tech/es/kted/b</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/kted/b"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/kted/b"/>
+  </url>
+
+  <!-- KTED Variant C (English) -->
+  <url>
+    <loc>https://osix.tech/en/kted/c</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/kted/c"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/kted/c"/>
+  </url>
+
+  <!-- KTED Variant C (Spanish) -->
+  <url>
+    <loc>https://osix.tech/es/kted/c</loc>
+    <lastmod>2025-01-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://osix.tech/en/kted/c"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://osix.tech/es/kted/c"/>
   </url>
 </urlset>

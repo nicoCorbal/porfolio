@@ -6,20 +6,30 @@ import irLogo from '../assets/logos/IR.png';
 import shearnLogo from '../assets/logos/shearn.png';
 import takeLogo from '../assets/logos/take.png';
 
+interface Props {
+  lang?: 'en' | 'es';
+}
+
+const { lang = 'es' } = Astro.props;
+
 const logos = [
   { src: avteLogo.src, alt: 'AVTE' },
   { src: icigaLogo.src, alt: 'ICIGA' },
-  { src: igapeLogo.src, alt: 'IGAPE' },
-  { src: irLogo.src, alt: 'IR' },
+  { src: igapeLogo.src, alt: 'IGAPE - Instituto Galego de Promoción Económica' },
+  { src: irLogo.src, alt: 'Instituto Relacional' },
   { src: shearnLogo.src, alt: 'Shearn' },
   { src: takeLogo.src, alt: 'TAKE' },
 ];
 
 // Duplicate logos multiple times for smooth infinite scroll with few items
 const repeatedLogos = [...logos, ...logos, ...logos, ...logos];
+
+const title = lang === 'es' ? 'Empresas que confían en nosotros' : 'Companies that trust us';
 ---
 
-<div class="logos">
+<div class="logo-section">
+  <h3 class="logo-title">{title}</h3>
+  <div class="logos">
   <div class="logo_items">
     {repeatedLogos.map((logo) => (
       <div class="logo-wrapper">
@@ -34,9 +44,35 @@ const repeatedLogos = [...logos, ...logos, ...logos, ...logos];
       </div>
     ))}
   </div>
+  </div>
 </div>
 
 <style>
+  .logo-section {
+    background: #0a0a0a;
+    padding: 60px 20px 40px 20px;
+    text-align: center;
+  }
+
+  .logo-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 768px) {
+    .logo-section {
+      padding: 40px 20px 30px 20px;
+    }
+
+    .logo-title {
+      font-size: 1.25rem;
+      margin-bottom: 30px;
+    }
+  }
+
   @keyframes slides {
     from {
       transform: translateX(0);

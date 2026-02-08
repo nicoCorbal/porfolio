@@ -8,6 +8,7 @@ import ProjectsSection from '../../components/ProjectsSection.astro';
 import AwardsSection from '../../components/AwardsSection.astro';
 import StaticContactSection from '../../components/StaticContactSection.astro';
 import LoadingScreen from '../../components/LoadingScreen.astro';
+import WhatsappButton from '../../components/WhatsappButton.astro';
 
 export const prerender = true;
 
@@ -39,8 +40,13 @@ const organizationSchema = {
   "description": seoDescription,
   "address": {
     "@type": "PostalAddress",
-    "addressCountry": "US"
+    "streetAddress": "Santiago de Compostela",
+    "addressLocality": "Santiago de Compostela",
+    "addressRegion": "Galicia",
+    "postalCode": "15702",
+    "addressCountry": "ES"
   },
+  "areaServed": ["ES", "Galicia"],
   "sameAs": [
     "https://github.com/osixtech",
     "https://linkedin.com/company/osixtech"
@@ -48,7 +54,8 @@ const organizationSchema = {
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "sales",
-    "email": "contact@osix.tech",
+    "telephone": "+34 881 823 123",
+    "email": "info@osix.tech",
     "availableLanguage": ["English", "Spanish"]
   }
 };
@@ -80,21 +87,22 @@ const jsonLd = [organizationSchema, webPageSchema];
 
 ---
 
-<Layout 
+<Layout
   lang={lang}
   title={seoTitle}
   description={seoDescription}
   pageType="website"
   jsonLd={jsonLd}
   isMainPage={true}>
-  <LoadingScreen duration={1000} />
+  <LoadingScreen duration={300} />
   <section id="hero"><Hero lang={lang} /></section>
-  <section id="partners"><LogoSlider /></section>
+  <section id="partners"><LogoSlider lang={lang} /></section>
   <section id="services"><BentoGridSection lang={lang} /></section>
   <section id="projects"><ProjectsSection lang={lang} /></section>
   <section id="about"><AboutSection lang={lang} /></section>
   <!--<section id="awards"><AwardsSection lang={lang} /></section>-->
   <section id="contact"><StaticContactSection lang={lang} /></section>
+  <WhatsappButton lang={lang} />
 </Layout>
 
 <style>
