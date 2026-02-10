@@ -132,6 +132,56 @@ export const projectsData: Record<string, Record<string, ProjectData>> = {
       ],
       images: ['/projects/nessie/nessie.png'],
       video: '/projects/nessie/nessie-demo.mov'
+    },
+    cmo: {
+      id: 'cmo',
+      title: 'CMO',
+      subtitle: 'Prospección B2B hiperpersonalizada con agentes de IA',
+      category: 'Herramienta B2B',
+      type: 'Producto',
+      date: 'Q2 2026',
+      awards: [],
+      textColor: 'light',
+      birth: 'CMO nació de una necesidad interna: escalar la prospección comercial sin perder la calidad de la personalización. Desde el inicio fue concebido como un sistema de agentes especializados que investigan, analizan y generan mensajes únicos para cada empresa objetivo.',
+      usecase: [
+        'Equipos comerciales pequeños: escalar prospectos sin aumentar el equipo de ventas.',
+        'Agencias de marketing: campañas B2B masivas con mensajes realmente personalizados, no plantillas.',
+        'Startups con presupuesto limitado: acceso a prospección profesional sin invertir en departamento comercial.'
+      ],
+      future: 'El futuro de CMO es evolucionar hacia una plataforma completa de generación de leads, integrando retroalimentación de respuestas para optimizar campañas, análisis de mejores horarios de envío, y expansión a otros canales más allá del email.',
+      features: [
+        {
+          title: 'Investigación Inteligente',
+          description: 'Analiza automáticamente webs, perfiles y datos públicos de cada empresa objetivo. Nuestros agentes recopilan contexto real.',
+          icon: 'Search'
+        },
+        {
+          title: 'Emails Hiperpersonalizados',
+          description: 'Genera mensajes únicos basados en el contexto real de cada empresa, no plantillas. Cada email parece escrito a mano.',
+          icon: 'Mail'
+        },
+        {
+          title: 'Dashboard de Campañas',
+          description: 'Configura, lanza y monitoriza tus campañas desde un panel centralizado. Visualiza estados y métricas en tiempo real.',
+          icon: 'BarChart3'
+        },
+        {
+          title: 'Agentes Especializados',
+          description: 'Sistema multi-agente donde cada uno domina una fase: research, análisis financiero, redacción de emails.',
+          icon: 'GitBranch'
+        },
+        {
+          title: 'Importación Masiva',
+          description: 'Carga listados de empresas desde CSV. El sistema lanza investigaciones en lote automáticamente sin intervención manual.',
+          icon: 'Upload'
+        },
+        {
+          title: 'Métricas en Tiempo Real',
+          description: 'Seguimiento de estados, aperturas, clics y respuestas. Optimiza cada campaña con datos concretos.',
+          icon: 'TrendingUp'
+        }
+      ],
+      images: ['/projects/cmo/cmo.svg']
     }
   },
   en: {
@@ -245,6 +295,56 @@ export const projectsData: Record<string, Record<string, ProjectData>> = {
       ],
       images: ['/projects/nessie/nessie.png'],
       video: '/projects/nessie/nessie-demo.mov'
+    },
+    cmo: {
+      id: 'cmo',
+      title: 'CMO',
+      subtitle: 'Hyperpersonalized B2B outreach powered by AI agents',
+      category: 'B2B Tool',
+      type: 'Product',
+      date: 'Q2 2026',
+      awards: [],
+      textColor: 'light',
+      birth: 'CMO was born from an internal need: scale commercial prospecting without losing personalization quality. From the start it was conceived as a system of specialized agents that research, analyze, and generate unique messages for each target company.',
+      usecase: [
+        'Small sales teams: scale prospects without increasing your team size.',
+        'Marketing agencies: massive B2B campaigns with truly personalized messages, not templates.',
+        'Budget-conscious startups: professional prospecting without investing in a full sales department.'
+      ],
+      future: 'The future of CMO is to evolve into a complete lead generation platform, integrating response feedback to optimize campaigns, analyzing best send times, and expanding to channels beyond email.',
+      features: [
+        {
+          title: 'Intelligent Research',
+          description: 'Automatically analyzes websites, profiles, and public data from each target company. Our agents gather real context.',
+          icon: 'Search'
+        },
+        {
+          title: 'Hyperpersonalized Emails',
+          description: 'Generates unique messages based on real company context, not templates. Every email feels hand-written.',
+          icon: 'Mail'
+        },
+        {
+          title: 'Campaign Dashboard',
+          description: 'Configure, launch, and monitor your campaigns from one central panel. View statuses and real-time metrics.',
+          icon: 'BarChart3'
+        },
+        {
+          title: 'Specialized Agents',
+          description: 'Multi-agent system where each dominates a phase: research, financial analysis, email writing.',
+          icon: 'GitBranch'
+        },
+        {
+          title: 'Bulk CSV Import',
+          description: 'Upload company lists from CSV. The system automatically launches batch research without manual work.',
+          icon: 'Upload'
+        },
+        {
+          title: 'Real-Time Metrics',
+          description: 'Track statuses, opens, clicks, and replies. Optimize every campaign with concrete data.',
+          icon: 'TrendingUp'
+        }
+      ],
+      images: ['/projects/cmo/cmo.svg']
     }
   }
 };
