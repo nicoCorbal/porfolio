@@ -32,15 +32,30 @@ const seoDescription = lang === 'es'
 // Structured Data
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "LocalBusiness"],
   "name": "OSIX Tech",
   "url": "https://osix.tech",
   "logo": "https://osix.tech/logo_w.png",
   "description": seoDescription,
+  "telephone": "+34 648935068",
+  "email": "info@osix.tech",
   "address": {
     "@type": "PostalAddress",
-    "addressCountry": "US"
+    "streetAddress": "Santiago del Estero, 2-4 1G",
+    "addressLocality": "Santiago de Compostela",
+    "addressRegion": "Galicia",
+    "postalCode": "15702",
+    "addressCountry": "ES"
   },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 42.8782,
+    "longitude": -8.5448
+  },
+  "areaServed": [
+    { "@type": "Country", "name": "Spain" },
+    { "@type": "AdministrativeArea", "name": "Galicia" }
+  ],
   "sameAs": [
     "https://github.com/osixtech",
     "https://linkedin.com/company/osixtech"
@@ -48,7 +63,8 @@ const organizationSchema = {
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "sales",
-    "email": "contact@osix.tech",
+    "email": "info@osix.tech",
+    "telephone": "+34 648935068",
     "availableLanguage": ["English", "Spanish"]
   }
 };
