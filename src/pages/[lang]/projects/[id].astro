@@ -213,7 +213,7 @@ const jsonLd = [productSchema, webPageSchema].filter(Boolean);
             
             {/* CARD BACK (Hidden Content) */}
             <div class="card-back relative z-10 bg-black bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.04)_0%,transparent_40%)] border border-transparent p-5 text-left text-white">
-              <div class="card-back-content opacity-0 transition-all duration-[400ms] delay-200 group-hover:opacity-100">
+              <div class="card-back-content opacity-0 transition-all duration-400 delay-200 group-hover:opacity-100">
                 <h5 class="mb-4 w-full border-b border-gray-600 pb-4 text-lg font-semibold">
                   {feature.title}
                 </h5>
@@ -224,7 +224,7 @@ const jsonLd = [productSchema, webPageSchema].filter(Boolean);
             </div>
 
             {/* CARD FRONT (Sliding Panel) */}
-            <div class="card-front absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-white p-5 border border-transparent z-2 shadow-[inset_0_0_0_1px_#e5e7eb] transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:-translate-x-full">
+            <div class="card-front absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-white p-5 border border-transparent z-2 shadow-[inset_0_0_0_1px_#e5e7eb] transition-transform duration-700 ease-[cubic-bezier(0.25,_1,_0.5,_1)] group-hover:-translate-x-full">
               
               {/* Icon Wrapper */}
               <div class="flex h-16 w-16 items-center justify-center bg-black shadow-md transition-transform duration-300 group-hover:scale-110">
