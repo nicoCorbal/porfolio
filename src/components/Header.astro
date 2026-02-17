@@ -727,23 +727,37 @@ function setupDropdownsWithGsap(gsap: any) {
       if (currentTl) currentTl.play(0);
 
     } else if (state.activeDropdown !== key) {
-      // Panel open, switching groups — reverse current, then play new
-      const oldTl = currentTl;
+      // Panel stays open — only swap card groups
+      if (currentTl) currentTl.kill();
+
+      const oldKey = state.activeDropdown;
+      const old = oldKey ? cardGroups.get(oldKey) : null;
       state.activeDropdown = key;
 
-      if (oldTl) {
-        oldTl.eventCallback('onReverseComplete', () => {
-          // Old cards fully reversed — now build and play new
-          gsap.set(panel, { height: 0 });
-          currentTl = buildTimeline(key);
-          if (currentTl) currentTl.play(0);
+      const target2 = cardGroups.get(key)!;
+
+      // Old cards slide down out
+      if (old) {
+        gsap.to(old.cards, {
+          yPercent: 120, duration: 0.4, ease, stagger: 0.08,
+          onComplete: () => { old.group.classList.remove('active'); }
         });
-        oldTl.reverse();
-      } else {
-        gsap.set(panel, { height: 0 });
-        currentTl = buildTimeline(key);
-        if (currentTl) currentTl.play(0);
       }
+
+      // New cards slide up in (simultaneously)
+      target2.group.classList.add('active');
+      gsap.set(target2.cards, { yPercent: 120 });
+      gsap.to(target2.cards, { yPercent: 0, duration: 0.4, ease, stagger: 0.08, delay: 0.15 });
+
+      // Smoothly adjust panel height if different
+      gsap.to(panel, { height: 'auto', duration: 0.3, ease });
+
+      // Build a timeline from current open state so close/reverse works
+      const tl = gsap.timeline({ paused: true });
+      tl.to(panel, { height: 'auto', duration: 0.3, ease });
+      tl.to(target2.cards, { yPercent: 0, duration: 0.4, ease, stagger: 0.08 }, '-=0.05');
+      tl.progress(1); // mark as fully open
+      currentTl = tl;
     }
   }
 
