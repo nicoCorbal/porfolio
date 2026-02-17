@@ -4,14 +4,6 @@ export interface Feature {
   icon: string;
 }
 
-export interface CaseStudy {
-  title: string;
-  client: string;
-  summary: string;
-  results?: string[];
-  images?: string[];
-}
-
 export interface ProductData {
   id: string;
   title: string;
@@ -19,7 +11,7 @@ export interface ProductData {
   description: string;
   icon: string;
   features: Feature[];
-  caseStudy?: CaseStudy;
+  cases?: string[];
   images: string[];
   video?: string;
   textColor?: 'light' | 'dark';
@@ -106,17 +98,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Settings'
         }
       ],
-      caseStudy: {
-        title: 'Consultoría especializada',
-        client: 'Consultora de metodologías relacionales',
-        summary: 'Implantación de Nessie Oficina para una consultora especializada en metodologías relacionales. Gestión documental con IA, integración con email, búsqueda semántica sobre toda la documentación de la empresa y sistema de unificación de carteras de clientes con matching de subvenciones.',
-        results: [
-          'Gestión documental completa con IA',
-          'Integración con email corporativo',
-          'Búsqueda semántica sobre toda la documentación',
-          'Sistema de matching de subvenciones con carteras de clientes'
-        ]
-      },
+      cases: ['consultoria'],
       images: ['/projects/nessie/nessie.png'],
       video: '/projects/nessie/nessie-demo.mov',
       textColor: 'light'
@@ -221,17 +203,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Sparkles'
         }
       ],
-      caseStudy: {
-        title: 'ICIGA',
-        client: 'Distribuidor de material de laboratorio',
-        summary: 'Implementación de IRIS para un distribuidor comercial de material de laboratorio. Monitoriza 6 bandejas de entrada, clasifica automáticamente solicitudes de presupuesto, pedidos y facturas mediante IA, y cruza cada petición contra una base de datos de más de 63.000 productos químicos. Genera propuestas de respuesta listas para revisión humana e integra con el ERP de la empresa.',
-        results: [
-          'Monitorización de 6 bandejas de entrada',
-          'Clasificación automática de presupuestos, pedidos y facturas',
-          'Cruce contra +63.000 productos químicos',
-          'Integración completa con ERP existente'
-        ]
-      },
+      cases: ['iciga'],
       images: ['/products/iris/iris.png'],
       textColor: 'light'
     },
@@ -273,25 +245,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Trophy'
         }
       ],
-      caseStudy: {
-        title: 'TAKE App',
-        client: 'Cafetería TAKE',
-        summary: 'Implementación de BOND en la cafetería TAKE. Tarjeta de fidelización digital con Google y Apple Wallet, sistema de puntos automático y dashboard de analíticas de consumo. Primer piloto real del producto en hostelería, validando el modelo con clientes reales.',
-        results: [
-          'Tarjeta de fidelización digital en Google y Apple Wallet',
-          'Sistema de puntos automático integrado',
-          'Dashboard con analíticas de consumo en tiempo real',
-          'Validación del modelo con clientes reales'
-        ],
-        images: [
-          '/projects/take/front.png',
-          '/projects/take/home.png',
-          '/projects/take/menu.png',
-          '/projects/take/game.png',
-          '/projects/take/events.png',
-          '/projects/take/rewards.png'
-        ]
-      },
+      cases: ['take'],
       images: ['/projects/take/take.png'],
       textColor: 'dark'
     }
@@ -376,17 +330,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Settings'
         }
       ],
-      caseStudy: {
-        title: 'Specialized Consultancy',
-        client: 'Relational methodologies consultancy',
-        summary: 'Implementation of Nessie Office for a consultancy specialized in relational methodologies. AI-powered document management, email integration, semantic search across all company documentation, and client portfolio unification system with grant matching.',
-        results: [
-          'Complete AI-powered document management',
-          'Corporate email integration',
-          'Semantic search across all documentation',
-          'Grant matching system with client portfolios'
-        ]
-      },
+      cases: ['consultoria'],
       images: ['/projects/nessie/nessie.png'],
       video: '/projects/nessie/nessie-demo.mov',
       textColor: 'light'
@@ -491,17 +435,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Sparkles'
         }
       ],
-      caseStudy: {
-        title: 'ICIGA',
-        client: 'Laboratory supplies distributor',
-        summary: 'Implementation of IRIS for a commercial laboratory supplies distributor. Monitors 6 inboxes, automatically classifies quote requests, orders, and invoices using AI, and cross-references each request against a database of over 63,000 chemical products. Generates response proposals ready for human review and integrates with the company\'s ERP.',
-        results: [
-          'Monitoring of 6 inboxes',
-          'Automatic classification of quotes, orders, and invoices',
-          'Cross-reference against 63,000+ chemical products',
-          'Full integration with existing ERP'
-        ]
-      },
+      cases: ['iciga'],
       images: ['/products/iris/iris.png'],
       textColor: 'light'
     },
@@ -543,25 +477,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Trophy'
         }
       ],
-      caseStudy: {
-        title: 'TAKE App',
-        client: 'TAKE Coffee Shop',
-        summary: 'Implementation of BOND at the TAKE coffee shop. Digital loyalty card with Google and Apple Wallet, automatic points system, and consumption analytics dashboard. First real product pilot in hospitality, validating the model with real customers.',
-        results: [
-          'Digital loyalty card on Google and Apple Wallet',
-          'Integrated automatic points system',
-          'Dashboard with real-time consumption analytics',
-          'Model validation with real customers'
-        ],
-        images: [
-          '/projects/take/front.png',
-          '/projects/take/home.png',
-          '/projects/take/menu.png',
-          '/projects/take/game.png',
-          '/projects/take/events.png',
-          '/projects/take/rewards.png'
-        ]
-      },
+      cases: ['take'],
       images: ['/projects/take/take.png'],
       textColor: 'dark'
     }
