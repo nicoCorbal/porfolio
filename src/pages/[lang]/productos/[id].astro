@@ -1,0 +1,368 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getProduct, getProductIds } from '../../../data/products-multilingual';
+import LoadingScreen from '../../../components/LoadingScreen.astro';
+import { ProjectCarousel } from '../../../components/ProjectCarousel';
+import { LucideIcon } from '../../../components/LucideIcon';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const productIds = getProductIds();
+  const languages = ['en', 'es'];
+
+  return languages.flatMap(lang =>
+    productIds.map(id => ({
+      params: { lang, id }
+    }))
+  );
+}
+
+const { id = '', lang = 'en' } = Astro.params;
+const product = getProduct(id, lang);
+
+if (!product) {
+  return Astro.redirect(`/${lang}/404`);
+}
+
+const translations = await import(`../../../../public/locales/${lang}.json`);
+const t = (key: string) => translations.default[key] || key;
+
+// SEO Data
+const seoTitle = lang === 'es'
+  ? `${product.title} - ${product.tagline} | OSIX Tech`
+  : `${product.title} - ${product.tagline} | OSIX Tech`;
+const seoDescription = product.description.substring(0, 160);
+
+// Structured Data
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": `https://osix.tech/${lang}/`
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": lang === 'es' ? 'Productos' : 'Products',
+      "item": `https://osix.tech/${lang}/#products`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": product.title,
+      "item": `https://osix.tech/${lang}/productos/${id}`
+    }
+  ]
+};
+
+const productSchema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.title,
+  "description": product.description,
+  "image": product.images.map(img => `https://osix.tech${img}`),
+  "brand": {
+    "@type": "Organization",
+    "name": "OSIX Tech"
+  }
+};
+
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": seoTitle,
+  "description": seoDescription,
+  "url": `https://osix.tech/${lang}/productos/${id}`,
+  "inLanguage": lang,
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "OSIX Tech",
+    "url": "https://osix.tech"
+  },
+  "breadcrumb": breadcrumbSchema
+};
+
+const jsonLd = [productSchema, webPageSchema];
+---
+
+<Layout
+  lang={lang}
+  title={seoTitle}
+  description={seoDescription}
+  image={product.images[0]}
+  pageType="product"
+  jsonLd={jsonLd}>
+  <LoadingScreen duration={1000} />
+
+  <!-- HERO -->
+  <section class="hero-section relative min-h-[450px] bg-black lg:min-h-[550px] flex items-center overflow-hidden mb-0">
+    <div class="hero-bg absolute inset-0 z-0 bg-black">
+      <img src={product.images[0]} alt={product.title} class="hero-image object-cover w-full h-full" />
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+    </div>
+    <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
+      <div class="max-w-2xl">
+        <span class={`hero-badges inline-block px-3 py-1 backdrop-blur-sm text-sm border mb-6 opacity-0 ${product.textColor === 'dark' ? 'bg-black/20 text-black border-black/30' : 'bg-white/20 text-white border-white/30'}`}>
+          {lang === 'es' ? 'Producto' : 'Product'}
+        </span>
+        <h1 class={`hero-title text-5xl md:text-7xl font-bold mb-3 md:mb-6 opacity-0 ${product.textColor === 'dark' ? 'text-black' : 'text-white'}`}>{product.title}</h1>
+        <h5 class={`hero-subtitle text-xl md:text-2xl mb-8 opacity-0 ${product.textColor === 'dark' ? 'text-gray-800' : 'text-gray-50'}`}>{product.tagline}</h5>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESCRIPTION -->
+  <section class="py-16 bg-white mb-0">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="fade-up" style="--delay: 0.1s">
+        <p class="text-lg text-gray-800 leading-relaxed text-justify">{product.description}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section bg-white mb-0 py-16">
+    <div class="w-full mx-auto px-4 sm:px-6 lg:px-10">
+      <h2 class="features-title text-3xl font-bold text-black text-left mb-12 fade-up" style="--delay: 0.2s">
+        {t('products.features')}
+      </h2>
+      <div class={`features-grid grid gap-8 ${
+        product.features.length <= 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' :
+        product.features.length <= 4 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2' :
+        'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+      }`}>
+        {product.features.map((feature, index) => (
+          <div class="feature-card group relative min-h-[16rem] w-full overflow-hidden border border-gray-200 fade-scale" style={`--card-index: ${index}`}>
+            <div class="card-back relative z-10 bg-black bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.04)_0%,transparent_40%)] border border-transparent p-5 text-left text-white">
+              <div class="card-back-content opacity-0 transition-all duration-400 delay-200 group-hover:opacity-100">
+                <h5 class="mb-4 w-full border-b border-gray-600 pb-4 text-lg font-semibold">
+                  {feature.title}
+                </h5>
+                <p class="text-sm leading-relaxed text-gray-50 opacity-90">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+            <div class="card-front absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-white p-5 border border-transparent shadow-[inset_0_0_0_1px_#e5e7eb] transition-transform duration-700 ease-[cubic-bezier(0.25,_1,_0.5,_1)] group-hover:-translate-x-full">
+              <div class="flex h-16 w-16 items-center justify-center bg-black shadow-md transition-transform duration-300 group-hover:scale-110">
+                <LucideIcon name={feature.icon} className="text-white" size={32} client:load />
+              </div>
+              <h4 class="text-lg font-semibold text-black text-center px-2">{feature.title}</h4>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  {product.video && (
+    <section class="py-16 mb-0">
+      <div class="mx-auto px-4 sm:px-6 lg:px-10">
+        <h2 class="text-3xl font-bold text-black text-left mb-12">{product.title} {lang === 'es' ? 'en acción' : 'in action'}</h2>
+        <div class="relative aspect-[16/9] content-fit overflow-hidden bg-black shadow-lg">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            class="w-full h-full object-cover"
+            poster={product.images[0]}
+            preload="metadata"
+            onloadedmetadata="this.playbackRate = 2.0;"
+          >
+            <source src={product.video} type="video/mp4" />
+            {lang === 'es' ? 'Tu navegador no soporta la reproducción de video.' : 'Your browser does not support video playback.'}
+          </video>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CASE STUDY -->
+  {product.caseStudy && (
+    <section class="py-16 bg-gray-50 mb-0">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
+        <h2 class="text-3xl font-bold text-black mb-4 fade-up" style="--delay: 0.1s">
+          {t('products.caseStudy')}
+        </h2>
+        <div class="mt-8 grid lg:grid-cols-2 gap-12">
+          <div class="fade-up" style="--delay: 0.2s">
+            <h3 class="text-2xl font-semibold text-black mb-2">{product.caseStudy.title}</h3>
+            <p class="text-sm text-gray-500 mb-4">{t('products.caseStudy.client')}: {product.caseStudy.client}</p>
+            <p class="text-gray-800 leading-relaxed">{product.caseStudy.summary}</p>
+          </div>
+          {product.caseStudy.results && (
+            <div class="fade-up" style="--delay: 0.3s">
+              <h4 class="text-lg font-semibold text-black mb-4">{t('products.caseStudy.results')}</h4>
+              <ul class="space-y-3">
+                {product.caseStudy.results.map((result, index) => (
+                  <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-black mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span class="text-gray-700">{result}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {product.caseStudy.images && product.caseStudy.images.length > 0 && (
+          <div class="mt-12 fade-up" style="--delay: 0.4s">
+            <ProjectCarousel
+              images={product.caseStudy.images}
+              projectTitle={product.caseStudy.title}
+              client:load
+            />
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="py-16 bg-black">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">{t('products.cta.title')}</h2>
+      <p class="text-lg text-gray-50 mb-8">{t('products.cta.subtitle')}</p>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href={`/${lang}/#products`} class="inline-flex text-black items-center border border-white bg-white hover:bg-black hover:text-white px-6 py-3 text-base font-semibold text-center transition-all duration-300 w-full sm:w-auto">
+          {t('products.cta.viewAll')}
+        </a>
+        <a href={`/${lang}/#contact`} class="inline-flex items-center border border-white hover:bg-white hover:text-black text-white px-6 py-3 font-semibold text-center transition-all duration-300 w-full sm:w-auto">
+          {t('nav.contact')}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const initializeAnimations = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      if (isTouchDevice) {
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => {
+          card.addEventListener('click', () => {
+            card.classList.toggle('is-flipped');
+          });
+        });
+      }
+
+      const heroTimeline = () => {
+        document.querySelector('.hero-image')?.classList.add('animate');
+        setTimeout(() => { document.querySelector('.hero-badges')?.classList.add('animate'); }, 200);
+        setTimeout(() => { document.querySelector('.hero-title')?.classList.add('animate'); }, 400);
+        setTimeout(() => { document.querySelector('.hero-subtitle')?.classList.add('animate'); }, 600);
+      };
+
+      const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+          }
+        });
+      }, observerOptions);
+
+      heroTimeline();
+
+      setTimeout(() => {
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+      }, 1200);
+
+      document.querySelectorAll('.fade-scale').forEach(el => observer.observe(el));
+    };
+
+    if ((window as any).isLoadingComplete) {
+      initializeAnimations();
+    } else {
+      window.addEventListener('loadingComplete', initializeAnimations);
+    }
+  });
+</script>
+
+<style>
+  .hero-image {
+    opacity: 0;
+    filter: blur(15px) brightness(1);
+    will-change: filter, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+  .hero-image.animate {
+    animation: heroImageReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes heroImageReveal {
+    0% { opacity: 0; filter: blur(15px) brightness(1); }
+    100% { opacity: 1; filter: blur(0px) brightness(1); }
+  }
+  .hero-badges {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .hero-badges.animate { opacity: 1; transform: translateX(0); }
+  .hero-title {
+    opacity: 0;
+    transform: translateX(-100px) skewX(-5deg);
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .hero-title.animate { opacity: 1; transform: translateX(0) skewX(0); }
+  .hero-subtitle {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .hero-subtitle.animate { opacity: 1; transform: translateX(0); }
+  .fade-up {
+    opacity: 0;
+    transform: translateY(60px) rotateX(-10deg);
+    transform-origin: top center;
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--delay, 0s);
+  }
+  .fade-up.in-view { opacity: 1; transform: translateY(0) rotateX(0); }
+  .fade-scale {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-delay: calc(0.8s + (var(--card-index, 0) * 0.15s));
+  }
+  .fade-scale.in-view { opacity: 1; transform: scale(1) translateY(0); }
+  .feature-card { transition: all 0.3s ease; display: flex; }
+  .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); }
+  .features-grid { grid-auto-rows: minmax(16rem, auto); }
+  .card-front { min-height: 100%; }
+  .card-back { position: relative; height: auto; }
+  .card-back-content h5 { font-size: 1.1rem; margin-bottom: 0.75rem; padding-bottom: 0.75rem; }
+  .card-back-content p { font-size: 0.9rem; line-height: 1.5; }
+  .features-title { position: relative; overflow: hidden; }
+  .features-title::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 0; height: 2px; background: black;
+    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .features-title.in-view::after { width: 100px; }
+  .feature-card.is-flipped .card-front { transform: translateX(-100%); }
+  .feature-card.is-flipped .card-back-content { opacity: 1; }
+  .hero-section { animation: heroSectionReveal 1s cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes heroSectionReveal {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @media (max-width: 768px) {
+    .feature-card { min-height: 14rem; }
+    .card-front, .card-back { padding: 1.5rem; }
+    .card-back-content h5 { font-size: 1rem; }
+    .card-back-content p { font-size: 0.875rem; }
+  }
+</style>

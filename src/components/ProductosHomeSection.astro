@@ -7,7 +7,7 @@ const t = (k: string) => translations.default[k] || k;
 
 const products = getAllProducts(lang);
 
-const placeholderImages: Record<string, string> = {
+const productImages: Record<string, string> = {
   apec: '/products/apec.jpg',
   nessie: '/products/nessie.jpg',
   moura: '/products/moura.jpg',
@@ -17,264 +17,77 @@ const placeholderImages: Record<string, string> = {
 };
 ---
 
-<section class="section bg-white text-black" style="overflow: clip;">
+<section class="section bg-white text-black">
   <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
     <h2 class="section-title" set:html={t('products.title')} />
 
-    <div class="products-grid-container">
-      <div class="products-grid">
-        {products.map((product, index) => (
-          <a
-            href={`/${lang}/productos/${product.id}`}
-            class="product-card group"
-            style={`--card-index: ${index}`}
-          >
-            <div class="product-card-bg" style={`background-image: url('${placeholderImages[product.id] || '/products/default.jpg'}')`}></div>
-            <div class="product-card-overlay"></div>
-            <div class="product-card-content">
-              <h3 class="product-card-title">{product.title}</h3>
-              <p class="product-card-tagline">{product.tagline}</p>
+    <div class="product-list flex flex-col">
+      {products.map((product, index) => (
+        <a
+          href={`/${lang}/productos/${product.id}`}
+          class="product-item relative overflow-hidden h-48 md:h-56 group block opacity-0"
+          style={`--card-index: ${index}`}
+        >
+          <img
+            src={productImages[product.id] || '/products/default.jpg'}
+            alt={product.title}
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div class="product-item-overlay"></div>
+          <div class="relative z-10 flex items-center justify-between h-full px-6 md:px-12">
+            <div>
+              <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{product.title}</h3>
+              <p class="mt-1 text-sm md:text-base text-white/75">{product.tagline}</p>
             </div>
-            <div class="product-card-cta">
+            <div class="product-item-cta text-white text-sm font-semibold flex items-center gap-2">
               {t('products.viewMore')}
               <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </div>
-          </a>
-        ))}
-      </div>
-      <!-- Lines: vertical at 1/3 and 2/3, horizontal at 1/2 -->
-      <div class="grid-line grid-line-v1"></div>
-      <div class="grid-line grid-line-v2"></div>
-      <div class="grid-line grid-line-h1"></div>
+          </div>
+        </a>
+      ))}
     </div>
   </div>
 </section>
 
-
 <style>
-  .products-grid-container {
-    position: relative;
-    overflow: visible;
-  }
-
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    position: relative;
-    z-index: 1;
-  }
-
-  /* --- Grid lines --- */
-  .grid-line {
-    position: absolute;
-    background: black;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  /* Vertical line 1 — at 33.33%, tall, bleeds top */
-  .grid-line-v1 {
-    width: 1px;
-    left: 33.333%;
-    top: -3rem;
-    bottom: 10%;
-  }
-
-  /* Vertical line 2 — at 66.66%, shorter, bleeds bottom */
-  .grid-line-v2 {
-    width: 1px;
-    left: 66.666%;
-    top: 15%;
-    bottom: -2rem;
-  }
-
-  /* Horizontal line — at 50%, extends beyond both sides */
-  .grid-line-h1 {
-    height: 1px;
-    top: 50%;
-    left: -3rem;
-    right: -1.5rem;
-  }
-
-  /* --- Cards --- */
-  .product-card {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 4 / 3;
-    display: flex;
-    align-items: flex-end;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  .product-card.animate-in {
-    animation: fadeInUp 0.6s ease-out forwards;
-    animation-delay: calc(var(--card-index, 0) * 0.1s);
-  }
-
-  .product-card-bg {
+  .product-item-overlay {
     position: absolute;
     inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-color: #fff;
-    transition: transform 0.6s ease;
-  }
-
-  .product-card:hover .product-card-bg {
-    transform: scale(1.05);
-  }
-
-  .product-card-overlay {
-    position: absolute;
-    inset: 0;
-    background: transparent;
+    background: rgba(0, 0, 0, 0.35);
     transition: background 0.5s ease;
   }
 
-  .product-card-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-    padding: 2rem;
-    padding-right: 6rem;
-    width: 100%;
+  .product-item:hover .product-item-overlay {
+    background: rgba(0, 0, 0, 0.5);
   }
 
-  .product-card-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: black;
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.05em;
-  }
-
-  .product-card-tagline {
-    font-size: 0.875rem;
-    color: rgba(0, 0, 0, 0.6);
-    line-height: 1.5;
-    max-width: 90%;
-  }
-
-  .product-card-cta {
-    position: absolute;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: black;
+  .product-item {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateX(-60px);
+  }
+
+  .product-item.animate-in {
+    animation: slideInFromLeft 0.6s ease-out forwards;
+    animation-delay: calc(var(--card-index, 0) * 0.1s);
+  }
+
+  .product-item-cta {
+    opacity: 0;
+    transform: translateX(-8px);
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
-  .product-card:hover .product-card-cta {
+  .product-item:hover .product-item-cta {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 
-  /* --- Tablet --- */
-  @media (max-width: 1023px) {
-    .products-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .grid-line-v1 {
-      left: 50%;
-      top: -2rem;
-      bottom: 5%;
-    }
-
-    .grid-line-v2 {
-      display: none;
-    }
-
-    .grid-line-h1 {
-      top: 33.333%;
-      left: -2rem;
-      right: -1rem;
-    }
-
-    /* Add a second horizontal line via pseudo-element */
-    .products-grid-container::after {
-      content: '';
-      position: absolute;
-      height: 1px;
-      background: black;
-      top: 66.666%;
-      left: 8%;
-      right: -2.5rem;
-      z-index: 2;
-      pointer-events: none;
-    }
-  }
-
-  /* --- Mobile --- */
-  @media (max-width: 639px) {
-    .products-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .product-card {
-      aspect-ratio: 16 / 9;
-    }
-
-    .product-card-content {
-      padding: 1.5rem;
-      padding-right: 5rem;
-    }
-
-    .product-card-cta {
-      bottom: 1.5rem;
-      right: 1.5rem;
-    }
-
-    .product-card-title {
-      font-size: 1.25rem;
-    }
-
-    .grid-line-v1,
-    .grid-line-v2 {
-      display: none;
-    }
-
-    .grid-line-h1 {
-      top: 20%;
-      left: -1.5rem;
-      right: 10%;
-    }
-
-    .products-grid-container::after {
-      top: 40%;
-      left: 5%;
-      right: -1.5rem;
-    }
-
-    .products-grid-container::before {
-      content: '';
-      position: absolute;
-      height: 1px;
-      background: black;
-      top: 60%;
-      left: -1.5rem;
-      right: 15%;
-      z-index: 2;
-      pointer-events: none;
-    }
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes slideInFromLeft {
+    from { opacity: 0; transform: translateX(-60px); }
+    to { opacity: 1; transform: translateX(0); }
   }
 </style>
 
@@ -289,7 +102,7 @@ const placeholderImages: Record<string, string> = {
         });
       }, { threshold: 0.1 });
 
-      document.querySelectorAll('.product-card').forEach(card => observer.observe(card));
+      document.querySelectorAll('.product-item').forEach(card => observer.observe(card));
     };
 
     if ((window as any).isLoadingComplete) {

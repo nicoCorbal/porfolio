@@ -120,7 +120,7 @@ const manifestoItems = [
 ];
 ---
 
-<section id="services" class="section bg-white text-black overflow-hidden">
+<section id="about-us" class="section bg-white text-black overflow-hidden">
   <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
     <div class="text-center">
       <h2 class="section-title" set:html={t('services.title')} />
@@ -817,7 +817,7 @@ const manifestoItems = [
       }, observerOptions);
 
       // Observe section title
-      const sectionTitle = document.querySelector('#services .section-title');
+      const sectionTitle = document.querySelector('#about-us .section-title');
       if (sectionTitle) {
         animationObserver.observe(sectionTitle);
       }

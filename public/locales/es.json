@@ -1,4 +1,5 @@
 {
+    "nav.products": "Productos",
     "nav.services": "Servicios",
     "nav.values": "Valores",
     "nav.projects": "Proyectos",
@@ -12,10 +13,10 @@
 
     "hero.title.line1": "Automatización inteligente",
     "hero.title.line2": "para los desafíos de tu negocio",
-    "hero.cta.projects": "Ver Proyectos",
+    "hero.cta.projects": "Ver Productos",
     "hero.cta.contact": "Contactar",
 
-    "services.title": "Nuestros <span class=\"font-bold\">Servicios</span>",
+    "services.title": "Nuestra <span class=\"font-bold\">Identidad</span>",
     "services.img.alt": "Servicios",
     "services.text.1": "Haz realidad tu visión con <span class=\"font-bold\">soluciones web, móviles y de escritorio</span>",
     "services.text.2": "Desarrolladas de forma <span class=\"font-bold\">rápida</span> y <span class=\"font-bold\">fiable</span>, por una <span class=\"font-bold\">nueva generación de desarrolladores</span>.",
@@ -181,6 +182,33 @@
     "bento.cards.cybersecurity.back_text": "Nos especializamos en integrar IA avanzada en procesos empresariales reales. Desde asistentes inteligentes hasta análisis predictivo y modelos de lenguaje, incorporamos capacidades de IA en tus sistemas para desbloquear nuevos niveles de inteligencia, automatización, personalización y eficiencia operativa.",
     "bento.cards.automation.title": "Automatización de Procesos",
     "bento.cards.automation.back_text": "Diseñamos e implementamos soluciones completas de automatización de procesos. Desde operaciones internas hasta flujos de trabajo orientados al cliente, ayudamos a las empresas a eliminar tareas repetitivas, reducir errores humanos, ahorrar tiempo y enfocar a sus equipos en actividades de alto impacto que generan valor.",
+
+    "products.title": "Nuestros <span class='font-bold'>Productos</span>",
+    "products.viewMore": "Ver producto",
+    "products.features": "Características Principales",
+    "products.caseStudy": "Caso de Éxito",
+    "products.caseStudy.client": "Cliente",
+    "products.caseStudy.results": "Resultados",
+    "products.cta.title": "¿Te interesa este producto?",
+    "products.cta.subtitle": "No dudes en contactarnos para obtener más información",
+    "products.cta.viewAll": "Ver Todos los Productos",
+
+    "services.section.title": "Nuestros <span class='font-bold'>Servicios</span>",
+    "services.viewMore": "Ver servicio",
+    "services.highlights": "Puntos Clave",
+    "services.cta.title": "¿Necesitas este servicio?",
+    "services.cta.subtitle": "Cuéntanos tu caso y te ayudamos sin compromiso",
+    "services.cta.viewAll": "Ver Todos los Servicios",
+
+    "caseStudies.title": "Nuestro <span class='font-bold'>Impacto</span>",
+    "caseStudies.description": "Cada proyecto es una historia de transformación real. Trabajamos codo a codo con nuestros clientes para diseñar soluciones que <span class='font-bold'>resuelven problemas concretos</span> y generan resultados medibles.",
+    "caseStudies.stat1.value": "Múltiples",
+    "caseStudies.stat1.label": "sectores transformados",
+    "caseStudies.stat2.value": "100%",
+    "caseStudies.stat2.label": "tecnología propia",
+    "caseStudies.hint": "Haz clic en las tarjetas para explorar más casos",
+    "caseStudies.results": "Resultados",
+    "caseStudies.viewMore": "Ver caso completo",
 
     "footer.description": "Creamos soluciones innovadoras para tu negocio. Nos especializamos en desarrollo móvil, web y de escritorio con tecnologías de vanguardia.",
     "footer.links.title": "Enlaces",

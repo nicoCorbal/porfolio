@@ -42,7 +42,7 @@ npm run astro [command]
 - `/src/pages/[lang]/` - Dynamic language routing (en/es) with static generation
 - `/src/components/` - Mixed Astro (.astro) and React (.jsx) components
 - `/src/content/` - Markdown content organized by language with content collections
-- `/src/data/` - TypeScript data files (projects definitions)
+- `/src/data/` - TypeScript data files (products, services definitions)
 - `/src/utils/` - Utility functions (EmailJS configuration)
 - `/public/locales/` - Translation JSON files for i18next
 - `/public/animations/` - Rive animation files (.riv)
@@ -53,13 +53,14 @@ npm run astro [command]
 2. **Internationalization**: i18next with JSON locale files and TypeScript data objects
 3. **Mixed Components**: Astro components for layout/structure, React components for interactivity
 4. **Content Collections**: Markdown files organized by language (en/es) for policy pages
-5. **Data-Driven Projects**: Projects defined in TypeScript with multilingual support
+5. **Data-Driven Products/Services**: Products and services defined in TypeScript with multilingual support
 
 ### Important Files
 - `astro.config.mjs` - Static output, React + Tailwind integrations
 - `src/i18n.ts` - i18next initialization with HTTP backend
 - `src/content.config.ts` - Content collections for en/es markdown
-- `src/data/projects-multilingual.ts` - Complete project data structure
+- `src/data/products-multilingual.ts` - Product data with case studies
+- `src/data/services-multilingual.ts` - Service data with highlights
 - `src/pages/[lang]/index.astro` - Main landing page with all sections
 - `src/layouts/Layout.astro` - Base layout with SEO, meta tags, global styles
 - `tailwind.config.cjs` - Tailwind configuration with custom fonts
@@ -80,11 +81,11 @@ The project uses EmailJS for contact forms. Required variables:
 - `LoadingScreen.astro/.tsx` - Initial loading animation
 
 ### Section Components
-- `Hero.astro` - Hero section with video background
-- `BentoGridSection.astro` - Services grid layout
-- `ProjectsSection.astro` - Projects showcase
+- `Hero.astro` - Hero section with 3D logo
+- `ProductosHomeSection.astro` - Products grid with links to product pages
+- `ServiciosHomeSection.astro` - Services grid with links to service pages
+- `CasosExitoSection.astro` - Case studies / success stories
 - `AboutSection.astro` - About/team information with slider
-- `AwardsSection.astro` - Awards and achievements
 - `StaticContactSection.astro` - Contact form with EmailJS
 
 ### Interactive Components
@@ -93,12 +94,20 @@ The project uses EmailJS for contact forms. Required variables:
 
 ## Data Management
 
-### Projects System
-Projects are defined in `src/data/projects-multilingual.ts` with:
+### Products System
+Products are defined in `src/data/products-multilingual.ts` with:
 - Multilingual support (en/es)
-- Rich metadata (features, use cases, timeline)
+- Rich metadata (features, case studies, images)
 - TypeScript interfaces for type safety
-- Helper functions: `getProject()`, `getAllProjects()`, `getProjectIds()`
+- Helper functions: `getProduct()`, `getAllProducts()`, `getProductIds()`
+- Product pages at `/[lang]/productos/[id]`
+
+### Services System
+Services are defined in `src/data/services-multilingual.ts` with:
+- Multilingual support (en/es)
+- Highlights and descriptions
+- Helper functions: `getService()`, `getAllServices()`, `getServiceIds()`
+- Service pages at `/[lang]/servicios/[id]`
 
 ### Content Collections
 Markdown content in `src/content/[lang]/` for:

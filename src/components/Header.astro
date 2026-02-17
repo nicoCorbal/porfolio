@@ -8,10 +8,12 @@ const { lang, isMainPage = false } = Astro.props;
 
 import enLocales from '../../public/locales/en.json';
 import esLocales from '../../public/locales/es.json';
-import { getAllProjects } from '../data/projects-multilingual';
+import { getAllProducts } from '../data/products-multilingual';
+import { getAllServices } from '../data/services-multilingual';
 
 const t = lang === 'es' ? esLocales : enLocales;
-const projects = getAllProjects(lang);
+const products = getAllProducts(lang);
+const services = getAllServices(lang);
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full bg-white transition-all duration-300 shadow-lg z-50 md:px-12 md:py-6 px-6 py-3">
@@ -27,18 +29,23 @@ const projects = getAllProjects(lang);
         <!-- Desktop navigation -->
         <ul class="hidden md:flex items-center text-black text-[18px] font-semibold lg:gap-8 md:gap-6 relative tracking-wider">
           <li><a href={`/${lang}/#home`} class="nav-item transition-colors duration-200">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
-          <li><a href={`/${lang}/#services`} class="nav-item  transition-colors duration-200">{t['nav.services']}</a></li>
-          <li class="nav-dropdown relative">
-            <button class="nav-item    text-[18px] font-semibold  transition-colors duration-200 cursor-pointer flex items-center gap-1" data-section="projects">
-              {t['nav.projects']}
+          <li class="nav-dropdown relative" data-dropdown="products">
+            <button class="nav-item text-[18px] font-semibold transition-colors duration-200 cursor-pointer flex items-center gap-1" data-section="products">
+              {t['nav.products']}
+              <svg class="w-3 h-3 mt-0.5 nav-dropdown-arrow transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+          </li>
+          <li class="nav-dropdown relative" data-dropdown="services">
+            <button class="nav-item text-[18px] font-semibold transition-colors duration-200 cursor-pointer flex items-center gap-1" data-section="services">
+              {t['nav.services']}
               <svg class="w-3 h-3 mt-0.5 nav-dropdown-arrow transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </button>
           </li>
           <li><a href={`/${lang}/#about`} class="nav-item transition-colors duration-200">{t['nav.team']}</a></li>
-          <li><a href={`/${lang}/kted/c`} class="nav-item transition-colors duration-200">{t['nav.kted']}</a></li>
-          <!--<li><a href={`/${lang}/#awards`} class="nav-item  transition-colors duration-200">{t['nav.awards']}</a></li>-->
        </ul>
         
         <!-- Navigation indicator line -->
@@ -64,24 +71,30 @@ const projects = getAllProjects(lang);
       </div>
     </nav>
   
-  <!-- Projects expansion panel -->
-  <div class="projects-expansion absolute left-0 right-0 top-full bg-white shadow-lg overflow-hidden">
-    <div class=" sm:px-8 pt-2 pb-3">
-      <div class="flex flex-row items-center justify-start gap-8 max-w-6xl">
-        {Object.values(projects).map((project) => (
-          <a href={`/${lang}/projects/${project.id}`} class="group block transition-all duration-300 overflow-hidden hover:scale-105">
-            <div class="p-4 transition-all duration-300 group-hover:translate-y-[-2px]">
-              <h3 class="font-semibold text-black transition-all duration-300 group-hover:tracking-wide">{project.title}</h3>
-              <p class="text-sm text-gray-600 mt-1 transition-all duration-300">{project.category}</p>
-            </div>
-          </a>
-        ))}
-        <a href={`/${lang}/kted/c`} class="group block transition-all duration-300 overflow-hidden hover:scale-105">
-          <div class="p-4 transition-all duration-300 group-hover:translate-y-[-2px]">
-            <h3 class="font-semibold text-black transition-all duration-300 group-hover:tracking-wide">KTED</h3>
-            <p class="text-sm text-gray-600 mt-1 transition-all duration-300">{lang === 'es' ? 'Espacios de Datos' : 'Data Spaces'}</p>
-          </div>
-        </a>
+  <!-- Shared dropdown panel -->
+  <div class="nav-expansion absolute left-0 right-0 top-full bg-white shadow-lg overflow-hidden" id="nav-dropdown-panel">
+    <div class="px-6 md:px-12 py-4 relative">
+      <!-- Products card group -->
+      <div class="card-group" data-group="products">
+        <div class="flex flex-row items-stretch gap-3">
+          {products.map((product) => (
+            <a href={`/${lang}/productos/${product.id}`} class="nav-card group flex-1 flex flex-col justify-between gap-2 p-5 rounded-xl no-underline transition-opacity duration-300 hover:opacity-80 min-h-[140px]" style="background-color: #0a0a0a; color: #fff;">
+              <span class="nav-card-label font-semibold text-[18px] tracking-tight">{product.title}</span>
+              <span class="nav-card-tagline text-[14px] opacity-70 leading-snug">{product.tagline}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      <!-- Services card group -->
+      <div class="card-group" data-group="services">
+        <div class="flex flex-row items-stretch gap-3">
+          {services.map((service) => (
+            <a href={`/${lang}/servicios/${service.id}`} class="nav-card group flex-1 flex flex-col justify-between gap-2 p-5 rounded-xl no-underline transition-opacity duration-300 hover:opacity-80 min-h-[140px]" style="background-color: #0a0a0a; color: #fff;">
+              <span class="nav-card-label font-semibold text-[18px] tracking-tight">{service.title}</span>
+              <span class="nav-card-tagline text-[14px] opacity-70 leading-snug">{service.tagline}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   </div>
@@ -98,10 +111,9 @@ const projects = getAllProjects(lang);
   <nav class="text-center">
     <ul class="space-y-6">
       <li class="mobile-nav-item"><a href={`/${lang}/#home`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#products`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.products']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#services`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.services']}</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/#projects`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.projects']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#about`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.team']}</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/kted/c`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.kted']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#contact`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.contact']}</a></li>
     </ul>
   </nav>
@@ -118,9 +130,9 @@ interface HeaderState {
   activeNavItem: HTMLElement | null;
   disableIndicatorUpdate: boolean;
   isMenuOpen: boolean;
-  projectsExpansion: HTMLElement | null;
-  projectsNavItem: Element | null;
-  expansionTimeout: number | null;
+  dropdownTriggers: Map<string, HTMLElement>;
+  dropdownPanel: HTMLElement | null;
+  activeDropdown: string | null;
   scrollListener: (() => void) | null;
   resizeListener: (() => void) | null;
 }
@@ -132,9 +144,9 @@ const state: HeaderState = {
   activeNavItem: null,
   disableIndicatorUpdate: false,
   isMenuOpen: false,
-  projectsExpansion: null,
-  projectsNavItem: null,
-  expansionTimeout: null,
+  dropdownTriggers: new Map(),
+  dropdownPanel: null,
+  activeDropdown: null,
   scrollListener: null,
   resizeListener: null
 };
@@ -159,31 +171,40 @@ function initializeHeader() {
   state.header = document.getElementById('main-header');
   state.heroSection = document.querySelector('section#home') as HTMLElement | null;
   state.navIndicator = document.getElementById('nav-indicator');
-  state.projectsExpansion = document.querySelector('.projects-expansion') as HTMLElement;
-  state.projectsNavItem = document.querySelector('.nav-dropdown');
-  
+  // Setup dropdown triggers and shared panel
+  state.dropdownTriggers = new Map();
+  state.dropdownPanel = document.getElementById('nav-dropdown-panel');
+  state.activeDropdown = null;
+  document.querySelectorAll('.nav-dropdown[data-dropdown]').forEach(trigger => {
+    const key = trigger.getAttribute('data-dropdown')!;
+    state.dropdownTriggers.set(key, trigger as HTMLElement);
+  });
+
   // Reset state
   state.activeNavItem = null;
   state.disableIndicatorUpdate = false;
-  state.expansionTimeout = null;
-  
-  // Show header on project pages (not on main page with hero)
+
+  // Show header on subpages (not on main page with hero)
   if (!state.heroSection && state.header) {
-    // This is a project page or other page without hero section
     state.header.classList.add('visible');
-    // Force immediate visibility on non-hero pages
     state.header.style.transform = 'translateY(0)';
     state.header.style.opacity = '1';
-    
-    // Check if this is a project page and set the indicator
-    if (window.location.pathname.includes('/projects/')) {
-      const projectsBtn = document.querySelector('.nav-dropdown .nav-item') as HTMLElement | null;
-      if (projectsBtn) {
-        projectsBtn.classList.add('nav-active');
-        state.activeNavItem = projectsBtn;
-        setTimeout(() => {
-          moveIndicatorTo(projectsBtn);
-        }, 100);
+
+    // Check if this is a product/service page and set the indicator
+    const pathname = window.location.pathname;
+    if (pathname.includes('/productos/')) {
+      const productsBtn = document.querySelector('[data-dropdown="products"] .nav-item') as HTMLElement | null;
+      if (productsBtn) {
+        productsBtn.classList.add('nav-active');
+        state.activeNavItem = productsBtn;
+        setTimeout(() => moveIndicatorTo(productsBtn), 100);
+      }
+    } else if (pathname.includes('/servicios/')) {
+      const servicesBtn = document.querySelector('[data-dropdown="services"] .nav-item') as HTMLElement | null;
+      if (servicesBtn) {
+        servicesBtn.classList.add('nav-active');
+        state.activeNavItem = servicesBtn;
+        setTimeout(() => moveIndicatorTo(servicesBtn), 100);
       }
     }
   } else if (state.header) {
@@ -203,7 +224,7 @@ function initializeHeader() {
   setupToggleHeaderVisibility();
   setupNavigation();
   setupMobileMenu();
-  setupProjectsDropdown();
+  setupDropdowns();
   setupScrollHandlers();
   
   // Initial check
@@ -296,12 +317,12 @@ function updateIndicatorBySection(sectionId: string) {
   }
   
   let targetNavItem = document.querySelector(`nav .nav-item[href$="#${sectionId}"]`) as HTMLElement | null;
-  // Fallback for the Projects dropdown (button without href)
-  if (!targetNavItem && sectionId === 'projects') {
-    const projectsBtn = document.querySelector('.nav-dropdown .nav-item') as HTMLElement | null;
-    if (projectsBtn) {
-      targetNavItem = projectsBtn;
-    }
+  // Fallback for dropdown buttons (Products/Services without href)
+  if (!targetNavItem && sectionId === 'products') {
+    targetNavItem = document.querySelector('[data-dropdown="products"] .nav-item') as HTMLElement | null;
+  }
+  if (!targetNavItem && sectionId === 'services') {
+    targetNavItem = document.querySelector('[data-dropdown="services"] .nav-item') as HTMLElement | null;
   }
   if (targetNavItem) {
     // Update .nav-active on scroll-based section change
@@ -381,10 +402,12 @@ function setupNavigation() {
   
   // Helper function to get the correct nav item to return to
   const getReturnNavItem = () => {
-    // If we're on a project page, always return to projects
-    if (window.location.pathname.includes('/projects/')) {
-      const projectsBtn = document.querySelector('.nav-dropdown .nav-item') as HTMLElement | null;
-      return projectsBtn;
+    // If we're on a product/service page, return to appropriate nav item
+    if (window.location.pathname.includes('/productos/')) {
+      return document.querySelector('[data-dropdown="products"] .nav-item') as HTMLElement | null;
+    }
+    if (window.location.pathname.includes('/servicios/')) {
+      return document.querySelector('[data-dropdown="services"] .nav-item') as HTMLElement | null;
     }
     // Otherwise return to the active nav item
     return state.activeNavItem;
@@ -438,7 +461,7 @@ function setupNavigation() {
       if (!href || (!href.startsWith('#') && !href.includes('/#'))) return;
       
       // If we're on a project page and clicking a hash link, we need to navigate to main page
-      if (window.location.pathname.includes('/projects/') && href.includes('/#')) {
+      if (window.location.pathname.includes('/productos/') || window.location.pathname.includes('/servicios/') && href.includes('/#')) {
         // Let the browser handle the navigation
         return;
       }
@@ -515,30 +538,24 @@ function setupNavigation() {
     });
   }
   
-  // Projects dropdown button smooth scrolling
-  const projectsBtn = document.querySelector('button[data-section="projects"]');
-  if (projectsBtn) {
-    projectsBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetSection = document.getElementById('projects');
-      
+  // Dropdown button smooth scrolling (Products, Services)
+  document.querySelectorAll('button[data-section]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const sectionId = btn.getAttribute('data-section');
+      if (!sectionId) return;
+      const targetSection = document.getElementById(sectionId);
+
       if (targetSection && state.header) {
+        e.preventDefault();
         const headerHeight = state.header.offsetHeight;
         const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight;
         smoothScrollTo(targetPosition, 2000);
-        
-        // Close the dropdown if it's open
-        const dropdown = projectsBtn.closest('.nav-dropdown');
-        if (dropdown) {
-          dropdown.classList.remove('expanded');
-          const expansion = document.querySelector('.projects-expansion');
-          if (expansion) {
-            expansion.classList.remove('expanded');
-          }
-        }
+
+        // Close the dropdown
+        state.dropdownTriggers.forEach(trigger => trigger.classList.remove('expanded'));
       }
     });
-  }
+  });
   
   // Add a nav container mouseleave handler as a fallback
   const mainNav = document.getElementById('main-nav');
@@ -640,65 +657,147 @@ function setupMobileMenu() {
   }
 }
 
-// Setup projects dropdown
-function setupProjectsDropdown() {
-  if (!state.projectsNavItem || !state.projectsExpansion) return;
-  
-  const triggerEl = state.projectsNavItem as HTMLElement; // the <li.nav-dropdown>
-  const panelEl = state.projectsExpansion as HTMLElement; // the .projects-expansion container
-  
+// Setup shared dropdown panel with GSAP animations
+function setupDropdowns() {
+  import('gsap').then((gsapMod) => {
+    const gsap = gsapMod.gsap || gsapMod.default || gsapMod;
+    setupDropdownsWithGsap(gsap);
+  });
+}
+
+function setupDropdownsWithGsap(gsap: any) {
+  const panel = state.dropdownPanel;
+  if (!panel) return;
+
+  const ease = 'power3.out';
+  const cardGroups = new Map<string, { group: HTMLElement; cards: NodeListOf<Element> }>();
+  panel.querySelectorAll('.card-group[data-group]').forEach(el => {
+    const key = el.getAttribute('data-group')!;
+    cardGroups.set(key, { group: el as HTMLElement, cards: el.querySelectorAll('.nav-card') });
+  });
+
   let hideTimer: number | null = null;
-  
-  function openPanel() {
-    if (hideTimer) {
-      clearTimeout(hideTimer);
-      hideTimer = null;
-    }
-    panelEl.classList.add('expanded');
-    triggerEl.classList.add('expanded');
+  let panelOpen = false;
+  let currentTl: any = null;
+
+  // Set initial states
+  gsap.set(panel, { height: 0, overflow: 'hidden' });
+  cardGroups.forEach(({ cards }) => gsap.set(cards, { yPercent: 120 }));
+
+  // Build a timeline for a specific card group
+  function buildTimeline(key: string) {
+    const target = cardGroups.get(key);
+    if (!target) return null;
+
+    // Activate group
+    cardGroups.forEach(({ group }) => group.classList.remove('active'));
+    target.group.classList.add('active');
+    gsap.set(target.cards, { yPercent: 120 });
+
+    const tl = gsap.timeline({ paused: true });
+
+    // Panel opens first
+    tl.to(panel, { height: 'auto', duration: 0.3, ease });
+
+    // Cards slide up from below — no opacity, overflow:hidden clips them naturally
+    tl.to(target.cards, { yPercent: 0, duration: 0.4, ease, stagger: 0.08 }, '-=0.05');
+
+    return tl;
   }
-  
+
+  function openPanel(key: string) {
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+
+    const target = cardGroups.get(key);
+    if (!target) return;
+
+    // Update trigger arrows
+    state.dropdownTriggers.forEach((trigger, k) => {
+      trigger.classList.toggle('expanded', k === key);
+    });
+
+    if (!panelOpen) {
+      // Panel closed — build timeline and play forward
+      panelOpen = true;
+      state.activeDropdown = key;
+      gsap.set(panel, { height: 0 });
+
+      if (currentTl) currentTl.kill();
+      currentTl = buildTimeline(key);
+      if (currentTl) currentTl.play(0);
+
+    } else if (state.activeDropdown !== key) {
+      // Panel open, switching groups — reverse current, then play new
+      const oldTl = currentTl;
+      state.activeDropdown = key;
+
+      if (oldTl) {
+        oldTl.eventCallback('onReverseComplete', () => {
+          // Old cards fully reversed — now build and play new
+          gsap.set(panel, { height: 0 });
+          currentTl = buildTimeline(key);
+          if (currentTl) currentTl.play(0);
+        });
+        oldTl.reverse();
+      } else {
+        gsap.set(panel, { height: 0 });
+        currentTl = buildTimeline(key);
+        if (currentTl) currentTl.play(0);
+      }
+    }
+  }
+
+  function closePanel() {
+    state.dropdownTriggers.forEach(trigger => trigger.classList.remove('expanded'));
+
+    if (currentTl) {
+      currentTl.eventCallback('onReverseComplete', () => {
+        panelOpen = false;
+        state.activeDropdown = null;
+        cardGroups.forEach(({ group }) => group.classList.remove('active'));
+      });
+      currentTl.reverse();
+    }
+  }
+
   function scheduleClose() {
-    if (hideTimer) {
-      clearTimeout(hideTimer);
-    }
-    // Wait a bit so the user can move the pointer from the trigger into the panel without collapse.
+    if (hideTimer) clearTimeout(hideTimer);
     hideTimer = window.setTimeout(() => {
-      // If either the trigger or the panel is currently hovered or focused, keep it open.
-      const stillHovering = triggerEl.matches(':hover') || panelEl.matches(':hover');
-      const stillFocused = triggerEl.contains(document.activeElement) || panelEl.contains(document.activeElement);
-      if (stillHovering || stillFocused) return;
-      panelEl.classList.remove('expanded');
-      triggerEl.classList.remove('expanded');
+      let stillHovering = panel.matches(':hover');
+      state.dropdownTriggers.forEach(trigger => {
+        if (trigger.matches(':hover')) stillHovering = true;
+      });
+      if (stillHovering) return;
+      closePanel();
       hideTimer = null;
-    }, 250);
+    }, 200);
   }
-  
-  // Pointer interactions
-  triggerEl.addEventListener('pointerenter', openPanel);
-  triggerEl.addEventListener('pointerleave', scheduleClose);
-  panelEl.addEventListener('pointerenter', openPanel);
-  panelEl.addEventListener('pointerleave', scheduleClose);
-  
-  // Keyboard accessibility: open on focus within trigger; close when focus leaves both.
-  triggerEl.addEventListener('focusin', openPanel);
-  panelEl.addEventListener('focusin', openPanel);
-  triggerEl.addEventListener('focusout', scheduleClose);
-  panelEl.addEventListener('focusout', scheduleClose);
-  
-  // Touch devices: tap toggles open/close.
-  triggerEl.addEventListener('click', (e) => {
-    // Prevent default button behavior from immediately navigating.
-    // Instead, toggle panel; second tap on the same control or a tap on a project link will navigate.
-    const isExpanded = triggerEl.classList.contains('expanded');
-    if (!isExpanded) {
-      e.preventDefault();
-      openPanel();
-    } else {
-      // allow normal navigation on second tap
-      scheduleClose();
-    }
-  }, { capture: true });
+
+  function cancelClose() {
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+  }
+
+  // Bind events to each trigger
+  state.dropdownTriggers.forEach((triggerEl, key) => {
+    triggerEl.addEventListener('pointerenter', () => openPanel(key));
+    triggerEl.addEventListener('pointerleave', scheduleClose);
+    triggerEl.addEventListener('focusin', () => openPanel(key));
+    triggerEl.addEventListener('focusout', scheduleClose);
+    triggerEl.addEventListener('click', (e) => {
+      if (!panelOpen || state.activeDropdown !== key) {
+        e.preventDefault();
+        openPanel(key);
+      } else {
+        closePanel();
+      }
+    }, { capture: true });
+  });
+
+  // Bind events to the shared panel
+  panel.addEventListener('pointerenter', cancelClose);
+  panel.addEventListener('pointerleave', scheduleClose);
+  panel.addEventListener('focusin', cancelClose);
+  panel.addEventListener('focusout', scheduleClose);
 }
 
 // Setup scroll handlers
@@ -766,13 +865,26 @@ document.addEventListener('astro:page-load', initializeHeader);
     transform: rotate(180deg);
   }
   
-  .projects-expansion {
-    max-height: 0;
-    transition: max-height 0.6s ease-out;
+  .nav-expansion {
+    height: 0;
+    overflow: hidden;
   }
-  
-  .projects-expansion.expanded {
-    max-height: 500px;
+
+  .nav-expansion .relative {
+    display: grid;
+  }
+
+  .card-group {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+
+  .card-group.active {
+    visibility: visible;
+  }
+
+  .nav-card {
+    will-change: transform, opacity;
   }
   
   #mobile-menu {

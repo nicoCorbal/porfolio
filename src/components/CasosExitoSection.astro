@@ -1,0 +1,240 @@
+---
+import { getAllCases } from '../data/cases-multilingual';
+import ImpactCardSwap from './ImpactCardSwap.jsx';
+
+const { lang = 'es' } = Astro.props;
+const translations = await import(`../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+const cases = getAllCases(lang);
+---
+
+<section class="section bg-white text-black overflow-hidden">
+  <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
+    <h2 class="section-title" set:html={t('caseStudies.title')} />
+
+    <div class="impact-layout">
+      <div class="impact-text">
+        <p class="impact-description" set:html={t('caseStudies.description')} />
+        <div class="impact-stats">
+          <div class="impact-stat">
+            <span class="impact-stat-number">{t('caseStudies.stat1.value')}</span>
+            <span class="impact-stat-label">{t('caseStudies.stat1.label')}</span>
+          </div>
+          <div class="impact-stat">
+            <span class="impact-stat-number">{t('caseStudies.stat2.value')}</span>
+            <span class="impact-stat-label">{t('caseStudies.stat2.label')}</span>
+          </div>
+        </div>
+        <p class="impact-hint">{t('caseStudies.hint')}</p>
+      </div>
+
+      <div class="impact-cards">
+        <ImpactCardSwap client:visible cases={cases} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .impact-layout {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    min-height: 560px;
+  }
+
+  .impact-text {
+    flex: 1;
+    max-width: 400px;
+  }
+
+  .impact-description {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #444;
+  }
+
+  .impact-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 2rem;
+  }
+
+  .impact-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .impact-stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #000;
+    line-height: 1;
+  }
+
+  .impact-stat-label {
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .impact-hint {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: #aaa;
+    font-style: italic;
+  }
+
+  .impact-cards {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  /* CardSwap container overrides */
+  .impact-cards :global(.card-swap-container) {
+    position: relative;
+    transform: none;
+    perspective: 900px;
+    overflow: visible;
+  }
+
+  .impact-cards :global(.card-swap-card) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 0;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    transform-style: preserve-3d;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+  }
+
+  .impact-cards :global(.impact-swap-wrapper) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .impact-cards :global(.impact-card-inner) {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .impact-cards :global(.impact-card-product) {
+    display: inline-block;
+    width: fit-content;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #fff;
+    background: #000;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+  }
+
+  .impact-cards :global(.impact-card-title) {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #000;
+    margin-top: 0.25rem;
+    line-height: 1.2;
+  }
+
+  .impact-cards :global(.impact-card-client) {
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: 500;
+  }
+
+  .impact-cards :global(.impact-card-summary) {
+    font-size: 0.8rem;
+    color: #555;
+    line-height: 1.5;
+    margin-top: 0.25rem;
+    flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
+
+  .impact-cards :global(.impact-card-results) {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .impact-cards :global(.impact-card-results li) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #444;
+    font-weight: 500;
+  }
+
+  .impact-cards :global(.impact-card-results svg) {
+    color: #000;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .impact-layout {
+      flex-direction: column;
+      gap: 2rem;
+      min-height: auto;
+    }
+
+    .impact-text {
+      max-width: 100%;
+      text-align: center;
+    }
+
+    .impact-stats {
+      justify-content: center;
+    }
+
+    .impact-hint {
+      text-align: center;
+    }
+
+    .impact-cards {
+      min-height: 480px;
+    }
+
+    .impact-cards :global(.card-swap-container) {
+      transform: scale(0.8) !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .impact-cards {
+      min-height: 420px;
+    }
+
+    .impact-cards :global(.card-swap-container) {
+      transform: scale(0.65) !important;
+    }
+  }
+</style>

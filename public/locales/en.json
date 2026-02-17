@@ -1,4 +1,5 @@
 {
+    "nav.products": "Products",
     "nav.services": "Services",
     "nav.values": "Values",
     "nav.projects": "Projects",
@@ -12,10 +13,10 @@
 
     "hero.title.line1": "Smart automation",
     "hero.title.line2": "for real business challenges",
-    "hero.cta.projects": "View Projects",
+    "hero.cta.projects": "View Products",
     "hero.cta.contact": "Contact",
 
-    "services.title": "Our <span class=\"font-bold\">Services</span>",
+    "services.title": "Our <span class=\"font-bold\">Identity</span>",
     "services.img.alt": "Services",
     "services.text.1": "Bring your vision to life through <span class=\"font-bold\">web, mobile, and desktop solutions</span>",
     "services.text.2": "Crafted <span class=\"font-bold\">fast</span> and <span class=\"font-bold\">reliably</span>, by a <span class=\"font-bold\">new generation of developers</span>.",
@@ -181,6 +182,33 @@
 "bento.cards.cybersecurity.back_text": "We specialize in integrating advanced AI into real business processes. From intelligent assistants to predictive analytics and language models, we embed AI capabilities into your systems to unlock new levels of intelligence, automation, personalization, and operational efficiency.",
 "bento.cards.automation.title": "Process Automation",
 "bento.cards.automation.back_text": "We design and implement complete process automation solutions. From internal operations to customer-facing workflows, we help companies eliminate repetitive tasks, reduce human error, save time, and focus their teams on high-impact, value-generating activities.",
+
+    "products.title": "Our <span class='font-bold'>Products</span>",
+    "products.viewMore": "View product",
+    "products.features": "Key Features",
+    "products.caseStudy": "Case Study",
+    "products.caseStudy.client": "Client",
+    "products.caseStudy.results": "Results",
+    "products.cta.title": "Interested in this product?",
+    "products.cta.subtitle": "Don't hesitate to contact us for more information",
+    "products.cta.viewAll": "View All Products",
+
+    "services.section.title": "Our <span class='font-bold'>Services</span>",
+    "services.viewMore": "View service",
+    "services.highlights": "Key Highlights",
+    "services.cta.title": "Need this service?",
+    "services.cta.subtitle": "Tell us your case and we'll help you with no commitment",
+    "services.cta.viewAll": "View All Services",
+
+    "caseStudies.title": "Our <span class='font-bold'>Impact</span>",
+    "caseStudies.description": "Every project is a story of real transformation. We work side by side with our clients to design solutions that <span class='font-bold'>solve real problems</span> and deliver measurable results.",
+    "caseStudies.stat1.value": "Multiple",
+    "caseStudies.stat1.label": "sectors transformed",
+    "caseStudies.stat2.value": "100%",
+    "caseStudies.stat2.label": "in-house technology",
+    "caseStudies.hint": "Click the cards to explore more cases",
+    "caseStudies.results": "Results",
+    "caseStudies.viewMore": "View full case",
 
     "footer.description": "We create innovative solutions for your business. We specialize in mobile, web, and desktop development with cutting-edge technologies.",
     "footer.links.title": "Links",

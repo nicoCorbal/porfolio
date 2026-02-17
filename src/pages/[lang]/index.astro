@@ -2,10 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import LogoSlider from '../../components/LogoSlider.astro';
-import BentoGridSection from '../../components/BentoGridSection.astro';
+import AboutUsSection from '../../components/AboutUsSection.astro';
+import ProductosHomeSection from '../../components/ProductosHomeSection.astro';
+import ServiciosHomeSection from '../../components/ServiciosHomeSection.astro';
+import CasosExitoSection from '../../components/CasosExitoSection.astro';
 import AboutSection from '../../components/AboutSection.astro';
-import ProjectsSection from '../../components/ProjectsSection.astro';
-import AwardsSection from '../../components/AwardsSection.astro';
 import StaticContactSection from '../../components/StaticContactSection.astro';
 import LoadingScreen from '../../components/LoadingScreen.astro';
 
@@ -106,10 +107,11 @@ const jsonLd = [organizationSchema, webPageSchema];
   <LoadingScreen duration={1000} />
   <section id="hero"><Hero lang={lang} /></section>
   <section id="partners"><LogoSlider /></section>
-  <section id="services"><BentoGridSection lang={lang} /></section>
-  <section id="projects"><ProjectsSection lang={lang} /></section>
+  <section id="about-us"><AboutUsSection lang={lang} /></section>
+  <section id="products"><ProductosHomeSection lang={lang} /></section>
+  <section id="services"><ServiciosHomeSection lang={lang} /></section>
+  <section id="cases"><CasosExitoSection lang={lang} /></section>
   <section id="about"><AboutSection lang={lang} /></section>
-  <!--<section id="awards"><AwardsSection lang={lang} /></section>-->
   <section id="contact"><StaticContactSection lang={lang} /></section>
 </Layout>
 
