@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { getService, getServiceIds } from '../../../data/services-multilingual';
+import { getCasesByService } from '../../../data/cases-multilingual';
 import LoadingScreen from '../../../components/LoadingScreen.astro';
 import { LucideIcon } from '../../../components/LucideIcon';
 
@@ -23,6 +24,8 @@ const service = getService(id, lang);
 if (!service) {
   return Astro.redirect(`/${lang}/404`);
 }
+
+const relatedCases = getCasesByService(id, lang);
 
 const translations = await import(`../../../../public/locales/${lang}.json`);
 const t = (key: string) => translations.default[key] || key;
@@ -145,6 +148,31 @@ const jsonLd = [serviceSchema, webPageSchema];
       </div>
     </div>
   </section>
+
+  {relatedCases.length > 0 && (
+    <section class="py-16 bg-white mb-0">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-black mb-8 fade-up" style="--delay: 0.1s">
+          {t('products.caseStudy')}
+        </h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {relatedCases.map((cs, index) => (
+            <a href={`/${lang}/impacto/${cs.id}`} class="group block bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
+              {cs.product && (
+                <span class="inline-block text-xs font-bold uppercase tracking-wider text-white bg-black px-2 py-0.5 mb-3">{cs.product}</span>
+              )}
+              <h3 class="text-xl font-bold text-black mb-1 group-hover:underline">{cs.title}</h3>
+              <p class="text-sm text-gray-500 mb-3">{cs.client}</p>
+              <p class="text-sm text-gray-700 line-clamp-3">{cs.summary}</p>
+              <span class="inline-block mt-4 text-sm font-semibold text-black group-hover:translate-x-1 transition-transform duration-200">
+                {t('caseStudies.viewMore')} →
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- CTA -->
   <section class="py-16 bg-black">
