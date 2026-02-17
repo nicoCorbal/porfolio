@@ -41,7 +41,7 @@ const productsForClient = products.map(p => ({
 
 <style is:global>
   .product-showcase {
-    overflow: hidden;
+    overflow: visible;
   }
 
   /* Progress bars */
@@ -93,11 +93,18 @@ const productsForClient = products.map(p => ({
     transform: scaleX(0);
   }
 
+  /* Full-bleed image wrapper */
+  .product-showcase-content {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    position: relative;
+  }
+
   /* Full-width image container */
   .product-showcase-viewport {
     display: block;
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 21 / 9;
     overflow: hidden;
     background: #000;
     text-decoration: none;
@@ -114,6 +121,7 @@ const productsForClient = products.map(p => ({
   .product-showcase-viewport:hover .product-showcase-img {
     transform: scale(1.03);
   }
+
 
   /* Gradient overlay — bottom fade to black */
   .product-showcase-overlay {
@@ -135,9 +143,9 @@ const productsForClient = products.map(p => ({
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 2.5rem 3rem;
+    padding: 2.5rem max(3rem, calc((100vw - 80rem) / 2 + 3rem));
     color: white;
-    z-index: 2;
+    z-index: 4;
   }
 
   .product-showcase-title {

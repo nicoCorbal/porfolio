@@ -247,7 +247,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
       ],
       cases: ['take'],
       images: ['/products/bond.jpg'],
-      textColor: 'dark'
+      textColor: 'light'
     }
   },
   en: {
@@ -479,7 +479,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
       ],
       cases: ['take'],
       images: ['/products/bond.jpg'],
-      textColor: 'dark'
+      textColor: 'light'
     }
   }
 };
