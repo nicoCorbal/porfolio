@@ -2,7 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import { getProduct, getProductIds } from '../../../data/products-multilingual';
 import LoadingScreen from '../../../components/LoadingScreen.astro';
-import { ProjectCarousel } from '../../../components/ProjectCarousel';
+import { getCasesByProduct } from '../../../data/cases-multilingual';
 import { LucideIcon } from '../../../components/LucideIcon';
 
 export const prerender = true;
@@ -24,6 +24,8 @@ const product = getProduct(id, lang);
 if (!product) {
   return Astro.redirect(`/${lang}/404`);
 }
+
+const relatedCases = getCasesByProduct(id, lang);
 
 const translations = await import(`../../../../public/locales/${lang}.json`);
 const t = (key: string) => translations.default[key] || key;
@@ -185,44 +187,24 @@ const jsonLd = [productSchema, webPageSchema];
   )}
 
   <!-- CASE STUDY -->
-  {product.caseStudy && (
+  {relatedCases.length > 0 && (
     <section class="py-16 bg-gray-50 mb-0">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
-        <h2 class="text-3xl font-bold text-black mb-4 fade-up" style="--delay: 0.1s">
+        <h2 class="text-3xl font-bold text-black mb-8 fade-up" style="--delay: 0.1s">
           {t('products.caseStudy')}
         </h2>
-        <div class="mt-8 grid lg:grid-cols-2 gap-12">
-          <div class="fade-up" style="--delay: 0.2s">
-            <h3 class="text-2xl font-semibold text-black mb-2">{product.caseStudy.title}</h3>
-            <p class="text-sm text-gray-500 mb-4">{t('products.caseStudy.client')}: {product.caseStudy.client}</p>
-            <p class="text-gray-800 leading-relaxed">{product.caseStudy.summary}</p>
-          </div>
-          {product.caseStudy.results && (
-            <div class="fade-up" style="--delay: 0.3s">
-              <h4 class="text-lg font-semibold text-black mb-4">{t('products.caseStudy.results')}</h4>
-              <ul class="space-y-3">
-                {product.caseStudy.results.map((result, index) => (
-                  <li class="flex items-start gap-3">
-                    <svg class="w-5 h-5 text-black mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span class="text-gray-700">{result}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {relatedCases.map((cs, index) => (
+            <a href={`/${lang}/impacto/${cs.id}`} class="group block bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
+              <h3 class="text-xl font-bold text-black mb-1 group-hover:underline">{cs.title}</h3>
+              <p class="text-sm text-gray-500 mb-3">{cs.client}</p>
+              <p class="text-sm text-gray-700 line-clamp-3">{cs.summary}</p>
+              <span class="inline-block mt-4 text-sm font-semibold text-black group-hover:translate-x-1 transition-transform duration-200">
+                {t('caseStudies.viewMore')} →
+              </span>
+            </a>
+          ))}
         </div>
-
-        {product.caseStudy.images && product.caseStudy.images.length > 0 && (
-          <div class="mt-12 fade-up" style="--delay: 0.4s">
-            <ProjectCarousel
-              images={product.caseStudy.images}
-              projectTitle={product.caseStudy.title}
-              client:load
-            />
-          </div>
-        )}
       </div>
     </section>
   )}
