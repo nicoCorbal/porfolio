@@ -28,7 +28,8 @@ const services = getAllServices(lang);
       <div class="flex items-center gap-8">
         <!-- Desktop navigation -->
         <ul class="hidden md:flex items-center text-black text-[18px] font-semibold lg:gap-8 md:gap-6 relative tracking-wider">
-          <li><a href={`/${lang}/#home`} class="nav-item transition-colors duration-200">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
+          <li><a href={`/${lang}/#hero`} class="nav-item transition-colors duration-200">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
+          <li><a href={`/${lang}/#about-us`} class="nav-item transition-colors duration-200">{t['nav.aboutUs']}</a></li>
           <li class="nav-dropdown relative" data-dropdown="products">
             <button class="nav-item text-[18px] font-semibold transition-colors duration-200 cursor-pointer flex items-center gap-1" data-section="products">
               {t['nav.products']}
@@ -45,6 +46,7 @@ const services = getAllServices(lang);
               </svg>
             </button>
           </li>
+          <li><a href={`/${lang}/#cases`} class="nav-item transition-colors duration-200">{t['nav.impact']}</a></li>
           <li><a href={`/${lang}/#about`} class="nav-item transition-colors duration-200">{t['nav.team']}</a></li>
        </ul>
         
@@ -110,9 +112,11 @@ const services = getAllServices(lang);
   
   <nav class="text-center">
     <ul class="space-y-6">
-      <li class="mobile-nav-item"><a href={`/${lang}/#home`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#hero`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#about-us`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.aboutUs']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#products`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.products']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#services`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.services']}</a></li>
+      <li class="mobile-nav-item"><a href={`/${lang}/#cases`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.impact']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#about`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.team']}</a></li>
       <li class="mobile-nav-item"><a href={`/${lang}/#contact`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.contact']}</a></li>
     </ul>
@@ -169,7 +173,7 @@ function initializeHeader() {
   
   // Get DOM elements
   state.header = document.getElementById('main-header');
-  state.heroSection = document.querySelector('section#home') as HTMLElement | null;
+  state.heroSection = document.querySelector('section#hero') as HTMLElement | null;
   state.navIndicator = document.getElementById('nav-indicator');
   // Setup dropdown triggers and shared panel
   state.dropdownTriggers = new Map();
@@ -295,7 +299,7 @@ function moveIndicatorTo(linkEl: HTMLElement | null) {
 
 function updateIndicatorBySection(sectionId: string) {
   // Don't show header or indicator on home section
-  if (sectionId === 'home' && state.heroSection) {
+  if (sectionId === 'hero' && state.heroSection) {
     state.header?.classList.remove('visible');
     if (state.navIndicator) {
       state.navIndicator.style.opacity = '0';
@@ -346,11 +350,11 @@ function setActiveNavItem() {
   let scrollPosition = window.scrollY + state.header.offsetHeight + 1;
   let foundActiveSection = false;
   
-  const firstSection = document.querySelector('section#home') || document.querySelector('section:first-of-type');
+  const firstSection = document.querySelector('section#hero') || document.querySelector('section:first-of-type');
   if (firstSection && scrollPosition < (firstSection as HTMLElement).offsetHeight) {
     // Hide header on hero section
     state.header.classList.remove('visible');
-    updateIndicatorBySection('home');
+    updateIndicatorBySection('hero');
     return;
   }
   
@@ -486,7 +490,7 @@ function setupNavigation() {
 
         if (state.activeNavItem) moveIndicatorTo(state.activeNavItem);
 
-        if (targetIdClean === 'home') {
+        if (targetIdClean === 'hero') {
           smoothScrollTo(0, 2000);
         } else {
           const targetSection = document.getElementById(targetIdClean);
@@ -640,7 +644,7 @@ function setupMobileMenu() {
           
           // Smooth scroll to target
           setTimeout(() => {
-            if (targetIdClean === 'home') {
+            if (targetIdClean === 'hero') {
               smoothScrollTo(0, 2000);
             } else {
               const targetSection = document.getElementById(targetIdClean);
@@ -914,6 +918,7 @@ document.addEventListener('astro:page-load', initializeHeader);
   #mobile-menu.active .mobile-nav-item:nth-child(5) { transition-delay: 0.5s; }
   #mobile-menu.active .mobile-nav-item:nth-child(6) { transition-delay: 0.6s; }
   #mobile-menu.active .mobile-nav-item:nth-child(7) { transition-delay: 0.7s; }
+  #mobile-menu.active .mobile-nav-item:nth-child(8) { transition-delay: 0.8s; }
   
   body.menu-open {
     overflow: hidden;

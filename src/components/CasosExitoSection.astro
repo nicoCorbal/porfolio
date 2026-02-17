@@ -120,13 +120,6 @@ const cases = getAllCases(lang);
     overflow: hidden;
   }
 
-  .impact-cards :global(.impact-swap-wrapper) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-
   .impact-cards :global(.impact-card-inner) {
     padding: 2rem;
     height: 100%;
@@ -203,6 +196,41 @@ const cases = getAllCases(lang);
     text-decoration: none;
     color: inherit;
     cursor: pointer;
+  }
+
+  .impact-cards :global(.impact-swap-wrapper) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+
+  .impact-cards :global(.impact-next-arrow) {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    z-index: 100;
+    color: #000;
+  }
+
+  .impact-cards :global(.impact-next-arrow:hover) {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   @media (max-width: 768px) {

@@ -209,7 +209,8 @@
     "caseStudies.stat1.label": "sectors transformed",
     "caseStudies.stat2.value": "100%",
     "caseStudies.stat2.label": "in-house technology",
-    "caseStudies.hint": "Click the cards to explore more cases",
+    "caseStudies.hint": "Click to explore the case",
+    "caseStudies.next": "Next case",
     "caseStudies.results": "Results",
     "caseStudies.viewMore": "View full case",
 

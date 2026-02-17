@@ -209,7 +209,8 @@
     "caseStudies.stat1.label": "sectores transformados",
     "caseStudies.stat2.value": "100%",
     "caseStudies.stat2.label": "tecnología propia",
-    "caseStudies.hint": "Haz clic en las tarjetas para explorar más casos",
+    "caseStudies.hint": "Haz clic para explorar el caso",
+    "caseStudies.next": "Siguiente caso",
     "caseStudies.results": "Resultados",
     "caseStudies.viewMore": "Ver caso completo",
 

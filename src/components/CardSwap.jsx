@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef } from 'react';
+import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import gsap from 'gsap';
 
 export const Card = forwardRef(({ customClass, ...rest }, ref) => (
@@ -49,7 +49,7 @@ const CONFIGS = {
   },
 };
 
-const CardSwap = ({
+const CardSwap = forwardRef(({
   width = 500,
   height = 400,
   cardDistance = 60,
@@ -61,7 +61,7 @@ const CardSwap = ({
   skewAmount = 6,
   easing = 'elastic',
   children,
-}) => {
+}, fwdRef) => {
   const config = CONFIGS[easing] || CONFIGS.elastic;
 
   const childArr = useMemo(() => Children.toArray(children), [children]);
@@ -123,6 +123,16 @@ const CardSwap = ({
     }
     runSwap();
   };
+
+  useImperativeHandle(fwdRef, () => ({
+    swap: () => {
+      clearInterval(intervalRef.current);
+      forceFinishAndSwap();
+      if (delay > 0) {
+        intervalRef.current = window.setInterval(() => runSwap(), delay);
+      }
+    },
+  }));
 
   useEffect(() => {
     const total = refs.length;
@@ -192,6 +202,7 @@ const CardSwap = ({
       {rendered}
     </div>
   );
-};
+});
+CardSwap.displayName = 'CardSwap';
 
 export default CardSwap;
