@@ -17,6 +17,7 @@ function FlowingMenu({
           <MenuItem
             key={idx}
             {...item}
+            index={idx}
             speed={speed}
             textColor={textColor}
             marqueeBgColor={marqueeBgColor}
@@ -29,7 +30,8 @@ function FlowingMenu({
   );
 }
 
-function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor }) {
+function MenuItem({ link, text, subtitle, image, index, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor }) {
+  const isEven = index % 2 === 1;
   const itemRef = useRef(null);
   const marqueeRef = useRef(null);
   const marqueeInnerRef = useRef(null);
@@ -125,9 +127,15 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{ color: textColor }}
+        style={{ color: textColor, flexDirection: isEven ? 'row-reverse' : 'row' }}
       >
-        {text}
+        <span className="flowing-menu__title">{text}</span>
+        {subtitle && <span className="flowing-menu__subtitle">{(() => {
+          const mid = Math.ceil(subtitle.length / 2);
+          const breakIdx = subtitle.lastIndexOf(' ', mid);
+          const splitAt = breakIdx > 0 ? breakIdx : mid;
+          return <>{subtitle.slice(0, splitAt)}<br />{subtitle.slice(splitAt).trimStart()}</>;
+        })()}</span>}
       </a>
       <div className="flowing-marquee" ref={marqueeRef} style={{ backgroundColor: marqueeBgColor }}>
         <div className="flowing-marquee__inner-wrap">

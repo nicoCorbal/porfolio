@@ -11,6 +11,7 @@ const defaultImage = '/og-image.png';
 const menuItems = services.map(service => ({
   link: `/${lang}/servicios/${service.id}`,
   text: service.title,
+  subtitle: service.tagline,
   image: service.image || defaultImage,
 }));
 ---
@@ -51,27 +52,44 @@ const menuItems = services.map(service => ({
     flex: 1;
     position: relative;
     overflow: hidden;
-    text-align: center;
-    border-top: 1px solid;
+    text-align: left;
+    border-top: 1px solid #e5e7eb;
   }
 
   .flowing-menu__item:last-child {
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #e5e7eb;
   }
 
   .flowing-menu__item-link {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 0 2rem;
     height: 100%;
     position: relative;
     cursor: pointer;
-    text-transform: uppercase;
     text-decoration: none;
     white-space: nowrap;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .flowing-menu__title {
     font-weight: 400;
     font-size: 4vh;
-    font-family: 'Orbitron', sans-serif;
+  }
+
+  .flowing-menu__subtitle {
+    font-weight: 300;
+    font-size: 1.8vh;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: right;
+    max-width: 40%;
+    white-space: normal;
+    line-height: 1.4;
+  }
+
+  .flowing-menu__item:nth-child(even) .flowing-menu__subtitle {
+    text-align: left;
   }
 
   .flowing-menu__item-link:hover {
@@ -112,12 +130,11 @@ const menuItems = services.map(service => ({
 
   .flowing-marquee span {
     white-space: nowrap;
-    text-transform: uppercase;
     font-weight: 400;
     font-size: 4vh;
     line-height: 1;
     padding: 0 1vw;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
   }
 
   .flowing-marquee__img {
@@ -135,8 +152,12 @@ const menuItems = services.map(service => ({
       height: 400px;
     }
 
-    .flowing-menu__item-link {
+    .flowing-menu__title {
       font-size: 3vh;
+    }
+
+    .flowing-menu__subtitle {
+      display: none;
     }
 
     .flowing-marquee span {
