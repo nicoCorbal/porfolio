@@ -1,0 +1,213 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCase, getCaseIds } from '../../../data/cases-multilingual';
+import { getProduct } from '../../../data/products-multilingual';
+import { getService } from '../../../data/services-multilingual';
+import LoadingScreen from '../../../components/LoadingScreen.astro';
+import { ProjectCarousel } from '../../../components/ProjectCarousel';
+import { LucideIcon } from '../../../components/LucideIcon';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const caseIds = getCaseIds();
+  const languages = ['en', 'es'];
+  return languages.flatMap(lang =>
+    caseIds.map(id => ({ params: { lang, id } }))
+  );
+}
+
+const { id = '', lang = 'en' } = Astro.params;
+const caseData = getCase(id, lang);
+
+if (!caseData) {
+  return Astro.redirect(`/${lang}/404`);
+}
+
+const translations = await import(`../../../../public/locales/${lang}.json`);
+const t = (key: string) => translations.default[key] || key;
+
+const relatedProduct = caseData.product ? getProduct(caseData.product.toLowerCase(), lang) : null;
+const relatedServices = caseData.services.map(sId => getService(sId, lang)).filter(Boolean);
+
+const seoTitle = `${caseData.title} - ${caseData.client} | OSIX Tech`;
+const seoDescription = caseData.summary.substring(0, 160);
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": `https://osix.tech/${lang}/` },
+    { "@type": "ListItem", "position": 2, "name": lang === 'es' ? 'Impacto' : 'Impact', "item": `https://osix.tech/${lang}/#impact` },
+    { "@type": "ListItem", "position": 3, "name": caseData.title, "item": `https://osix.tech/${lang}/impacto/${id}` }
+  ]
+};
+
+const jsonLd = [{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": seoTitle,
+  "description": seoDescription,
+  "url": `https://osix.tech/${lang}/impacto/${id}`,
+  "inLanguage": lang,
+  "breadcrumb": breadcrumbSchema
+}];
+---
+
+<Layout lang={lang} title={seoTitle} description={seoDescription} pageType="website" jsonLd={jsonLd}>
+  <LoadingScreen duration={1000} />
+
+  <!-- HERO -->
+  <section class="hero-section relative min-h-[400px] bg-black lg:min-h-[450px] flex items-center overflow-hidden mb-0">
+    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px); background-size: 20px 20px;"></div>
+    <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
+      <div class="max-w-3xl">
+        <div class="hero-badge mb-6 opacity-0">
+          <span class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-sm text-white text-sm border border-white/20">
+            {t('impact.badge')}
+          </span>
+        </div>
+        <h1 class="hero-title text-5xl md:text-7xl font-bold text-white mb-4 opacity-0">{caseData.title}</h1>
+        <p class="hero-subtitle text-xl md:text-2xl text-gray-300 opacity-0">{caseData.client}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="py-16 bg-white mb-0">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="fade-up" style="--delay: 0.1s">
+        <p class="text-lg text-gray-800 leading-relaxed text-justify">{caseData.summary}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  {caseData.stats && caseData.stats.length > 0 && (
+    <section class="py-16 bg-black mb-0">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-white mb-10 fade-up" style="--delay: 0.1s">
+          {t('impact.stats')}
+        </h2>
+        <div class={`grid gap-6 ${caseData.stats.length <= 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+          {caseData.stats.map((stat, index) => (
+            <div class="border border-white/20 p-8 text-center fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
+              <span class="block text-4xl md:text-5xl font-bold text-white mb-2">{stat.value}</span>
+              <span class="text-sm text-gray-400 uppercase tracking-wider">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- RESULTS -->
+  <section class="py-16 bg-gray-50 mb-0">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-black mb-10 fade-up" style="--delay: 0.2s">
+        {t('impact.results')}
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        {caseData.results.map((result, index) => (
+          <div class="flex items-start gap-4 p-6 bg-white border border-gray-200 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
+            <svg class="w-6 h-6 text-black mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span class="text-gray-800 font-medium">{result}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- IMAGES -->
+  {caseData.images && caseData.images.length > 0 && (
+    <section class="py-16 bg-white mb-0">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
+        <ProjectCarousel images={caseData.images} projectTitle={caseData.title} client:load />
+      </div>
+    </section>
+  )}
+
+  <!-- RELATED -->
+  {(relatedProduct || relatedServices.length > 0) && (
+    <section class="py-16 bg-gray-50 mb-0">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-black mb-8 fade-up" style="--delay: 0.1s">
+          {t('impact.related')}
+        </h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {relatedProduct && (
+            <a href={`/${lang}/productos/${relatedProduct.id}`} class="group block bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style="--delay: 0.2s">
+              <span class="text-xs font-bold uppercase tracking-wider text-gray-500">{t('impact.relatedProduct')}</span>
+              <h3 class="text-xl font-bold text-black mt-2 group-hover:underline">{relatedProduct.title}</h3>
+              <p class="text-sm text-gray-600 mt-1">{relatedProduct.tagline}</p>
+            </a>
+          )}
+          {relatedServices.map((service, index) => (
+            <a href={`/${lang}/servicios/${service.id}`} class="group block bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style={`--delay: ${0.3 + index * 0.1}s`}>
+              <span class="text-xs font-bold uppercase tracking-wider text-gray-500">{t('impact.relatedService')}</span>
+              <h3 class="text-xl font-bold text-black mt-2 group-hover:underline">{service.title}</h3>
+              <p class="text-sm text-gray-600 mt-1">{service.tagline}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="py-16 bg-black">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">{t('impact.cta.title')}</h2>
+      <p class="text-lg text-gray-50 mb-8">{t('impact.cta.subtitle')}</p>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href={`/${lang}/#impact`} class="inline-flex text-black items-center border border-white bg-white hover:bg-black hover:text-white px-6 py-3 text-base font-semibold text-center transition-all duration-300 w-full sm:w-auto">
+          {t('impact.cta.viewAll')}
+        </a>
+        <a href={`/${lang}/#contact`} class="inline-flex items-center border border-white hover:bg-white hover:text-black text-white px-6 py-3 font-semibold text-center transition-all duration-300 w-full sm:w-auto">
+          {t('impact.cta.contact')}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const initializeAnimations = () => {
+      setTimeout(() => { document.querySelector('.hero-badge')?.classList.add('animate'); }, 200);
+      setTimeout(() => { document.querySelector('.hero-title')?.classList.add('animate'); }, 400);
+      setTimeout(() => { document.querySelector('.hero-subtitle')?.classList.add('animate'); }, 600);
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('in-view');
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      setTimeout(() => {
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+      }, 1200);
+    };
+
+    if ((window as any).isLoadingComplete) {
+      initializeAnimations();
+    } else {
+      window.addEventListener('loadingComplete', initializeAnimations);
+    }
+  });
+</script>
+
+<style>
+  .hero-badge { opacity: 0; transform: translateX(-30px); transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .hero-badge.animate { opacity: 1; transform: translateX(0); }
+  .hero-title { opacity: 0; transform: translateX(-100px) skewX(-5deg); transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+  .hero-title.animate { opacity: 1; transform: translateX(0) skewX(0); }
+  .hero-subtitle { opacity: 0; transform: translateX(100px); transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
+  .hero-subtitle.animate { opacity: 1; transform: translateX(0); }
+  .fade-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: var(--delay, 0s); }
+  .fade-up.in-view { opacity: 1; transform: translateY(0); }
+  .hero-section { animation: heroReveal 1s cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes heroReveal { from { opacity: 0; } to { opacity: 1; } }
+</style>
