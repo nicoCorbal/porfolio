@@ -9,8 +9,8 @@ export default function ImpactCardSwap({ cases }) {
         height={440}
         cardDistance={50}
         verticalDistance={55}
-        delay={0}
-        pauseOnHover={false}
+        delay={3000}
+        pauseOnHover={true}
         swapOnClick={true}
         skewAmount={4}
         easing="elastic"
