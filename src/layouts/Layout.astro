@@ -149,6 +149,15 @@ const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
   </head>
   <body>
     {!hideHeader && <Header lang={lang} isMainPage={isMainPage} />}
+    <script is:inline>
+      (function() {
+        var h = document.getElementById('main-header');
+        if (h) document.documentElement.style.setProperty('--header-h', h.offsetHeight + 'px');
+        window.addEventListener('resize', function() {
+          if (h) document.documentElement.style.setProperty('--header-h', h.offsetHeight + 'px');
+        });
+      })();
+    </script>
     <main>
       <slot />
     </main>

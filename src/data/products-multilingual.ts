@@ -22,7 +22,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
     apec: {
       id: 'apec',
       title: 'APEC',
-      tagline: 'Prospección comercial inteligente con IA',
+      tagline: 'Agent-Powered Enterprise Communications',
       description: 'Automatiza tu prospección comercial sin perder el toque humano. APEC investiga empresas, extrae datos financieros, evalúa el encaje con tu oferta mediante IA y genera emails de contacto hiperpersonalizados. Su dashboard centraliza envíos, seguimiento de aperturas y clics, y programación de follow-ups. Escala tu captación B2B de horas de trabajo manual a minutos de supervisión.',
       icon: 'Mail',
       features: [
@@ -57,7 +57,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'TrendingUp'
         }
       ],
-      images: ['/products/apec/apec.png'],
+      images: ['/products/apec.jpg'],
       textColor: 'light'
     },
     nessie: {
@@ -99,7 +99,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
         }
       ],
       cases: ['consultoria'],
-      images: ['/projects/nessie/nessie.png'],
+      images: ['/products/nessie.jpg'],
       video: '/projects/nessie/nessie-demo.mov',
       textColor: 'light'
     },
@@ -131,13 +131,13 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Bell'
         }
       ],
-      images: ['/products/moura/moura.png'],
+      images: ['/products/moura.jpg'],
       textColor: 'light'
     },
     acta: {
       id: 'acta',
       title: 'ACTA',
-      tagline: 'Transcripción y análisis inteligente de reuniones',
+      tagline: 'Automated Capture, Transcription & Analysis',
       description: 'Graba tus reuniones, formaciones o entrevistas y obtén transcripciones profesionales con identificación automática de quién habla en cada momento. ACTA combina transcripción de alta precisión con diarización inteligente y agentes de resumen que extraen las decisiones clave, tareas pendientes y puntos de acción de cada conversación.',
       icon: 'Mic',
       features: [
@@ -162,13 +162,13 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Download'
         }
       ],
-      images: ['/products/acta/acta.png'],
+      images: ['/products/acta.jpg'],
       textColor: 'light'
     },
     iris: {
       id: 'iris',
       title: 'IRIS',
-      tagline: 'Gestión inteligente de bandejas de entrada',
+      tagline: 'Intelligent Response & Inbox System',
       description: 'Un sistema de IA que monitoriza tus bandejas de entrada, clasifica automáticamente cada email por tipo (presupuestos, pedidos, facturas, consultas), lo cruza contra tus bases de datos internas y genera propuestas de respuesta listas para tu revisión. Se integra con tu ERP y CRM. Transforma horas de gestión de correo en minutos de supervisión.',
       icon: 'Inbox',
       features: [
@@ -204,13 +204,13 @@ export const productsData: Record<string, Record<string, ProductData>> = {
         }
       ],
       cases: ['iciga'],
-      images: ['/products/iris/iris.png'],
+      images: ['/products/iris.jpg'],
       textColor: 'light'
     },
     bond: {
       id: 'bond',
       title: 'BOND',
-      tagline: 'Fidelización digital bajo tu propia marca',
+      tagline: 'Business-Owned Network for Digital Loyalty',
       description: 'Una app de fidelización bajo tu propia marca con tarjeta de puntos digital integrada en Google y Apple Wallet. Tus clientes acumulan puntos automáticamente, reciben ofertas personalizadas y tú accedes a un dashboard con analíticas de consumo en tiempo real. Sin tarjetas de papel, sin comisiones de plataformas externas, sin dependencia de terceros.',
       icon: 'Heart',
       features: [
@@ -246,7 +246,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
         }
       ],
       cases: ['take'],
-      images: ['/projects/take/take.png'],
+      images: ['/products/bond.jpg'],
       textColor: 'dark'
     }
   },
@@ -254,7 +254,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
     apec: {
       id: 'apec',
       title: 'APEC',
-      tagline: 'AI-powered intelligent sales prospecting',
+      tagline: 'Agent-Powered Enterprise Communications',
       description: 'Automate your sales prospecting without losing the human touch. APEC researches companies, extracts financial data, evaluates fit with your offering using AI, and generates hyper-personalized outreach emails. Its dashboard centralizes sends, tracks opens and clicks, and schedules follow-ups. Scale your B2B acquisition from hours of manual work to minutes of oversight.',
       icon: 'Mail',
       features: [
@@ -289,7 +289,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'TrendingUp'
         }
       ],
-      images: ['/products/apec/apec.png'],
+      images: ['/products/apec.jpg'],
       textColor: 'light'
     },
     nessie: {
@@ -331,7 +331,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
         }
       ],
       cases: ['consultoria'],
-      images: ['/projects/nessie/nessie.png'],
+      images: ['/products/nessie.jpg'],
       video: '/projects/nessie/nessie-demo.mov',
       textColor: 'light'
     },
@@ -363,13 +363,13 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Bell'
         }
       ],
-      images: ['/products/moura/moura.png'],
+      images: ['/products/moura.jpg'],
       textColor: 'light'
     },
     acta: {
       id: 'acta',
       title: 'ACTA',
-      tagline: 'Intelligent meeting transcription and analysis',
+      tagline: 'Automated Capture, Transcription & Analysis',
       description: 'Record your meetings, trainings, or interviews and get professional transcriptions with automatic speaker identification. ACTA combines high-precision transcription with intelligent diarization and summary agents that extract key decisions, pending tasks, and action items from every conversation.',
       icon: 'Mic',
       features: [
@@ -394,13 +394,13 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Download'
         }
       ],
-      images: ['/products/acta/acta.png'],
+      images: ['/products/acta.jpg'],
       textColor: 'light'
     },
     iris: {
       id: 'iris',
       title: 'IRIS',
-      tagline: 'Intelligent inbox management system',
+      tagline: 'Intelligent Response & Inbox System',
       description: 'An AI system that monitors your inboxes, automatically classifies each email by type (quotes, orders, invoices, inquiries), cross-references it against your internal databases, and generates response proposals ready for your review. Integrates with your ERP and CRM. Transform hours of email management into minutes of oversight.',
       icon: 'Inbox',
       features: [
@@ -436,13 +436,13 @@ export const productsData: Record<string, Record<string, ProductData>> = {
         }
       ],
       cases: ['iciga'],
-      images: ['/products/iris/iris.png'],
+      images: ['/products/iris.jpg'],
       textColor: 'light'
     },
     bond: {
       id: 'bond',
       title: 'BOND',
-      tagline: 'Digital loyalty under your own brand',
+      tagline: 'Business-Owned Network for Digital Loyalty',
       description: 'A loyalty app under your own brand with a digital points card integrated into Google and Apple Wallet. Your customers automatically accumulate points, receive personalized offers, and you get a dashboard with real-time consumption analytics. No paper cards, no external platform fees, no third-party dependency.',
       icon: 'Heart',
       features: [
@@ -478,7 +478,7 @@ export const productsData: Record<string, Record<string, ProductData>> = {
         }
       ],
       cases: ['take'],
-      images: ['/projects/take/take.png'],
+      images: ['/products/bond.jpg'],
       textColor: 'dark'
     }
   }

@@ -23,28 +23,23 @@ const ProductShowcase = ({ products, images, viewMoreText, lang }) => {
       onComplete: () => { isAnimating.current = false; },
     });
 
-    // Whole content slides out left
     tl.to(el, {
-      xPercent: -110,
-      duration: 0.4,
+      opacity: 0,
+      duration: 0.35,
       ease: 'power2.in',
     });
 
-    // Swap state + reset to right side
     tl.call(() => {
       setActiveIndex(resolved);
-      gsap.set(el, { xPercent: 110 });
     });
 
-    // Whole content slides in from right
     tl.to(el, {
-      xPercent: 0,
-      duration: 0.4,
+      opacity: 1,
+      duration: 0.35,
       ease: 'power2.out',
     });
   }, [activeIndex, products.length]);
 
-  // Auto-progress
   const startAutoProgress = useCallback((index) => {
     if (autoTween.current) {
       autoTween.current.kill();
@@ -90,7 +85,7 @@ const ProductShowcase = ({ products, images, viewMoreText, lang }) => {
   }, []);
 
   useEffect(() => {
-    gsap.fromTo(contentRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+    gsap.fromTo(contentRef.current, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' });
   }, []);
 
   return (
@@ -118,32 +113,28 @@ const ProductShowcase = ({ products, images, viewMoreText, lang }) => {
         ))}
       </div>
 
-      {/* Content: image + text as one unit */}
+      {/* Content: full image with overlaid text */}
       <div className="product-showcase-content" ref={contentRef}>
-        <div className="product-showcase-left">
-          <div className="product-showcase-viewport">
-            <a href={`/${lang}/productos/${active.id}`}>
-              <img
-                src={images[active.id]}
-                alt={active.title}
-                className="product-showcase-img"
-              />
-            </a>
+        <a href={`/${lang}/productos/${active.id}`} className="product-showcase-viewport">
+          <img
+            src={images[active.id]}
+            alt={active.title}
+            className="product-showcase-img"
+          />
+          <div className="product-showcase-overlay" />
+          <div className="product-showcase-text">
+            <h3 className="product-showcase-title">{active.title}</h3>
+            <p className="product-showcase-tagline">{active.tagline}</p>
+            <div className="product-showcase-divider" />
+            <p className="product-showcase-desc">{active.description}</p>
+            <span className="product-showcase-cta">
+              {viewMoreText}
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
           </div>
-        </div>
-
-        <div className="product-showcase-right">
-          <h3 className="product-showcase-title">{active.title}</h3>
-          <p className="product-showcase-tagline">{active.tagline}</p>
-          <div className="product-showcase-divider" />
-          <p className="product-showcase-desc">{active.description}</p>
-          <a href={`/${lang}/productos/${active.id}`} className="product-showcase-cta">
-            {viewMoreText}
-            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
+        </a>
       </div>
     </div>
   );

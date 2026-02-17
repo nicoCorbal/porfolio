@@ -44,18 +44,11 @@ const productsForClient = products.map(p => ({
     overflow: hidden;
   }
 
-  .product-showcase-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
-    align-items: start;
-  }
-
-  /* Progress bars — top, full width */
+  /* Progress bars */
   .product-showcase-bars {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 3.5rem;
+    margin-bottom: 2rem;
   }
 
   .product-showcase-bar-group {
@@ -100,17 +93,14 @@ const productsForClient = products.map(p => ({
     transform: scaleX(0);
   }
 
-  /* Left: carousel */
-  .product-showcase-left {
-    display: flex;
-    flex-direction: column;
-  }
-
+  /* Full-width image container */
   .product-showcase-viewport {
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    background: #f5f5f5;
+    display: block;
     position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+    text-decoration: none;
   }
 
   .product-showcase-img {
@@ -118,78 +108,120 @@ const productsForClient = products.map(p => ({
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Right: text */
-  .product-showcase-right {
-    padding-top: 0.5rem;
+  .product-showcase-viewport:hover .product-showcase-img {
+    transform: scale(1.03);
+  }
+
+  /* Gradient overlay — bottom fade to black */
+  .product-showcase-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 25%,
+      rgba(0, 0, 0, 0.15) 45%,
+      rgba(0, 0, 0, 0.7) 75%,
+      rgba(0, 0, 0, 0.92) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Text card overlaid at bottom */
+  .product-showcase-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2.5rem 3rem;
+    color: white;
+    z-index: 2;
   }
 
   .product-showcase-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.5rem;
     font-weight: 700;
-    color: black;
+    color: white;
     letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
 
   .product-showcase-tagline {
     font-size: 1.1rem;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 500;
   }
 
   .product-showcase-divider {
-    width: 100%;
-    height: 1px;
-    background: rgba(0, 0, 0, 0.12);
-    margin: 1.5rem 0;
+    width: 60px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 1.2rem 0;
   }
 
   .product-showcase-desc {
     font-size: 0.95rem;
     line-height: 1.7;
-    color: rgba(0, 0, 0, 0.65);
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 700px;
   }
 
   .product-showcase-cta {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 2rem;
-    padding: 0.85rem 2rem;
-    background: black;
-    color: white;
-    font-size: 0.85rem;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.8rem;
+    background: white;
+    color: black;
+    font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
     text-decoration: none;
   }
 
-  .product-showcase-cta:hover {
-    background: #333;
+  .product-showcase-viewport:hover .product-showcase-cta {
+    background: #f0f0f0;
   }
 
   /* Mobile */
   @media (max-width: 768px) {
-    .product-showcase-content {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
     .product-showcase-bar-name {
       font-size: 0.65rem;
     }
 
+    .product-showcase-viewport {
+      aspect-ratio: 4 / 3;
+    }
+
+    .product-showcase-text {
+      padding: 1.5rem;
+    }
+
     .product-showcase-title {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
+    }
+
+    .product-showcase-tagline {
+      font-size: 0.95rem;
     }
 
     .product-showcase-desc {
-      font-size: 0.875rem;
+      font-size: 0.85rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-showcase-cta {
+      padding: 0.6rem 1.4rem;
+      font-size: 0.75rem;
     }
   }
 </style>

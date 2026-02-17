@@ -94,8 +94,7 @@ const t = (k: string) => translations.default[k] || k;
               class="w-full px-3 py-2 bg-white text- focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
               required
               minlength="2"
-              pattern="^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$"
-              title={t('contact.form.email.title')}
+              title={t('contact.form.name.title')}
             />
           </div>
           
@@ -107,7 +106,6 @@ const t = (k: string) => translations.default[k] || k;
               name="user_email"
               class="w-full px-3 py-2 bg-white text-black focus:outline-none focus:ring-2 focus:ring-white text-sm sm:text-base"
               required
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               title={t('contact.form.email.title')}
             />
           </div>
@@ -121,10 +119,20 @@ const t = (k: string) => translations.default[k] || k;
               required
             >
               <option value="" disabled selected>{t('contact.form.service.placeholder')}</option>
-              <option value="Nessie">Nessie</option>
-              <option value="KTED">KTED</option>
-              <option value="custom">{t('contact.form.service.custom')}</option>
-              <option value="web">{t('contact.form.service.web')}</option>
+              <optgroup label={t('contact.form.service.products')}>
+                <option value="APEC">APEC</option>
+                <option value="Nessie">Nessie</option>
+                <option value="Moura">Moura</option>
+                <option value="ACTA">ACTA</option>
+                <option value="IRIS">IRIS</option>
+                <option value="BOND">BOND</option>
+              </optgroup>
+              <optgroup label={t('contact.form.service.services')}>
+                <option value="custom">{t('contact.form.service.custom')}</option>
+                <option value="kted">{t('contact.form.service.kted')}</option>
+                <option value="consultoria-transformacion">{t('contact.form.service.transformacion')}</option>
+                <option value="consultoria-innovacion">{t('contact.form.service.innovacion')}</option>
+              </optgroup>
               <option value="other">{t('contact.form.service.other')}</option>
             </select>
           </div>
