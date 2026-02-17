@@ -1,7 +1,7 @@
 import React from 'react';
 import CardSwap, { Card } from './CardSwap';
 
-export default function ImpactCardSwap({ cases }) {
+export default function ImpactCardSwap({ cases, lang = 'es' }) {
   return (
     <div className="impact-swap-wrapper">
       <CardSwap
@@ -11,13 +11,13 @@ export default function ImpactCardSwap({ cases }) {
         verticalDistance={55}
         delay={3000}
         pauseOnHover={true}
-        swapOnClick={true}
+        swapOnClick={false}
         skewAmount={4}
         easing="elastic"
       >
         {cases.map((cs) => (
           <Card key={cs.id} customClass="impact-card">
-            <div className="impact-card-inner">
+            <a href={`/${lang}/impacto/${cs.id}`} className="impact-card-inner impact-card-link">
               {cs.product && (
                 <span className="impact-card-product">{cs.product}</span>
               )}
@@ -34,7 +34,7 @@ export default function ImpactCardSwap({ cases }) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </a>
           </Card>
         ))}
       </CardSwap>

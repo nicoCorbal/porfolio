@@ -30,7 +30,7 @@ const cases = getAllCases(lang);
       </div>
 
       <div class="impact-cards">
-        <ImpactCardSwap client:visible cases={cases} />
+        <ImpactCardSwap client:visible cases={cases} lang={lang} />
       </div>
     </div>
   </div>
@@ -197,6 +197,12 @@ const cases = getAllCases(lang);
   .impact-cards :global(.impact-card-results svg) {
     color: #000;
     flex-shrink: 0;
+  }
+
+  .impact-cards :global(.impact-card-link) {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
   }
 
   @media (max-width: 768px) {
