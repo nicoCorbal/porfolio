@@ -10,10 +10,12 @@ import enLocales from '../../public/locales/en.json';
 import esLocales from '../../public/locales/es.json';
 import { getAllProducts } from '../data/products-multilingual';
 import { getAllServices } from '../data/services-multilingual';
+import { getAllCases } from '../data/cases-multilingual';
 
 const t = lang === 'es' ? esLocales : enLocales;
 const products = getAllProducts(lang);
 const services = getAllServices(lang);
+const cases = getAllCases(lang);
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full bg-white transition-all duration-300 shadow-lg z-50 md:px-12 md:py-6 px-6 py-3">
@@ -46,7 +48,14 @@ const services = getAllServices(lang);
               </svg>
             </button>
           </li>
-          <li><a href={`/${lang}/#cases`} class="nav-item transition-colors duration-200">{t['nav.impact']}</a></li>
+          <li class="nav-dropdown relative" data-dropdown="cases">
+            <button class="nav-item text-[18px] font-semibold transition-colors duration-200 cursor-pointer flex items-center gap-1" data-section="cases">
+              {t['nav.impact']}
+              <svg class="w-3 h-3 mt-0.5 nav-dropdown-arrow transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+          </li>
           <li><a href={`/${lang}/#about`} class="nav-item transition-colors duration-200">{t['nav.team']}</a></li>
        </ul>
         
@@ -94,6 +103,17 @@ const services = getAllServices(lang);
             <a href={`/${lang}/servicios/${service.id}`} class="nav-card group flex-1 flex flex-col justify-between gap-2 p-5 rounded-xl no-underline transition-opacity duration-300 hover:opacity-80 min-h-[140px]" style="background-color: #0a0a0a; color: #fff;">
               <span class="nav-card-label font-semibold text-[18px] tracking-tight">{service.title}</span>
               <span class="nav-card-tagline text-[14px] opacity-70 leading-snug">{service.tagline}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      <!-- Cases card group -->
+      <div class="card-group" data-group="cases">
+        <div class="flex flex-row items-stretch gap-3">
+          {cases.map((caseItem) => (
+            <a href={`/${lang}/impacto/${caseItem.id}`} class="nav-card group flex-1 flex flex-col justify-between gap-2 p-5 rounded-xl no-underline transition-opacity duration-300 hover:opacity-80 min-h-[140px]" style="background-color: #0a0a0a; color: #fff;">
+              <span class="nav-card-label font-semibold text-[18px] tracking-tight">{caseItem.title}</span>
+              <span class="nav-card-tagline text-[14px] opacity-70 leading-snug">{caseItem.client}</span>
             </a>
           ))}
         </div>
@@ -209,6 +229,13 @@ function initializeHeader() {
         servicesBtn.classList.add('nav-active');
         state.activeNavItem = servicesBtn;
         setTimeout(() => moveIndicatorTo(servicesBtn), 100);
+      }
+    } else if (pathname.includes('/impacto/')) {
+      const casesBtn = document.querySelector('[data-dropdown="cases"] .nav-item') as HTMLElement | null;
+      if (casesBtn) {
+        casesBtn.classList.add('nav-active');
+        state.activeNavItem = casesBtn;
+        setTimeout(() => moveIndicatorTo(casesBtn), 100);
       }
     }
   } else if (state.header) {
@@ -328,6 +355,9 @@ function updateIndicatorBySection(sectionId: string) {
   if (!targetNavItem && sectionId === 'services') {
     targetNavItem = document.querySelector('[data-dropdown="services"] .nav-item') as HTMLElement | null;
   }
+  if (!targetNavItem && sectionId === 'cases') {
+    targetNavItem = document.querySelector('[data-dropdown="cases"] .nav-item') as HTMLElement | null;
+  }
   if (targetNavItem) {
     // Update .nav-active on scroll-based section change
     const allNavLinks = document.querySelectorAll('nav .nav-item');
@@ -413,6 +443,9 @@ function setupNavigation() {
     if (window.location.pathname.includes('/servicios/')) {
       return document.querySelector('[data-dropdown="services"] .nav-item') as HTMLElement | null;
     }
+    if (window.location.pathname.includes('/impacto/')) {
+      return document.querySelector('[data-dropdown="cases"] .nav-item') as HTMLElement | null;
+    }
     // Otherwise return to the active nav item
     return state.activeNavItem;
   };
@@ -465,7 +498,7 @@ function setupNavigation() {
       if (!href || (!href.startsWith('#') && !href.includes('/#'))) return;
       
       // If we're on a project page and clicking a hash link, we need to navigate to main page
-      if (window.location.pathname.includes('/productos/') || window.location.pathname.includes('/servicios/') && href.includes('/#')) {
+      if ((window.location.pathname.includes('/productos/') || window.location.pathname.includes('/servicios/') || window.location.pathname.includes('/impacto/')) && href.includes('/#')) {
         // Let the browser handle the navigation
         return;
       }
