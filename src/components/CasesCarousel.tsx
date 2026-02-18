@@ -1,6 +1,12 @@
-import * as React from "react"
-import useEmblaCarousel from "embla-carousel-react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import gsap from 'gsap';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@/components/ui/carousel';
 
 interface CaseStat {
   label: string
@@ -22,145 +28,144 @@ interface CasesCarouselProps {
   cases: CaseStudy[]
 }
 
+const AUTO_DURATION = 5;
+
 export function CasesCarousel({ cases }: CasesCarouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
-  const [activeImageIndex, setActiveImageIndex] = React.useState<Record<number, number>>({})
-  const [current, setCurrent] = React.useState(0)
+  const [api, setApi] = useState<any>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const barFillRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const autoTween = useRef<gsap.core.Tween | null>(null);
+  const isHovered = useRef(false);
 
-  React.useEffect(() => {
-    if (!emblaApi) return
-    const onSelect = () => setCurrent(emblaApi.selectedScrollSnap())
-    emblaApi.on("select", onSelect)
-    onSelect()
-    return () => { emblaApi.off("select", onSelect) }
-  }, [emblaApi])
+  useEffect(() => {
+    if (!api) return;
+    const onSelect = () => setActiveIndex(api.selectedScrollSnap());
+    api.on('select', onSelect);
+    return () => api.off('select', onSelect);
+  }, [api]);
 
-  const getActiveImage = (slideIndex: number) => activeImageIndex[slideIndex] ?? 0
+  const startAutoProgress = useCallback((index: number) => {
+    if (autoTween.current) {
+      autoTween.current.kill();
+      autoTween.current = null;
+    }
 
-  const setActiveImage = (slideIndex: number, imageIndex: number) => {
-    setActiveImageIndex(prev => ({ ...prev, [slideIndex]: imageIndex }))
-  }
+    barFillRefs.current.forEach((el, i) => {
+      if (el) gsap.set(el, { scaleX: i < index ? 1 : 0 });
+    });
+
+    const fillEl = barFillRefs.current[index];
+    if (!fillEl || !api) return;
+
+    autoTween.current = gsap.fromTo(
+      fillEl,
+      { scaleX: 0 },
+      {
+        scaleX: 1,
+        duration: AUTO_DURATION,
+        ease: 'none',
+        onComplete: () => {
+          const next = (index + 1) % cases.length;
+          api.scrollTo(next);
+        },
+      }
+    );
+
+    if (isHovered.current) autoTween.current.pause();
+  }, [api, cases.length]);
+
+  useEffect(() => {
+    startAutoProgress(activeIndex);
+    return () => { if (autoTween.current) autoTween.current.kill(); };
+  }, [activeIndex, startAutoProgress]);
+
+  const handleBarClick = useCallback((index: number) => {
+    if (!api || index === activeIndex) return;
+    api.scrollTo(index);
+  }, [api, activeIndex]);
+
+  const handleMouseEnter = useCallback(() => {
+    isHovered.current = true;
+    if (autoTween.current) autoTween.current.pause();
+  }, []);
+  const handleMouseLeave = useCallback(() => {
+    isHovered.current = false;
+    if (autoTween.current) autoTween.current.play();
+  }, []);
+
+  // Pick a representative image for each case
+  const getCaseImage = (cs: CaseStudy) => cs.images?.[0] ?? '/og-image.png';
 
   return (
-    <div className="relative">
-      {/* Carousel viewport */}
-      <div ref={emblaRef} className="overflow-hidden">
-        <div className="flex">
-          {cases.map((cs, slideIndex) => {
-            const images = cs.images ?? []
-            const active = getActiveImage(slideIndex)
+    <div className="cases-showcase">
+      {/* Top: progress bars with case titles */}
+      <div className="cases-showcase-bars">
+        {cases.map((cs, i) => (
+          <button
+            key={cs.id}
+            className={`cases-showcase-bar-group ${i === activeIndex ? 'active' : ''}`}
+            onClick={() => handleBarClick(i)}
+          >
+            <span className="cases-showcase-bar-name">{cs.title}</span>
+            <div className="cases-showcase-bar">
+              <div
+                className="cases-showcase-bar-fill"
+                ref={(el) => { barFillRefs.current[i] = el; }}
+              />
+            </div>
+          </button>
+        ))}
+      </div>
 
-            return (
-              <div key={cs.id} className="flex-[0_0_100%] min-w-0">
-                <div className="flex flex-col lg:flex-row gap-8 px-2">
-                  {/* Left: Images */}
-                  <div className="lg:w-1/2 flex flex-col gap-3">
-                    {/* Main image */}
-                    <div className="aspect-[16/10] bg-gray-100 overflow-hidden">
-                      {images.length > 0 ? (
-                        <img
-                          src={images[active]}
-                          alt={`${cs.title} - ${active + 1}`}
-                          className="w-full h-full object-cover transition-opacity duration-300"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-300">
-                          <svg className="w-16 h-16" fill="none" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-                    {/* Preview thumbnails */}
-                    {images.length > 1 && (
-                      <div className="grid grid-cols-2 gap-3">
-                        {images.slice(0, 4).map((img, imgIndex) => (
-                          <button
-                            key={imgIndex}
-                            type="button"
-                            onClick={() => setActiveImage(slideIndex, imgIndex)}
-                            className={`aspect-[16/10] bg-gray-100 overflow-hidden transition-all duration-200 ${
-                              imgIndex === active
-                                ? "ring-2 ring-black"
-                                : "opacity-60 hover:opacity-100"
-                            }`}
-                          >
-                            <img
-                              src={img}
-                              alt={`${cs.title} - preview ${imgIndex + 1}`}
-                              className="w-full h-full object-cover"
-                              loading="lazy"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Right: Text */}
-                  <div className="lg:w-1/2 flex flex-col justify-center">
-                    <p className="text-sm text-gray-500 mb-2">{cs.client}</p>
-                    <h3 className="text-2xl md:text-3xl font-bold text-black mb-3">
-                      {cs.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed mb-6">{cs.summary}</p>
-
+      {/* Content: carousel */}
+      <div
+        className="cases-showcase-content"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <Carousel
+          setApi={setApi}
+          opts={{ loop: true, duration: 30 }}
+          className="w-full"
+        >
+          <CarouselContent>
+            {cases.map((cs) => (
+              <CarouselItem key={cs.id}>
+                <div className="cases-showcase-viewport">
+                  <img
+                    src={getCaseImage(cs)}
+                    alt={cs.title}
+                    className="cases-showcase-img"
+                    loading="lazy"
+                  />
+                  <div className="cases-showcase-overlay" />
+                  <div className="cases-showcase-text">
+                    <span className="cases-showcase-client">{cs.client}</span>
+                    <h3 className="cases-showcase-title">{cs.title}</h3>
+                    <p className="cases-showcase-headline">{cs.headline}</p>
+                    <div className="cases-showcase-divider" />
+                    <p className="cases-showcase-summary">{cs.summary}</p>
                     {cs.stats.length > 0 && (
-                      <div className="grid grid-cols-3 gap-4 mb-6">
+                      <div className="cases-showcase-stats">
                         {cs.stats.slice(0, 3).map((stat, i) => (
-                          <div key={i}>
-                            <p className="text-xl font-bold text-black font-['Orbitron',sans-serif]">
-                              {stat.value}
-                            </p>
-                            <p className="text-xs text-gray-500 uppercase tracking-wider">
-                              {stat.label}
-                            </p>
+                          <div key={i} className="cases-showcase-stat">
+                            <span className="cases-showcase-stat-value">{stat.value}</span>
+                            <span className="cases-showcase-stat-label">{stat.label}</span>
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
                 </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Navigation */}
-      {cases.length > 1 && (
-        <div className="flex items-center justify-between mt-6">
-          <button
-            type="button"
-            onClick={() => emblaApi?.scrollPrev()}
-            className="flex items-center justify-center w-10 h-10 border border-gray-300 hover:border-black transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-
-          <div className="flex gap-2">
-            {cases.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => emblaApi?.scrollTo(i)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  i === current ? "bg-black" : "bg-gray-300"
-                }`}
-              />
+              </CarouselItem>
             ))}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => emblaApi?.scrollNext()}
-            className="flex items-center justify-center w-10 h-10 border border-gray-300 hover:border-black transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-      )}
+          </CarouselContent>
+          <CarouselPrevious className="left-10" />
+          <CarouselNext className="right-10" />
+        </Carousel>
+      </div>
     </div>
-  )
+  );
 }
+
+export default CasesCarousel;
