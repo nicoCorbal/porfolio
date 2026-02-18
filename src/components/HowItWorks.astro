@@ -1,0 +1,101 @@
+---
+import type { Step } from '../data/products-multilingual';
+
+interface Props {
+  steps: Step[];
+  lang: string;
+}
+
+const { steps, lang } = Astro.props;
+---
+
+<div class="how-it-works">
+  <div class="timeline">
+    {steps.map((step, i) => (
+      <div class="timeline-step">
+        <div class="timeline-marker">
+          <span class="step-number">{i + 1}</span>
+        </div>
+        {i < steps.length - 1 && <div class="timeline-line" />}
+        <div class="timeline-content">
+          <h4 class="step-title">{step.title}</h4>
+          <p class="step-desc">{step.description}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .timeline-marker {
+    width: 44px;
+    height: 44px;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .step-number {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: white;
+  }
+
+  .timeline-line {
+    position: absolute;
+    top: 22px;
+    left: calc(50% + 22px);
+    right: calc(-50% + 22px);
+    height: 2px;
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .timeline-content {
+    margin-top: 1.25rem;
+    text-align: center;
+    padding: 0 0.75rem;
+  }
+
+  .step-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: black;
+    margin-bottom: 0.4rem;
+  }
+
+  .step-desc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  @media (max-width: 768px) {
+    .timeline {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .timeline-step {
+      min-width: 160px;
+    }
+  }
+</style>

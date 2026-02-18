@@ -1,7 +1,19 @@
+export interface Step {
+  title: string;
+  description: string;
+}
+
+export interface Audience {
+  title: string;
+  description: string;
+  icon: string;
+}
+
 export interface Feature {
   title: string;
   description: string;
   icon: string;
+  media?: string;
 }
 
 export interface ProductData {
@@ -11,10 +23,13 @@ export interface ProductData {
   description: string;
   icon: string;
   features: Feature[];
+  steps: Step[];
+  audience: Audience[];
   cases?: string[];
   images: string[];
-  video?: string;
   textColor?: 'light' | 'dark';
+  type?: 'standalone' | 'project';
+  landingUrl?: string;
 }
 
 export const productsData: Record<string, Record<string, ProductData>> = {
@@ -57,6 +72,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'TrendingUp'
         }
       ],
+      steps: [
+        { title: 'Investiga', description: 'APEC busca y recopila datos financieros y de contacto de empresas objetivo.' },
+        { title: 'Evalúa', description: 'La IA analiza el encaje entre tu oferta y cada empresa prospectada.' },
+        { title: 'Genera', description: 'Crea emails hiperpersonalizados adaptados al sector y necesidades de cada lead.' },
+        { title: 'Envía y rastrea', description: 'Envía, monitoriza aperturas y clics, y programa follow-ups automáticos.' }
+      ],
+      audience: [
+        { title: 'Equipos comerciales B2B', description: 'Que necesitan escalar la prospección sin perder personalización.', icon: 'Briefcase' },
+        { title: 'Startups en crecimiento', description: 'Que buscan generar pipeline de ventas sin un equipo grande.', icon: 'Rocket' },
+        { title: 'Agencias y consultoras', description: 'Que gestionan prospección para múltiples clientes.', icon: 'Building2' }
+      ],
       images: ['/products/apec.jpg'],
       textColor: 'light'
     },
@@ -98,10 +124,22 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Settings'
         }
       ],
+      steps: [
+        { title: 'Conecta', description: 'Vincula tu Google Drive u otras fuentes de documentación empresarial.' },
+        { title: 'Procesa', description: 'Nessie indexa PDFs, Word, Excel y más, convirtiéndolos en conocimiento buscable.' },
+        { title: 'Pregunta', description: 'Haz consultas en lenguaje natural como si hablaras con un experto.' },
+        { title: 'Obtén respuestas', description: 'Recibe respuestas precisas con referencias a los documentos originales.' }
+      ],
+      audience: [
+        { title: 'Consultoras y despachos', description: 'Con grandes volúmenes de documentación técnica y legal.', icon: 'Building2' },
+        { title: 'Plantas industriales', description: 'Que necesitan acceso rápido a manuales y normativas desde planta.', icon: 'Factory' },
+        { title: 'Departamentos legales', description: 'Que buscan respuestas rápidas en contratos y regulaciones.', icon: 'Scale' }
+      ],
       cases: ['consultoria'],
       images: ['/products/nessie.jpg'],
-      video: '/projects/nessie/nessie-demo.mov',
-      textColor: 'light'
+      textColor: 'light',
+      type: 'standalone',
+      landingUrl: 'https://www.nessie.osix.tech/'
     },
     moura: {
       id: 'moura',
@@ -130,6 +168,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           description: 'Recibe notificaciones cuando se publica una convocatoria que encaja con tu empresa. No pierdas ninguna oportunidad.',
           icon: 'Bell'
         }
+      ],
+      steps: [
+        { title: 'Perfila', description: 'Define tu sector, ubicación y tamaño para crear tu perfil empresarial.' },
+        { title: 'Cruza', description: 'Moura compara automáticamente convocatorias públicas con tu perfil.' },
+        { title: 'Analiza', description: 'La IA extrae requisitos, plazos y presupuestos de cada convocatoria.' },
+        { title: 'Genera', description: 'Crea memoria técnica, plan de trabajo y presupuesto con un clic.' }
+      ],
+      audience: [
+        { title: 'PYMEs', description: 'Que quieren acceder a subvenciones sin dedicar recursos internos.', icon: 'Store' },
+        { title: 'Consultoras de subvenciones', description: 'Que gestionan convocatorias para múltiples clientes.', icon: 'HandCoins' },
+        { title: 'Departamentos de I+D', description: 'Que buscan financiación pública para proyectos de innovación.', icon: 'FlaskConical' }
       ],
       images: ['/products/moura.jpg'],
       textColor: 'light'
@@ -161,6 +210,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           description: 'Exporta transcripciones y resúmenes en múltiples formatos. Integración con herramientas de gestión de proyectos.',
           icon: 'Download'
         }
+      ],
+      steps: [
+        { title: 'Graba', description: 'Captura el audio de reuniones, formaciones o entrevistas.' },
+        { title: 'Transcribe', description: 'Transcripción automática de alta precisión con soporte multiidioma.' },
+        { title: 'Identifica', description: 'Diarización inteligente: quién dice qué en cada momento.' },
+        { title: 'Resume', description: 'Agentes IA extraen decisiones, tareas y puntos de acción.' }
+      ],
+      audience: [
+        { title: 'Equipos de gestión', description: 'Que necesitan documentar reuniones y hacer seguimiento de acuerdos.', icon: 'Users' },
+        { title: 'Formadores y coaches', description: 'Que quieren transcripciones profesionales de sus sesiones.', icon: 'GraduationCap' },
+        { title: 'Departamentos legales', description: 'Que requieren actas precisas de reuniones y entrevistas.', icon: 'Scale' }
       ],
       images: ['/products/acta.jpg'],
       textColor: 'light'
@@ -203,6 +263,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Sparkles'
         }
       ],
+      steps: [
+        { title: 'Monitoriza', description: 'IRIS vigila tus bandejas de entrada en tiempo real.' },
+        { title: 'Clasifica', description: 'Cada email se categoriza automáticamente: presupuestos, pedidos, facturas.' },
+        { title: 'Cruza', description: 'Contrasta cada petición contra tus bases de datos de productos y clientes.' },
+        { title: 'Responde', description: 'Genera propuestas de respuesta listas para tu revisión y envío.' }
+      ],
+      audience: [
+        { title: 'Empresas con alto volumen de email', description: 'Que dedican horas diarias a gestionar bandejas de entrada.', icon: 'Mails' },
+        { title: 'Equipos comerciales', description: 'Que reciben presupuestos, pedidos y consultas constantemente.', icon: 'Briefcase' },
+        { title: 'Empresas con ERP/CRM', description: 'Que quieren integrar la gestión de email con sus sistemas.', icon: 'Server' }
+      ],
       cases: ['iciga'],
       images: ['/products/iris.jpg'],
       textColor: 'light'
@@ -244,6 +315,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           description: 'Juegos, retos y recompensas que mantienen a tus clientes enganchados y volviendo a tu negocio.',
           icon: 'Trophy'
         }
+      ],
+      steps: [
+        { title: 'Configura', description: 'Personaliza la app con tu marca, colores y programa de puntos.' },
+        { title: 'Acumula', description: 'Tus clientes suman puntos automáticamente con cada compra.' },
+        { title: 'Engancha', description: 'Envía ofertas personalizadas, retos y recompensas.' },
+        { title: 'Analiza', description: 'Consulta analíticas de consumo en tiempo real desde tu dashboard.' }
+      ],
+      audience: [
+        { title: 'Comercios y hostelería', description: 'Que quieren fidelizar clientes con su propia marca.', icon: 'UtensilsCrossed' },
+        { title: 'Franquicias', description: 'Que necesitan un programa de fidelización unificado.', icon: 'GitFork' },
+        { title: 'Negocios locales', description: 'Que buscan competir con grandes marcas sin depender de terceros.', icon: 'Store' }
       ],
       cases: ['take'],
       images: ['/products/bond.jpg'],
@@ -289,6 +371,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'TrendingUp'
         }
       ],
+      steps: [
+        { title: 'Research', description: 'APEC finds and collects financial and contact data from target companies.' },
+        { title: 'Evaluate', description: 'AI analyzes the fit between your offering and each prospected company.' },
+        { title: 'Generate', description: 'Creates hyper-personalized emails adapted to each lead\'s sector and needs.' },
+        { title: 'Send & Track', description: 'Send, monitor opens and clicks, and schedule automatic follow-ups.' }
+      ],
+      audience: [
+        { title: 'B2B Sales Teams', description: 'That need to scale prospecting without losing personalization.', icon: 'Briefcase' },
+        { title: 'Growing Startups', description: 'Looking to build a sales pipeline without a large team.', icon: 'Rocket' },
+        { title: 'Agencies & Consultancies', description: 'Managing prospecting for multiple clients.', icon: 'Building2' }
+      ],
       images: ['/products/apec.jpg'],
       textColor: 'light'
     },
@@ -330,10 +423,22 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Settings'
         }
       ],
+      steps: [
+        { title: 'Connect', description: 'Link your Google Drive or other enterprise documentation sources.' },
+        { title: 'Process', description: 'Nessie indexes PDFs, Word, Excel and more into searchable knowledge.' },
+        { title: 'Ask', description: 'Query in natural language as if you were talking to an expert.' },
+        { title: 'Get Answers', description: 'Receive precise answers with references to the original documents.' }
+      ],
+      audience: [
+        { title: 'Consultancies & Law Firms', description: 'With large volumes of technical and legal documentation.', icon: 'Building2' },
+        { title: 'Industrial Plants', description: 'Needing quick access to manuals and regulations from the floor.', icon: 'Factory' },
+        { title: 'Legal Departments', description: 'Looking for fast answers in contracts and regulations.', icon: 'Scale' }
+      ],
       cases: ['consultoria'],
       images: ['/products/nessie.jpg'],
-      video: '/projects/nessie/nessie-demo.mov',
-      textColor: 'light'
+      textColor: 'light',
+      type: 'standalone',
+      landingUrl: 'https://www.nessie.osix.tech/'
     },
     moura: {
       id: 'moura',
@@ -362,6 +467,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           description: 'Receive notifications when a call that fits your company is published. Never miss an opportunity.',
           icon: 'Bell'
         }
+      ],
+      steps: [
+        { title: 'Profile', description: 'Define your sector, location and size to create your company profile.' },
+        { title: 'Match', description: 'Moura automatically cross-references public calls with your profile.' },
+        { title: 'Analyze', description: 'AI extracts requirements, deadlines and budgets from each call.' },
+        { title: 'Generate', description: 'Create technical report, work plan and budget in one click.' }
+      ],
+      audience: [
+        { title: 'SMEs', description: 'That want to access grants without dedicating internal resources.', icon: 'Store' },
+        { title: 'Grant Consultancies', description: 'Managing calls for multiple clients.', icon: 'HandCoins' },
+        { title: 'R&D Departments', description: 'Seeking public funding for innovation projects.', icon: 'FlaskConical' }
       ],
       images: ['/products/moura.jpg'],
       textColor: 'light'
@@ -393,6 +509,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           description: 'Export transcriptions and summaries in multiple formats. Integration with project management tools.',
           icon: 'Download'
         }
+      ],
+      steps: [
+        { title: 'Record', description: 'Capture audio from meetings, trainings or interviews.' },
+        { title: 'Transcribe', description: 'High-precision automatic transcription with multilingual support.' },
+        { title: 'Identify', description: 'Intelligent diarization: who says what at each moment.' },
+        { title: 'Summarize', description: 'AI agents extract decisions, tasks and action items.' }
+      ],
+      audience: [
+        { title: 'Management Teams', description: 'That need to document meetings and track agreements.', icon: 'Users' },
+        { title: 'Trainers & Coaches', description: 'Wanting professional transcriptions of their sessions.', icon: 'GraduationCap' },
+        { title: 'Legal Departments', description: 'Requiring precise minutes from meetings and interviews.', icon: 'Scale' }
       ],
       images: ['/products/acta.jpg'],
       textColor: 'light'
@@ -435,6 +562,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           icon: 'Sparkles'
         }
       ],
+      steps: [
+        { title: 'Monitor', description: 'IRIS watches your inboxes in real time.' },
+        { title: 'Classify', description: 'Each email is automatically categorized: quotes, orders, invoices.' },
+        { title: 'Cross-reference', description: 'Checks each request against your product and client databases.' },
+        { title: 'Respond', description: 'Generates response proposals ready for your review and sending.' }
+      ],
+      audience: [
+        { title: 'High-Volume Email Companies', description: 'Spending hours daily managing inboxes.', icon: 'Mails' },
+        { title: 'Sales Teams', description: 'Constantly receiving quotes, orders and inquiries.', icon: 'Briefcase' },
+        { title: 'Companies with ERP/CRM', description: 'Looking to integrate email management with their systems.', icon: 'Server' }
+      ],
       cases: ['iciga'],
       images: ['/products/iris.jpg'],
       textColor: 'light'
@@ -476,6 +614,17 @@ export const productsData: Record<string, Record<string, ProductData>> = {
           description: 'Games, challenges, and rewards that keep your customers engaged and coming back to your business.',
           icon: 'Trophy'
         }
+      ],
+      steps: [
+        { title: 'Set up', description: 'Customize the app with your brand, colors and points program.' },
+        { title: 'Collect', description: 'Your customers earn points automatically with every purchase.' },
+        { title: 'Engage', description: 'Send personalized offers, challenges and rewards.' },
+        { title: 'Analyze', description: 'View real-time consumption analytics from your dashboard.' }
+      ],
+      audience: [
+        { title: 'Retail & Hospitality', description: 'Looking to build customer loyalty under their own brand.', icon: 'UtensilsCrossed' },
+        { title: 'Franchises', description: 'Needing a unified loyalty program across locations.', icon: 'GitFork' },
+        { title: 'Local Businesses', description: 'Wanting to compete with big brands without third-party dependency.', icon: 'Store' }
       ],
       cases: ['take'],
       images: ['/products/bond.jpg'],

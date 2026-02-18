@@ -8,40 +8,36 @@ interface FloatingCTAProps {
 }
 
 export function FloatingCTA({ productName, demoLabel, contactLabel, contactHref }: FloatingCTAProps) {
-  const [visible, setVisible] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
+  const [atBottom, setAtBottom] = useState(false);
 
   useEffect(() => {
     const hero = document.querySelector('.hero-section');
     const bottomCta = document.querySelector('.bottom-cta-section');
-    if (!hero) return;
+
+    const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h') || '0', 10);
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.target === hero) {
-            // Show when hero is NOT intersecting (scrolled past)
-            if (!entry.isIntersecting) {
-              setVisible(true);
-            } else {
-              setVisible(false);
-            }
+            setPastHero(!entry.isIntersecting);
           }
           if (entry.target === bottomCta) {
-            // Hide when bottom CTA IS intersecting
-            if (entry.isIntersecting) {
-              setVisible(false);
-            }
+            setAtBottom(entry.isIntersecting);
           }
         });
       },
-      { threshold: 0 }
+      { threshold: 0, rootMargin: `-${headerH}px 0px 0px 0px` }
     );
 
-    observer.observe(hero);
+    if (hero) observer.observe(hero);
     if (bottomCta) observer.observe(bottomCta);
 
     return () => observer.disconnect();
   }, []);
+
+  const visible = pastHero && !atBottom;
 
   return (
     <div
@@ -49,7 +45,7 @@ export function FloatingCTA({ productName, demoLabel, contactLabel, contactHref 
         visible ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-0 py-3 flex items-center justify-between gap-4">
         <span className="text-white font-semibold text-sm sm:text-base truncate">{productName}</span>
         <div className="flex items-center gap-3 flex-shrink-0">
           <a

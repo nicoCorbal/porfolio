@@ -1,45 +1,31 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@/components/ui/carousel';
 
-const AUTO_DURATION = 5;
+const AUTO_DURATION = 3;
 
 const ProductShowcase = ({ products, images, viewMoreText, lang }) => {
+  const [api, setApi] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const contentRef = useRef(null);
   const barFillRefs = useRef([]);
   const autoTween = useRef(null);
-  const isAnimating = useRef(false);
+  const isHovered = useRef(false);
 
-  const active = products[activeIndex];
+  // Sync carousel selection → activeIndex
+  useEffect(() => {
+    if (!api) return;
+    const onSelect = () => setActiveIndex(api.selectedScrollSnap());
+    api.on('select', onSelect);
+    return () => api.off('select', onSelect);
+  }, [api]);
 
-  const slideTo = useCallback((newIndex) => {
-    const resolved = ((newIndex % products.length) + products.length) % products.length;
-    if (resolved === activeIndex || isAnimating.current) return;
-    isAnimating.current = true;
-
-    const el = contentRef.current;
-
-    const tl = gsap.timeline({
-      onComplete: () => { isAnimating.current = false; },
-    });
-
-    tl.to(el, {
-      opacity: 0,
-      duration: 0.35,
-      ease: 'power2.in',
-    });
-
-    tl.call(() => {
-      setActiveIndex(resolved);
-    });
-
-    tl.to(el, {
-      opacity: 1,
-      duration: 0.35,
-      ease: 'power2.out',
-    });
-  }, [activeIndex, products.length]);
-
+  // Progress bar logic
   const startAutoProgress = useCallback((index) => {
     if (autoTween.current) {
       autoTween.current.kill();
@@ -51,7 +37,7 @@ const ProductShowcase = ({ products, images, viewMoreText, lang }) => {
     });
 
     const fillEl = barFillRefs.current[index];
-    if (!fillEl) return;
+    if (!fillEl || !api) return;
 
     autoTween.current = gsap.fromTo(
       fillEl,
@@ -61,11 +47,14 @@ const ProductShowcase = ({ products, images, viewMoreText, lang }) => {
         duration: AUTO_DURATION,
         ease: 'none',
         onComplete: () => {
-          slideTo(index + 1);
+          const next = (index + 1) % products.length;
+          api.scrollTo(next);
         },
       }
     );
-  }, [products.length, slideTo]);
+
+    if (isHovered.current) autoTween.current.pause();
+  }, [api, products.length]);
 
   useEffect(() => {
     startAutoProgress(activeIndex);
@@ -73,27 +62,21 @@ const ProductShowcase = ({ products, images, viewMoreText, lang }) => {
   }, [activeIndex, startAutoProgress]);
 
   const handleBarClick = useCallback((index) => {
-    if (index === activeIndex || isAnimating.current) return;
-    slideTo(index);
-  }, [activeIndex, slideTo]);
+    if (!api || index === activeIndex) return;
+    api.scrollTo(index);
+  }, [api, activeIndex]);
 
   const handleMouseEnter = useCallback(() => {
+    isHovered.current = true;
     if (autoTween.current) autoTween.current.pause();
   }, []);
   const handleMouseLeave = useCallback(() => {
+    isHovered.current = false;
     if (autoTween.current) autoTween.current.play();
   }, []);
 
-  useEffect(() => {
-    gsap.fromTo(contentRef.current, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' });
-  }, []);
-
   return (
-    <div
-      className="product-showcase"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="product-showcase">
       {/* Top: bars with names */}
       <div className="product-showcase-bars">
         {products.map((product, i) => (
@@ -113,28 +96,46 @@ const ProductShowcase = ({ products, images, viewMoreText, lang }) => {
         ))}
       </div>
 
-      {/* Content: full image with overlaid text */}
-      <div className="product-showcase-content" ref={contentRef}>
-        <a href={`/${lang}/productos/${active.id}`} className="product-showcase-viewport">
-          <img
-            src={images[active.id]}
-            alt={active.title}
-            className="product-showcase-img"
-          />
-          <div className="product-showcase-overlay" />
-          <div className="product-showcase-text">
-            <h3 className="product-showcase-title">{active.title}</h3>
-            <p className="product-showcase-tagline">{active.tagline}</p>
-            <div className="product-showcase-divider" />
-            <p className="product-showcase-desc">{active.description}</p>
-            <span className="product-showcase-cta">
-              {viewMoreText}
-              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </div>
-        </a>
+      {/* Content: embla carousel */}
+      <div
+        className="product-showcase-content"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <Carousel
+          setApi={setApi}
+          opts={{ loop: true, duration: 30 }}
+          className="w-full"
+        >
+          <CarouselContent>
+            {products.map((product) => (
+              <CarouselItem key={product.id}>
+                <a href={`/${lang}/productos/${product.id}`} className="product-showcase-viewport">
+                  <img
+                    src={images[product.id]}
+                    alt={product.title}
+                    className="product-showcase-img"
+                  />
+                  <div className="product-showcase-overlay" />
+                  <div className="product-showcase-text">
+                    <h3 className="product-showcase-title">{product.title}</h3>
+                    <p className="product-showcase-tagline">{product.tagline}</p>
+                    <div className="product-showcase-divider" />
+                    <p className="product-showcase-desc">{product.description}</p>
+                    <span className="product-showcase-cta">
+                      {viewMoreText}
+                      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
+                </a>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-10" />
+          <CarouselNext className="right-10" />
+        </Carousel>
       </div>
     </div>
   );
