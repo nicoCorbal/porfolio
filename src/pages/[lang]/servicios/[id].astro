@@ -5,6 +5,7 @@ import { getCasesByService } from '../../../data/cases-multilingual';
 import LoadingScreen from '../../../components/LoadingScreen.astro';
 import { LucideIcon } from '../../../components/LucideIcon';
 import BeamsBackground from '../../../components/BeamsBackground.jsx';
+import { CasesCarousel } from '../../../components/CasesCarousel';
 
 export const prerender = true;
 
@@ -82,7 +83,7 @@ const jsonLd = [serviceSchema, webPageSchema];
   <!-- HERO -->
   <section class="hero-section relative min-h-[400px] bg-black lg:min-h-[450px] flex items-center overflow-hidden mb-0" style="margin-top: var(--header-h, 0px)">
     <div class="absolute inset-0 z-0">
-      <BeamsBackground client:only="react" beamNumber={8} speed={1.5} noiseIntensity={1.5} scale={0.15} rotation={0} />
+      <BeamsBackground client:only="react" beamWidth={4} beamHeight={20} beamNumber={10} speed={2} noiseIntensity={0.5} scale={0.2} rotation={30} />
     </div>
     <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
       <div class="max-w-3xl">
@@ -116,18 +117,13 @@ const jsonLd = [serviceSchema, webPageSchema];
       <div class="fade-up" style="--delay: 0.1s">
         <p class="text-lg text-gray-700 leading-relaxed mb-12">{service.solution}</p>
       </div>
-      <div class="relative">
-        <div class="absolute left-6 top-0 bottom-0 w-px bg-gray-200 hidden md:block"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {service.highlights.map((highlight, index) => (
-          <div class="flex items-start gap-6 mb-8 last:mb-0 fade-up" style={`--delay: ${0.2 + index * 0.12}s`}>
-            <div class="relative z-10 flex-shrink-0 w-12 h-12 flex items-center justify-center bg-white border border-gray-200">
-              <span class="text-lg font-bold text-gray-300 font-['Orbitron',sans-serif]">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-            </div>
-            <div class="pt-2">
-              <p class="text-gray-800 font-medium text-lg">{highlight}</p>
-            </div>
+          <div class="flex items-start gap-3 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
+            <svg class="w-5 h-5 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <p class="text-gray-800 text-base">{highlight}</p>
           </div>
         ))}
       </div>
@@ -151,34 +147,17 @@ const jsonLd = [serviceSchema, webPageSchema];
   <!-- CASES -->
   {relatedCases.length > 0 && (
     <section class="py-16 bg-gray-50 mb-0">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-bold text-black mb-8 fade-up" style="--delay: 0.1s">
           {t('products.caseStudy')}
         </h2>
-        <div class="space-y-4">
-          {relatedCases.slice(0, 3).map((cs, index) => (
-            <a href={`/${lang}/impacto/${cs.id}`} class="group block bg-white border border-gray-200 p-8 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
-              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <div class="flex-1">
-                  <h3 class="text-xl font-bold text-black group-hover:underline mb-1">{cs.title}</h3>
-                  <p class="text-sm text-gray-500 mb-3">{cs.client}</p>
-                  <p class="text-gray-600 text-sm leading-relaxed line-clamp-2">{cs.summary}</p>
-                </div>
-                {cs.stats && cs.stats.length > 0 && (
-                  <div class="flex gap-2 flex-wrap sm:flex-col sm:items-end flex-shrink-0">
-                    {cs.stats.slice(0, 3).map(stat => (
-                      <span class="inline-flex items-center px-3 py-1 bg-black text-white text-xs font-medium">
-                        {stat.value}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <span class="inline-block mt-4 text-sm font-semibold text-black group-hover:translate-x-1 transition-transform duration-200">
-                {t('caseStudies.viewMore')} →
-              </span>
-            </a>
-          ))}
+        <div class="fade-up" style="--delay: 0.2s">
+          <CasesCarousel
+            cases={relatedCases}
+            lang={lang}
+            viewMoreLabel={t('caseStudies.viewMore')}
+            client:load
+          />
         </div>
       </div>
     </section>
