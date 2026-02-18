@@ -1,6 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getService, getServiceIds } from '../../../data/services-multilingual';
+import { getService, getServiceIds, getAllServices } from '../../../data/services-multilingual';
 import { getCasesByService } from '../../../data/cases-multilingual';
 import LoadingScreen from '../../../components/LoadingScreen.astro';
 import { LucideIcon } from '../../../components/LucideIcon';
@@ -26,14 +26,13 @@ if (!service) {
 }
 
 const relatedCases = getCasesByService(id, lang);
+const otherServices = getAllServices(lang).filter(s => s.id !== id);
 
 const translations = await import(`../../../../public/locales/${lang}.json`);
 const t = (key: string) => translations.default[key] || key;
 
 // SEO Data
-const seoTitle = lang === 'es'
-  ? `${service.title} - ${service.tagline} | OSIX Tech`
-  : `${service.title} - ${service.tagline} | OSIX Tech`;
+const seoTitle = `${service.title} - ${service.tagline} | OSIX Tech`;
 const seoDescription = service.description.substring(0, 160);
 
 // Structured Data
@@ -41,24 +40,9 @@ const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": `https://osix.tech/${lang}/`
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": lang === 'es' ? 'Servicios' : 'Services',
-      "item": `https://osix.tech/${lang}/#services`
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": service.title,
-      "item": `https://osix.tech/${lang}/servicios/${id}`
-    }
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": `https://osix.tech/${lang}/` },
+    { "@type": "ListItem", "position": 2, "name": lang === 'es' ? 'Servicios' : 'Services', "item": `https://osix.tech/${lang}/#services` },
+    { "@type": "ListItem", "position": 3, "name": service.title, "item": `https://osix.tech/${lang}/servicios/${id}` }
   ]
 };
 
@@ -67,15 +51,8 @@ const serviceSchema = {
   "@type": "Service",
   "name": service.title,
   "description": service.description,
-  "provider": {
-    "@type": "Organization",
-    "name": "OSIX Tech",
-    "url": "https://osix.tech"
-  },
-  "areaServed": {
-    "@type": "Country",
-    "name": "Spain"
-  }
+  "provider": { "@type": "Organization", "name": "OSIX Tech", "url": "https://osix.tech" },
+  "areaServed": { "@type": "Country", "name": "Spain" }
 };
 
 const webPageSchema = {
@@ -85,15 +62,16 @@ const webPageSchema = {
   "description": seoDescription,
   "url": `https://osix.tech/${lang}/servicios/${id}`,
   "inLanguage": lang,
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "OSIX Tech",
-    "url": "https://osix.tech"
-  },
+  "isPartOf": { "@type": "WebSite", "name": "OSIX Tech", "url": "https://osix.tech" },
   "breadcrumb": breadcrumbSchema
 };
 
 const jsonLd = [serviceSchema, webPageSchema];
+
+// Split description into first sentence (pull-quote) and rest
+const firstSentenceMatch = service.description.match(/^(.+?[.!?])\s+(.*)/s);
+const pullQuote = firstSentenceMatch ? firstSentenceMatch[1] : service.description;
+const restDescription = firstSentenceMatch ? firstSentenceMatch[2] : '';
 ---
 
 <Layout
@@ -116,89 +94,123 @@ const jsonLd = [serviceSchema, webPageSchema];
           </span>
         </div>
         <h1 class="hero-title text-5xl md:text-7xl font-bold text-white mb-4 opacity-0">{service.title}</h1>
-        <p class="hero-subtitle text-xl md:text-2xl text-gray-300 opacity-0">{service.tagline}</p>
+        <p class="hero-subtitle text-xl md:text-2xl text-gray-300 mb-6 opacity-0">{service.tagline}</p>
+        <a href={`/${lang}/#contact`} class="hero-cta inline-flex items-center gap-2 text-white text-sm font-medium hover:text-gray-300 transition-colors opacity-0">
+          {t('services.tellUsYourCase')} →
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- DESCRIPTION -->
+  <!-- INTRODUCTION — Pull-quote style -->
   <section class="py-16 bg-white mb-0">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="fade-up" style="--delay: 0.1s">
-        <p class="text-lg text-gray-800 leading-relaxed text-justify">{service.description}</p>
+        <p class="text-2xl md:text-3xl text-gray-900 font-light leading-relaxed mb-6">{pullQuote}</p>
+        {restDescription && (
+          <p class="text-base text-gray-600 leading-relaxed">{restDescription}</p>
+        )}
       </div>
     </div>
   </section>
 
-  <!-- HIGHLIGHTS -->
+  <!-- NUMBERED HIGHLIGHTS — Process flow -->
   <section class="py-16 bg-gray-50 mb-0">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold text-black mb-10 fade-up" style="--delay: 0.2s">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-black mb-12 fade-up" style="--delay: 0.2s">
         {t('services.highlights')}
       </h2>
-      <div class="grid md:grid-cols-2 gap-6">
+      <div class="relative">
+        <!-- Vertical connecting line -->
+        <div class="absolute left-6 top-0 bottom-0 w-px bg-gray-200 hidden md:block"></div>
+
         {service.highlights.map((highlight, index) => (
-          <div class="flex items-start gap-4 p-6 bg-white border border-gray-200 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
-            <svg class="w-6 h-6 text-black mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-            <span class="text-gray-800 font-medium">{highlight}</span>
+          <div class="flex items-start gap-6 mb-8 last:mb-0 fade-up" style={`--delay: ${0.2 + index * 0.12}s`}>
+            <div class="relative z-10 flex-shrink-0 w-12 h-12 flex items-center justify-center bg-white border border-gray-200">
+              <span class="text-lg font-bold text-gray-300 font-['Orbitron',sans-serif]">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+            </div>
+            <div class="pt-2">
+              <p class="text-gray-800 font-medium text-lg">{highlight}</p>
+            </div>
           </div>
         ))}
       </div>
     </div>
   </section>
 
+  <!-- RELATED CASES — Testimonial banner -->
   {relatedCases.length > 0 && (
     <section class="py-16 bg-white mb-0">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-bold text-black mb-8 fade-up" style="--delay: 0.1s">
           {t('products.caseStudy')}
         </h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {relatedCases.map((cs, index) => (
-            <a href={`/${lang}/impacto/${cs.id}`} class="group block bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
-              {cs.product && (
-                <span class="inline-block text-xs font-bold uppercase tracking-wider text-white bg-black px-2 py-0.5 mb-3">{cs.product}</span>
+        {relatedCases.slice(0, 2).map((cs, index) => (
+          <a href={`/${lang}/impacto/${cs.id}`} class="group block bg-gray-50 border border-gray-200 p-8 mb-4 last:mb-0 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h3 class="text-xl font-bold text-black group-hover:underline">{cs.title}</h3>
+                <p class="text-sm text-gray-500 mt-1">{cs.client}</p>
+              </div>
+              {cs.stats && cs.stats.length > 0 && (
+                <div class="flex gap-4 flex-wrap">
+                  {cs.stats.slice(0, 2).map(stat => (
+                    <span class="inline-flex items-center px-3 py-1 bg-black text-white text-xs font-medium">
+                      {stat.value}
+                    </span>
+                  ))}
+                </div>
               )}
-              <h3 class="text-xl font-bold text-black mb-1 group-hover:underline">{cs.title}</h3>
-              <p class="text-sm text-gray-500 mb-3">{cs.client}</p>
-              <p class="text-sm text-gray-700 line-clamp-3">{cs.summary}</p>
-              <span class="inline-block mt-4 text-sm font-semibold text-black group-hover:translate-x-1 transition-transform duration-200">
-                {t('caseStudies.viewMore')} →
-              </span>
+            </div>
+            <span class="inline-block mt-4 text-sm font-semibold text-black group-hover:translate-x-1 transition-transform duration-200">
+              {t('caseStudies.viewMore')} →
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- CTA SECTION -->
+  <section class="py-20 bg-black mb-0">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">{t('services.tellUsYourCase')}</h2>
+      <p class="text-gray-400 mb-8">{t('services.cta.subtitle')}</p>
+      <a href={`/${lang}/#contact`} class="inline-flex items-center bg-white text-black px-10 py-4 text-lg font-semibold hover:bg-gray-100 transition-colors">
+        {t('nav.contact')}
+      </a>
+    </div>
+  </section>
+
+  <!-- OTHER SERVICES STRIP -->
+  {otherServices.length > 0 && (
+    <section class="py-12 bg-gray-50 mb-0">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-sm font-bold uppercase tracking-widest text-gray-500 mb-6 fade-up" style="--delay: 0.1s">
+          {t('services.otherServices')}
+        </h2>
+        <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          {otherServices.map((s, index) => (
+            <a href={`/${lang}/servicios/${s.id}`} class="group flex-shrink-0 flex items-center gap-3 px-5 py-3 bg-white border border-gray-200 hover:border-black transition-colors fade-up" style={`--delay: ${0.15 + index * 0.08}s`}>
+              <LucideIcon name={s.icon} className="text-gray-400 group-hover:text-black transition-colors" size={18} client:load />
+              <span class="text-sm font-medium text-gray-700 group-hover:text-black whitespace-nowrap">{s.title}</span>
             </a>
           ))}
         </div>
       </div>
     </section>
   )}
-
-  <!-- CTA -->
-  <section class="py-16 bg-black">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">{t('services.cta.title')}</h2>
-      <p class="text-lg text-gray-50 mb-8">{t('services.cta.subtitle')}</p>
-      <div class="flex justify-center gap-4 flex-wrap">
-        <a href={`/${lang}/#services`} class="inline-flex text-black items-center border border-white bg-white hover:bg-black hover:text-white px-6 py-3 text-base font-semibold text-center transition-all duration-300 w-full sm:w-auto">
-          {t('services.cta.viewAll')}
-        </a>
-        <a href={`/${lang}/#contact`} class="inline-flex items-center border border-white hover:bg-white hover:text-black text-white px-6 py-3 font-semibold text-center transition-all duration-300 w-full sm:w-auto">
-          {t('nav.contact')}
-        </a>
-      </div>
-    </div>
-  </section>
 </Layout>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const initializeAnimations = () => {
-      const heroTimeline = () => {
-        setTimeout(() => { document.querySelector('.hero-badge')?.classList.add('animate'); }, 200);
-        setTimeout(() => { document.querySelector('.hero-title')?.classList.add('animate'); }, 400);
-        setTimeout(() => { document.querySelector('.hero-subtitle')?.classList.add('animate'); }, 600);
-      };
+      setTimeout(() => { document.querySelector('.hero-badge')?.classList.add('animate'); }, 200);
+      setTimeout(() => { document.querySelector('.hero-title')?.classList.add('animate'); }, 400);
+      setTimeout(() => { document.querySelector('.hero-subtitle')?.classList.add('animate'); }, 600);
+      setTimeout(() => { document.querySelector('.hero-cta')?.classList.add('animate'); }, 800);
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -206,7 +218,6 @@ const jsonLd = [serviceSchema, webPageSchema];
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-      heroTimeline();
       setTimeout(() => {
         document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
       }, 1200);
@@ -221,34 +232,18 @@ const jsonLd = [serviceSchema, webPageSchema];
 </script>
 
 <style>
-  .hero-badge {
-    opacity: 0;
-    transform: translateX(-30px);
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
+  .hero-badge { opacity: 0; transform: translateX(-30px); transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .hero-badge.animate { opacity: 1; transform: translateX(0); }
-  .hero-title {
-    opacity: 0;
-    transform: translateX(-100px) skewX(-5deg);
-    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-  }
+  .hero-title { opacity: 0; transform: translateX(-100px) skewX(-5deg); transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
   .hero-title.animate { opacity: 1; transform: translateX(0) skewX(0); }
-  .hero-subtitle {
-    opacity: 0;
-    transform: translateX(100px);
-    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
-  }
+  .hero-subtitle { opacity: 0; transform: translateX(100px); transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
   .hero-subtitle.animate { opacity: 1; transform: translateX(0); }
-  .fade-up {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--delay, 0s);
-  }
+  .hero-cta { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
+  .hero-cta.animate { opacity: 1; transform: translateY(0); }
+  .fade-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: var(--delay, 0s); }
   .fade-up.in-view { opacity: 1; transform: translateY(0); }
   .hero-section { animation: heroReveal 1s cubic-bezier(0.22, 1, 0.36, 1); }
-  @keyframes heroReveal {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  @keyframes heroReveal { from { opacity: 0; } to { opacity: 1; } }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
 </style>

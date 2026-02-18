@@ -1,9 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getProduct, getProductIds } from '../../../data/products-multilingual';
+import { getProduct, getProductIds, getAllProducts } from '../../../data/products-multilingual';
 import LoadingScreen from '../../../components/LoadingScreen.astro';
 import { getCasesByProduct } from '../../../data/cases-multilingual';
 import { LucideIcon } from '../../../components/LucideIcon';
+import { FloatingCTA } from '../../../components/FloatingCTA';
 
 export const prerender = true;
 
@@ -26,14 +27,18 @@ if (!product) {
 }
 
 const relatedCases = getCasesByProduct(id, lang);
+const otherProducts = getAllProducts(lang).filter(p => p.id !== id).slice(0, 3);
 
 const translations = await import(`../../../../public/locales/${lang}.json`);
 const t = (key: string) => translations.default[key] || key;
 
+// Split description into lead sentence and rest
+const descMatch = product.description.match(/^(.+?[.!?])\s+(.*)/s);
+const leadSentence = descMatch ? descMatch[1] : product.description;
+const restDescription = descMatch ? descMatch[2] : '';
+
 // SEO Data
-const seoTitle = lang === 'es'
-  ? `${product.title} - ${product.tagline} | OSIX Tech`
-  : `${product.title} - ${product.tagline} | OSIX Tech`;
+const seoTitle = `${product.title} - ${product.tagline} | OSIX Tech`;
 const seoDescription = product.description.substring(0, 160);
 
 // Structured Data
@@ -41,24 +46,9 @@ const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": `https://osix.tech/${lang}/`
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": lang === 'es' ? 'Productos' : 'Products',
-      "item": `https://osix.tech/${lang}/#products`
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": product.title,
-      "item": `https://osix.tech/${lang}/productos/${id}`
-    }
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": `https://osix.tech/${lang}/` },
+    { "@type": "ListItem", "position": 2, "name": lang === 'es' ? 'Productos' : 'Products', "item": `https://osix.tech/${lang}/#products` },
+    { "@type": "ListItem", "position": 3, "name": product.title, "item": `https://osix.tech/${lang}/productos/${id}` }
   ]
 };
 
@@ -68,10 +58,7 @@ const productSchema = {
   "name": product.title,
   "description": product.description,
   "image": product.images.map(img => `https://osix.tech${img}`),
-  "brand": {
-    "@type": "Organization",
-    "name": "OSIX Tech"
-  }
+  "brand": { "@type": "Organization", "name": "OSIX Tech" }
 };
 
 const webPageSchema = {
@@ -81,15 +68,14 @@ const webPageSchema = {
   "description": seoDescription,
   "url": `https://osix.tech/${lang}/productos/${id}`,
   "inLanguage": lang,
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "OSIX Tech",
-    "url": "https://osix.tech"
-  },
+  "isPartOf": { "@type": "WebSite", "name": "OSIX Tech", "url": "https://osix.tech" },
   "breadcrumb": breadcrumbSchema
 };
 
 const jsonLd = [productSchema, webPageSchema];
+
+// Feature title bullets for sidebar
+const featureTitles = product.features.map(f => f.title);
 ---
 
 <Layout
@@ -101,11 +87,11 @@ const jsonLd = [productSchema, webPageSchema];
   jsonLd={jsonLd}>
   <LoadingScreen duration={1000} />
 
-  <!-- HERO -->
-  <section class="hero-section relative min-h-[450px] bg-black lg:min-h-[550px] flex items-center overflow-hidden mb-0" style="margin-top: var(--header-h, 0px)">
+  <!-- HERO — Full-bleed image -->
+  <section class="hero-section relative min-h-[500px] bg-black lg:min-h-[600px] flex items-center overflow-hidden mb-0" style="margin-top: var(--header-h, 0px)">
     <div class="hero-bg absolute inset-0 z-0 bg-black">
       <img src={product.images[0]} alt={product.title} class="hero-image object-cover w-full h-full" />
-      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
     </div>
     <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
       <div class="max-w-2xl">
@@ -114,47 +100,78 @@ const jsonLd = [productSchema, webPageSchema];
         </span>
         <h1 class={`hero-title text-5xl md:text-7xl font-bold mb-3 md:mb-6 opacity-0 ${product.textColor === 'dark' ? 'text-black' : 'text-white'}`}>{product.title}</h1>
         <h5 class={`hero-subtitle text-xl md:text-2xl mb-8 opacity-0 ${product.textColor === 'dark' ? 'text-gray-800' : 'text-gray-50'}`}>{product.tagline}</h5>
+        <a href={`/${lang}/#contact`} class={`hero-cta inline-flex items-center px-8 py-3 font-semibold text-base transition-all duration-300 opacity-0 ${product.textColor === 'dark' ? 'bg-black text-white hover:bg-gray-800' : 'bg-white text-black hover:bg-gray-100'}`}>
+          {t('products.requestDemo')}
+        </a>
       </div>
+    </div>
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-0 scroll-indicator">
+      <span class={`text-xs tracking-widest uppercase ${product.textColor === 'dark' ? 'text-gray-600' : 'text-gray-400'}`}>{t('products.scrollDown')}</span>
+      <svg class={`w-5 h-5 animate-bounce ${product.textColor === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
     </div>
   </section>
 
-  <!-- DESCRIPTION -->
+  <!-- OVERVIEW — 60/40 Split -->
   <section class="py-16 bg-white mb-0">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="fade-up" style="--delay: 0.1s">
-        <p class="text-lg text-gray-800 leading-relaxed text-justify">{product.description}</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="features-section bg-white mb-0 py-16">
-    <div class="w-full mx-auto px-4 sm:px-6 lg:px-10">
-      <h2 class="features-title text-3xl font-bold text-black text-left mb-12 fade-up" style="--delay: 0.2s">
-        {t('products.features')}
-      </h2>
-      <div class={`features-grid grid gap-8 ${
-        product.features.length <= 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' :
-        product.features.length <= 4 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2' :
-        'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-      }`}>
-        {product.features.map((feature, index) => (
-          <div class="feature-card group relative min-h-[16rem] w-full overflow-hidden border border-gray-200 fade-scale" style={`--card-index: ${index}`}>
-            <div class="card-back relative z-10 bg-black bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.04)_0%,transparent_40%)] border border-transparent p-5 text-left text-white">
-              <div class="card-back-content opacity-0 transition-all duration-400 delay-200 group-hover:opacity-100">
-                <h5 class="mb-4 w-full border-b border-gray-600 pb-4 text-lg font-semibold">
-                  {feature.title}
-                </h5>
-                <p class="text-sm leading-relaxed text-gray-50 opacity-90">
-                  {feature.description}
-                </p>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row gap-12">
+        <!-- Left: Description (60%) -->
+        <div class="lg:w-3/5 fade-up" style="--delay: 0.1s">
+          <p class="text-2xl md:text-3xl text-gray-900 font-light leading-relaxed mb-6">{leadSentence}</p>
+          {restDescription && (
+            <p class="text-base text-gray-600 leading-relaxed">{restDescription}</p>
+          )}
+        </div>
+        <!-- Right: Sidebar card (40%) -->
+        <div class="lg:w-2/5 fade-up" style="--delay: 0.2s">
+          <div class="bg-gray-50 border border-gray-200 p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-black flex items-center justify-center">
+                <LucideIcon name={product.icon} className="text-white" size={20} client:load />
+              </div>
+              <div>
+                <h3 class="font-bold text-black">{product.title}</h3>
+                <p class="text-xs text-gray-500">{product.tagline}</p>
               </div>
             </div>
-            <div class="card-front absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-white p-5 border border-transparent shadow-[inset_0_0_0_1px_#e5e7eb] transition-transform duration-700 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] group-hover:-translate-x-full">
-              <div class="flex h-16 w-16 items-center justify-center bg-black shadow-md transition-transform duration-300 group-hover:scale-110">
-                <LucideIcon name={feature.icon} className="text-white" size={32} client:load />
-              </div>
-              <h4 class="text-lg font-semibold text-black text-center px-2">{feature.title}</h4>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">{t('products.overview.keyFacts')}</h4>
+            <ul class="space-y-2 mb-6">
+              {featureTitles.map(title => (
+                <li class="flex items-center gap-2 text-sm text-gray-700">
+                  <svg class="w-4 h-4 text-black flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {title}
+                </li>
+              ))}
+            </ul>
+            <a href={`/${lang}/#contact`} class="block w-full text-center bg-black text-white py-3 text-sm font-semibold hover:bg-gray-800 transition-colors">
+              {t('products.requestDemo')}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES — Zigzag layout -->
+  <section class="py-16 bg-gray-50 mb-0">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-black mb-12 fade-up" style="--delay: 0.1s">
+        {t('products.features')}
+      </h2>
+      <div class="space-y-12">
+        {product.features.map((feature, index) => (
+          <div class={`flex flex-col md:flex-row items-start gap-8 fade-up ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`} style={`--delay: ${0.15 + index * 0.1}s`}>
+            <div class="flex-shrink-0 w-16 h-16 bg-black flex items-center justify-center">
+              <LucideIcon name={feature.icon} className="text-white" size={32} client:load />
+            </div>
+            <div class="flex-1">
+              <h3 class="text-xl font-bold text-black mb-2">{feature.title}</h3>
+              <p class="text-gray-600 leading-relaxed">{feature.description}</p>
             </div>
           </div>
         ))}
@@ -186,82 +203,98 @@ const jsonLd = [productSchema, webPageSchema];
     </section>
   )}
 
-  <!-- CASE STUDY -->
+  <!-- SOCIAL PROOF — Featured case testimonial -->
   {relatedCases.length > 0 && (
-    <section class="py-16 bg-gray-50 mb-0">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
-        <h2 class="text-3xl font-bold text-black mb-8 fade-up" style="--delay: 0.1s">
-          {t('products.caseStudy')}
-        </h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {relatedCases.map((cs, index) => (
-            <a href={`/${lang}/impacto/${cs.id}`} class="group block bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
-              <h3 class="text-xl font-bold text-black mb-1 group-hover:underline">{cs.title}</h3>
-              <p class="text-sm text-gray-500 mb-3">{cs.client}</p>
-              <p class="text-sm text-gray-700 line-clamp-3">{cs.summary}</p>
-              <span class="inline-block mt-4 text-sm font-semibold text-black group-hover:translate-x-1 transition-transform duration-200">
-                {t('caseStudies.viewMore')} →
-              </span>
-            </a>
-          ))}
-        </div>
+    <section class="py-16 bg-white mb-0">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <a href={`/${lang}/impacto/${relatedCases[0].id}`} class="group block bg-black p-8 md:p-12 fade-up" style="--delay: 0.1s">
+          <span class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4 block">{t('products.caseStudy')}</span>
+          <p class="text-xl md:text-2xl text-white font-light leading-relaxed mb-6">"{relatedCases[0].summary}"</p>
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p class="text-white font-semibold">{relatedCases[0].client}</p>
+              <p class="text-gray-400 text-sm">{relatedCases[0].title}</p>
+            </div>
+            <span class="inline-flex items-center text-sm font-semibold text-white group-hover:translate-x-1 transition-transform duration-200">
+              {t('caseStudies.viewMore')} →
+            </span>
+          </div>
+        </a>
       </div>
     </section>
   )}
 
-  <!-- CTA -->
-  <section class="py-16 bg-black">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">{t('products.cta.title')}</h2>
-      <p class="text-lg text-gray-50 mb-8">{t('products.cta.subtitle')}</p>
-      <div class="flex justify-center gap-4 flex-wrap">
-        <a href={`/${lang}/#products`} class="inline-flex text-black items-center border border-white bg-white hover:bg-black hover:text-white px-6 py-3 text-base font-semibold text-center transition-all duration-300 w-full sm:w-auto">
-          {t('products.cta.viewAll')}
-        </a>
-        <a href={`/${lang}/#contact`} class="inline-flex items-center border border-white hover:bg-white hover:text-black text-white px-6 py-3 font-semibold text-center transition-all duration-300 w-full sm:w-auto">
-          {t('nav.contact')}
-        </a>
+  <!-- BOTTOM CTA — Cross-sell + contact -->
+  <section class="bottom-cta-section py-16 bg-black mb-0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="flex flex-col lg:flex-row gap-12">
+        <!-- Left: Explore more products -->
+        {otherProducts.length > 0 && (
+          <div class="lg:w-1/2">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-gray-500 mb-6">{t('products.cta.explore')}</h3>
+            <div class="space-y-3">
+              {otherProducts.map(p => (
+                <a href={`/${lang}/productos/${p.id}`} class="group flex items-center gap-4 p-4 border border-white/10 hover:border-white/30 transition-colors">
+                  <div class="w-10 h-10 bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <LucideIcon name={p.icon} className="text-white" size={18} client:load />
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-white font-semibold text-sm group-hover:underline">{p.title}</p>
+                    <p class="text-gray-400 text-xs truncate">{p.tagline}</p>
+                  </div>
+                  <svg class="w-4 h-4 text-gray-500 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+        <!-- Right: Contact CTA -->
+        <div class={`${otherProducts.length > 0 ? 'lg:w-1/2' : 'w-full'} flex flex-col items-center justify-center text-center`}>
+          <h2 class="text-3xl font-bold text-white mb-4">{t('products.cta.title')}</h2>
+          <p class="text-gray-400 mb-8">{t('products.cta.subtitle')}</p>
+          <a href={`/${lang}/#contact`} class="inline-flex items-center bg-white text-black px-10 py-4 text-lg font-semibold hover:bg-gray-100 transition-colors">
+            {t('products.cta.getStarted')}
+          </a>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- Floating CTA Bar -->
+  <FloatingCTA
+    productName={product.title}
+    demoLabel={t('products.requestDemo')}
+    contactLabel={t('nav.contact')}
+    contactHref={`/${lang}/#contact`}
+    client:load
+  />
 </Layout>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const initializeAnimations = () => {
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      if (isTouchDevice) {
-        const featureCards = document.querySelectorAll('.feature-card');
-        featureCards.forEach(card => {
-          card.addEventListener('click', () => {
-            card.classList.toggle('is-flipped');
-          });
-        });
-      }
-
       const heroTimeline = () => {
         document.querySelector('.hero-image')?.classList.add('animate');
         setTimeout(() => { document.querySelector('.hero-badges')?.classList.add('animate'); }, 200);
         setTimeout(() => { document.querySelector('.hero-title')?.classList.add('animate'); }, 400);
         setTimeout(() => { document.querySelector('.hero-subtitle')?.classList.add('animate'); }, 600);
+        setTimeout(() => { document.querySelector('.hero-cta')?.classList.add('animate'); }, 800);
+        setTimeout(() => { document.querySelector('.scroll-indicator')?.classList.add('animate'); }, 1200);
       };
 
-      const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-          }
+          if (entry.isIntersecting) entry.target.classList.add('in-view');
         });
-      }, observerOptions);
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
       heroTimeline();
 
       setTimeout(() => {
         document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
       }, 1200);
-
-      document.querySelectorAll('.fade-scale').forEach(el => observer.observe(el));
     };
 
     if ((window as any).isLoadingComplete) {
@@ -305,46 +338,27 @@ const jsonLd = [productSchema, webPageSchema];
     transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
   }
   .hero-subtitle.animate { opacity: 1; transform: translateX(0); }
+  .hero-cta {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .hero-cta.animate { opacity: 1; transform: translateY(0); }
+  .scroll-indicator {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+  .scroll-indicator.animate { opacity: 1; }
   .fade-up {
     opacity: 0;
-    transform: translateY(60px) rotateX(-10deg);
-    transform-origin: top center;
-    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--delay, 0s);
   }
-  .fade-up.in-view { opacity: 1; transform: translateY(0) rotateX(0); }
-  .fade-scale {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transition-delay: calc(0.8s + (var(--card-index, 0) * 0.15s));
-  }
-  .fade-scale.in-view { opacity: 1; transform: scale(1) translateY(0); }
-  .feature-card { transition: all 0.3s ease; display: flex; }
-  .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); }
-  .features-grid { grid-auto-rows: minmax(16rem, auto); }
-  .card-front { min-height: 100%; }
-  .card-back { position: relative; height: auto; }
-  .card-back-content h5 { font-size: 1.1rem; margin-bottom: 0.75rem; padding-bottom: 0.75rem; }
-  .card-back-content p { font-size: 0.9rem; line-height: 1.5; }
-  .features-title { position: relative; overflow: hidden; }
-  .features-title::after {
-    content: ''; position: absolute; bottom: -2px; left: 0;
-    width: 0; height: 2px; background: black;
-    transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  .features-title.in-view::after { width: 100px; }
-  .feature-card.is-flipped .card-front { transform: translateX(-100%); }
-  .feature-card.is-flipped .card-back-content { opacity: 1; }
+  .fade-up.in-view { opacity: 1; transform: translateY(0); }
   .hero-section { animation: heroSectionReveal 1s cubic-bezier(0.22, 1, 0.36, 1); }
   @keyframes heroSectionReveal {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
-  }
-  @media (max-width: 768px) {
-    .feature-card { min-height: 14rem; }
-    .card-front, .card-back { padding: 1.5rem; }
-    .card-back-content h5 { font-size: 1rem; }
-    .card-back-content p { font-size: 0.875rem; }
   }
 </style>

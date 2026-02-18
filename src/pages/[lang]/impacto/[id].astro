@@ -1,6 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getCase, getCaseIds } from '../../../data/cases-multilingual';
+import { getCase, getCaseIds, getAllCases } from '../../../data/cases-multilingual';
 import { getProduct } from '../../../data/products-multilingual';
 import { getService } from '../../../data/services-multilingual';
 import LoadingScreen from '../../../components/LoadingScreen.astro';
@@ -30,6 +30,8 @@ const t = (key: string) => translations.default[key] || key;
 const relatedProduct = caseData.product ? getProduct(caseData.product.toLowerCase(), lang) : null;
 const relatedServices = caseData.services.map(sId => getService(sId, lang)).filter(Boolean);
 
+const otherCases = getAllCases(lang).filter(c => c.id !== id).slice(0, 3);
+
 const seoTitle = `${caseData.title} - ${caseData.client} | OSIX Tech`;
 const seoDescription = caseData.summary.substring(0, 160);
 
@@ -52,47 +54,91 @@ const jsonLd = [{
   "inLanguage": lang,
   "breadcrumb": breadcrumbSchema
 }];
+
+const hasImages = caseData.images && caseData.images.length > 0;
+const firstImage = hasImages ? caseData.images![0] : null;
 ---
 
 <Layout lang={lang} title={seoTitle} description={seoDescription} pageType="website" jsonLd={jsonLd}>
   <LoadingScreen duration={1000} />
 
-  <!-- HERO -->
-  <section class="hero-section relative min-h-[400px] bg-black lg:min-h-[450px] flex items-center overflow-hidden mb-0" style="margin-top: var(--header-h, 0px)">
-    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px); background-size: 20px 20px;"></div>
-    <div class="relative z-10 px-4 sm:px-6 lg:px-10 w-full pt-20">
-      <div class="max-w-3xl">
+  <!-- SPLIT HERO -->
+  <section class="hero-section relative min-h-[450px] bg-black lg:min-h-[550px] flex items-stretch overflow-hidden mb-0" style="margin-top: var(--header-h, 0px)">
+    <div class="relative z-10 flex flex-col lg:flex-row w-full">
+      <!-- Left: Title area -->
+      <div class="flex-1 flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-16 lg:py-20">
         <div class="hero-badge mb-6 opacity-0">
           <span class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-sm text-white text-sm border border-white/20">
             {t('impact.badge')}
           </span>
         </div>
-        <h1 class="hero-title text-5xl md:text-7xl font-bold text-white mb-4 opacity-0">{caseData.title}</h1>
-        <p class="hero-subtitle text-xl md:text-2xl text-gray-300 opacity-0">{caseData.client}</p>
+        <h1 class="hero-title text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 opacity-0 font-['Orbitron',sans-serif]">{caseData.title}</h1>
+        <p class="hero-subtitle text-xl md:text-2xl text-gray-400 opacity-0">{caseData.client}</p>
       </div>
+      <!-- Right: Image or icon -->
+      {firstImage ? (
+        <div class="lg:w-1/2 relative min-h-[250px] lg:min-h-0">
+          <img src={firstImage} alt={caseData.title} class="hero-image absolute inset-0 w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent lg:block hidden"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent lg:hidden"></div>
+        </div>
+      ) : (
+        <div class="hidden lg:flex lg:w-1/2 items-center justify-center bg-black">
+          {relatedProduct && (
+            <div class="opacity-10">
+              <LucideIcon name={relatedProduct.icon} className="text-white" size={200} client:load />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   </section>
 
-  <!-- SUMMARY -->
+  <!-- NARRATIVE BLOCK -->
   <section class="py-16 bg-white mb-0">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="fade-up" style="--delay: 0.1s">
-        <p class="text-lg text-gray-800 leading-relaxed text-justify">{caseData.summary}</p>
+        <div class="relative pl-6 border-l-4 border-black">
+          <svg class="absolute -left-3 -top-2 w-8 h-8 text-gray-200" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983z"/>
+          </svg>
+          <p class="text-lg md:text-xl text-gray-800 leading-relaxed">{caseData.summary}</p>
+        </div>
+
+        <!-- Inline related badges -->
+        {(relatedProduct || relatedServices.length > 0) && (
+          <div class="flex flex-wrap gap-3 mt-8">
+            {relatedProduct && (
+              <a href={`/${lang}/productos/${relatedProduct.id}`} class="inline-flex items-center gap-2 px-4 py-2 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors">
+                <LucideIcon name={relatedProduct.icon} className="text-white" size={14} client:load />
+                {relatedProduct.title}
+              </a>
+            )}
+            {relatedServices.map(service => (
+              <a href={`/${lang}/servicios/${service.id}`} class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium hover:border-black hover:text-black transition-colors">
+                <LucideIcon name={service.icon} className="text-gray-500" size={14} client:load />
+                {service.title}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   </section>
 
-  <!-- STATS -->
+  <!-- STATS DASHBOARD -->
   {caseData.stats && caseData.stats.length > 0 && (
-    <section class="py-16 bg-black mb-0">
+    <section class="py-20 bg-black mb-0">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-white mb-10 fade-up" style="--delay: 0.1s">
+        <h2 class="text-sm font-bold uppercase tracking-widest text-gray-500 mb-12 fade-up" style="--delay: 0.1s">
           {t('impact.stats')}
         </h2>
-        <div class={`grid gap-6 ${caseData.stats.length <= 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+        <div class={`grid gap-8 ${caseData.stats.length <= 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-3'}`}>
           {caseData.stats.map((stat, index) => (
-            <div class="border border-white/20 p-8 text-center fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
-              <span class="block text-4xl md:text-5xl font-bold text-white mb-2">{stat.value}</span>
+            <div class="text-center md:text-left fade-up" style={`--delay: ${0.2 + index * 0.15}s`}>
+              <span class="stat-value block text-5xl md:text-6xl font-bold text-white mb-3 font-['Orbitron',sans-serif]" data-value={stat.value}>
+                {stat.value}
+              </span>
               <span class="text-sm text-gray-400 uppercase tracking-wider">{stat.label}</span>
             </div>
           ))}
@@ -101,76 +147,73 @@ const jsonLd = [{
     </section>
   )}
 
-  <!-- RESULTS -->
+  <!-- RESULTS GRID -->
   <section class="py-16 bg-gray-50 mb-0">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-bold text-black mb-10 fade-up" style="--delay: 0.2s">
         {t('impact.results')}
       </h2>
-      <div class="grid md:grid-cols-2 gap-6">
+      <div class="grid md:grid-cols-2 gap-4">
         {caseData.results.map((result, index) => (
-          <div class="flex items-start gap-4 p-6 bg-white border border-gray-200 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
-            <svg class="w-6 h-6 text-black mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <div class="flex items-start gap-4 p-5 bg-white border border-gray-200 fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
+            <svg class="w-5 h-5 text-black mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
-            <span class="text-gray-800 font-medium">{result}</span>
+            <span class="text-gray-800 font-medium text-sm">{result}</span>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- IMAGES -->
-  {caseData.images && caseData.images.length > 0 && (
-    <section class="py-16 bg-white mb-0">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
-        <ProjectCarousel images={caseData.images} projectTitle={caseData.title} client:load />
-      </div>
-    </section>
-  )}
-
-  <!-- RELATED -->
-  {(relatedProduct || relatedServices.length > 0) && (
-    <section class="py-16 bg-gray-50 mb-0">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-black mb-8 fade-up" style="--delay: 0.1s">
-          {t('impact.related')}
-        </h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          {relatedProduct && (
-            <a href={`/${lang}/productos/${relatedProduct.id}`} class="group block bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style="--delay: 0.2s">
-              <span class="text-xs font-bold uppercase tracking-wider text-gray-500">{t('impact.relatedProduct')}</span>
-              <h3 class="text-xl font-bold text-black mt-2 group-hover:underline">{relatedProduct.title}</h3>
-              <p class="text-sm text-gray-600 mt-1">{relatedProduct.tagline}</p>
-            </a>
-          )}
-          {relatedServices.map((service, index) => (
-            <a href={`/${lang}/servicios/${service.id}`} class="group block bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 fade-up" style={`--delay: ${0.3 + index * 0.1}s`}>
-              <span class="text-xs font-bold uppercase tracking-wider text-gray-500">{t('impact.relatedService')}</span>
-              <h3 class="text-xl font-bold text-black mt-2 group-hover:underline">{service.title}</h3>
-              <p class="text-sm text-gray-600 mt-1">{service.tagline}</p>
-            </a>
+  <!-- VISUAL EVIDENCE — FILMSTRIP -->
+  {hasImages && caseData.images!.length > 0 && (
+    <section class="py-16 bg-white mb-0 overflow-hidden">
+      <div class="w-full">
+        <div class="filmstrip flex gap-4 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-10 snap-x snap-mandatory scrollbar-hide">
+          {caseData.images!.map((img, index) => (
+            <div class="flex-shrink-0 w-[80vw] sm:w-[60vw] md:w-[45vw] lg:w-[35vw] snap-center fade-up" style={`--delay: ${0.1 + index * 0.1}s`}>
+              <img src={img} alt={`${caseData.title} - ${index + 1}`} class="w-full h-auto object-cover" loading="lazy" />
+            </div>
           ))}
         </div>
       </div>
     </section>
   )}
 
-  <!-- CTA -->
-  <section class="py-16 bg-black">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
-      <h2 class="text-3xl font-bold text-white mb-4">{t('impact.cta.title')}</h2>
-      <p class="text-lg text-gray-50 mb-8">{t('impact.cta.subtitle')}</p>
-      <div class="flex justify-center gap-4 flex-wrap">
-        <a href={`/${lang}/#impact`} class="inline-flex text-black items-center border border-white bg-white hover:bg-black hover:text-white px-6 py-3 text-base font-semibold text-center transition-all duration-300 w-full sm:w-auto">
-          {t('impact.cta.viewAll')}
-        </a>
-        <a href={`/${lang}/#contact`} class="inline-flex items-center border border-white hover:bg-white hover:text-black text-white px-6 py-3 font-semibold text-center transition-all duration-300 w-full sm:w-auto">
-          {t('impact.cta.contact')}
-        </a>
-      </div>
+  <!-- CONVERSION CTA -->
+  <section class="py-20 bg-white mb-0">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-black mb-4 fade-up" style="--delay: 0.1s">{t('impact.wantResults')}</h2>
+      <p class="text-gray-600 mb-8 fade-up" style="--delay: 0.2s">{t('impact.noCommitment')}</p>
+      <a href={`/${lang}/#contact`} class="inline-flex items-center bg-black text-white px-10 py-4 text-lg font-semibold hover:bg-gray-900 transition-colors fade-up" style="--delay: 0.3s">
+        {t('impact.letsTalk')}
+      </a>
     </div>
   </section>
+
+  <!-- MORE STORIES STRIP -->
+  {otherCases.length > 0 && (
+    <section class="py-16 bg-gray-50 mb-0">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-sm font-bold uppercase tracking-widest text-gray-500 mb-8 fade-up" style="--delay: 0.1s">
+          {t('impact.moreStories')}
+        </h2>
+        <div class="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
+          {otherCases.map((cs, index) => (
+            <a href={`/${lang}/impacto/${cs.id}`} class="group flex-shrink-0 w-[300px] sm:w-[340px] bg-white border border-gray-200 p-6 hover:border-black hover:shadow-lg transition-all duration-300 snap-start fade-up" style={`--delay: ${0.2 + index * 0.1}s`}>
+              <h3 class="text-lg font-bold text-black mb-1 group-hover:underline">{cs.title}</h3>
+              <p class="text-sm text-gray-500 mb-3">{cs.client}</p>
+              <p class="text-sm text-gray-700 line-clamp-2">{cs.summary}</p>
+              <span class="inline-block mt-4 text-sm font-semibold text-black group-hover:translate-x-1 transition-transform duration-200">
+                {t('caseStudies.viewMore')} →
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </Layout>
 
 <script>
@@ -179,6 +222,11 @@ const jsonLd = [{
       setTimeout(() => { document.querySelector('.hero-badge')?.classList.add('animate'); }, 200);
       setTimeout(() => { document.querySelector('.hero-title')?.classList.add('animate'); }, 400);
       setTimeout(() => { document.querySelector('.hero-subtitle')?.classList.add('animate'); }, 600);
+
+      const heroImage = document.querySelector('.hero-image');
+      if (heroImage) {
+        heroImage.classList.add('animate');
+      }
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -206,8 +254,13 @@ const jsonLd = [{
   .hero-title.animate { opacity: 1; transform: translateX(0) skewX(0); }
   .hero-subtitle { opacity: 0; transform: translateX(100px); transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
   .hero-subtitle.animate { opacity: 1; transform: translateX(0); }
+  .hero-image { opacity: 0; filter: blur(10px); transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+  .hero-image.animate { opacity: 1; filter: blur(0px); }
   .fade-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: var(--delay, 0s); }
   .fade-up.in-view { opacity: 1; transform: translateY(0); }
   .hero-section { animation: heroReveal 1s cubic-bezier(0.22, 1, 0.36, 1); }
   @keyframes heroReveal { from { opacity: 0; } to { opacity: 1; } }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .filmstrip { scroll-behavior: smooth; }
 </style>
