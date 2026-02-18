@@ -14,10 +14,18 @@
     "nav.mobile.contact": "Contact",
     "nav.logo.alt": "OSIX Tech - AI-Powered Automation",
 
-    "hero.title.line1": "Smart automation",
-    "hero.title.line2": "for real business challenges",
-    "hero.cta.projects": "View Products",
-    "hero.cta.contact": "Contact",
+    "hero.title.line1": "Custom AI-powered technology",
+    "hero.title.line2": "that delivers real results",
+    "hero.cta.services": "How we help",
+    "hero.cta.contact": "Tell us about your project",
+
+    "showcase.title": "Our <span class='font-bold'>Services</span>",
+    "showcase.viewService": "View service",
+    "showcase.cases": "Success stories",
+    "showcase.viewCase": "View case",
+    "showcase.cta.title": "Have a project in mind?",
+    "showcase.cta.subtitle": "Tell us your case with no commitment. We'll honestly tell you what we can do.",
+    "showcase.cta.button": "Tell us about your project",
 
     "services.title": "Our <span class=\"font-bold\">Identity</span>",
     "services.img.alt": "Services",

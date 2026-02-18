@@ -87,6 +87,14 @@ body {
 
 /* ---------- Buttons ---------- */
 
+.btn-arrow-icon {
+  transition: transform 0.3s ease;
+}
+
+.btn-arrow:hover .btn-arrow-icon {
+  transform: translateX(4px);
+}
+
 button, input, textarea, select {
   -webkit-tap-highlight-color: transparent;
 }

@@ -14,10 +14,18 @@
     "nav.mobile.contact": "Contacto",
     "nav.logo.alt": "OSIX Tech - Automatización Inteligente",
 
-    "hero.title.line1": "Automatización inteligente",
-    "hero.title.line2": "para los desafíos de tu negocio",
-    "hero.cta.projects": "Ver Productos",
-    "hero.cta.contact": "Contactar",
+    "hero.title.line1": "Tecnología a medida con IA",
+    "hero.title.line2": "que genera resultados reales",
+    "hero.cta.services": "Cómo te ayudamos",
+    "hero.cta.contact": "Háblanos de tu proyecto",
+
+    "showcase.title": "Nuestros <span class='font-bold'>servicios</span>",
+    "showcase.viewService": "Ver servicio",
+    "showcase.cases": "Casos de éxito",
+    "showcase.viewCase": "Ver caso",
+    "showcase.cta.title": "¿Tienes un proyecto en mente?",
+    "showcase.cta.subtitle": "Cuéntanos tu caso sin compromiso. Te decimos con honestidad lo que podemos hacer.",
+    "showcase.cta.button": "Háblanos de tu proyecto",
 
     "services.title": "Nuestra <span class=\"font-bold\">Identidad</span>",
     "services.img.alt": "Servicios",

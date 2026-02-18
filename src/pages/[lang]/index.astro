@@ -2,11 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
 import LogoSlider from '../../components/LogoSlider.astro';
+import ServicesShowcase from '../../components/ServicesShowcase.astro';
 import AboutUsSection from '../../components/AboutUsSection.astro';
-import ProductosHomeSection from '../../components/ProductosHomeSection.astro';
-import ServiciosHomeSection from '../../components/ServiciosHomeSection.astro';
-import CasosExitoSection from '../../components/CasosExitoSection.astro';
-import AboutSection from '../../components/AboutSection.astro';
 import StaticContactSection from '../../components/StaticContactSection.astro';
 import LoadingScreen from '../../components/LoadingScreen.astro';
 
@@ -22,13 +19,13 @@ export async function getStaticPaths() {
 const { lang = 'en' } = Astro.params;
 
 // SEO Data
-const seoTitle = lang === 'es' 
-  ? 'OSIX Tech - Desarrollo de Software & Automatización con IA'
-  : 'OSIX Tech - AI-Powered Software Development & Automation';
+const seoTitle = lang === 'es'
+  ? 'OSIX Tech - Consultoría Tecnológica & Desarrollo a Medida con IA'
+  : 'OSIX Tech - Technology Consulting & Custom AI Development';
 
 const seoDescription = lang === 'es'
-  ? 'OSIX Tech: Líderes en desarrollo de software personalizado, automatización con IA, y transformación digital. Creamos soluciones innovadoras para empresas modernas.'
-  : 'OSIX Tech: Leaders in custom software development, AI automation, and digital transformation. We create innovative solutions for modern businesses.';
+  ? 'OSIX Tech: Desarrollo de software a medida con IA, consultoría de transformación digital y gestión de subvenciones. Tecnología que genera resultados reales para tu empresa.'
+  : 'OSIX Tech: Custom AI software development, digital transformation consulting, and innovation grants. Technology that delivers real results for your business.';
 
 // Structured Data
 const organizationSchema = {
@@ -107,11 +104,8 @@ const jsonLd = [organizationSchema, webPageSchema];
   <LoadingScreen duration={1000} />
   <section id="hero"><Hero lang={lang} /></section>
   <section id="partners"><LogoSlider /></section>
+  <section id="services"><ServicesShowcase lang={lang} /></section>
   <section id="about-us"><AboutUsSection lang={lang} /></section>
-  <section id="products"><ProductosHomeSection lang={lang} /></section>
-  <section id="services"><ServiciosHomeSection lang={lang} /></section>
-  <section id="cases"><CasosExitoSection lang={lang} /></section>
-  <section id="about"><AboutSection lang={lang} /></section>
   <section id="contact"><StaticContactSection lang={lang} /></section>
 </Layout>
 

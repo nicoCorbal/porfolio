@@ -1,0 +1,393 @@
+---
+import { getService, type ServiceData } from '../data/services-multilingual';
+import { getAllCases, type CaseStudyData } from '../data/cases-multilingual';
+import ServiceScrollCards from './ServiceScrollCards.jsx';
+
+import takeLogo from '../assets/logos/take.png';
+import icigaLogo from '../assets/logos/iciga.svg';
+import shearnLogo from '../assets/logos/shearn.png';
+import testsoposicionesLogo from '../assets/logos/testsoposiciones.svg';
+import irLogo from '../assets/logos/IR.png';
+import avteLogo from '../assets/logos/avte.png';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'es' } = Astro.props;
+const translations = await import(`../../public/locales/${lang}.json`);
+const t = (k: string) => translations.default[k] || k;
+
+const serviceIds = ['desarrollo-a-medida', 'consultoria-transformacion', 'consultoria-innovacion'];
+const services = serviceIds.map(id => getService(id, lang)).filter(Boolean) as ServiceData[];
+const allCases = getAllCases(lang);
+
+const casesByService: Record<string, CaseStudyData[]> = {};
+for (const id of serviceIds) {
+  casesByService[id] = allCases.filter(c => c.services.includes(id));
+}
+
+const caseLogos: Record<string, string> = {
+  take: takeLogo.src,
+  iciga: icigaLogo.src,
+  shearn: shearnLogo.src,
+  gamificacion: testsoposicionesLogo.src,
+  grille: avteLogo.src,
+  consultoria: irLogo.src,
+};
+---
+
+<section class="bg-white text-black">
+  <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
+    <h2 class="section-title" set:html={t('showcase.title')} />
+  </div>
+
+  <div class="w-full max-w-7xl mx-auto px-6 md:px-12">
+    <ServiceScrollCards
+      client:visible
+      services={services}
+      casesByService={casesByService}
+      caseLogos={caseLogos}
+      lang={lang}
+    />
+  </div>
+
+  <div class="w-full max-w-7xl mx-auto px-6 md:px-12 pb-16">
+    <div class="showcase-bottom-cta" id="showcase-cta">
+      <h3 class="showcase-bottom-title">{t('showcase.cta.title')}</h3>
+      <p class="showcase-bottom-subtitle">{t('showcase.cta.subtitle')}</p>
+      <a href="#contact" class="showcase-bottom-button btn-arrow">
+        {t('showcase.cta.button')}
+        <svg class="btn-arrow-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const cta = document.getElementById('showcase-cta');
+  if (cta) {
+    const title = cta.querySelector('.showcase-bottom-title');
+    const subtitle = cta.querySelector('.showcase-bottom-subtitle');
+    const button = cta.querySelector('.showcase-bottom-button');
+    const els = [title, subtitle, button].filter(Boolean);
+
+    els.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          els.forEach((el, i) => {
+            setTimeout(() => {
+              el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            }, i * 120);
+          });
+        } else {
+          els.forEach(el => {
+            el.style.transition = 'none';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(cta);
+  }
+</script>
+
+<style is:global>
+  /* ── ScrollStack base ── */
+  .scroll-stack-scroller {
+    position: relative;
+    width: 100%;
+  }
+
+  .scroll-stack-inner {
+    padding: 0 0 16rem;
+    min-height: 100vh;
+  }
+
+  .scroll-stack-card {
+    transform-origin: top center;
+    will-change: transform, filter;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .scroll-stack-end {
+    width: 100%;
+    height: 1px;
+  }
+
+  /* ── Service Card ── */
+  .ssc-card {
+    width: 100%;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .ssc-body {
+    display: flex;
+    min-height: 340px;
+  }
+
+  /* ── Left: Service info ── */
+  .ssc-info {
+    flex: 1;
+    padding: 3rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ssc-info-top {
+    margin-bottom: 1.75rem;
+  }
+
+  .ssc-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #000;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .ssc-tagline {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .ssc-description {
+    font-size: 1.05rem;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: auto;
+  }
+
+  .ssc-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+    background: #000;
+    border: 2px solid #000;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: all 0.2s ease;
+  }
+
+  .ssc-cta:hover {
+    background: #222;
+  }
+
+  /* ── Right: Proof panel ── */
+  .ssc-proof {
+    width: 400px;
+    flex-shrink: 0;
+    background: #0a0a0a;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ssc-proof-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 1.25rem;
+  }
+
+  /* Case items */
+  .ssc-proof-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+  }
+
+  .ssc-proof-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0.85rem;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+
+  .ssc-proof-item:hover {
+    transform: scale(1.05);
+  }
+
+  .ssc-proof-logo {
+    height: 1.75rem;
+    max-width: 6rem;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+
+  .ssc-proof-item:hover .ssc-proof-logo {
+    opacity: 1;
+  }
+
+  .ssc-proof-headline {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.3;
+    transition: color 0.3s ease;
+  }
+
+  .ssc-proof-item:hover .ssc-proof-headline {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .ssc-proof-more {
+    margin-top: auto;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.85rem;
+    font-weight: 600;
+    gap: 0.5rem;
+    transition: color 0.2s ease;
+  }
+
+  .ssc-proof-more span {
+    color: inherit;
+  }
+
+  .ssc-proof-more:hover {
+    color: rgba(255, 255, 255, 0.7);
+    background: transparent;
+  }
+
+  /* Stats in proof panel */
+  .ssc-proof-stats {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .ssc-proof-stat {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.3rem;
+  }
+
+  .ssc-proof-stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .ssc-proof-stat-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .ssc-body {
+      flex-direction: column;
+      min-height: auto;
+    }
+
+    .ssc-info {
+      padding: 1.5rem;
+    }
+
+    .ssc-title {
+      font-size: 1.35rem;
+    }
+
+    .ssc-proof {
+      width: 100%;
+      padding: 1.5rem;
+    }
+
+    .ssc-proof-stats {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<style>
+  /* ── Bottom CTA ── */
+  .showcase-bottom-cta {
+    background: #000;
+    color: #fff;
+    padding: 3rem;
+    text-align: center;
+  }
+
+  .showcase-bottom-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .showcase-bottom-subtitle {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .showcase-bottom-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    background: #fff;
+    color: #000;
+    border: 2px solid #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .showcase-bottom-button:hover {
+    background: #f0f0f0;
+  }
+
+  @media (max-width: 768px) {
+    .showcase-bottom-cta {
+      padding: 2rem 1.5rem;
+    }
+
+    .showcase-bottom-title {
+      font-size: 1.3rem;
+    }
+  }
+</style>

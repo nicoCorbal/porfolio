@@ -2,6 +2,7 @@ export interface CaseStudyData {
   id: string;
   title: string;
   client: string;
+  headline: string;
   summary: string;
   product?: string;
   services: string[];
@@ -16,6 +17,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'take',
       title: 'TAKE App',
       client: 'Cafetería TAKE',
+      headline: 'Fidelización digital con wallet',
       product: 'BOND',
       services: ['desarrollo-a-medida'],
       stats: [
@@ -36,6 +38,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'consultoria',
       title: 'Consultoría especializada',
       client: 'Consultora de metodologías relacionales',
+      headline: 'Gestión documental con IA',
       product: 'Nessie',
       services: ['desarrollo-a-medida'],
       stats: [
@@ -55,6 +58,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'iciga',
       title: 'ICIGA',
       client: 'Distribuidor de material de laboratorio',
+      headline: 'Clasificación automática de pedidos',
       product: 'IRIS',
       services: ['desarrollo-a-medida'],
       stats: [
@@ -74,6 +78,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'shearn',
       title: 'Shearn',
       client: 'Plataforma educativa propia',
+      headline: 'Dibujo técnico con motor 2D y 3D',
       services: ['desarrollo-a-medida'],
       stats: [
         { label: 'Motor', value: '2D + 3D' },
@@ -92,6 +97,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'gamificacion',
       title: 'Plataforma de gamificación',
       client: 'Academia de oposiciones online',
+      headline: 'Red social con retos y ligas ELO',
       services: ['desarrollo-a-medida'],
       stats: [
         { label: 'Sistema', value: 'ELO' },
@@ -110,6 +116,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'grille',
       title: 'Grille S. Coop. Galega',
       client: 'Cooperativa del sector agrícola',
+      headline: 'App de evaluación agrícola offline',
       services: ['desarrollo-a-medida'],
       stats: [
         { label: 'Informes', value: 'PDF' },
@@ -130,6 +137,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'take',
       title: 'TAKE App',
       client: 'TAKE Coffee Shop',
+      headline: 'Digital loyalty with wallet',
       product: 'BOND',
       services: ['desarrollo-a-medida'],
       stats: [
@@ -150,6 +158,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'consultoria',
       title: 'Specialized Consultancy',
       client: 'Relational methodologies consultancy',
+      headline: 'AI-powered document management',
       product: 'Nessie',
       services: ['desarrollo-a-medida'],
       stats: [
@@ -169,6 +178,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'iciga',
       title: 'ICIGA',
       client: 'Laboratory supplies distributor',
+      headline: 'Automatic order classification',
       product: 'IRIS',
       services: ['desarrollo-a-medida'],
       stats: [
@@ -188,6 +198,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'shearn',
       title: 'Shearn',
       client: 'In-house educational platform',
+      headline: 'Technical drawing with 2D & 3D engine',
       services: ['desarrollo-a-medida'],
       stats: [
         { label: 'Engine', value: '2D + 3D' },
@@ -206,6 +217,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'gamificacion',
       title: 'Gamification Platform',
       client: 'Online exam prep academy',
+      headline: 'Social network with ELO leagues',
       services: ['desarrollo-a-medida'],
       stats: [
         { label: 'Ranking system', value: 'ELO' },
@@ -224,6 +236,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       id: 'grille',
       title: 'Grille S. Coop. Galega',
       client: 'Agricultural sector cooperative',
+      headline: 'Offline agricultural evaluation app',
       services: ['desarrollo-a-medida'],
       stats: [
         { label: 'Reports', value: 'PDF' },
