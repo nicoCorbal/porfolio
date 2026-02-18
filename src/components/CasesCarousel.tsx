@@ -160,8 +160,8 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-4 -translate-x-0" />
-          <CarouselNext className="right-4 translate-x-0" />
+          <CarouselPrevious className="-left-6" />
+          <CarouselNext className="-right-6" />
         </Carousel>
       </div>
     </div>
