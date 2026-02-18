@@ -8,6 +8,7 @@ export interface CaseStudyData {
   services: string[];
   stats: { label: string; value: string }[];
   images?: string[];
+  video?: string;
   results: string[];
 }
 
@@ -25,7 +26,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
         { label: 'Puntos', value: 'Automáticos' },
         { label: 'Analíticas', value: 'Tiempo real' },
       ],
-      images: ['/projects/take/front.png', '/projects/take/home.png', '/projects/take/menu.png', '/projects/take/game.png', '/projects/take/events.png', '/projects/take/rewards.png'],
+      images: ['/projects/take.png'],
       summary: 'Tarjeta de fidelización digital con Google y Apple Wallet, sistema de puntos automático y dashboard de analíticas de consumo. Primer piloto real del producto en hostelería.',
       results: [
         'Fidelización digital en Google y Apple Wallet',
@@ -35,32 +36,13 @@ export const casesData: Record<string, CaseStudyData[]> = {
       ],
     },
     {
-      id: 'consultoria',
-      title: 'Consultoría especializada',
-      client: 'Consultora de metodologías relacionales',
-      headline: 'Gestión documental con IA',
-      product: 'Nessie',
-      services: ['desarrollo-a-medida'],
-      stats: [
-        { label: 'Gestión documental', value: 'IA completa' },
-        { label: 'Búsqueda', value: 'Semántica' },
-        { label: 'Matching', value: 'Automático' },
-      ],
-      summary: 'Gestión documental con IA, integración con email, búsqueda semántica sobre toda la documentación y unificación de carteras de clientes con matching de subvenciones.',
-      results: [
-        'Gestión documental completa con IA',
-        'Integración con email corporativo',
-        'Búsqueda semántica global',
-        'Matching de subvenciones automático',
-      ],
-    },
-    {
       id: 'iciga',
       title: 'ICIGA',
       client: 'Distribuidor de material de laboratorio',
       headline: 'Clasificación automática de pedidos',
       product: 'IRIS',
       services: ['desarrollo-a-medida'],
+      images: ['/projects/iciga.jpg'],
       stats: [
         { label: 'Bandejas monitorizadas', value: '6' },
         { label: 'Productos cruzados', value: '63.000+' },
@@ -80,6 +62,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       client: 'Plataforma educativa propia',
       headline: 'Dibujo técnico con motor 2D y 3D',
       services: ['desarrollo-a-medida'],
+      video: '/projects/shearn.webm',
       stats: [
         { label: 'Motor', value: '2D + 3D' },
         { label: 'Tecnología', value: 'Three.js' },
@@ -91,44 +74,6 @@ export const casesData: Record<string, CaseStudyData[]> = {
         'Reconstrucción 3D con Three.js',
         'Herramienta educativa completa',
         'Desarrollo íntegramente interno',
-      ],
-    },
-    {
-      id: 'gamificacion',
-      title: 'Plataforma de gamificación',
-      client: 'Academia de oposiciones online',
-      headline: 'Red social con retos y ligas ELO',
-      services: ['desarrollo-a-medida'],
-      stats: [
-        { label: 'Sistema', value: 'ELO' },
-        { label: 'Retos', value: '1v1' },
-        { label: 'Integración', value: 'Laravel + Odoo' },
-      ],
-      summary: 'Red social con retos 1v1, ligas con sistema ELO, economía de puntos y monedas, coach virtual con rachas motivacionales y catálogo de premios canjeables.',
-      results: [
-        'Ligas competitivas con sistema ELO',
-        'Red social con retos 1v1',
-        'Coach virtual motivacional',
-        'Integración con Laravel y Odoo',
-      ],
-    },
-    {
-      id: 'grille',
-      title: 'Grille S. Coop. Galega',
-      client: 'Cooperativa del sector agrícola',
-      headline: 'App de evaluación agrícola offline',
-      services: ['desarrollo-a-medida'],
-      stats: [
-        { label: 'Informes', value: 'PDF' },
-        { label: 'Modo', value: 'Offline' },
-        { label: 'Idiomas', value: 'ES + GL' },
-      ],
-      summary: 'App móvil de evaluación del rendimiento agrícola con criterios personalizables, informes PDF y funcionamiento offline. Disponible en castellano y gallego.',
-      results: [
-        'Evaluación con criterios configurables',
-        'Informes PDF consolidados',
-        'Funcionamiento offline completo',
-        'Interfaz bilingüe (ES/GL)',
       ],
     },
   ],
@@ -145,7 +90,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
         { label: 'Points', value: 'Automatic' },
         { label: 'Analytics', value: 'Real-time' },
       ],
-      images: ['/projects/take/front.png', '/projects/take/home.png', '/projects/take/menu.png', '/projects/take/game.png', '/projects/take/events.png', '/projects/take/rewards.png'],
+      images: ['/projects/take.png'],
       summary: 'Digital loyalty card with Google and Apple Wallet, automatic points system, and consumption analytics dashboard. First real product pilot in hospitality.',
       results: [
         'Digital loyalty on Google & Apple Wallet',
@@ -155,32 +100,13 @@ export const casesData: Record<string, CaseStudyData[]> = {
       ],
     },
     {
-      id: 'consultoria',
-      title: 'Specialized Consultancy',
-      client: 'Relational methodologies consultancy',
-      headline: 'AI-powered document management',
-      product: 'Nessie',
-      services: ['desarrollo-a-medida'],
-      stats: [
-        { label: 'Document management', value: 'Full AI' },
-        { label: 'Search', value: 'Semantic' },
-        { label: 'Matching', value: 'Automatic' },
-      ],
-      summary: 'AI-powered document management, email integration, semantic search across all documentation, and client portfolio unification with grant matching.',
-      results: [
-        'Complete AI document management',
-        'Corporate email integration',
-        'Global semantic search',
-        'Automatic grant matching',
-      ],
-    },
-    {
       id: 'iciga',
       title: 'ICIGA',
       client: 'Laboratory supplies distributor',
       headline: 'Automatic order classification',
       product: 'IRIS',
       services: ['desarrollo-a-medida'],
+      images: ['/projects/iciga.jpg'],
       stats: [
         { label: 'Inboxes monitored', value: '6' },
         { label: 'Products cross-referenced', value: '63,000+' },
@@ -199,6 +125,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       title: 'Shearn',
       client: 'In-house educational platform',
       headline: 'Technical drawing with 2D & 3D engine',
+      video: '/projects/shearn.webm',
       services: ['desarrollo-a-medida'],
       stats: [
         { label: 'Engine', value: '2D + 3D' },
@@ -211,44 +138,6 @@ export const casesData: Record<string, CaseStudyData[]> = {
         '3D reconstruction with Three.js',
         'Complete educational tool',
         'Fully in-house development',
-      ],
-    },
-    {
-      id: 'gamificacion',
-      title: 'Gamification Platform',
-      client: 'Online exam prep academy',
-      headline: 'Social network with ELO leagues',
-      services: ['desarrollo-a-medida'],
-      stats: [
-        { label: 'Ranking system', value: 'ELO' },
-        { label: 'Challenges', value: '1v1' },
-        { label: 'Integration', value: 'Laravel + Odoo' },
-      ],
-      summary: 'Social network with 1v1 challenges, competitive leagues with ELO system, points economy, virtual coach with motivational streaks, and redeemable rewards catalog.',
-      results: [
-        'Competitive leagues with ELO system',
-        'Social network with 1v1 challenges',
-        'Motivational virtual coach',
-        'Laravel and Odoo integration',
-      ],
-    },
-    {
-      id: 'grille',
-      title: 'Grille S. Coop. Galega',
-      client: 'Agricultural sector cooperative',
-      headline: 'Offline agricultural evaluation app',
-      services: ['desarrollo-a-medida'],
-      stats: [
-        { label: 'Reports', value: 'PDF' },
-        { label: 'Mode', value: 'Offline' },
-        { label: 'Languages', value: 'ES + GL' },
-      ],
-      summary: 'Mobile performance evaluation app for agriculture with customizable criteria, PDF reports, and offline functionality. Available in Spanish and Galician.',
-      results: [
-        'Configurable evaluation criteria',
-        'Consolidated PDF reports',
-        'Full offline functionality',
-        'Bilingual interface (ES/GL)',
       ],
     },
   ],

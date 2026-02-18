@@ -21,6 +21,7 @@ interface CaseStudy {
   summary: string
   stats: CaseStat[]
   images?: string[]
+  video?: string
   results: string[]
 }
 
@@ -33,7 +34,9 @@ const AUTO_DURATION = 5;
 export function CasesCarousel({ cases }: CasesCarouselProps) {
   const [api, setApi] = useState<any>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+
   const barFillRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const autoTween = useRef<gsap.core.Tween | null>(null);
   const isHovered = useRef(false);
 
@@ -80,6 +83,18 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
     return () => { if (autoTween.current) autoTween.current.kill(); };
   }, [activeIndex, startAutoProgress]);
 
+  useEffect(() => {
+    videoRefs.current.forEach((vid, i) => {
+      if (!vid) return;
+      if (i === activeIndex) {
+        vid.currentTime = 0;
+        vid.play();
+      } else {
+        vid.pause();
+      }
+    });
+  }, [activeIndex]);
+
   const handleBarClick = useCallback((index: number) => {
     if (!api || index === activeIndex) return;
     api.scrollTo(index);
@@ -93,8 +108,6 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
     isHovered.current = false;
     if (autoTween.current) autoTween.current.play();
   }, []);
-
-  const getCaseImage = (cs: CaseStudy) => cs.images?.[0] ?? '/og-image.png';
 
   return (
     <div className="cases-showcase">
@@ -129,39 +142,65 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
           className="w-full"
         >
           <CarouselContent>
-            {cases.map((cs) => (
-              <CarouselItem key={cs.id}>
-                <div className="cases-showcase-viewport">
-                  <img
-                    src={getCaseImage(cs)}
-                    alt={cs.title}
-                    className="cases-showcase-img"
-                    loading="lazy"
-                  />
-                  <div className="cases-showcase-overlay" />
-                  <div className="cases-showcase-text">
-                    <span className="cases-showcase-client">{cs.client}</span>
-                    <h3 className="cases-showcase-title">{cs.title}</h3>
-                    <p className="cases-showcase-headline">{cs.headline}</p>
-                    <div className="cases-showcase-divider" />
-                    <p className="cases-showcase-summary">{cs.summary}</p>
-                    {cs.stats.length > 0 && (
-                      <div className="cases-showcase-stats">
-                        {cs.stats.slice(0, 3).map((stat, i) => (
-                          <div key={i} className="cases-showcase-stat">
-                            <span className="cases-showcase-stat-value">{stat.value}</span>
-                            <span className="cases-showcase-stat-label">{stat.label}</span>
+            {cases.map((cs, idx) => {
+              const images = cs.images ?? [];
+
+              return (
+                <CarouselItem key={cs.id}>
+                  <div className="cases-showcase-slide">
+                    {/* Left: Image */}
+                    <div className="cases-showcase-images">
+                      <div className="cases-showcase-main-img">
+                        {cs.video ? (
+                          <video
+                            ref={(el) => { videoRefs.current[idx] = el; }}
+                            src={cs.video}
+                            controls
+                            loop
+                            muted
+                            playsInline
+                          />
+                        ) : images.length > 0 ? (
+                          <img
+                            src={images[0]}
+                            alt={cs.title}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="cases-showcase-placeholder">
+                            <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+                            </svg>
                           </div>
-                        ))}
+                        )}
                       </div>
-                    )}
+                    </div>
+
+                    {/* Right: Text */}
+                    <div className="cases-showcase-info">
+                      <span className="cases-showcase-client">{cs.client}</span>
+                      <h3 className="cases-showcase-title">{cs.title}</h3>
+                      <p className="cases-showcase-headline">{cs.headline}</p>
+                      <div className="cases-showcase-divider" />
+                      <p className="cases-showcase-summary">{cs.summary}</p>
+                      {cs.stats.length > 0 && (
+                        <div className="cases-showcase-stats">
+                          {cs.stats.slice(0, 3).map((stat, i) => (
+                            <div key={i} className="cases-showcase-stat">
+                              <span className="cases-showcase-stat-value">{stat.value}</span>
+                              <span className="cases-showcase-stat-label">{stat.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </CarouselItem>
-            ))}
+                </CarouselItem>
+              );
+            })}
           </CarouselContent>
-          <CarouselPrevious className="-left-6" />
-          <CarouselNext className="-right-6" />
+          <CarouselPrevious className="-left-8" />
+          <CarouselNext className="-right-8" />
         </Carousel>
       </div>
     </div>

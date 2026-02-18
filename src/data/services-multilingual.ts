@@ -6,8 +6,11 @@ export interface ServiceData {
   icon: string;
   image?: string;
   highlights: string[];
+  problemTitle: string;
   problem: string;
+  solutionTitle: string;
   solution: string;
+  highlightsTitle: string;
   stats: { value: string; label: string }[];
 }
 
@@ -25,13 +28,18 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Análisis previo de tu operativa y necesidades',
         'Sin soluciones genéricas: software 100% a medida'
       ],
+      problemTitle: 'Procesos manuales y herramientas que no encajan',
       problem: 'Tu negocio pierde tiempo y dinero con procesos manuales, herramientas genéricas que no encajan y oportunidades que la tecnología podría capturar.',
+      solutionTitle: 'Software que encaja como un guante',
       solution: 'Analizamos tu operativa real, identificamos qué se puede automatizar con IA y construimos software 100% a medida que resuelve exactamente tu problema.',
+      highlightsTitle: 'De la idea al producto',
       stats: [
         { value: '+50', label: 'proyectos entregados' },
         { value: '100%', label: 'software a medida' },
-        { value: '<4 sem', label: 'primer entregable' },
+        { value: '<30d', label: 'primer entregable' },
         { value: '98%', label: 'satisfacción cliente' },
+        { value: '24/7', label: 'soporte post-lanzamiento' },
+        { value: '+10', label: 'sectores atendidos' },
       ],
     },
     'consultoria-transformacion': {
@@ -46,13 +54,18 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Estimación de ahorro y plan de acción priorizado',
         'Honestidad total: si no necesitas nada, te lo decimos'
       ],
+      problemTitle: 'No sabes por dónde empezar',
       problem: 'Sabes que tu empresa podría funcionar mejor con tecnología, pero no sabes por dónde empezar ni en quién confiar.',
+      solutionTitle: 'Un plan claro en menos de una semana',
       solution: 'Visitamos tu empresa, entendemos cómo trabajáis de verdad y en menos de una semana te entregamos un plan de acción concreto con estimación de ahorro.',
+      highlightsTitle: 'Análisis sin compromiso',
       stats: [
         { value: '<1 sem', label: 'informe entregado' },
         { value: '0€', label: 'si no necesitas nada' },
         { value: '+30', label: 'empresas analizadas' },
         { value: '100%', label: 'honestidad garantizada' },
+        { value: '3-5x', label: 'ROI medio estimado' },
+        { value: '+15', label: 'procesos optimizados' },
       ],
     },
     'consultoria-innovacion': {
@@ -67,13 +80,18 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Memoria técnica, presupuesto y documentación completa',
         'IGAPE, IA360, Ticket Innova, Kit Digital y más'
       ],
+      problemTitle: 'Convocatorias complejas, poco tiempo',
       problem: 'Hay ayudas públicas que encajan con tu empresa, pero las convocatorias son complejas y preparar el proyecto requiere tiempo que no tienes.',
+      solutionTitle: 'Nosotros preparamos todo',
       solution: 'Identificamos las ayudas que encajan contigo y nos encargamos de diseñar el proyecto, preparar la memoria técnica y toda la documentación para maximizar la aprobación.',
+      highlightsTitle: 'Servicio llave en mano',
       stats: [
         { value: '+2M€', label: 'en ayudas gestionadas' },
         { value: '85%', label: 'tasa de aprobación' },
         { value: '+20', label: 'convocatorias dominadas' },
         { value: '0€', label: 'si no se aprueba' },
+        { value: '<2 sem', label: 'propuesta lista' },
+        { value: '100%', label: 'documentación incluida' },
       ],
     }
   },
@@ -90,13 +108,18 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Prior analysis of your operations and needs',
         'No generic solutions: 100% custom software'
       ],
+      problemTitle: 'Manual processes and tools that don\'t fit',
       problem: 'Your business loses time and money on manual processes, generic tools that don\'t fit, and opportunities that technology could capture.',
+      solutionTitle: 'Software that fits like a glove',
       solution: 'We analyze your real operations, identify what can be automated with AI, and build 100% custom software that solves exactly your problem.',
+      highlightsTitle: 'From idea to product',
       stats: [
         { value: '+50', label: 'projects delivered' },
         { value: '100%', label: 'custom software' },
-        { value: '<4 wks', label: 'first deliverable' },
+        { value: '<30d', label: 'first deliverable' },
         { value: '98%', label: 'client satisfaction' },
+        { value: '24/7', label: 'post-launch support' },
+        { value: '+10', label: 'industries served' },
       ],
     },
     'consultoria-transformacion': {
@@ -111,13 +134,18 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Savings estimate and prioritized action plan',
         'Total honesty: if you don\'t need anything, we\'ll tell you'
       ],
+      problemTitle: 'You don\'t know where to start',
       problem: 'You know your company could work better with technology, but you don\'t know where to start or who to trust.',
+      solutionTitle: 'A clear plan in less than a week',
       solution: 'We visit your company, understand how you actually work, and in less than a week deliver a concrete action plan with savings estimates.',
+      highlightsTitle: 'No-strings analysis',
       stats: [
         { value: '<1 wk', label: 'report delivered' },
         { value: '€0', label: 'if you don\'t need anything' },
         { value: '+30', label: 'companies analyzed' },
         { value: '100%', label: 'honesty guaranteed' },
+        { value: '3-5x', label: 'avg. estimated ROI' },
+        { value: '+15', label: 'processes optimized' },
       ],
     },
     'consultoria-innovacion': {
@@ -132,13 +160,18 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Technical report, budget, and complete documentation',
         'IGAPE, IA360, Ticket Innova, Kit Digital and more'
       ],
+      problemTitle: 'Complex calls, no time',
       problem: 'There are public grants that fit your company, but the calls are complex and preparing the project takes time you don\'t have.',
+      solutionTitle: 'We handle everything',
       solution: 'We identify the grants that fit you and handle everything: project design, technical report, and all documentation to maximize approval.',
+      highlightsTitle: 'Turnkey service',
       stats: [
         { value: '+€2M', label: 'in grants managed' },
         { value: '85%', label: 'approval rate' },
         { value: '+20', label: 'calls mastered' },
         { value: '€0', label: 'if not approved' },
+        { value: '<2 wks', label: 'proposal ready' },
+        { value: '100%', label: 'docs included' },
       ],
     }
   }

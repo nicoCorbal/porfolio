@@ -138,7 +138,6 @@ const manifestoItems = [
           <div class:list={["grid-item", `item-type-${item.type}`, `item-area-${item.gridArea}`]} data-type={item.type}>
             {item.type === 'narrative' && (
               <div class="narrative-box">
-                <div class="kicker">{t("bento.narrative.kicker")}</div>
                 <h3 class="narrative-title split-text">{item.data.title}</h3>
                 <p class="narrative-text split-text">{item.data.text}</p>
               </div>
@@ -434,12 +433,6 @@ const manifestoItems = [
     height: 100%;
   }
   .narrative-box { padding: 2.5rem; display: flex; flex-direction: column; justify-content: start; height: 100%;}
-  .kicker {
-    font-family: monospace;
-    text-transform: uppercase;
-    color: #6b7280;
-    margin-bottom: 1rem;
-  }
   .narrative-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; margin-bottom: 0.5rem; }
   .narrative-text { font-size: 1.125rem; color: #4b5563; line-height: 1.8; }
   
