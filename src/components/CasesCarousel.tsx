@@ -1,11 +1,6 @@
 import * as React from "react"
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
+import useEmblaCarousel from "embla-carousel-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface CaseStat {
   label: string
@@ -28,7 +23,17 @@ interface CasesCarouselProps {
 }
 
 export function CasesCarousel({ cases }: CasesCarouselProps) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
   const [activeImageIndex, setActiveImageIndex] = React.useState<Record<number, number>>({})
+  const [current, setCurrent] = React.useState(0)
+
+  React.useEffect(() => {
+    if (!emblaApi) return
+    const onSelect = () => setCurrent(emblaApi.selectedScrollSnap())
+    emblaApi.on("select", onSelect)
+    onSelect()
+    return () => { emblaApi.off("select", onSelect) }
+  }, [emblaApi])
 
   const getActiveImage = (slideIndex: number) => activeImageIndex[slideIndex] ?? 0
 
@@ -37,19 +42,17 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
   }
 
   return (
-    <Carousel
-      opts={{ align: "start", loop: true }}
-      className="w-full"
-    >
-      <CarouselContent>
-        {cases.map((cs, slideIndex) => {
-          const images = cs.images ?? []
-          const active = getActiveImage(slideIndex)
+    <div className="relative">
+      {/* Carousel viewport */}
+      <div ref={emblaRef} className="overflow-hidden">
+        <div className="flex">
+          {cases.map((cs, slideIndex) => {
+            const images = cs.images ?? []
+            const active = getActiveImage(slideIndex)
 
-          return (
-            <CarouselItem key={cs.id}>
-              <div className="group block">
-                <div className="flex flex-col lg:flex-row gap-8">
+            return (
+              <div key={cs.id} className="flex-[0_0_100%] min-w-0">
+                <div className="flex flex-col lg:flex-row gap-8 px-2">
                   {/* Left: Images */}
                   <div className="lg:w-1/2 flex flex-col gap-3">
                     {/* Main image */}
@@ -76,10 +79,7 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
                           <button
                             key={imgIndex}
                             type="button"
-                            onClick={(e) => {
-                              e.preventDefault()
-                              setActiveImage(slideIndex, imgIndex)
-                            }}
+                            onClick={() => setActiveImage(slideIndex, imgIndex)}
                             className={`aspect-[16/10] bg-gray-100 overflow-hidden transition-all duration-200 ${
                               imgIndex === active
                                 ? "ring-2 ring-black"
@@ -101,7 +101,7 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
                   {/* Right: Text */}
                   <div className="lg:w-1/2 flex flex-col justify-center">
                     <p className="text-sm text-gray-500 mb-2">{cs.client}</p>
-                    <h3 className="text-2xl md:text-3xl font-bold text-black mb-3 group-hover:underline">
+                    <h3 className="text-2xl md:text-3xl font-bold text-black mb-3">
                       {cs.title}
                     </h3>
                     <p className="text-gray-600 leading-relaxed mb-6">{cs.summary}</p>
@@ -120,20 +120,47 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
                         ))}
                       </div>
                     )}
-
                   </div>
                 </div>
               </div>
-            </CarouselItem>
-          )
-        })}
-      </CarouselContent>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Navigation */}
       {cases.length > 1 && (
-        <>
-          <CarouselPrevious />
-          <CarouselNext />
-        </>
+        <div className="flex items-center justify-between mt-6">
+          <button
+            type="button"
+            onClick={() => emblaApi?.scrollPrev()}
+            className="flex items-center justify-center w-10 h-10 border border-gray-300 hover:border-black transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          <div className="flex gap-2">
+            {cases.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => emblaApi?.scrollTo(i)}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  i === current ? "bg-black" : "bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => emblaApi?.scrollNext()}
+            className="flex items-center justify-center w-10 h-10 border border-gray-300 hover:border-black transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
       )}
-    </Carousel>
+    </div>
   )
 }
