@@ -396,7 +396,31 @@ const jsonLd = [serviceSchema, webPageSchema];
     letter-spacing: 0.05em;
   }
 
+  .cases-showcase-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .cases-showcase-nav:hover { background: white; }
+  .cases-showcase-nav-prev { left: 1rem; }
+  .cases-showcase-nav-next { right: 1rem; }
+
   @media (max-width: 768px) {
+    .cases-showcase-nav { width: 32px; height: 32px; }
+    .cases-showcase-nav-prev { left: 0.5rem; }
+    .cases-showcase-nav-next { right: 0.5rem; }
     .cases-showcase-bar-name { font-size: 0.6rem; }
     .cases-showcase-viewport { aspect-ratio: 4 / 3; }
     .cases-showcase-text { padding: 1.2rem; }

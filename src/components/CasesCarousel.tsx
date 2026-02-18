@@ -1,12 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from '@/components/ui/carousel';
+import useEmblaCarousel from 'embla-carousel-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CaseStat {
   label: string
@@ -31,18 +26,19 @@ interface CasesCarouselProps {
 const AUTO_DURATION = 5;
 
 export function CasesCarousel({ cases }: CasesCarouselProps) {
-  const [api, setApi] = useState<any>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [activeIndex, setActiveIndex] = useState(0);
   const barFillRefs = useRef<(HTMLDivElement | null)[]>([]);
   const autoTween = useRef<gsap.core.Tween | null>(null);
   const isHovered = useRef(false);
 
   useEffect(() => {
-    if (!api) return;
-    const onSelect = () => setActiveIndex(api.selectedScrollSnap());
-    api.on('select', onSelect);
-    return () => api.off('select', onSelect);
-  }, [api]);
+    if (!emblaApi) return;
+    const onSelect = () => setActiveIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on('select', onSelect);
+    onSelect();
+    return () => { emblaApi.off('select', onSelect); };
+  }, [emblaApi]);
 
   const startAutoProgress = useCallback((index: number) => {
     if (autoTween.current) {
@@ -55,7 +51,7 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
     });
 
     const fillEl = barFillRefs.current[index];
-    if (!fillEl || !api) return;
+    if (!fillEl || !emblaApi) return;
 
     autoTween.current = gsap.fromTo(
       fillEl,
@@ -66,13 +62,13 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
         ease: 'none',
         onComplete: () => {
           const next = (index + 1) % cases.length;
-          api.scrollTo(next);
+          emblaApi.scrollTo(next);
         },
       }
     );
 
     if (isHovered.current) autoTween.current.pause();
-  }, [api, cases.length]);
+  }, [emblaApi, cases.length]);
 
   useEffect(() => {
     startAutoProgress(activeIndex);
@@ -80,9 +76,9 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
   }, [activeIndex, startAutoProgress]);
 
   const handleBarClick = useCallback((index: number) => {
-    if (!api || index === activeIndex) return;
-    api.scrollTo(index);
-  }, [api, activeIndex]);
+    if (!emblaApi || index === activeIndex) return;
+    emblaApi.scrollTo(index);
+  }, [emblaApi, activeIndex]);
 
   const handleMouseEnter = useCallback(() => {
     isHovered.current = true;
@@ -93,7 +89,6 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
     if (autoTween.current) autoTween.current.play();
   }, []);
 
-  // Pick a representative image for each case
   const getCaseImage = (cs: CaseStudy) => cs.images?.[0] ?? '/og-image.png';
 
   return (
@@ -123,14 +118,10 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <Carousel
-          setApi={setApi}
-          opts={{ loop: true, duration: 30 }}
-          className="w-full"
-        >
-          <CarouselContent>
+        <div ref={emblaRef} className="overflow-hidden">
+          <div className="flex">
             {cases.map((cs) => (
-              <CarouselItem key={cs.id}>
+              <div key={cs.id} className="flex-[0_0_100%] min-w-0">
                 <div className="cases-showcase-viewport">
                   <img
                     src={getCaseImage(cs)}
@@ -156,13 +147,31 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
                       </div>
                     )}
                   </div>
+
+                  {/* Arrows inside viewport */}
+                  {cases.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => emblaApi?.scrollPrev()}
+                        className="cases-showcase-nav cases-showcase-nav-prev"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => emblaApi?.scrollNext()}
+                        className="cases-showcase-nav cases-showcase-nav-next"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </>
+                  )}
                 </div>
-              </CarouselItem>
+              </div>
             ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-10" />
-          <CarouselNext className="right-10" />
-        </Carousel>
+          </div>
+        </div>
       </div>
     </div>
   );
