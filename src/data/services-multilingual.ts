@@ -6,6 +6,9 @@ export interface ServiceData {
   icon: string;
   image?: string;
   highlights: string[];
+  problem: string;
+  solution: string;
+  stats: { value: string; label: string }[];
 }
 
 export const servicesData: Record<string, Record<string, ServiceData>> = {
@@ -21,20 +24,15 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Agentes inteligentes y automatizaciones con IA',
         'Análisis previo de tu operativa y necesidades',
         'Sin soluciones genéricas: software 100% a medida'
-      ]
-    },
-    kted: {
-      id: 'kted',
-      title: 'Kit Espacio de Datos',
-      tagline: 'Hasta 30.000€ para integrar tu empresa en Espacios de Datos',
-      description: 'Te ayudamos a incorporar tu empresa a los espacios de datos sectoriales europeos (agroalimentario, industria, salud, comercio) y a acceder a las ayudas públicas del programa KTED, con hasta 30.000€ de financiación. Nos encargamos de todo lo técnico: preparación de datos, desarrollo del conector, documentación y registro en el espacio de datos.',
-      icon: 'Database',
-      highlights: [
-        'Subvención 100% a fondo perdido — solo pagas el IVA',
-        'Espacios de datos sectoriales europeos',
-        'Gestión integral: solicitud, ejecución y justificación',
-        'Plazo abierto hasta 31 marzo 2026'
-      ]
+      ],
+      problem: 'Tu negocio pierde tiempo y dinero con procesos manuales, herramientas genéricas que no encajan y oportunidades que la tecnología podría capturar.',
+      solution: 'Analizamos tu operativa real, identificamos qué se puede automatizar con IA y construimos software 100% a medida que resuelve exactamente tu problema.',
+      stats: [
+        { value: '+50', label: 'proyectos entregados' },
+        { value: '100%', label: 'software a medida' },
+        { value: '<4 sem', label: 'primer entregable' },
+        { value: '98%', label: 'satisfacción cliente' },
+      ],
     },
     'consultoria-transformacion': {
       id: 'consultoria-transformacion',
@@ -47,7 +45,15 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Informe con oportunidades concretas en menos de una semana',
         'Estimación de ahorro y plan de acción priorizado',
         'Honestidad total: si no necesitas nada, te lo decimos'
-      ]
+      ],
+      problem: 'Sabes que tu empresa podría funcionar mejor con tecnología, pero no sabes por dónde empezar ni en quién confiar.',
+      solution: 'Visitamos tu empresa, entendemos cómo trabajáis de verdad y en menos de una semana te entregamos un plan de acción concreto con estimación de ahorro.',
+      stats: [
+        { value: '<1 sem', label: 'informe entregado' },
+        { value: '0€', label: 'si no necesitas nada' },
+        { value: '+30', label: 'empresas analizadas' },
+        { value: '100%', label: 'honestidad garantizada' },
+      ],
     },
     'consultoria-innovacion': {
       id: 'consultoria-innovacion',
@@ -60,7 +66,15 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Diseño de proyecto adaptado a cada convocatoria',
         'Memoria técnica, presupuesto y documentación completa',
         'IGAPE, IA360, Ticket Innova, Kit Digital y más'
-      ]
+      ],
+      problem: 'Hay ayudas públicas que encajan con tu empresa, pero las convocatorias son complejas y preparar el proyecto requiere tiempo que no tienes.',
+      solution: 'Identificamos las ayudas que encajan contigo y nos encargamos de diseñar el proyecto, preparar la memoria técnica y toda la documentación para maximizar la aprobación.',
+      stats: [
+        { value: '+2M€', label: 'en ayudas gestionadas' },
+        { value: '85%', label: 'tasa de aprobación' },
+        { value: '+20', label: 'convocatorias dominadas' },
+        { value: '0€', label: 'si no se aprueba' },
+      ],
     }
   },
   en: {
@@ -75,20 +89,15 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Intelligent agents and AI automations',
         'Prior analysis of your operations and needs',
         'No generic solutions: 100% custom software'
-      ]
-    },
-    kted: {
-      id: 'kted',
-      title: 'Data Spaces Kit',
-      tagline: 'Up to €30,000 to integrate your company into Data Spaces',
-      description: 'We help you incorporate your company into European sectoral data spaces (agrifood, industry, health, commerce) and access public funding through the KTED program, with up to €30,000 in financing. We handle all the technical work: data preparation, connector development, documentation, and registration in the data space.',
-      icon: 'Database',
-      highlights: [
-        '100% grant funding — you only pay VAT',
-        'European sectoral data spaces',
-        'Full management: application, execution, and justification',
-        'Open until March 31, 2026'
-      ]
+      ],
+      problem: 'Your business loses time and money on manual processes, generic tools that don\'t fit, and opportunities that technology could capture.',
+      solution: 'We analyze your real operations, identify what can be automated with AI, and build 100% custom software that solves exactly your problem.',
+      stats: [
+        { value: '+50', label: 'projects delivered' },
+        { value: '100%', label: 'custom software' },
+        { value: '<4 wks', label: 'first deliverable' },
+        { value: '98%', label: 'client satisfaction' },
+      ],
     },
     'consultoria-transformacion': {
       id: 'consultoria-transformacion',
@@ -101,7 +110,15 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Report with concrete opportunities in less than a week',
         'Savings estimate and prioritized action plan',
         'Total honesty: if you don\'t need anything, we\'ll tell you'
-      ]
+      ],
+      problem: 'You know your company could work better with technology, but you don\'t know where to start or who to trust.',
+      solution: 'We visit your company, understand how you actually work, and in less than a week deliver a concrete action plan with savings estimates.',
+      stats: [
+        { value: '<1 wk', label: 'report delivered' },
+        { value: '€0', label: 'if you don\'t need anything' },
+        { value: '+30', label: 'companies analyzed' },
+        { value: '100%', label: 'honesty guaranteed' },
+      ],
     },
     'consultoria-innovacion': {
       id: 'consultoria-innovacion',
@@ -114,7 +131,15 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         'Project design adapted to each call',
         'Technical report, budget, and complete documentation',
         'IGAPE, IA360, Ticket Innova, Kit Digital and more'
-      ]
+      ],
+      problem: 'There are public grants that fit your company, but the calls are complex and preparing the project takes time you don\'t have.',
+      solution: 'We identify the grants that fit you and handle everything: project design, technical report, and all documentation to maximize approval.',
+      stats: [
+        { value: '+€2M', label: 'in grants managed' },
+        { value: '85%', label: 'approval rate' },
+        { value: '+20', label: 'calls mastered' },
+        { value: '€0', label: 'if not approved' },
+      ],
     }
   }
 };
