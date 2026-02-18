@@ -21,7 +21,7 @@ export default function ImpactCardSwap({ cases, lang = 'es' }) {
       >
         {cases.map((cs) => (
           <Card key={cs.id} customClass="impact-card">
-            <a href={`/${lang}/impacto/${cs.id}`} className="impact-card-inner impact-card-link">
+            <a href={`/${lang}/servicios/${cs.services?.[0] || 'desarrollo-a-medida'}#cases`} className="impact-card-inner impact-card-link">
               {cs.product && (
                 <span className="impact-card-product">{cs.product}</span>
               )}

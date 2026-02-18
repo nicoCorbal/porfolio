@@ -25,11 +25,9 @@ interface CaseStudy {
 
 interface CasesCarouselProps {
   cases: CaseStudy[]
-  lang: string
-  viewMoreLabel: string
 }
 
-export function CasesCarousel({ cases, lang, viewMoreLabel }: CasesCarouselProps) {
+export function CasesCarousel({ cases }: CasesCarouselProps) {
   const [activeImageIndex, setActiveImageIndex] = React.useState<Record<number, number>>({})
 
   const getActiveImage = (slideIndex: number) => activeImageIndex[slideIndex] ?? 0
@@ -50,10 +48,7 @@ export function CasesCarousel({ cases, lang, viewMoreLabel }: CasesCarouselProps
 
           return (
             <CarouselItem key={cs.id}>
-              <a
-                href={`/${lang}/impacto/${cs.id}`}
-                className="group block"
-              >
+              <div className="group block">
                 <div className="flex flex-col lg:flex-row gap-8">
                   {/* Left: Images */}
                   <div className="lg:w-1/2 flex flex-col gap-3">
@@ -126,12 +121,9 @@ export function CasesCarousel({ cases, lang, viewMoreLabel }: CasesCarouselProps
                       </div>
                     )}
 
-                    <span className="inline-flex items-center text-sm font-semibold text-black group-hover:translate-x-1 transition-transform duration-200">
-                      {viewMoreLabel} →
-                    </span>
                   </div>
                 </div>
-              </a>
+              </div>
             </CarouselItem>
           )
         })}

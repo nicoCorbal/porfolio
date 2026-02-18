@@ -92,7 +92,7 @@ export default function ServiceScrollCards({ services, casesByService, caseLogos
                       <span className="ssc-proof-label">{casesLabel}</span>
                       <div className="ssc-proof-list">
                         {visible.map((c) => (
-                          <a key={c.id} href={`/${lang}/impacto/${c.id}`} className="ssc-proof-item">
+                          <a key={c.id} href={`/${lang}/servicios/${c.services?.[0] || 'desarrollo-a-medida'}#cases`} className="ssc-proof-item">
                             {caseLogos[c.id] && (
                               <img src={caseLogos[c.id]} alt={c.client} className="ssc-proof-logo" />
                             )}

@@ -146,7 +146,7 @@ const jsonLd = [serviceSchema, webPageSchema];
 
   <!-- CASES -->
   {relatedCases.length > 0 && (
-    <section class="py-16 bg-gray-50 mb-0">
+    <section id="cases" class="py-16 bg-gray-50 mb-0">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-bold text-black mb-8 fade-up" style="--delay: 0.1s">
           {t('products.caseStudy')}
@@ -154,8 +154,6 @@ const jsonLd = [serviceSchema, webPageSchema];
         <div class="fade-up" style="--delay: 0.2s">
           <CasesCarousel
             cases={relatedCases}
-            lang={lang}
-            viewMoreLabel={t('caseStudies.viewMore')}
             client:load
           />
         </div>
