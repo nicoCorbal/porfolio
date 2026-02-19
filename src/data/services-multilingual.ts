@@ -37,7 +37,7 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         { value: '2 sem', label: 'demo funcional' },
         { value: '100%', label: 'a medida' },
         { value: '24/7', label: 'soporte' },
-        { value: '<30d', label: 'primer entregable' },
+        { value: '2x', label: 'más rápidos que la media' },
       ],
     },
     'consultoria-transformacion': {
@@ -83,9 +83,9 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
       highlightsTitle: 'Servicio llave en mano',
       stats: [
         { value: '0€', label: 'si no se aprueba' },
-        { value: '7d', label: 'propuesta lista' },
+        { value: '<7d', label: 'propuesta lista' },
         { value: '100%', label: 'documentación incluida' },
-        { value: '5+', label: 'convocatorias activas' },
+        { value: '24/7', label: 'radar de ayudas' },
       ],
     }
   },
@@ -111,7 +111,7 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         { value: '2 wks', label: 'working demo' },
         { value: '100%', label: 'custom-built' },
         { value: '24/7', label: 'support' },
-        { value: '<30d', label: 'first deliverable' },
+        { value: '2x', label: 'faster than average' },
       ],
     },
     'consultoria-transformacion': {
@@ -157,9 +157,9 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
       highlightsTitle: 'Turnkey service',
       stats: [
         { value: '€0', label: 'if not approved' },
-        { value: '7d', label: 'proposal ready' },
+        { value: '<7d', label: 'proposal ready' },
         { value: '100%', label: 'docs included' },
-        { value: '5+', label: 'active calls' },
+        { value: '24/7', label: 'grants radar' },
       ],
     }
   }
