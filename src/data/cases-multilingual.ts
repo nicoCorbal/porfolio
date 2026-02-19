@@ -25,7 +25,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
       services: ['desarrollo-a-medida'],
       stats: [
         { label: 'Integración wallet', value: 'Google y Apple' },
-        { label: '+2500', value: 'Descargas' },
+        { label: 'Descargas', value: '+2500' },
         { label: 'Solución Multiplataforma', value: 'Apps + Web' },
       ],
       images: ['/projects/take.png'],

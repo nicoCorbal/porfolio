@@ -283,6 +283,46 @@ const caseLogos: Record<string, string> = {
     background: transparent;
   }
 
+  /* Promo CTA in proof panel */
+  .ssc-proof-promo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex: 1;
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+
+  .ssc-proof-promo-headline {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.35;
+    letter-spacing: 0.02em;
+  }
+
+  .ssc-proof-promo-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    background: #fff;
+    color: #000;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .ssc-proof-promo-cta:hover {
+    background: #e5e5e5;
+  }
+
   /* Stats in proof panel */
   .ssc-proof-stats {
     display: flex;

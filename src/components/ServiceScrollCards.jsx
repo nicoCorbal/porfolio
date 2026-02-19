@@ -5,19 +5,10 @@ const serviceStats = {
     'consultoria-transformacion': {
       label: 'En cifras',
       items: [
-        { value: '40+', label: 'Auditorías realizadas' },
-        { value: '< 5 días', label: 'Entrega del informe' },
-        { value: '85%', label: 'Implementan mejoras' },
-        { value: '3x', label: 'ROI medio en 12 meses' },
-      ],
-    },
-    'consultoria-innovacion': {
-      label: 'En cifras',
-      items: [
-        { value: '2M€+', label: 'En subvenciones captadas' },
-        { value: '92%', label: 'Tasa de aprobación' },
-        { value: '15+', label: 'Convocatorias gestionadas' },
-        { value: '60+', label: 'Proyectos presentados' },
+        { value: '<24h', label: 'Informe entregado' },
+        { value: '0€', label: 'Compromiso de continuidad' },
+        { value: '<7d', label: 'Plan de acción listo' },
+        { value: '+15', label: 'Procesos optimizados' },
       ],
     },
   },
@@ -25,20 +16,26 @@ const serviceStats = {
     'consultoria-transformacion': {
       label: 'Key figures',
       items: [
-        { value: '40+', label: 'Audits completed' },
-        { value: '< 5 days', label: 'Report delivery' },
-        { value: '85%', label: 'Implement improvements' },
-        { value: '3x', label: 'Average ROI in 12 months' },
+        { value: '<24h', label: 'Report delivered' },
+        { value: '€0', label: 'Continuity commitment' },
+        { value: '<7d', label: 'Action plan ready' },
+        { value: '+15', label: 'Processes optimized' },
       ],
     },
+  },
+};
+
+const servicePromos = {
+  es: {
     'consultoria-innovacion': {
-      label: 'Key figures',
-      items: [
-        { value: '€2M+', label: 'In grants captured' },
-        { value: '92%', label: 'Approval rate' },
-        { value: '15+', label: 'Calls managed' },
-        { value: '60+', label: 'Projects submitted' },
-      ],
+      headline: 'Convocatorias abiertas con financiación para tu empresa',
+      cta: 'Ver convocatorias',
+    },
+  },
+  en: {
+    'consultoria-innovacion': {
+      headline: 'Open calls with funding for your business',
+      cta: 'View open calls',
     },
   },
 };
@@ -65,6 +62,7 @@ export default function ServiceScrollCards({ services, casesByService, caseLogos
         const remaining = cases.length - maxVisible;
         const hasCases = cases.length > 0;
         const stats = serviceStats[lang]?.[service.id] || serviceStats.es?.[service.id];
+        const promo = servicePromos[lang]?.[service.id] || servicePromos.es?.[service.id];
 
         return (
           <ScrollStackItem key={service.id}>
@@ -109,6 +107,16 @@ export default function ServiceScrollCards({ services, casesByService, caseLogos
                         )}
                       </div>
                     </>
+                  ) : promo ? (
+                    <div className="ssc-proof-promo">
+                      <p className="ssc-proof-promo-headline">{promo.headline}</p>
+                      <a href={`/${lang}/servicios/${service.id}#convocatorias`} className="ssc-proof-promo-cta btn-arrow">
+                        {promo.cta}
+                        <svg className="btn-arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </a>
+                    </div>
                   ) : stats ? (
                     <>
                       <span className="ssc-proof-label">{stats.label}</span>
