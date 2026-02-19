@@ -19,6 +19,7 @@ interface CaseStudy {
   client: string
   headline: string
   summary: string
+  date?: string
   stats: CaseStat[]
   images?: string[]
   video?: string
@@ -178,7 +179,10 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
 
                     {/* Right: Text */}
                     <div className="cases-showcase-info">
-                      <span className="cases-showcase-client">{cs.client}</span>
+                      <div className="cases-showcase-meta">
+                        <span className="cases-showcase-client">{cs.client}</span>
+                        {cs.date && <span className="cases-showcase-date">{cs.date}</span>}
+                      </div>
                       <h3 className="cases-showcase-title">{cs.title}</h3>
                       <p className="cases-showcase-headline">{cs.headline}</p>
                       <div className="cases-showcase-divider" />
