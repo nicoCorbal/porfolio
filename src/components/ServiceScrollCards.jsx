@@ -5,9 +5,9 @@ const serviceStats = {
     'consultoria-transformacion': {
       label: 'En cifras',
       items: [
-        { value: '<24h', label: 'Informe entregado' },
+        { value: '< 24h', label: 'Informe entregado' },
         { value: '0€', label: 'Compromiso de continuidad' },
-        { value: '<7d', label: 'Plan de acción listo' },
+        { value: '< 7d', label: 'Plan de acción listo' },
         { value: '+15', label: 'Procesos optimizados' },
       ],
     },
@@ -16,9 +16,9 @@ const serviceStats = {
     'consultoria-transformacion': {
       label: 'Key figures',
       items: [
-        { value: '<24h', label: 'Report delivered' },
+        { value: '< 24h', label: 'Report delivered' },
         { value: '€0', label: 'Continuity commitment' },
-        { value: '<7d', label: 'Action plan ready' },
+        { value: '< 7d', label: 'Action plan ready' },
         { value: '+15', label: 'Processes optimized' },
       ],
     },

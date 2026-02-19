@@ -37,8 +37,8 @@ const convocatoriasData: Record<string, { sectionTitle: string; cards: { tag: st
     cards: [
       {
         tag: 'Kit Espacio de Datos',
-        title: 'Digitaliza tu gestión de datos con hasta 30.000€ de financiación',
-        description: 'Ayuda del programa Kit Digital para implantar soluciones de espacios de datos en tu empresa. Gestionamos todo el proceso.',
+        title: 'Integra tu empresa en Espacios de Datos Europeos con hasta 30.000€',
+        description: 'Subvención de Red.es para incorporarte a espacios de datos sectoriales. 100% subvencionado, tú solo pagas el IVA.',
         deadline: '31/03/2026',
         ctaLabel: '¿Qué es el KTED?',
         ctaHref: `/${lang}/kted/${['a','b','c'][Math.floor(Math.random()*3)]}`,
@@ -49,7 +49,7 @@ const convocatoriasData: Record<string, { sectionTitle: string; cards: { tag: st
         description: 'Subvención del Igape para proyectos de inteligencia artificial en pymes gallegas. Te acompañamos de inicio a fin.',
         deadline: '17/03/2026',
         ctaLabel: 'Solicitar asesoramiento',
-        ctaHref: '#contact',
+        ctaHref: `/${lang}/#contact`,
       },
     ],
   },
@@ -58,8 +58,8 @@ const convocatoriasData: Record<string, { sectionTitle: string; cards: { tag: st
     cards: [
       {
         tag: 'Kit Espacio de Datos',
-        title: 'Digitize your data management with up to €30,000 in funding',
-        description: 'Kit Digital program grant to implement data space solutions in your company. We manage the entire process.',
+        title: 'Integrate your company into European Data Spaces with up to €30,000',
+        description: 'Red.es grant to join sectoral data spaces. 100% subsidized, you only pay VAT.',
         deadline: '31/03/2026',
         ctaLabel: 'What is KTED?',
         ctaHref: `/${lang}/kted/${['a','b','c'][Math.floor(Math.random()*3)]}`,
@@ -70,7 +70,7 @@ const convocatoriasData: Record<string, { sectionTitle: string; cards: { tag: st
         description: 'Igape grant for artificial intelligence projects in Galician SMEs. We guide you from start to finish.',
         deadline: '17/03/2026',
         ctaLabel: 'Request consultation',
-        ctaHref: '#contact',
+        ctaHref: `/${lang}/#contact`,
       },
     ],
   },
@@ -200,7 +200,7 @@ const jsonLd = [serviceSchema, webPageSchema];
             <!-- Center dot -->
             <circle cx="65" cy="50" r="2.5" fill="#000"/>
           </svg>
-          <span class="clock-label">&lt;24h</span>
+          <span class="clock-label">&lt; 24h</span>
           <span class="clock-sublabel">{lang === 'es' ? 'Tiempo de respuesta' : 'Response time'}</span>
         </div>
 
