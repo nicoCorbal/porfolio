@@ -12,6 +12,7 @@ export interface ServiceData {
   solution: string;
   highlightsTitle: string;
   stats: { value: string; label: string }[];
+  testimonial: { quote: string; author: string; role: string };
 }
 
 export const servicesData: Record<string, Record<string, ServiceData>> = {
@@ -19,19 +20,19 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
     'desarrollo-a-medida': {
       id: 'desarrollo-a-medida',
       title: 'Desarrollo a Medida',
-      tagline: 'Software personalizado con IA para tu negocio',
-      description: 'Diseñamos y desarrollamos software personalizado con inteligencia artificial para resolver problemas concretos de tu negocio. Desde aplicaciones móviles y plataformas web hasta agentes inteligentes u otras automatizaciones. No vendemos soluciones genéricas: analizamos tu operativa y construimos exactamente lo que necesitas.',
+      tagline: 'Tú sabes lo que necesitas. Nosotros lo construimos.',
+      description: 'Llegas con una idea clara de lo que necesita tu negocio y nosotros lo hacemos realidad. Aplicaciones móviles, plataformas web, agentes inteligentes, automatizaciones con IA... lo que sea. Tú pones el qué, nosotros ponemos el cómo.',
       icon: 'Code',
       highlights: [
         'Aplicaciones móviles, web y de escritorio',
         'Agentes inteligentes y automatizaciones con IA',
-        'Análisis previo de tu operativa y necesidades',
+        'Tú defines el qué, nosotros el cómo',
         'Sin soluciones genéricas: software 100% a medida'
       ],
-      problemTitle: 'Procesos manuales y herramientas que no encajan',
-      problem: 'Tu negocio pierde tiempo y dinero con procesos manuales, herramientas genéricas que no encajan y oportunidades que la tecnología podría capturar.',
-      solutionTitle: 'Software que encaja como un guante',
-      solution: 'Analizamos tu operativa real, identificamos qué se puede automatizar con IA y construimos software 100% a medida que resuelve exactamente tu problema.',
+      problemTitle: 'Sabes lo que necesitas, pero no tienes quién lo construya',
+      problem: 'Tienes claro qué necesita tu negocio — una app, una automatización, una plataforma — pero no tienes el equipo técnico para hacerlo realidad.',
+      solutionTitle: 'Tu idea, hecha software',
+      solution: 'Nos cuentas lo que necesitas y lo construimos. Sin rodeos, sin consultorías interminables. Software 100% a medida, listo para funcionar.',
       highlightsTitle: 'De la idea al producto',
       stats: [
         { value: '2 sem', label: 'demo funcional lista' },
@@ -39,6 +40,11 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         { value: '24/7', label: 'soporte continuo' },
         { value: '2x', label: 'más rápidos que la media' },
       ],
+      testimonial: {
+        quote: 'En 3 semanas teníamos la app funcionando. Nos ahorraron meses de desarrollo interno.',
+        author: 'Director de Operaciones',
+        role: 'Empresa logística',
+      },
     },
     'consultoria-transformacion': {
       id: 'consultoria-transformacion',
@@ -54,7 +60,7 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
       ],
       problemTitle: 'No sabes por dónde empezar',
       problem: 'Sabes que tu empresa podría funcionar mejor con tecnología, pero no sabes por dónde empezar ni en quién confiar.',
-      solutionTitle: 'Un plan claro en menos de una semana',
+      solutionTitle: 'Te guiamos paso a paso',
       solution: 'Visitamos tu empresa, entendemos cómo trabajáis de verdad y en menos de una semana te entregamos un plan de acción concreto con estimación de ahorro.',
       highlightsTitle: 'Análisis sin compromiso',
       stats: [
@@ -63,6 +69,11 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         { value: '< 7d', label: 'plan de acción listo' },
         { value: '+15', label: 'procesos optimizados' },
       ],
+      testimonial: {
+        quote: 'Nos encontraron un ahorro de 40h/mes que no sabíamos que existía.',
+        author: 'CEO',
+        role: 'Distribuidora industrial',
+      },
     },
     'consultoria-innovacion': {
       id: 'consultoria-innovacion',
@@ -87,25 +98,30 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         { value: '60%', label: 'subvencionado de media' },
         { value: '0€', label: 'consulta inicial' },
       ],
+      testimonial: {
+        quote: 'Nos consiguieron 120.000€ en subvenciones que ni sabíamos que existían.',
+        author: 'Gerente',
+        role: 'Pyme alimentaria',
+      },
     }
   },
   en: {
     'desarrollo-a-medida': {
       id: 'desarrollo-a-medida',
       title: 'Custom Development',
-      tagline: 'AI-powered custom software for your business',
-      description: 'We design and develop custom software with artificial intelligence to solve specific problems in your business. From mobile apps and web platforms to intelligent agents and other automations. We don\'t sell generic solutions: we analyze your operations and build exactly what you need.',
+      tagline: 'You know what you need. We build it.',
+      description: 'You come with a clear idea of what your business needs and we make it happen. Mobile apps, web platforms, intelligent agents, AI automations... whatever it takes. You define the what, we handle the how.',
       icon: 'Code',
       highlights: [
         'Mobile, web, and desktop applications',
         'Intelligent agents and AI automations',
-        'Prior analysis of your operations and needs',
+        'You define the what, we handle the how',
         'No generic solutions: 100% custom software'
       ],
-      problemTitle: 'Manual processes and tools that don\'t fit',
-      problem: 'Your business loses time and money on manual processes, generic tools that don\'t fit, and opportunities that technology could capture.',
-      solutionTitle: 'Software that fits like a glove',
-      solution: 'We analyze your real operations, identify what can be automated with AI, and build 100% custom software that solves exactly your problem.',
+      problemTitle: 'You know what you need, but have no one to build it',
+      problem: 'You know exactly what your business needs — an app, an automation, a platform — but you don\'t have the technical team to make it happen.',
+      solutionTitle: 'Your idea, built into software',
+      solution: 'Tell us what you need and we build it. No detours, no endless consulting. 100% custom software, ready to run.',
       highlightsTitle: 'From idea to product',
       stats: [
         { value: '2 wks', label: 'working demo ready' },
@@ -113,6 +129,11 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         { value: '24/7', label: 'ongoing support' },
         { value: '2x', label: 'faster than average' },
       ],
+      testimonial: {
+        quote: 'We had the app running in 3 weeks. They saved us months of in-house development.',
+        author: 'COO',
+        role: 'Logistics company',
+      },
     },
     'consultoria-transformacion': {
       id: 'consultoria-transformacion',
@@ -128,7 +149,7 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
       ],
       problemTitle: 'You don\'t know where to start',
       problem: 'You know your company could work better with technology, but you don\'t know where to start or who to trust.',
-      solutionTitle: 'A clear plan in less than a week',
+      solutionTitle: 'We guide you step by step',
       solution: 'We visit your company, understand how you actually work, and in less than a week deliver a concrete action plan with savings estimates.',
       highlightsTitle: 'No-strings analysis',
       stats: [
@@ -137,6 +158,11 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         { value: '< 7d', label: 'action plan ready' },
         { value: '+15', label: 'processes optimized' },
       ],
+      testimonial: {
+        quote: 'They found us 40h/month in savings we didn\'t know existed.',
+        author: 'CEO',
+        role: 'Industrial distributor',
+      },
     },
     'consultoria-innovacion': {
       id: 'consultoria-innovacion',
@@ -161,6 +187,11 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
         { value: '60%', label: 'average grant coverage' },
         { value: '€0', label: 'initial consultation' },
       ],
+      testimonial: {
+        quote: 'They got us €120,000 in grants we didn\'t even know existed.',
+        author: 'Manager',
+        role: 'Food industry SME',
+      },
     }
   }
 };
