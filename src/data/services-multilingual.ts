@@ -34,9 +34,9 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
       solution: 'Analizamos tu operativa real, identificamos qué se puede automatizar con IA y construimos software 100% a medida que resuelve exactamente tu problema.',
       highlightsTitle: 'De la idea al producto',
       stats: [
-        { value: '2 sem', label: 'demo funcional' },
-        { value: '100%', label: 'a medida' },
-        { value: '24/7', label: 'soporte' },
+        { value: '2 sem', label: 'demo funcional lista' },
+        { value: '100%', label: 'software a medida' },
+        { value: '24/7', label: 'soporte continuo' },
         { value: '2x', label: 'más rápidos que la media' },
       ],
     },
@@ -83,9 +83,9 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
       highlightsTitle: 'Servicio llave en mano',
       stats: [
         { value: '0€', label: 'si no se aprueba' },
-        { value: '<7d', label: 'propuesta lista' },
+        { value: '<7d', label: 'propuesta lista para envío' },
         { value: '100%', label: 'documentación incluida' },
-        { value: '24/7', label: 'radar de ayudas' },
+        { value: '24/7', label: 'radar de ayudas activo' },
       ],
     }
   },
@@ -108,9 +108,9 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
       solution: 'We analyze your real operations, identify what can be automated with AI, and build 100% custom software that solves exactly your problem.',
       highlightsTitle: 'From idea to product',
       stats: [
-        { value: '2 wks', label: 'working demo' },
-        { value: '100%', label: 'custom-built' },
-        { value: '24/7', label: 'support' },
+        { value: '2 wks', label: 'working demo ready' },
+        { value: '100%', label: 'custom-built software' },
+        { value: '24/7', label: 'ongoing support' },
         { value: '2x', label: 'faster than average' },
       ],
     },
@@ -157,9 +157,9 @@ export const servicesData: Record<string, Record<string, ServiceData>> = {
       highlightsTitle: 'Turnkey service',
       stats: [
         { value: '€0', label: 'if not approved' },
-        { value: '<7d', label: 'proposal ready' },
-        { value: '100%', label: 'docs included' },
-        { value: '24/7', label: 'grants radar' },
+        { value: '<7d', label: 'proposal ready to submit' },
+        { value: '100%', label: 'documentation included' },
+        { value: '24/7', label: 'active grants radar' },
       ],
     }
   }
