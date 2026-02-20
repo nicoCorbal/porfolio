@@ -437,6 +437,27 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
     else playOpen();
   }, [playOpen, playClose]);
 
+  // ---- Smooth scroll helper with controlled duration ----
+  const smoothScrollTo = useCallback((targetPosition, duration = 2000) => {
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    let startTime = null;
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      window.scrollTo(0, startPosition + distance * easeInOutCubic(progress));
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+
+    requestAnimationFrame(animation);
+  }, []);
+
   // ---- Nav link click handler (hash scroll) ----
   const handleNavClick = useCallback(
     (e, href) => {
@@ -447,19 +468,19 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
           const targetId = hashMatch[1];
           const el = targetId === 'hero' ? null : document.getElementById(targetId);
           if (targetId === 'hero' && document.getElementById('hero')) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            smoothScrollTo(0);
           } else if (el) {
             const header = document.getElementById('main-header');
             const offset = header ? header.offsetHeight : 0;
             const top = el.getBoundingClientRect().top + window.scrollY - offset;
-            window.scrollTo({ top, behavior: 'smooth' });
+            smoothScrollTo(top);
           } else {
             window.location.href = href;
           }
         }
       });
     },
-    [playClose]
+    [playClose, smoothScrollTo]
   );
 
   // ---- Submenu item click handler (full page navigation) ----
