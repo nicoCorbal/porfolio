@@ -115,12 +115,40 @@ textarea {
   resize: vertical;
 }
 
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.67rem 1.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 2px solid #000;
+}
+
 .btn-primary {
-  @apply inline-flex items-center bg-black text-white hover:bg-gray-800 transition-all duration-300 font-semibold px-5 py-3 rounded-lg text-sm;
+  background: #000;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #fff;
+  color: #000;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center border border-gray-300 text-black hover:bg-gray-100 transition-all duration-300 font-semibold px-5 py-3 rounded-lg text-sm;
+  background: #fff;
+  color: #000;
+}
+
+.btn-secondary:hover {
+  background: #000;
+  color: #fff;
+  border-color: #fff;
 }
 
 /* ---------- Typography & Layout ---------- */

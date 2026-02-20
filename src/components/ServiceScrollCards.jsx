@@ -75,7 +75,7 @@ export default function ServiceScrollCards({ services, casesByService, caseLogos
                     <p className="ssc-tagline">{service.tagline}</p>
                   </div>
                   <p className="ssc-description">{service.description}</p>
-                  <a href={`/${lang}/servicios/${service.id}`} className="ssc-cta btn-arrow">
+                  <a href={`/${lang}/servicios/${service.id}`} className="btn-primary btn-arrow" style={{ marginTop: '2rem', alignSelf: 'flex-start' }}>
                     {viewServiceLabel}
                     <svg className="btn-arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
                       <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -110,7 +110,7 @@ export default function ServiceScrollCards({ services, casesByService, caseLogos
                   ) : promo ? (
                     <div className="ssc-proof-promo">
                       <p className="ssc-proof-promo-headline">{promo.headline}</p>
-                      <a href={`/${lang}/servicios/${service.id}#convocatorias`} className="ssc-proof-promo-cta btn-arrow">
+                      <a href={`/${lang}/servicios/${service.id}#convocatorias`} className="btn-secondary btn-arrow">
                         {promo.cta}
                         <svg className="btn-arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
                           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

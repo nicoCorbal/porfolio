@@ -46,7 +46,7 @@ const services = serviceIds.map(id => getService(id, lang)).filter(Boolean) as S
       <!-- Right side: Language selector -->
       <div class="flex items-center gap-4 transition-opacity duration-300">
         <div class="hidden md:block">
-            <a href={`/${lang}/#contact`} class="contact-btn btn-arrow inline-flex items-center gap-[0.4rem] bg-black text-white py-3 px-6 font-semibold text-[0.75rem] uppercase tracking-wide transition-colors duration-200 hover:bg-[#222]">
+            <a href={`/${lang}/#contact`} class="contact-btn btn-primary btn-arrow">
               {t['nav.contact']}
               <svg class="btn-arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
