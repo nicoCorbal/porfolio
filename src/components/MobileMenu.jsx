@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback, useState } from 'react';
+import { useRef, useEffect, useLayoutEffect, useCallback, useState } from 'react';
 import { gsap, CSSPlugin } from 'gsap';
 gsap.registerPlugin(CSSPlugin);
 
@@ -8,7 +8,7 @@ const css = `
 .mobile-menu-wrapper {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 1100;
   pointer-events: none;
 }
 .mobile-menu-wrapper.is-open {
@@ -23,7 +23,6 @@ const css = `
 .mm-prelayer {
   position: absolute;
   inset: 0;
-  transform: translateX(100%);
 }
 .mm-prelayer:nth-child(1) { background: #1e1e22; }
 .mm-prelayer:nth-child(2) { background: #35353c; }
@@ -38,7 +37,6 @@ const css = `
   padding: 5rem 2.5rem 2.5rem;
   overflow-y: auto;
   z-index: 10;
-  transform: translateX(100%);
 }
 
 /* Close button */
@@ -67,6 +65,9 @@ const css = `
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   counter-reset: mmItem;
 }
 .mm-list[data-numbering] {
@@ -181,6 +182,15 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
         styleRef.current.parentNode.removeChild(styleRef.current);
       }
     };
+  }, []);
+
+  // Set initial offscreen positions via GSAP (not CSS) to avoid transform conflicts
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const targets = [layer1Ref.current, layer2Ref.current, panelRef.current].filter(Boolean);
+      gsap.set(targets, { xPercent: 100 });
+    });
+    return () => ctx.revert();
   }, []);
 
   // ---- Close logic ----
