@@ -9,10 +9,21 @@ const { lang, isMainPage = false } = Astro.props;
 import enLocales from '../../public/locales/en.json';
 import esLocales from '../../public/locales/es.json';
 import { getService, type ServiceData } from '../data/services-multilingual';
+import MobileMenu from './MobileMenu.jsx';
 
 const t = lang === 'es' ? esLocales : enLocales;
 const serviceIds = ['desarrollo-a-medida', 'consultoria-transformacion', 'consultoria-innovacion'];
 const services = serviceIds.map(id => getService(id, lang)).filter(Boolean) as ServiceData[];
+
+const mobileItems = [
+  { label: lang === 'es' ? 'Inicio' : 'Home', link: `/${lang}/#hero` },
+  { label: t['nav.services'], link: `/${lang}/#services` },
+  { label: t['nav.aboutUs'], link: `/${lang}/#about-us` },
+  { label: t['nav.contact'], link: `/${lang}/#contact` },
+];
+const mobileSocials = [
+  { label: 'LinkedIn', link: 'https://www.linkedin.com/company/osix-tech' },
+];
 ---
 
 <header id="main-header" class="fixed top-0 left-0 w-full bg-white transition-all duration-300 shadow-lg z-50 md:px-12 md:py-6 px-6 py-3">
@@ -81,23 +92,7 @@ const services = serviceIds.map(id => getService(id, lang)).filter(Boolean) as S
   </div>
 </header>
 
-<!-- Mobile menu -->
-<div id="mobile-menu" class="fixed inset-0 bg-black z-[60] flex items-center justify-center">
-  <button id="mobile-close" class="absolute top-4 right-4 bg-black text-white p-2" aria-label="Close menu">
-    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-    </svg>
-  </button>
-  
-  <nav class="text-center">
-    <ul class="space-y-6">
-      <li class="mobile-nav-item"><a href={`/${lang}/#hero`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{lang === 'es' ? 'Inicio' : 'Home'}</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/#services`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.services']}</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/#about-us`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.aboutUs']}</a></li>
-      <li class="mobile-nav-item"><a href={`/${lang}/#contact`} class="text-4xl font-bold text-white hover:text-gray-300 transition-colors mobile-nav-link">{t['nav.contact']}</a></li>
-    </ul>
-  </nav>
-</div>
+<MobileMenu lang={lang} items={mobileItems} socialItems={mobileSocials} client:load />
 
 <script>
 // Type definitions
@@ -568,56 +563,18 @@ function smoothScrollTo(targetPosition: number, duration: number) {
 // Setup mobile menu
 function setupMobileMenu() {
   const mobileToggle = document.getElementById('mobile-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const mobileClose = document.getElementById('mobile-close');
   const burgerIcon = document.querySelector('.burger-icon');
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-  
-  if (mobileToggle && mobileMenu && mobileClose && burgerIcon) {
+
+  if (mobileToggle && burgerIcon) {
     mobileToggle.addEventListener('click', () => {
-      state.isMenuOpen = true;
-      mobileMenu.classList.add('active');
-      document.body.classList.add('menu-open');
-      burgerIcon.classList.add('active');
+      state.isMenuOpen = !state.isMenuOpen;
+      burgerIcon.classList.toggle('active', state.isMenuOpen);
+      window.dispatchEvent(new CustomEvent('mobile-menu-toggle'));
     });
-    
-    mobileClose.addEventListener('click', () => {
+
+    window.addEventListener('mobile-menu-closed', () => {
       state.isMenuOpen = false;
-      mobileMenu.classList.remove('active');
-      document.body.classList.remove('menu-open');
       burgerIcon.classList.remove('active');
-    });
-    
-    mobileNavLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
-        const hashMatch = href?.match(/#(.+)$/);
-        
-        if (hashMatch) {
-          e.preventDefault();
-          const targetIdClean = hashMatch[1];
-          
-          // Close mobile menu
-          state.isMenuOpen = false;
-          mobileMenu.classList.remove('active');
-          document.body.classList.remove('menu-open');
-          burgerIcon.classList.remove('active');
-          
-          // Smooth scroll to target
-          setTimeout(() => {
-            if (targetIdClean === 'hero') {
-              smoothScrollTo(0, 2000);
-            } else {
-              const targetSection = document.getElementById(targetIdClean);
-              if (targetSection && state.header) {
-                const headerHeight = state.header.offsetHeight;
-                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                smoothScrollTo(targetPosition, 2000);
-              }
-            }
-          }, 300); // Wait for menu close animation
-        }
-      });
     });
   }
 }
@@ -851,35 +808,6 @@ document.addEventListener('astro:page-load', initializeHeader);
   .nav-card {
     will-change: transform, opacity;
   }
-  
-  #mobile-menu {
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-  }
-  
-  #mobile-menu.active {
-    transform: translateX(0);
-  }
-  
-  .mobile-nav-item {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-  }
-  
-  #mobile-menu.active .mobile-nav-item {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  #mobile-menu.active .mobile-nav-item:nth-child(1) { transition-delay: 0.1s; }
-  #mobile-menu.active .mobile-nav-item:nth-child(2) { transition-delay: 0.2s; }
-  #mobile-menu.active .mobile-nav-item:nth-child(3) { transition-delay: 0.3s; }
-  #mobile-menu.active .mobile-nav-item:nth-child(4) { transition-delay: 0.4s; }
-  #mobile-menu.active .mobile-nav-item:nth-child(5) { transition-delay: 0.5s; }
-  #mobile-menu.active .mobile-nav-item:nth-child(6) { transition-delay: 0.6s; }
-  #mobile-menu.active .mobile-nav-item:nth-child(7) { transition-delay: 0.7s; }
-  #mobile-menu.active .mobile-nav-item:nth-child(8) { transition-delay: 0.8s; }
   
   body.menu-open {
     overflow: hidden;
