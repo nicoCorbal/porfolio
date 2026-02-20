@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import ScrollStack, { ScrollStackItem } from './ScrollStack.jsx';
 
 const serviceStats = {
@@ -44,14 +45,22 @@ export default function ServiceScrollCards({ services, casesByService, caseLogos
   const viewServiceLabel = lang === 'es' ? 'Ver servicio' : 'View service';
   const casesLabel = lang === 'es' ? 'Casos de éxito' : 'Success stories';
 
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   return (
     <ScrollStack
       useWindowScroll
-      itemDistance={80}
+      itemDistance={isMobile ? 120 : 80}
       itemScale={0.04}
       itemStackDistance={32}
-      stackPosition="15%"
-      scaleEndPosition="8%"
+      stackPosition={isMobile ? '10%' : '15%'}
+      scaleEndPosition={isMobile ? '3%' : '8%'}
       baseScale={0.88}
       blurAmount={0}
     >
@@ -108,8 +117,8 @@ export default function ServiceScrollCards({ services, casesByService, caseLogos
                       </div>
                     </>
                   ) : promo ? (
-                    <div className="ssc-proof-promo">
-                      <p className="ssc-proof-promo-headline text-3xl">{promo.headline}</p>
+                    <div className="ssc-proof-promo !gap-8 md:!gap-16">
+                      <p className="ssc-proof-promo-headline text-2xl">{promo.headline}</p>
                       <a href={`/${lang}/servicios/${service.id}#convocatorias`} className="btn-secondary btn-arrow">
                         {promo.cta}
                         <svg className="btn-arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
