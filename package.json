@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
-    "@astrojs/vercel": "^8.2.2",
+    "@astrojs/vercel": "^8.2.11",
     "@emailjs/browser": "^4.4.1",
     "@radix-ui/react-slot": "^1.2.3",
     "@react-three/drei": "^10.7.7",
@@ -21,7 +21,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@types/three": "^0.178.1",
-    "astro": "^5.7.10",
+    "astro": "^5.17.3",
     "astro-i18n": "^2.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -44,11 +44,22 @@
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.178.0"
   },
+  "pnpm": {
+    "overrides": {
+      "glob": ">=10.5.0",
+      "minimatch": ">=10.2.1",
+      "lodash": ">=4.17.23",
+      "mdast-util-to-hast": ">=13.2.1",
+      "ajv": ">=8.18.0"
+    }
+  },
   "devDependencies": {
+    "@astrojs/check": "^0.9.6",
     "@astrojs/tailwind": "^6.0.2",
     "autoprefixer": "^10.4.21",
     "baseline-browser-mapping": "^2.9.19",
     "postcss": "^8.5.3",
-    "tailwindcss": "^3.0.24"
+    "tailwindcss": "^3.0.24",
+    "typescript": "^5.9.3"
   }
 }
