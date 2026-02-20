@@ -445,16 +445,16 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
         const hashMatch = href.match(/#(.+)$/);
         if (hashMatch) {
           const targetId = hashMatch[1];
-          if (targetId === 'hero') {
+          const el = targetId === 'hero' ? null : document.getElementById(targetId);
+          if (targetId === 'hero' && document.getElementById('hero')) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else if (el) {
+            const header = document.getElementById('main-header');
+            const offset = header ? header.offsetHeight : 0;
+            const top = el.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
           } else {
-            const el = document.getElementById(targetId);
-            if (el) {
-              const header = document.getElementById('main-header');
-              const offset = header ? header.offsetHeight : 0;
-              const top = el.getBoundingClientRect().top + window.scrollY - offset;
-              window.scrollTo({ top, behavior: 'smooth' });
-            }
+            window.location.href = href;
           }
         }
       });
@@ -490,7 +490,7 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
   }, [toggle]);
 
   return (
-    <div ref={wrapperRef} className={`mobile-menu-wrapper${isOpen ? ' is-open' : ''}`}>
+    <div ref={wrapperRef} className={`mobile-menu-wrapper${isOpen ? ' is-open' : ''}`} style={{ position: 'fixed', pointerEvents: isOpen ? 'auto' : 'none' }}>
       {/* Pre-layers */}
       <div className="mm-prelayers">
         <div className="mm-prelayer" ref={layer1Ref} />
