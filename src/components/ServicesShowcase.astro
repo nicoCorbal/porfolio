@@ -285,19 +285,21 @@ const caseLogos: Record<string, string> = {
 
   /* Stats in proof panel */
   .ssc-proof-stats {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.5rem 1rem;
     flex: 1;
+    align-content: center;
   }
 
   .ssc-proof-stat {
-    flex: 1 1 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 0.3rem;
+    gap: 0.25rem;
   }
 
   .ssc-proof-stat-value {
