@@ -147,7 +147,7 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
               const images = cs.images ?? [];
 
               return (
-                <CarouselItem key={cs.id}>
+                <CarouselItem key={cs.id} className="md:items-center items-start">
                   <div className="cases-showcase-slide">
                     {/* Left: Image */}
                     <div className="cases-showcase-images">
@@ -177,6 +177,17 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
                       </div>
                     </div>
 
+                    {/* Mobile dots */}
+                    <div className="cases-showcase-dots">
+                      {cases.map((cs2, i) => (
+                        <button
+                          key={cs2.id}
+                          className={`cases-showcase-dot ${i === activeIndex ? 'active' : ''}`}
+                          onClick={() => handleBarClick(i)}
+                        />
+                      ))}
+                    </div>
+
                     {/* Right: Text */}
                     <div className="cases-showcase-info">
                       <div className="cases-showcase-meta">
@@ -203,10 +214,11 @@ export function CasesCarousel({ cases }: CasesCarouselProps) {
               );
             })}
           </CarouselContent>
-          <CarouselPrevious className="-left-8" />
-          <CarouselNext className="-right-8" />
+          <CarouselPrevious className="-left-8 hidden md:inline-flex" />
+          <CarouselNext className="-right-8 hidden md:inline-flex" />
         </Carousel>
       </div>
+
     </div>
   );
 }
