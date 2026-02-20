@@ -361,10 +361,6 @@ section {
     font-size: 1.5rem !important;
   }
   
-  p {
-    font-size: 0.95rem !important;
-  }
-  
   /* Ajuste de padding para contenedores en móviles */
   .container, .mx-auto {
     padding-left: 1rem !important;
