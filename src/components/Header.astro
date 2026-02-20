@@ -17,7 +17,11 @@ const services = serviceIds.map(id => getService(id, lang)).filter(Boolean) as S
 
 const mobileItems = [
   { label: lang === 'es' ? 'Inicio' : 'Home', link: `/${lang}/#hero` },
-  { label: t['nav.services'], link: `/${lang}/#services` },
+  {
+    label: t['nav.services'],
+    link: `/${lang}/#services`,
+    children: services.map(s => ({ label: s.title, link: `/${lang}/servicios/${s.id}` })),
+  },
   { label: t['nav.aboutUs'], link: `/${lang}/#about-us` },
   { label: t['nav.contact'], link: `/${lang}/#contact` },
 ];
@@ -81,7 +85,7 @@ const mobileSocials = [
       <div class="card-group" data-group="services">
         <div class="flex flex-row items-stretch gap-3">
           {services.map((service) => (
-            <a href={`/${lang}/servicios/${service.id}`} class="nav-card group flex-1 flex flex-col justify-between gap-2 p-5 rounded-xl no-underline transition-opacity duration-300 hover:opacity-80" style="background-color: #0a0a0a; color: #fff;">
+            <a href={`/${lang}/servicios/${service.id}`} class="nav-card group flex-1 flex flex-col justify-between gap-2 p-5 rounded-0 no-underline transition-opacity duration-300 hover:opacity-80" style="background-color: #0a0a0a; color: #fff;">
               <span class="nav-card-label font-semibold text-[18px] tracking-tight">{service.title}</span>
               <span class="nav-card-tagline text-[14px] opacity-70 leading-snug">{service.tagline}</span>
             </a>
@@ -90,9 +94,9 @@ const mobileSocials = [
       </div>
     </div>
   </div>
-</header>
 
-<MobileMenu lang={lang} items={mobileItems} socialItems={mobileSocials} client:load />
+  <MobileMenu lang={lang} items={mobileItems} socialItems={mobileSocials} client:load />
+</header>
 
 <script>
 // Type definitions
@@ -591,11 +595,19 @@ function setupMobileMenu() {
     state.mobileOpenedListener = () => {
       state.isMenuOpen = true;
       burgerIcon.classList.add('active');
+      if (state.header) {
+        state.header.style.zIndex = '1100';
+        state.header.classList.remove('shadow-lg');
+      }
     };
 
     state.mobileClosedListener = () => {
       state.isMenuOpen = false;
       burgerIcon.classList.remove('active');
+      if (state.header) {
+        state.header.style.zIndex = '';
+        state.header.classList.add('shadow-lg');
+      }
     };
 
     mobileToggle.addEventListener('click', state.mobileToggleListener);
@@ -856,9 +868,9 @@ document.addEventListener('astro:page-load', initializeHeader);
     opacity: 1;
     left: 0;
     transform: rotate(0deg);
-    transition: .25s ease-in-out;
+    transition: .3s ease-in-out;
   }
-  
+
   .burger-icon span:nth-child(1) {
     top: 0px;
   }

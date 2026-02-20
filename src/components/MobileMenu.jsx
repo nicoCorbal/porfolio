@@ -1,56 +1,50 @@
 import { useRef, useEffect, useLayoutEffect, useCallback, useState } from 'react';
-import { gsap, CSSPlugin } from 'gsap';
-gsap.registerPlugin(CSSPlugin);
-
-const ACCENT = '#5227FF';
+import { gsap } from 'gsap';
 
 const css = `
 .mobile-menu-wrapper {
   position: fixed;
-  inset: 0;
-  z-index: 1100;
+  left: 0;
+  width: 100%;
+  z-index: 10;
   pointer-events: none;
 }
 .mobile-menu-wrapper.is-open {
   pointer-events: auto;
+  border-top: 1px solid #000;
 }
 
 /* Pre-layers */
 .mm-prelayers {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .mm-prelayer {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
-.mm-prelayer:nth-child(1) { background: #1e1e22; }
-.mm-prelayer:nth-child(2) { background: #35353c; }
+.mm-prelayer:nth-child(1) { background: #fff; }
+.mm-prelayer:nth-child(2) { background: #000; }
 
 /* Panel */
 .mm-panel {
-  position: fixed;
-  inset: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: #fff;
   display: flex;
   flex-direction: column;
-  padding: 5rem 2.5rem 2.5rem;
+  padding: 2rem 2.5rem 2.5rem;
   overflow-y: auto;
   z-index: 10;
-}
-
-/* Close button */
-.mm-close {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: transparent;
-  border: none;
-  color: #000;
-  cursor: pointer;
-  z-index: 20;
-  padding: 0.5rem;
-  line-height: 0;
 }
 
 /* Panel inner */
@@ -68,16 +62,14 @@ const css = `
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  counter-reset: mmItem;
-}
-.mm-list[data-numbering] {
-  counter-reset: mmItem;
 }
 
 /* Item wrap */
 .mm-item-wrap {
   overflow: hidden;
   line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 /* Item link */
@@ -90,10 +82,9 @@ const css = `
   color: #000;
   text-decoration: none;
   line-height: 1;
-  padding-right: 1.4em;
   display: inline-block;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 @media (min-width: 480px) {
   .mm-item {
@@ -101,7 +92,7 @@ const css = `
   }
 }
 .mm-item:hover {
-  color: ${ACCENT};
+  opacity: 0.5;
 }
 
 /* Animated label inside the link */
@@ -111,20 +102,81 @@ const css = `
   transform-origin: 50% 100%;
 }
 
-/* Numbering via CSS counter */
-.mm-list[data-numbering] .mm-item {
-  counter-increment: mmItem;
+/* Toggle arrow button for expandable items */
+.mm-expand-btn {
+  background: none;
+  border: none;
+  padding: 0 0 0 0.6em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
 }
-.mm-list[data-numbering] .mm-item::after {
-  content: counter(mmItem, decimal-leading-zero);
+.mm-expand-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  position: relative;
+}
+.mm-expand-icon::before,
+.mm-expand-icon::after {
+  content: '';
   position: absolute;
+  background: #000;
+  transition: transform 0.3s ease;
+}
+.mm-expand-icon::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+.mm-expand-icon::after {
+  left: 50%;
   top: 0;
-  right: 0;
-  font-size: 18px;
-  color: ${ACCENT};
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+.mm-expand-icon.is-expanded::after {
+  transform: translateX(-50%) rotate(90deg);
+}
+
+/* Submenu */
+.mm-submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0 0 0.5rem;
+  overflow: hidden;
+}
+.mm-submenu-wrap {
+  overflow: hidden;
+}
+.mm-subitem {
+  font-size: 1.2rem;
   font-weight: 500;
-  opacity: var(--mm-num-opacity, 0);
-  transition: opacity 0.15s ease;
+  color: #000;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  transition: opacity 0.2s ease;
+  line-height: 1.3;
+}
+@media (min-width: 480px) {
+  .mm-subitem {
+    font-size: 1.4rem;
+  }
+}
+.mm-subitem:hover {
+  opacity: 0.5;
+}
+.mm-subitem-arrow {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 /* Socials */
@@ -133,7 +185,7 @@ const css = `
   padding-top: 2rem;
 }
 .mm-socials-title {
-  color: ${ACCENT};
+  color: #000;
   font-weight: 500;
   font-size: 1rem;
   margin-bottom: 0.75rem;
@@ -151,24 +203,27 @@ const css = `
   font-weight: 500;
   color: #000;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 .mm-socials-link:hover {
-  color: ${ACCENT};
+  opacity: 0.5;
 }
 `;
 
 export default function MobileMenu({ lang, items = [], socialItems = [] }) {
+  const wrapperRef = useRef(null);
   const layer1Ref = useRef(null);
   const layer2Ref = useRef(null);
   const panelRef = useRef(null);
   const socialsTitleRef = useRef(null);
   const socialsListRef = useRef(null);
   const styleRef = useRef(null);
+  const submenuRefs = useRef({});
 
   const openTlRef = useRef(null);
   const isOpenRef = useRef(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState(null);
 
   // Inject styles once on mount
   useEffect(() => {
@@ -178,24 +233,61 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
     document.head.appendChild(style);
     styleRef.current = style;
     return () => {
-      if (styleRef.current && styleRef.current.parentNode) {
+      if (styleRef.current?.parentNode) {
         styleRef.current.parentNode.removeChild(styleRef.current);
       }
     };
+  }, []);
+
+  // Position wrapper below header and set height to fill remaining viewport
+  useEffect(() => {
+    function updatePosition() {
+      const header = document.getElementById('main-header');
+      if (header && wrapperRef.current) {
+        const h = header.offsetHeight;
+        wrapperRef.current.style.top = `${h}px`;
+        wrapperRef.current.style.height = `calc(100dvh - ${h}px)`;
+      }
+    }
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    return () => window.removeEventListener('resize', updatePosition);
   }, []);
 
   // Set initial offscreen positions via GSAP (not CSS) to avoid transform conflicts
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const targets = [layer1Ref.current, layer2Ref.current, panelRef.current].filter(Boolean);
-      gsap.set(targets, { xPercent: 100 });
+      gsap.set(targets, { clipPath: 'inset(0 0 100% 0)' });
     });
     return () => ctx.revert();
   }, []);
 
+  // Animate submenu open/close
+  useEffect(() => {
+    Object.entries(submenuRefs.current).forEach(([idx, el]) => {
+      if (!el) return;
+      const isExpanded = openSubmenu === parseInt(idx);
+      if (isExpanded) {
+        gsap.set(el, { height: 'auto' });
+        const h = el.offsetHeight;
+        gsap.fromTo(el, { height: 0 }, { height: h, duration: 0.35, ease: 'power3.out' });
+        const subItems = el.querySelectorAll('.mm-submenu-wrap');
+        if (subItems.length) {
+          gsap.fromTo(
+            subItems,
+            { yPercent: 100, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.4, ease: 'power3.out', stagger: 0.06 }
+          );
+        }
+      } else {
+        gsap.to(el, { height: 0, duration: 0.25, ease: 'power3.in' });
+      }
+    });
+  }, [openSubmenu]);
+
   // ---- Close logic ----
   const playClose = useCallback((onDone) => {
-    // Kill any running open timeline
     if (openTlRef.current) {
       openTlRef.current.kill();
       openTlRef.current = null;
@@ -206,20 +298,19 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
     if (!panel) return;
 
     gsap.to([...layers, panel], {
-      xPercent: 100,
+      clipPath: 'inset(0 0 100% 0)',
       duration: 0.32,
       ease: 'power3.in',
       overwrite: 'auto',
       onComplete: () => {
-        // Reset item labels
+        // Reset item labels and expand buttons
         const itemLabels = panelRef.current?.querySelectorAll('.mm-item-label');
         if (itemLabels) {
           gsap.set(itemLabels, { yPercent: 140, rotate: 10 });
         }
-        // Reset number opacity
-        const numberedItems = panelRef.current?.querySelectorAll('.mm-item');
-        if (numberedItems) {
-          numberedItems.forEach(el => el.style.setProperty('--mm-num-opacity', '0'));
+        const expandBtns = panelRef.current?.querySelectorAll('.mm-expand-btn');
+        if (expandBtns) {
+          gsap.set(expandBtns, { yPercent: 140 });
         }
         // Reset social elements
         if (socialsTitleRef.current) {
@@ -229,6 +320,11 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
         if (socialLinks) {
           gsap.set(socialLinks, { y: 25, opacity: 0 });
         }
+        // Reset submenus
+        setOpenSubmenu(null);
+        Object.values(submenuRefs.current).forEach((el) => {
+          if (el) gsap.set(el, { height: 0 });
+        });
 
         isOpenRef.current = false;
         setIsOpen(false);
@@ -255,12 +351,12 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
     const layers = [layer1, layer2];
     const tl = gsap.timeline({ paused: true });
 
-    // 1. Pre-layers slide in from right
+    // 1. Pre-layers wipe down from top
     layers.forEach((el, i) => {
       tl.fromTo(
         el,
-        { xPercent: 100 },
-        { xPercent: 0, duration: 0.5, ease: 'power4.out' },
+        { clipPath: 'inset(0 0 100% 0)' },
+        { clipPath: 'inset(0 0 0% 0)', duration: 0.5, ease: 'power4.out' },
         i * 0.07
       );
     });
@@ -271,15 +367,17 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
     const panelDuration = 0.65;
     tl.fromTo(
       panel,
-      { xPercent: 100 },
-      { xPercent: 0, duration: panelDuration, ease: 'power4.out' },
+      { clipPath: 'inset(0 0 100% 0)' },
+      { clipPath: 'inset(0 0 0% 0)', duration: panelDuration, ease: 'power4.out' },
       panelInsertTime
     );
 
     // 3. Nav item labels stagger up
     const itemLabels = panel.querySelectorAll('.mm-item-label');
+    const expandBtns = panel.querySelectorAll('.mm-expand-btn');
     if (itemLabels.length) {
       gsap.set(itemLabels, { yPercent: 140, rotate: 10 });
+      gsap.set(expandBtns, { yPercent: 140 });
       const itemsStart = panelInsertTime + panelDuration * 0.15;
       tl.to(
         itemLabels,
@@ -292,35 +390,29 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
         },
         itemsStart
       );
-    }
-
-    // 4. Number opacity
-    const numberedItems = panel.querySelectorAll('.mm-item');
-    if (numberedItems.length) {
-      const numStart = panelInsertTime + panelDuration * 0.15 + 0.15;
-      numberedItems.forEach((el, i) => {
-        el.style.setProperty('--mm-num-opacity', '0');
+      // Expand buttons appear with the same timing as their parent item
+      if (expandBtns.length) {
         tl.to(
-          el,
+          expandBtns,
           {
-            '--mm-num-opacity': 1,
-            duration: 0.3,
-            ease: 'power2.out',
+            yPercent: 0,
+            duration: 1,
+            ease: 'power4.out',
           },
-          numStart + i * 0.08
+          itemsStart + 0.1 // matches the "Servicios" item index timing
         );
-      });
+      }
     }
 
-    // 5. Social title fade in
+    // 4. Social title fade in
     if (socialsTitleRef.current) {
       gsap.set(socialsTitleRef.current, { opacity: 0 });
       tl.to(socialsTitleRef.current, { opacity: 1, duration: 0.5 }, '-=0.4');
     }
 
-    // 6. Social links slide up & fade in
+    // 5. Social links slide up & fade in
     const socialLinks = socialsListRef.current?.querySelectorAll('.mm-socials-link');
-    if (socialLinks && socialLinks.length) {
+    if (socialLinks?.length) {
       gsap.set(socialLinks, { y: 25, opacity: 0 });
       tl.to(
         socialLinks,
@@ -341,14 +433,11 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
 
   // ---- Toggle handler ----
   const toggle = useCallback(() => {
-    if (isOpenRef.current) {
-      playClose();
-    } else {
-      playOpen();
-    }
+    if (isOpenRef.current) playClose();
+    else playOpen();
   }, [playOpen, playClose]);
 
-  // ---- Nav link click handler ----
+  // ---- Nav link click handler (hash scroll) ----
   const handleNavClick = useCallback(
     (e, href) => {
       e.preventDefault();
@@ -373,23 +462,35 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
     [playClose]
   );
 
+  // ---- Submenu item click handler (full page navigation) ----
+  const handleSubItemClick = useCallback(
+    (e, href) => {
+      e.preventDefault();
+      playClose(() => {
+        window.location.href = href;
+      });
+    },
+    [playClose]
+  );
+
+  // ---- Toggle submenu for expandable items ----
+  const toggleSubmenu = useCallback((index) => {
+    setOpenSubmenu((prev) => (prev === index ? null : index));
+  }, []);
+
   // ---- Event listeners ----
   useEffect(() => {
     const onToggle = () => toggle();
     window.addEventListener('mobile-menu-toggle', onToggle);
     return () => {
       window.removeEventListener('mobile-menu-toggle', onToggle);
-      if (openTlRef.current) {
-        openTlRef.current.kill();
-      }
+      if (openTlRef.current) openTlRef.current.kill();
       document.body.classList.remove('menu-open');
     };
   }, [toggle]);
 
   return (
-    <div
-      className={`mobile-menu-wrapper${isOpen ? ' is-open' : ''}`}
-    >
+    <div ref={wrapperRef} className={`mobile-menu-wrapper${isOpen ? ' is-open' : ''}`}>
       {/* Pre-layers */}
       <div className="mm-prelayers">
         <div className="mm-prelayer" ref={layer1Ref} />
@@ -398,30 +499,50 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
 
       {/* Main panel */}
       <div className="mm-panel" ref={panelRef}>
-        {/* Close button */}
-        <button
-          className="mm-close"
-          onClick={() => playClose()}
-          aria-label={lang === 'es' ? 'Cerrar menú' : 'Close menu'}
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-
         <div className="mm-panel-inner">
           {/* Nav items */}
-          <ul className="mm-list" data-numbering="">
-            {items.map((item) => (
-              <li className="mm-item-wrap" key={item.link}>
-                <a
-                  className="mm-item"
-                  href={item.link}
-                  onClick={(e) => handleNavClick(e, item.link)}
-                >
-                  <span className="mm-item-label">{item.label}</span>
-                </a>
+          <ul className="mm-list">
+            {items.map((item, index) => (
+              <li key={item.link}>
+                <div className="mm-item-wrap">
+                  <a
+                    className="mm-item"
+                    href={item.link}
+                    onClick={(e) => handleNavClick(e, item.link)}
+                  >
+                    <span className="mm-item-label">{item.label}</span>
+                  </a>
+                  {item.children?.length > 0 && (
+                    <button
+                      className="mm-expand-btn"
+                      onClick={() => toggleSubmenu(index)}
+                      aria-label={openSubmenu === index ? 'Collapse' : 'Expand'}
+                    >
+                      <span className={`mm-expand-icon${openSubmenu === index ? ' is-expanded' : ''}`} />
+                    </button>
+                  )}
+                </div>
+
+                {/* Submenu */}
+                {item.children?.length > 0 && (
+                  <ul
+                    className="mm-submenu"
+                    ref={(el) => { submenuRefs.current[index] = el; }}
+                    style={{ height: 0 }}
+                  >
+                    {item.children.map((child) => (
+                      <li className="mm-submenu-wrap" key={child.link}>
+                        <a
+                          className="mm-subitem"
+                          href={child.link}
+                          onClick={(e) => handleSubItemClick(e, child.link)}
+                        >
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
