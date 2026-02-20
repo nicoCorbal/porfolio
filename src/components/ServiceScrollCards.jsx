@@ -109,7 +109,7 @@ export default function ServiceScrollCards({ services, casesByService, caseLogos
                     </>
                   ) : promo ? (
                     <div className="ssc-proof-promo">
-                      <p className="ssc-proof-promo-headline">{promo.headline}</p>
+                      <p className="ssc-proof-promo-headline text-3xl">{promo.headline}</p>
                       <a href={`/${lang}/servicios/${service.id}#convocatorias`} className="btn-secondary btn-arrow">
                         {promo.cta}
                         <svg className="btn-arrow-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
