@@ -161,7 +161,7 @@ const t = (k: string) => translations.default[k] || k;
           
           <button
             type="submit"
-            class="btn-secondary w-full mt-4"
+            class="btn-secondary w-full mt-4 justify-center text-center"
           >
           {t('contact.form.button')}
           </button>
@@ -204,7 +204,7 @@ const t = (k: string) => translations.default[k] || k;
 </style>
 
 <script>
-  import { initEmailJS, sendEmail } from '../utils/emailjs.js';
+  import { initEmailJS, sendEmail } from '../utils/emailjs';
 
   // Function to initialize contact section
   function initializeContactSection() {

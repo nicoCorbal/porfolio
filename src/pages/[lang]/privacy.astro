@@ -15,9 +15,9 @@ const { lang = 'en' } = Astro.params;
 
 let PP;
 try {
-  PP = (await import(`../../content/${lang}/privacy-policy_${lang}.md`)).default;
+  PP = (await import(`../../content/${lang}/privacy-policy.md`)).default;
 } catch {
-  PP = (await import(`../../content/en/privacy-policy_en.md`)).default;
+  PP = (await import(`../../content/en/privacy-policy.md`)).default;
 }
 
 // Load translations

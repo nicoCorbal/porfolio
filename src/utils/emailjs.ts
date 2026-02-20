@@ -8,5 +8,5 @@ export const initEmailJS = () => {
   emailjs.init(PUBLIC_KEY);
 };
 
-export const sendEmail = (templateParams) =>
+export const sendEmail = (templateParams: Record<string, unknown>) =>
   emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);

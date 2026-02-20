@@ -154,18 +154,6 @@ export function getAllCases(lang: string = 'es'): CaseStudyData[] {
   return casesData[lang] || casesData.es;
 }
 
-export function getCase(id: string, lang: string = 'es'): CaseStudyData | undefined {
-  return casesData[lang]?.find(c => c.id === id);
-}
-
-export function getCaseIds(): string[] {
-  return casesData.es.map(c => c.id);
-}
-
-export function getCasesByProduct(productId: string, lang: string = 'es'): CaseStudyData[] {
-  return (casesData[lang] || casesData.es).filter(c => c.product?.toLowerCase() === productId.toLowerCase());
-}
-
 export function getCasesByService(serviceId: string, lang: string = 'es'): CaseStudyData[] {
   return (casesData[lang] || casesData.es).filter(c => c.services.includes(serviceId));
 }
