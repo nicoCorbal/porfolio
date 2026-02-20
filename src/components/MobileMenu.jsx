@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback, useState } from 'react';
-import { gsap } from 'gsap';
+import { gsap, CSSPlugin } from 'gsap';
+gsap.registerPlugin(CSSPlugin);
 
 const ACCENT = '#5227FF';
 
@@ -157,11 +158,9 @@ const css = `
 `;
 
 export default function MobileMenu({ lang, items = [], socialItems = [] }) {
-  const wrapperRef = useRef(null);
   const layer1Ref = useRef(null);
   const layer2Ref = useRef(null);
   const panelRef = useRef(null);
-  const listRef = useRef(null);
   const socialsTitleRef = useRef(null);
   const socialsListRef = useRef(null);
   const styleRef = useRef(null);
@@ -185,7 +184,7 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
   }, []);
 
   // ---- Close logic ----
-  const playClose = useCallback(() => {
+  const playClose = useCallback((onDone) => {
     // Kill any running open timeline
     if (openTlRef.current) {
       openTlRef.current.kill();
@@ -225,6 +224,8 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
         setIsOpen(false);
         document.body.classList.remove('menu-open');
         window.dispatchEvent(new CustomEvent('mobile-menu-closed'));
+
+        if (typeof onDone === 'function') onDone();
       },
     });
   }, []);
@@ -340,10 +341,7 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
   const handleNavClick = useCallback(
     (e, href) => {
       e.preventDefault();
-      playClose();
-
-      // After close animation, scroll to section
-      setTimeout(() => {
+      playClose(() => {
         const hashMatch = href.match(/#(.+)$/);
         if (hashMatch) {
           const targetId = hashMatch[1];
@@ -354,12 +352,12 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
             if (el) {
               const header = document.getElementById('main-header');
               const offset = header ? header.offsetHeight : 0;
-              const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+              const top = el.getBoundingClientRect().top + window.scrollY - offset;
               window.scrollTo({ top, behavior: 'smooth' });
             }
           }
         }
-      }, 320);
+      });
     },
     [playClose]
   );
@@ -379,7 +377,6 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
 
   return (
     <div
-      ref={wrapperRef}
       className={`mobile-menu-wrapper${isOpen ? ' is-open' : ''}`}
     >
       {/* Pre-layers */}
@@ -404,9 +401,9 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
 
         <div className="mm-panel-inner">
           {/* Nav items */}
-          <ul className="mm-list" data-numbering="" ref={listRef}>
-            {items.map((item, idx) => (
-              <li className="mm-item-wrap" key={idx}>
+          <ul className="mm-list" data-numbering="">
+            {items.map((item) => (
+              <li className="mm-item-wrap" key={item.link}>
                 <a
                   className="mm-item"
                   href={item.link}
@@ -422,11 +419,11 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
           {socialItems.length > 0 && (
             <div className="mm-socials">
               <h3 className="mm-socials-title" ref={socialsTitleRef}>
-                Socials
+                {lang === 'es' ? 'Redes sociales' : 'Socials'}
               </h3>
               <ul className="mm-socials-list" ref={socialsListRef}>
-                {socialItems.map((social, idx) => (
-                  <li key={idx}>
+                {socialItems.map((social) => (
+                  <li key={social.link}>
                     <a
                       className="mm-socials-link"
                       href={social.link}
