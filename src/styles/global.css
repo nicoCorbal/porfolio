@@ -127,12 +127,12 @@ textarea {
   letter-spacing: 0.05em;
   text-decoration: none;
   transition: all 0.2s ease;
-  border: 2px solid #000;
 }
 
 .btn-primary {
   background: #000;
   color: #fff;
+  border: 2px solid #000;
 }
 
 .btn-primary:hover {
@@ -143,12 +143,12 @@ textarea {
 .btn-secondary {
   background: #fff;
   color: #000;
+  border: 2px solid #fff;
 }
 
 .btn-secondary:hover {
   background: #000;
   color: #fff;
-  border-color: #fff;
 }
 
 /* ---------- Typography & Layout ---------- */
