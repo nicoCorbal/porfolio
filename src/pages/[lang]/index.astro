@@ -16,7 +16,7 @@ export async function getStaticPaths() {
   ];
 }
 
-const { lang = 'en' } = Astro.params;
+const { lang = 'en' } = Astro.params as { lang: 'en' | 'es' };
 
 // SEO Data
 const seoTitle = lang === 'es'
@@ -100,7 +100,7 @@ const jsonLd = [organizationSchema, webPageSchema];
   description={seoDescription}
   pageType="website"
   jsonLd={jsonLd}
-  isMainPage={true}>
+>
   <LoadingScreen duration={1000} />
   <section id="hero"><Hero lang={lang} /></section>
   <section id="partners"><LogoSlider /></section>

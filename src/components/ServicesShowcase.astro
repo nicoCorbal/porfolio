@@ -70,7 +70,7 @@ const caseLogos: Record<string, string> = {
     const title = cta.querySelector('.showcase-bottom-title');
     const subtitle = cta.querySelector('.showcase-bottom-subtitle');
     const button = cta.querySelector('.showcase-bottom-button');
-    const els = [title, subtitle, button].filter(Boolean);
+    const els = [title, subtitle, button].filter((el): el is HTMLElement => el instanceof HTMLElement);
 
     els.forEach(el => {
       el.style.opacity = '0';

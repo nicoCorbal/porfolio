@@ -1,4 +1,8 @@
 import * as Icons from 'lucide-react';
+import type { LucideProps } from 'lucide-react';
+import type { ForwardRefExoticComponent, RefAttributes } from 'react';
+
+type LucideIconComponent = ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
 
 interface LucideIconProps {
   name: string;
@@ -7,11 +11,9 @@ interface LucideIconProps {
 }
 
 export const LucideIcon = ({ name, className = '', size = 24 }: LucideIconProps) => {
-  // @ts-ignore - Dynamic icon access
-  const Icon = Icons[name as keyof typeof Icons];
+  const Icon = (Icons as unknown as Record<string, LucideIconComponent>)[name];
 
   if (!Icon) {
-    // Fallback to Star icon if the specified icon doesn't exist
     return <Icons.Star className={className} size={size} />;
   }
 

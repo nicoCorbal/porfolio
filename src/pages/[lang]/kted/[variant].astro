@@ -35,7 +35,7 @@ export async function getStaticPaths() {
   );
 }
 
-const { lang = 'es', variant = 'a' } = Astro.params;
+const { lang = 'es', variant = 'a' } = Astro.params as { lang: 'en' | 'es'; variant: string };
 
 // SEO Data
 const seoData = {
@@ -79,7 +79,7 @@ const ContactComponent = contactComponents[variant as 'a' | 'b' | 'c'] || Contac
   jsonLd={[webPageSchema]}
   hideHeader={true}>
 
-  <KTEDHeader lang={lang} variant={variant} />
+  <KTEDHeader lang={lang} />
   <LoadingScreen duration={800} />
 
   <main data-variant={variant}>

@@ -5,8 +5,6 @@ interface Props {
 }
 
 const { lang = 'es', variant = 'c' } = Astro.props;
-const translations = await import(`../../../../public/locales/${lang}.json`);
-const t = (k: string) => translations.default[k] || k;
 
 const sectors = lang === 'es'
   ? ['Salud', 'Agroalimentario', 'Logística', 'Turismo', 'Energía', 'Industria']

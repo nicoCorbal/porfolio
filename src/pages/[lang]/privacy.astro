@@ -20,10 +20,6 @@ try {
   PP = (await import(`../../content/en/privacy-policy.md`)).default;
 }
 
-// Load translations
-const translations = await import(`../../../public/locales/${lang}.json`);
-const t = (key: string) => translations.default[key] || key;
-
 // SEO Data
 const seoTitle = lang === 'es' 
   ? 'Política de Privacidad - OSIX Tech'

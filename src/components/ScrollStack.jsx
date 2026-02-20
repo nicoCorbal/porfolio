@@ -58,16 +58,6 @@ export default function ScrollStack({
     };
   }, [useWindowScroll]);
 
-  const getElementOffset = useCallback(
-    (element) => {
-      if (useWindowScroll) {
-        return element.getBoundingClientRect().top + window.scrollY;
-      }
-      return element.offsetTop;
-    },
-    [useWindowScroll],
-  );
-
   const endTopRef = useRef(0);
 
   const cachePositions = useCallback(() => {

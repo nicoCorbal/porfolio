@@ -302,12 +302,12 @@ export default function OsixLogo3D() {
     }
 
     // Track dragging vs clicking
-    const onPointerDown = (e) => {
+    const onPointerDown = () => {
       isDragging = false;
       dragStartTime = Date.now();
     };
 
-    const onPointerUp = (e) => {
+    const onPointerUp = () => {
       const dragDuration = Date.now() - dragStartTime;
       // If it was a quick click (not a drag), toggle explosion
       if (dragDuration < 200) {

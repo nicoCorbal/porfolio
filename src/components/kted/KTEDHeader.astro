@@ -1,10 +1,9 @@
 ---
 interface Props {
   lang?: string;
-  variant?: string;
 }
 
-const { lang = 'es', variant = 'a' } = Astro.props;
+const { lang = 'es' } = Astro.props;
 ---
 
 <header class="fixed top-0 left-0 w-full h-[80px] bg-white z-50 px-6 md:px-12 flex items-center border-b border-gray-100">

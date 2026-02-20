@@ -75,7 +75,7 @@ for (let i = teamMembers.length - 1; i > 0; i--) {
   [teamMembers[i], teamMembers[j]] = [teamMembers[j], teamMembers[i]];
 }
 
-const manifestoItems = [
+const manifestoItems: { type: string; gridArea: string; data: Record<string, any> }[] = [
   {
     type: 'narrative',
     gridArea: 'narrative1',
@@ -186,7 +186,7 @@ const manifestoItems = [
             {item.type === 'metrics-grid' && item.data.metrics && (
               <div class="metrics-grid-box">
                 <div class="metrics-container">
-                  {item.data.metrics.map(metric => (
+                  {item.data.metrics.map((metric: { value: string; label: string }) => (
                     <div class="metric-item">
                       <p class="metric-value">{metric.value}</p>
                       <p class="metric-label">{metric.label}</p>

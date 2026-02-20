@@ -1,7 +1,5 @@
 ---
-import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -10,7 +8,6 @@ interface Props {
   image?: string;
   canonical?: string;
   lang: 'en' | 'es';
-  isMainPage?: boolean;
   keywords?: string;
   pageType?: 'website' | 'article' | 'product';
   noindex?: boolean;
@@ -18,25 +15,27 @@ interface Props {
   hideHeader?: boolean;
 }
 
-const { 
-  title = lang === 'es' 
-    ? 'OSIX Tech - Automatización Impulsada por IA | Desarrollo de Software'
-    : 'OSIX Tech - AI-Powered Automation | Software Development',
-  description = lang === 'es'
-    ? 'Construimos software de automatización con IA y tecnologías modernas. OSIX Tech ofrece soluciones digitales personalizadas para necesidades empresariales reales.'
-    : 'We build automation-driven software using AI and modern technologies. OSIX Tech delivers custom digital solutions for real-world business needs.',
+const {
+  lang,
   image = '/og-image.png',
   canonical,
-  lang,
-  isMainPage = false,
-  keywords = lang === 'es'
-    ? 'desarrollo software, desarrollo web, desarrollo móvil, inteligencia artificial, automatización, transformación digital, OSIX Tech, tecnología, innovación, inteligencia artificial Galicia, desarrollo software Santiago de Compostela, digitalización empresas Galicia, automatización empresas España, software a medida Galicia'
-    : 'software development, web development, mobile development, artificial intelligence, automation, digital transformation, OSIX Tech, technology, innovation, AI software Galicia Spain, custom software Santiago de Compostela, business digitalization Galicia, automation solutions Spain',
   pageType = 'website',
   noindex = false,
   jsonLd,
   hideHeader = false
 } = Astro.props;
+
+const title = Astro.props.title ?? (lang === 'es'
+  ? 'OSIX Tech - Automatización Impulsada por IA | Desarrollo de Software'
+  : 'OSIX Tech - AI-Powered Automation | Software Development');
+
+const description = Astro.props.description ?? (lang === 'es'
+  ? 'Construimos software de automatización con IA y tecnologías modernas. OSIX Tech ofrece soluciones digitales personalizadas para necesidades empresariales reales.'
+  : 'We build automation-driven software using AI and modern technologies. OSIX Tech delivers custom digital solutions for real-world business needs.');
+
+const keywords = Astro.props.keywords ?? (lang === 'es'
+  ? 'desarrollo software, desarrollo web, desarrollo móvil, inteligencia artificial, automatización, transformación digital, OSIX Tech, tecnología, innovación, inteligencia artificial Galicia, desarrollo software Santiago de Compostela, digitalización empresas Galicia, automatización empresas España, software a medida Galicia'
+  : 'software development, web development, mobile development, artificial intelligence, automation, digital transformation, OSIX Tech, technology, innovation, AI software Galicia Spain, custom software Santiago de Compostela, business digitalization Galicia, automation solutions Spain');
 
 // Generate proper canonical URL
 const baseUrl = 'https://osix.tech';
@@ -147,7 +146,7 @@ const fullImageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
 
   </head>
   <body>
-    {!hideHeader && <Header lang={lang} isMainPage={isMainPage} />}
+    {!hideHeader && <Header lang={lang} />}
     <script is:inline>
       (function() {
         var h = document.getElementById('main-header');

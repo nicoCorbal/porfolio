@@ -1,10 +1,9 @@
 ---
 interface Props {
   lang: 'en' | 'es';
-  isMainPage?: boolean;
 }
 
-const { lang, isMainPage = false } = Astro.props;
+const { lang } = Astro.props;
 
 import enLocales from '../../public/locales/en.json';
 import esLocales from '../../public/locales/es.json';
@@ -722,7 +721,7 @@ function setupDropdownsWithGsap(gsap: any) {
   function scheduleClose() {
     if (hideTimer) clearTimeout(hideTimer);
     hideTimer = window.setTimeout(() => {
-      let stillHovering = panel.matches(':hover');
+      let stillHovering = panel?.matches(':hover');
       state.dropdownTriggers.forEach(trigger => {
         if (trigger.matches(':hover')) stillHovering = true;
       });
