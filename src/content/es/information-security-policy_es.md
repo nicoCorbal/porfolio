@@ -237,5 +237,5 @@ Esta política fue aprobada por la Dirección General de OSIX Tech el **15 de ma
 
 ---
 <div align="center">
-© 2025 OSIX Tech Development SL | All rights reserved
+© 2026 OSIX Tech Development SL | All rights reserved
 </div>

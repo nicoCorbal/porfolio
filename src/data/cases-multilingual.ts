@@ -62,9 +62,9 @@ export const casesData: Record<string, CaseStudyData[]> = {
     {
       id: 'shearn',
       title: 'Project Certainty',
-      client: 'Proyecto interno',
+      client: 'Shearn',
       headline: 'Resolución de dibujo técnico con IA',
-      date: 'Agosto 2025',
+      date: 'Julio 2025',
       services: ['desarrollo-a-medida'],
       video: '/projects/shearn.webm',
       stats: [
@@ -72,7 +72,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
         { label: 'Tecnología', value: 'Three.js' },
         { label: 'Desarrollo', value: '100% propio' },
       ],
-      summary: 'Prueba de concepto para validar si la IA de agosto de 2025 era capaz de resolver ejercicios de dibujo técnico de nivel 2º Bachillerato y Universidad. Motor 2D paso a paso para resolución guiada y módulo 3D en Three.js para reconstrucción de sólidos a partir de vistas ortográficas.',
+      summary: 'Prueba de concepto para validar si la IA de julio de 2025 era capaz de resolver ejercicios de dibujo técnico de nivel 2º Bachillerato y Universidad. Motor 2D paso a paso para resolución guiada y módulo 3D en Three.js para reconstrucción de sólidos a partir de vistas ortográficas.',
       results: [
         'PoC exitoso: resolución de ejercicios de 2º Bach y Universidad',
         'Motor 2D de soluciones paso a paso',
@@ -106,7 +106,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
     },
     {
       id: 'iciga',
-      title: 'IRIS - Information Retrieval & Intelligence System',
+      title: 'IRIS',
       client: 'ICIGA - Laboratory supplies distributor',
       headline: 'Semi-automated commercial management with CRM integration',
       product: 'IRIS',
@@ -129,9 +129,9 @@ export const casesData: Record<string, CaseStudyData[]> = {
     {
       id: 'shearn',
       title: 'Project Certainty',
-      client: 'Internal project',
+      client: 'Shearn',
       headline: 'AI-powered technical drawing solver',
-      date: 'August 2025',
+      date: 'July 2025',
       video: '/projects/shearn.webm',
       services: ['desarrollo-a-medida'],
       stats: [
@@ -139,7 +139,7 @@ export const casesData: Record<string, CaseStudyData[]> = {
         { label: 'Technology', value: 'Three.js' },
         { label: 'Development', value: '100% in-house' },
       ],
-      summary: 'Proof of concept to validate whether the AI available in August 2025 could solve technical drawing exercises at high school and university level. Step-by-step 2D engine for guided solving and Three.js 3D module for solid reconstruction from orthographic views.',
+      summary: 'Proof of concept to validate whether the AI available in July 2025 could solve technical drawing exercises at high school and university level. Step-by-step 2D engine for guided solving and Three.js 3D module for solid reconstruction from orthographic views.',
       results: [
         'Successful PoC: solving high school & university-level exercises',
         'Step-by-step 2D solution engine',

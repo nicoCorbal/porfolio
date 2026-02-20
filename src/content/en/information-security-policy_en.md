@@ -237,5 +237,5 @@ This policy was approved by the General Management of OSIX Tech on **May 15, 202
 
 ---
 <div align="center">
-© 2025 OSIX Tech Development SL | All rights reserved
+© 2026 OSIX Tech Development SL | All rights reserved
 </div>

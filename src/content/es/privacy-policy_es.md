@@ -159,5 +159,5 @@ Las actualizaciones específicas de la política de TAKE se comunicarán:
 ---
 
 <div align="center">
-© 2025 OSIX Tech Development SL | Todos los derechos reservados
+© 2026 OSIX Tech Development SL | Todos los derechos reservados
 </div>
