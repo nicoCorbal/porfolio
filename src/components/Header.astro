@@ -110,6 +110,9 @@ interface HeaderState {
   activeDropdown: string | null;
   scrollListener: (() => void) | null;
   resizeListener: (() => void) | null;
+  mobileToggleListener: (() => void) | null;
+  mobileClosedListener: ((e: Event) => void) | null;
+  mobileOpenedListener: ((e: Event) => void) | null;
 }
 
 const state: HeaderState = {
@@ -123,7 +126,10 @@ const state: HeaderState = {
   dropdownPanel: null,
   activeDropdown: null,
   scrollListener: null,
-  resizeListener: null
+  resizeListener: null,
+  mobileToggleListener: null,
+  mobileClosedListener: null,
+  mobileOpenedListener: null
 };
 
 // Clean up existing listeners
@@ -135,6 +141,18 @@ function cleanupListeners() {
   if (state.resizeListener) {
     window.removeEventListener('resize', state.resizeListener);
     state.resizeListener = null;
+  }
+  if (state.mobileToggleListener) {
+    document.getElementById('mobile-toggle')?.removeEventListener('click', state.mobileToggleListener);
+    state.mobileToggleListener = null;
+  }
+  if (state.mobileClosedListener) {
+    window.removeEventListener('mobile-menu-closed', state.mobileClosedListener);
+    state.mobileClosedListener = null;
+  }
+  if (state.mobileOpenedListener) {
+    window.removeEventListener('mobile-menu-opened', state.mobileOpenedListener);
+    state.mobileOpenedListener = null;
   }
 }
 
@@ -566,16 +584,23 @@ function setupMobileMenu() {
   const burgerIcon = document.querySelector('.burger-icon');
 
   if (mobileToggle && burgerIcon) {
-    mobileToggle.addEventListener('click', () => {
-      state.isMenuOpen = !state.isMenuOpen;
-      burgerIcon.classList.toggle('active', state.isMenuOpen);
+    state.mobileToggleListener = () => {
       window.dispatchEvent(new CustomEvent('mobile-menu-toggle'));
-    });
+    };
 
-    window.addEventListener('mobile-menu-closed', () => {
+    state.mobileOpenedListener = () => {
+      state.isMenuOpen = true;
+      burgerIcon.classList.add('active');
+    };
+
+    state.mobileClosedListener = () => {
       state.isMenuOpen = false;
       burgerIcon.classList.remove('active');
-    });
+    };
+
+    mobileToggle.addEventListener('click', state.mobileToggleListener);
+    window.addEventListener('mobile-menu-opened', state.mobileOpenedListener as EventListener);
+    window.addEventListener('mobile-menu-closed', state.mobileClosedListener as EventListener);
   }
 }
 

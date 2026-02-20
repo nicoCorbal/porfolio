@@ -235,6 +235,7 @@ export default function MobileMenu({ lang, items = [], socialItems = [] }) {
     isOpenRef.current = true;
     setIsOpen(true);
     document.body.classList.add('menu-open');
+    window.dispatchEvent(new CustomEvent('mobile-menu-opened'));
 
     const layer1 = layer1Ref.current;
     const layer2 = layer2Ref.current;
