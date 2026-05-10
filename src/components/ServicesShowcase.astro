@@ -3,13 +3,6 @@ import { getService, type ServiceData } from '../data/services-multilingual';
 import { getAllCases, type CaseStudyData } from '../data/cases-multilingual';
 import ServiceScrollCards from './ServiceScrollCards.jsx';
 
-import takeLogo from '../assets/logos/take.png';
-import icigaLogo from '../assets/logos/iciga.svg';
-import shearnLogo from '../assets/logos/shearn.png';
-import testsoposicionesLogo from '../assets/logos/testsoposiciones.svg';
-import irLogo from '../assets/logos/IR.png';
-import avteLogo from '../assets/logos/avte.png';
-
 interface Props {
   lang?: string;
 }
@@ -28,12 +21,12 @@ for (const id of serviceIds) {
 }
 
 const caseLogos: Record<string, string> = {
-  take: takeLogo.src,
-  iciga: icigaLogo.src,
-  shearn: shearnLogo.src,
-  gamificacion: testsoposicionesLogo.src,
-  grille: avteLogo.src,
-  consultoria: irLogo.src,
+  take: '/logos/take.png',
+  iciga: '/logos/iciga.svg',
+  shearn: '/logos/shearn.png',
+  gamificacion: '/logos/testsoposiciones.svg',
+  grille: '/logos/avte.png',
+  consultoria: '/logos/IR.png',
 };
 ---
 
